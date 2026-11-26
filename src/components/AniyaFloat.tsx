@@ -17,6 +17,7 @@ import {
   WhatsAppOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
+import DemoVideo from "./DemoVideo";
 
 const SITE = "https://aniyanetworks.net/";
 const BOOK = "https://zcal.co/aniyanetworks/30min";
@@ -90,6 +91,11 @@ const AniyaFloat = () => {
         </div>
 
         <div className="space-y-6 px-6 py-6">
+          {/* walkthrough video */}
+          <div className="-mx-6 -mt-6 bg-[#0b3b38] px-6 pb-6 pt-1">
+            <DemoVideo label="Watch the product walkthrough" />
+          </div>
+
           {/* this product */}
           <div className="rounded-xl border border-teal-100 bg-teal-50 p-4">
             <div className="text-[13px] font-semibold text-[#0b3b38]">About this demo</div>

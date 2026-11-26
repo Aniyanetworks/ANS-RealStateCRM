@@ -1,4 +1,5 @@
 import logoIcon from "/logo-icon.svg";
+import DemoVideo from "../../components/DemoVideo";
 
 const features = [
   "Leads, clients and listings in one place",
@@ -15,7 +16,7 @@ const Branding = () => {
       <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-teal-400/10" />
       <div className="absolute -bottom-32 -left-20 w-80 h-80 rounded-full bg-amber-400/10" />
 
-      <div className="relative flex flex-col gap-10 max-w-[420px]">
+      <div className="relative flex flex-col gap-7 w-full max-w-[420px] py-6">
         <div className="flex flex-col items-center gap-4">
           <img src={logoIcon} alt="ANS RealStateCRM" className="w-[84px] h-[84px] drop-shadow-lg" />
           <div className="text-center">
@@ -41,6 +42,8 @@ const Branding = () => {
             </li>
           ))}
         </ul>
+
+        <DemoVideo />
       </div>
     </div>
   );
