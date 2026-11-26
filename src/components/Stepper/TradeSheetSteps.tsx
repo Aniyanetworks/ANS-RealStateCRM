@@ -30,7 +30,7 @@ const stepIcon = (path: string) => {
   return <EyeOutlined />;
 };
 
-const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active, uuid }) => {
+const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active: activeProp, uuid }) => {
   const { tradeSheetData } = useSelector((state: any) => state.user);
 
   
@@ -133,6 +133,7 @@ const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active, uuid }) => {
 
   const title = tradeSheetData?.tradeSheetTypeId ? `${tradeSheetData.tradeSheetTypeId}${headerAddress ? " - " + headerAddress : ""}` : "New trade sheet";
 
+  const active = Math.min(Number(activeProp) || 1, steps.length);
   const percent = Math.round(((active - 1) / Math.max(steps.length - 1, 1)) * 100);
 
   return (

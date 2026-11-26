@@ -1,7 +1,7 @@
 export const getEnvUrls = () => {
 
   const localApiUrl = "http://localhost:4000/api/v1";
-  const localBaseUrl = "http://localhost:4000/";
+  const localBaseUrl = window.location.origin + "/"; // demo: uploaded files are static assets served by the app itself
 
 
   const UrlLocal = "http://localhost:3000";
@@ -12,7 +12,7 @@ export const getEnvUrls = () => {
   const UrlProd = "https://demo.invalid";
 
   const productionDevApiUrl = "https://demo.invalid/api/v1";
-  const productionDevBaseUrl = "https://demo.invalid/";
+  const productionDevBaseUrl = window.location.origin + "/";
   const UrlDev = "https://demo.invalid";
 
 

@@ -32,6 +32,7 @@ import {
   RiseOutlined,
 } from '@ant-design/icons';
 
+import ClientHome from './ClientHome';
 import Announcement from '../../components/dashboard/Announcement';
 import UpcommingCalendar
   from '../../components/dashboard/Calendar/UpcommingCalendar';
@@ -740,6 +741,8 @@ const Home = () => {
   const handleCalendarIconClick = () => {
     setShowDatePicker(!showDatePicker);
   };
+
+  if (user?.userType === "client") return <ClientHome />;
 
   return (
     <div className="min-h-screen flex flex-col mb-5 gap-5">

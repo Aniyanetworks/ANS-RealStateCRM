@@ -480,7 +480,7 @@ export const router = createBrowserRouter([
                     element: (
                       <PermissonRoute
                         permission={[]}
-                        userTypePermission={["superAdmin", "agent"]}
+                        userTypePermission={["superAdmin", "agent", "admin"]}
                       >
                         <ClientManagement />
                       </PermissonRoute>
@@ -491,7 +491,7 @@ export const router = createBrowserRouter([
                     element: (
                       <PermissonRoute
                         permission={[]}
-                        userTypePermission={["superAdmin", "agent"]}
+                        userTypePermission={["superAdmin", "agent", "client"]}
                       >
                         <ClientProperty />
                       </PermissonRoute>
@@ -563,7 +563,7 @@ export const router = createBrowserRouter([
                 element: (
                   <PermissonRoute
                     permission={[]}
-                    userTypePermission={["superAdmin", "accountant"]}
+                    userTypePermission={["superAdmin", "accountant", "admin"]}
                   >
                     <TradeTransactions />
                   </PermissonRoute>
@@ -585,7 +585,7 @@ export const router = createBrowserRouter([
                 element: (
                   <PermissonRoute
                     permission={[]}
-                    userTypePermission={["agent", "superAdmin"]}
+                    userTypePermission={["agent", "superAdmin", "client"]}
                   >
                     <MyAccounting />
                   </PermissonRoute>
@@ -1081,7 +1081,7 @@ export const router = createBrowserRouter([
                 element: (
                   <PermissonRoute
                     permission={[]}
-                    userTypePermission={["superAdmin"]}
+                    userTypePermission={["superAdmin", "admin"]}
                   >
                     <BranchList />
                   </PermissonRoute>

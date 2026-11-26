@@ -1485,7 +1485,6 @@ const Sidebar = ({
         </NavLink>
       ),
     },
-    dvTimeClockItem("dv-time-clock-agent"),
     {
       key: "my-property",
       icon: <FaHome />,

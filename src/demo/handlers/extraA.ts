@@ -143,6 +143,20 @@ const regularListings = Array.from({ length: 24 }, (_, i) => listing(i, 'regular
 const mereListings = Array.from({ length: 12 }, (_, i) => listing(i, 'mere_listing', 100));
 
 export const extraARoutes = [
+  route('GET', 'brokerage-accounting/my-account', () => {
+    const day = (n: number) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+    const charges = [
+      { uuid: 'ch-1', chargeDate: day(60), description: 'Monthly desk fee - Sep', amount: 450, amountPaid: 450, status: 'PAID', payments: [{ paymentDate: day(55), method: 'E_TRANSFER', reference: 'ET-30121', amount: 450 }] },
+      { uuid: 'ch-2', chargeDate: day(30), description: 'Monthly desk fee - Oct', amount: 450, amountPaid: 200, status: 'PARTIAL', payments: [{ paymentDate: day(24), method: 'CHEQUE', reference: 'CHQ-1042', amount: 200 }] },
+      { uuid: 'ch-3', chargeDate: day(12), description: 'E&O insurance - annual', amount: 1200, amountPaid: 0, status: 'OPEN', payments: [] },
+      { uuid: 'ch-4', chargeDate: day(5), description: 'Monthly desk fee - Nov', amount: 450, amountPaid: 0, status: 'OPEN', payments: [] },
+    ];
+    const balance = charges.reduce((t, c) => t + (c.amount - c.amountPaid), 0);
+    return ok({
+      agent: { id: 99, name: 'Hannah Moore' }, balance, charges,
+      taxSlips: [{ uuid: 'tx-1', taxYear: 2025, slipType: 'T4A_BOX20'.replace('_BOX20', ''), releasedAt: day(200) }, { uuid: 'tx-2', taxYear: 2024, slipType: 'T4A', releasedAt: day(560) }],
+    });
+  }),
   route('GET', 'brokerage-accounting/transactions', () => ok(txRows)),
   route('GET', 'brokerage-accounting/trust/trades/(?<id>\\d+)', ({ params }) => {
     const row = txRows.find((r) => String(r.id) === params.id) || txRows[0];

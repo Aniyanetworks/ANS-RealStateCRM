@@ -670,7 +670,113 @@ const saveRole = (uuid: any, body0: any) => {
 };
 
 // ================================================================ routes
+
+// ---------------------------------------------------------------- client property listing (per client)
+const clientProps = new Map<string, any[]>();
+const CLIENT_SAMPLES = [
+  ["W5505300", "170 Bayview Dr, Toronto, ON", 6, "https://www.realtor.ca/real-estate/26500001"],
+  ["W5505353", "177 Queen St W, Mississauga, ON", 3, "https://www.realtor.ca/real-estate/26500002"],
+  ["W5505406", "184 Maple Ave, Brampton, ON", 9, "https://www.realtor.ca/real-estate/26500003"],
+  ["W5505459", "191 Lakeshore Blvd, Oakville, ON", -1, "https://www.realtor.ca/real-estate/26500004"],
+  ["W5505512", "198 King St, Markham, ON", 12, "https://www.realtor.ca/real-estate/26500005"],
+];
+const clientPropsFor = (userId: any) => {
+  const key = String(userId);
+  if (!clientProps.has(key)) {
+    clientProps.set(key, CLIENT_SAMPLES.map(([mls, addr, days, url], i) => ({
+      id: Number(userId) * 100 + i + 1, uuid: `cp-${key}-${i + 1}`, userId: Number(userId) || userId,
+      mlsNumber: mls, propertyAddress: addr, url,
+      visitingDate: (days as number) < 0 ? null : new Date(Date.now() + (days as number) * 86400000).toISOString(),
+      createdAt: now(), updatedAt: now(),
+    })));
+  }
+  return clientProps.get(key) as any[];
+};
+const findClientProp = (uuid: any) => {
+  for (const list of clientProps.values()) { const r = list.find((x) => x.uuid === String(uuid)); if (r) return { list, r }; }
+  return null;
+};
+const clientPropertyRoutes = [
+  route('GET', 'superadmin/client-property-listing/list', ({ query }) => ok('Client properties loaded', { clientPropertyListingData: clientPropsFor(query.userId) })),
+  route('POST', 'superadmin/client-property-listing/create-and-update', ({ query, body }) => {
+    const hit = findClientProp(query.uuid) || findClientProp(body?.uuid);
+    if (hit) { Object.assign(hit.r, clean(body || {}), { updatedAt: now() }); return ok('Property updated successfully', { clientPropertyListing: hit.r }); }
+    const userId = body?.userId ?? query.uuid;
+    const rec = { id: nextId(), uuid: mkUuid('cp'), userId, mlsNumber: body?.mlsNumber || '', propertyAddress: body?.propertyAddress || '', url: body?.url || '', visitingDate: null, createdAt: now(), updatedAt: now() };
+    clientPropsFor(userId).unshift(rec);
+    return ok('Property added successfully', { clientPropertyListing: rec });
+  }),
+  route('POST', 'superadmin/client-property-listing/create-and-update-visiting', ({ query, body }) => {
+    const hit = findClientProp(query.uuid);
+    if (hit) { hit.r.visitingDate = body?.visitingDate ? new Date(body.visitingDate).toISOString() : null; hit.r.updatedAt = now(); }
+    return ok('Visiting date saved', { clientPropertyListing: hit?.r });
+  }),
+  route('DELETE', 'superadmin/client-property-listing/delete', ({ query }) => { const hit = findClientProp(query.uuid); if (hit) hit.list.splice(hit.list.indexOf(hit.r), 1); return ok('Property deleted successfully'); }),
+  route('DELETE', 'superadmin/client-property-listing/delete-multiple', ({ body }) => { idsFrom(body).forEach((u: any) => { const hit = findClientProp(u); if (hit) hit.list.splice(hit.list.indexOf(hit.r), 1); }); return ok('Properties deleted successfully'); }),
+];
+
+
+// ---------------------------------------------------------------- client notes / profiles / documents / property notes
+const clientBuckets: Record<string, Map<string, any[]>> = { note: new Map(), profile: new Map(), document: new Map(), propnote: new Map() };
+const OWNER = { name: 'Olivia Hart', profilePicture: 'https://ui-avatars.com/api/?name=Olivia+Hart&background=0f766e&color=fff&size=96' };
+const PERSON = { owner: OWNER, ownerNote: OWNER, createdUser: OWNER };
+const bucketSeed: Record<string, (k: string) => any[]> = {
+  note: (k) => [
+    { uuid: `cn-${k}-1`, note: '<p>Pre-approved for <b>$650,000</b>. Prefers a detached home near good schools and transit.</p>', CreatedAt: new Date(Date.now() - 9 * 86400000).toISOString(), ...PERSON },
+    { uuid: `cn-${k}-2`, note: '<p>Viewed 170 Bayview Dr on Saturday. Liked the layout, concerned about the commute. Follow up Friday.</p>', CreatedAt: new Date(Date.now() - 4 * 86400000).toISOString(), ...PERSON },
+    { uuid: `cn-${k}-3`, note: '<p>Sent mortgage broker contact and the first draft of the offer terms.</p>', CreatedAt: new Date(Date.now() - 1 * 86400000).toISOString(), ...PERSON },
+  ],
+  profile: (k) => [
+    { uuid: `cpf-${k}-1`, name: 'Daniel Moore', email: 'daniel.moore@example.com', relation: 'Spouse' },
+    { uuid: `cpf-${k}-2`, name: 'Grace Moore', email: 'grace.moore@example.com', relation: 'Parent' },
+  ],
+  document: (k) => [
+    { uuid: `cd-${k}-1`, fileID: 1, title: 'Photo ID', file: 'sample-document.pdf', filePath: 'sample-document.pdf', createdUser: OWNER },
+    { uuid: `cd-${k}-2`, fileID: 2, title: 'Pre-approval letter', file: 'sample-document.pdf', filePath: 'sample-document.pdf', createdUser: OWNER },
+    { uuid: `cd-${k}-3`, fileID: null, title: 'Employment letter', file: 'sample-document.pdf', filePath: 'sample-document.pdf', createdUser: OWNER },
+  ],
+  propnote: (k) => [
+    { uuid: `cpn-${k}-1`, note: '<p>Seller is flexible on closing date. Roof replaced in 2022.</p>', CreatedAt: new Date(Date.now() - 3 * 86400000).toISOString(), ...PERSON },
+  ],
+};
+const bucketFor = (kind: string, key: any) => {
+  const k = String(key);
+  const m = clientBuckets[kind];
+  if (!m.has(k)) m.set(k, bucketSeed[kind](k));
+  return m.get(k) as any[];
+};
+const findInBuckets = (kind: string, uuid: any) => {
+  for (const list of clientBuckets[kind].values()) { const r = list.find((x) => x.uuid === String(uuid)); if (r) return { list, r }; }
+  return null;
+};
+const bucketRoutes = (kind: string, path: string, listKey: string, keyParam: string, label: string) => [
+  route('GET', `superadmin/${path}/list`, ({ query }) => ok(`${label} loaded`, { [listKey]: bucketFor(kind, query[keyParam]) })),
+  route('POST', `superadmin/${path}/create-and-update`, ({ query, body }) => {
+    const hit = findInBuckets(kind, query.uuid) || findInBuckets(kind, body?.uuid);
+    if (hit) { Object.assign(hit.r, clean(body || {})); return ok(`${label} updated successfully`, { item: hit.r }); }
+    const key = body?.userId ?? body?.clientPropertyId ?? query.uuid;
+    const rec = { uuid: mkUuid(kind), ...clean(body || {}), CreatedAt: now(), ...PERSON, file: 'sample-document.pdf', filePath: 'sample-document.pdf' };
+    bucketFor(kind, key).unshift(rec);
+    return ok(`${label} added successfully`, { item: rec });
+  }),
+  route('DELETE', `superadmin/${path}/delete`, ({ query }) => { const hit = findInBuckets(kind, query.uuid); if (hit) hit.list.splice(hit.list.indexOf(hit.r), 1); return ok(`${label} deleted successfully`); }),
+  route('DELETE', `superadmin/${path}/delete-multiple`, ({ body }) => { idsFrom(body).forEach((u: any) => { const hit = findInBuckets(kind, u); if (hit) hit.list.splice(hit.list.indexOf(hit.r), 1); }); return ok(`${label} deleted successfully`); }),
+];
+const clientDocNames = [
+  { id: 1, name: 'Photo ID', status: 'active' }, { id: 2, name: 'Pre-approval letter', status: 'active' },
+  { id: 3, name: 'Proof of funds', status: 'active' }, { id: 4, name: 'Void cheque', status: 'active' },
+];
+const clientExtraRoutes = [
+  ...bucketRoutes('note', 'client-note', 'clientNoteData', 'userId', 'Notes'),
+  ...bucketRoutes('profile', 'client-profile-listing', 'clientProfileListingData', 'userId', 'Profiles'),
+  ...bucketRoutes('document', 'client-document', 'clientDocumentData', 'userId', 'Documents'),
+  ...bucketRoutes('propnote', 'client-property-note', 'clientPropertyNoteData', 'clientPropertyId', 'Notes'),
+  route('GET', 'superadmin/client-document/document-list', () => ok('Document names loaded', { clientDocumentName: clientDocNames })),
+];
+
 export const crudRoutes = [
+  ...clientPropertyRoutes,
+  ...clientExtraRoutes,
   // ---- users
   route('GET', 'superadmin/user-management/get-user-list', () => ok('Users retrieved successfully', { userData: usersS() })),
   route('GET', 'superadmin/user-management/get-client-list', () => ok('Clients retrieved successfully', { userData: clientsS() })),
