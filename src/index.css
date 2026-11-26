@@ -1,0 +1,487 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"); */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+h2,
+p {
+  margin-bottom: 0px !important;
+}
+
+/* DatePicker Input styling */
+.custom-date-picker.ant-picker {
+  font-size: 12px !important;
+  height: 28px !important;
+}
+
+.custom-date-picker .ant-picker-input > input {
+  font-size: 12px !important;
+  height: 30px !important;
+}
+
+.custom-date-picker .ant-picker-input > input::placeholder {
+  font-size: 12px !important;
+}
+
+.custom-date-picker .ant-picker-suffix,
+.custom-date-picker .ant-picker-clear,
+.custom-date-picker .ant-picker-separator {
+  font-size: 14px !important;
+}
+
+/* Dropdown calendar styling */
+.custom-date-picker-dropdown .ant-picker-panel-container {
+  font-size: 12px !important;
+}
+
+.custom-date-picker-dropdown .ant-picker-header {
+  font-size: 12px !important;
+}
+
+.custom-date-picker-dropdown .ant-picker-header-view button {
+  font-size: 12px !important;
+}
+
+.custom-date-picker-dropdown .ant-picker-content th {
+  font-size: 12px !important;
+}
+
+.custom-date-picker-dropdown .ant-picker-content td {
+  font-size: 12px !important;
+}
+
+.custom-date-picker-dropdown .ant-picker-cell-inner {
+  font-size: 10px !important;
+  min-width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+}
+
+.custom-date-picker-dropdown .ant-picker-footer {
+  font-size: 13px !important;
+}
+
+.custom-date-picker-dropdown .ant-picker-ranges {
+  font-size: 13px !important;
+}
+
+/* Global dropdown menu — match tradesheet density */
+.ant-dropdown-menu-item,
+.ant-dropdown-menu-submenu-title {
+  font-size: 11px !important;
+  color: #595959 !important;
+  padding-block: 3px !important;
+}
+
+.ant-dropdown-menu-item .anticon,
+.ant-dropdown-menu-item svg {
+  font-size: 11px !important;
+}
+
+/* fonts  */
+.playfair-display-sc-regular {
+  font-family: "Playfair Display SC", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.playfair-display-sc-bold {
+  font-family: "Playfair Display SC", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+/* fonts  */
+
+body {
+  background-color: #f4f1ec;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
+}
+h1 {
+  @apply text-[15px]  font-medium;
+}
+.ant-table-cell {
+  font-size: 11px;
+  color: #1f2937;
+}
+.ant-modal-title {
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
+.ant-modal-body th {
+  font-size: 11px !important;
+  font-weight: 400 !important;
+}
+.ant-modal-body td {
+  font-size: 11px !important;
+  font-weight: 400 !important;
+}
+
+h2 {
+  font-size: 15px !important;
+}
+
+h3 {
+  font-size: 15px !important;
+}
+h4 {
+  font-size: 13px !important;
+}
+h5 {
+  font-size: 12px !important;
+}
+
+p {
+  /* font-size: 13px !important; */
+  font-size: 11px !important;
+  color: #1f2937;
+}
+label {
+  /* font-size: 13px !important; */
+  font-size: 11px !important;
+  color: #1f2937;
+}
+.ant-select-item-option-content {
+  font-size: 11px !important;
+}
+/* Global font-size override for react-select dropdown options */
+.select__option {
+  font-size: 11px !important;
+}
+.react-select__option {
+  font-size: 11px !important;
+}
+span,
+button {
+  font-size: 11px !important;
+}
+*,
+::before,
+::after {
+  --tw-ring-offset-color: none;
+}
+
+label {
+  @apply text-[11px] block mb-1;
+}
+
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+/* ========== input fields style ================================== */
+.base-input {
+  @apply p-2 w-full  border-[#70707036] placeholder:text-[#B8B8B8] rounded-md  border focus:outline-none  focus:border-primaryPurple;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="file"],
+input[type="datetime-local"],
+select,
+textarea {
+  @apply base-input;
+  font-size: 12px !important;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* ================================================== */
+
+.primary-btn {
+  @apply bg-[#0C1A34] py-2 px-4 text-white text-[11px]  duration-200 hover:bg-[#0F2141] rounded-md font-normal;
+}
+.primary-btn-ghost {
+  @apply border border-primaryPurple py-2 px-4 text-[11px] hover:bg-purple-300/40   bg-purple-300/20  text-primaryPurple duration-200  rounded-md font-normal;
+}
+
+.cancel-btn {
+  @apply hover:bg-[#FFDFDC] text-[13px] py-2 px-4 text-red-500/80  duration-200 hover:text-red-500 rounded-md font-normal bg-[#fff2f0];
+}
+:where(.css-dev-only-do-not-override-g5bah8).ant-layout {
+  background-color: #f4f1ec;
+}
+
+.primary-btn:hover {
+  color: white;
+  background-color: #0b1d3d;
+  @apply duration-200 transition-all text-[11px] font-normal;
+}
+
+td.ant-table-cell {
+  text-wrap: nowrap;
+  font-size: 11px;
+}
+thead > tr > .ant-table-cell {
+  text-wrap: nowrap;
+  font-size: 11px;
+  font-weight: 500 !important;
+}
+
+.btn-common {
+  @apply py-2 px-4 bg-[#9E8566] text-[11px] text-white  duration-200 rounded-md font-normal;
+}
+.btn-common-outline {
+  @apply bg-gray-100 2xl:px-5 py-2 px-4 text-[11px] rounded-md hover:bg-[#9E8566] hover:text-white font-normal duration-300 transition;
+}
+
+.danger-btn {
+  @apply bg-red-500 text-white py-2 px-4 text-[11px] rounded-md hover:bg-red-600 duration-300 transition;
+}
+
+.global-search {
+  @apply focus:ring-0 border block   rounded-md shadow-sm p-2 focus:outline-none;
+}
+.file-menu .ant-menu-submenu .ant-menu-submenu-title {
+  color: black !important;
+}
+.file-menu .ant-menu-item {
+  color: black !important;
+}
+.file-menu .ant-menu-submenu .ant-menu-item-active {
+  background-color: transparent !important;
+}
+.file-menu .ant-menu-submenu .ant-menu-item-selected {
+  background-color: transparent !important;
+}
+
+/* tooltip  */
+.ant-tooltip-inner {
+  background-color: white !important;
+  color: #6a778b !important;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limits to two lines */
+  -webkit-box-orient: vertical;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adds ellipsis (...) for overflow */
+}
+
+/* sscrolbar design 
+ */
+/* Custom Scrollbar for Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Set scrollbar width */
+  scrollbar-color: #ccd0d6 #f1f1f1; /* thumb and track color */
+}
+
+.css-1jqq78o-placeholder {
+  font-size: 12px !important;
+}
+
+.css-19bb58m > input {
+  font-size: 12px !important;
+}
+.css-1dimb5e-singleValue {
+  font-size: 12px !important;
+}
+
+.css-19bb58m option {
+  font-size: 12px !important;
+}
+
+:where(.css-dev-only-do-not-override-1cmtaib).ant-table-wrapper
+  .ant-table-tbody
+  > tr.ant-table-placeholder {
+  z-index: 999 !important;
+}
+tr.ant-table-placeholder {
+  z-index: 1 !important;
+}
+
+/* ======== select antd style */
+.custom-select .ant-select-selector {
+  border: 1px solid #0b1d3dc4 !important;
+  border-radius: 5px !important;
+
+  padding: 18px 14px !important;
+}
+
+/* ############################################
+######## dropdown items padding issue ########
+#############################################*/
+
+.ant-dropdown-menu-item {
+  padding: 0 !important;
+}
+
+.ant-dropdown-menu
+  .ant-dropdown-menu-item
+  .ant-dropdown-menu-title-content
+  button {
+  width: 100%;
+  padding: 6px 12px;
+}
+.ant-dropdown-menu .ant-dropdown-menu-item .ant-dropdown-menu-title-content a {
+  width: 100%;
+  padding: 6px 12px;
+}
+
+/* ###############################
+#############calender############
+################################ */
+
+.ant-picker-calendar.ant-picker-calendar-full
+  .ant-picker-calendar-date-content {
+  height: 30px !important;
+}
+
+.ant-picker-cell-inner.ant-picker-calendar-date.ant-picker-calendar-date {
+  height: 80px !important;
+}
+
+.react-resizable {
+  position: relative;
+  background-clip: padding-box;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  right: -5px;
+  bottom: 0;
+  z-index: 1;
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+}
+
+:where(.css-dev-only-do-not-override-rn4k5m).ant-tabs-card
+  > .ant-tabs-nav
+  .ant-tabs-tab {
+  padding: 0px !important;
+}
+.ant-tabs-tab-btn a,
+.ant-tabs-tab-btn span,
+.ant-tabs-tab-btn label {
+  padding: 15px 20px !important;
+}
+
+:where(.css-dev-only-do-not-override-rn4k5m).ant-tabs .ant-tabs-tab {
+  padding: 0px !important;
+}
+:where(.css-dev-only-do-not-override-rn4k5m).ant-tabs .ant-tabs-tab a,
+:where(.css-dev-only-do-not-override-rn4k5m).ant-tabs .ant-tabs-tab span,
+:where(.css-dev-only-do-not-override-rn4k5m).ant-tabs .ant-tabs-tab label {
+  padding: 12px 20px !important;
+  display: block;
+}
+
+:where(.css-rn4k5m).ant-table-wrapper .ant-table-tbody > tr > td,
+:where(.css-rn4k5m).ant-table-wrapper .ant-table-cell {
+  /* padding: 6px 10px !important; */
+  padding: 2px 5px !important;
+}
+
+:where(.css-dev-only-do-not-override-rn4k5m).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td {
+  /* padding: 6px 10px !important; */
+  padding: 2px 5px !important;
+}
+.ant-table-measure-row {
+  display: none !important;
+}
+
+.ant-select-clear {
+  user-select: none !important;
+  position: absolute !important;
+  left: 0px !important;
+  right: auto !important;
+  margin-left: -15px; /* Optional, for spacing */
+}
+
+:where(.css-dev-only-do-not-override-1d3hv0g).ant-table-wrapper .ant-table-cell,
+:where(.css-dev-only-do-not-override-1d3hv0g).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-1d3hv0g).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-1d3hv0g).ant-table-wrapper
+  .ant-table-tbody
+  > tr
+  > td,
+:where(.css-dev-only-do-not-override-1d3hv0g).ant-table-wrapper tfoot > tr > th,
+:where(.css-dev-only-do-not-override-1d3hv0g).ant-table-wrapper
+  tfoot
+  > tr
+  > td {
+  position: relative;
+  /* padding: 6px 10px !important; */
+  padding: 2px 5px !important;
+  overflow-wrap: break-word;
+}
+
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-cell,
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-thead > tr > th,
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-tbody > tr > th,
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-tbody > tr > td,
+:where(.css-1d3hv0g).ant-table-wrapper tfoot > tr > th,
+:where(.css-1d3hv0g).ant-table-wrapper tfoot > tr > td {
+  position: relative !important;
+  /* padding: 6px 10px !important; */
+  padding: 2px 5px !important;
+  overflow-wrap: break-word !important;
+}
+
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-cell,
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-thead > tr > th,
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-tbody > tr > th,
+:where(.css-1d3hv0g).ant-table-wrapper .ant-table-tbody > tr > td,
+:where(.css-1d3hv0g).ant-table-wrapper tfoot > tr > th,
+:where(.css-1d3hv0g).ant-table-wrapper tfoot > tr > td {
+  position: relative !important;
+  overflow-wrap: break-word !important;
+  /* padding: 6px 10px !important; */
+  padding: 2px 5px !important;
+}
+
+
+/* ── Chat bubble: force white text inside dark "mine" bubbles ── */
+.chat-bubble-mine p,
+.chat-bubble-mine span,
+.chat-bubble-mine li,
+.chat-bubble-mine a,
+.chat-bubble-mine strong,
+.chat-bubble-mine em {
+  color: #fff !important;
+  font-size: 12px !important;
+}
+
+:where(.css-dev-only-do-not-override-7p5ctu).ant-table-wrapper .ant-table-cell, :where(.css-dev-only-do-not-override-7p5ctu).ant-table-wrapper .ant-table-thead>tr>th, :where(.css-dev-only-do-not-override-7p5ctu).ant-table-wrapper .ant-table-tbody>tr>th, :where(.css-dev-only-do-not-override-7p5ctu).ant-table-wrapper .ant-table-tbody>tr>td, :where(.css-dev-only-do-not-override-7p5ctu).ant-table-wrapper tfoot>tr>th, :where(.css-dev-only-do-not-override-7p5ctu).ant-table-wrapper tfoot>tr>td {
+  position: relative!important;
+  /* padding: 6px 10px !important; */
+  padding: 2px 5px !important;
+  overflow-wrap: break-word!important;
+}

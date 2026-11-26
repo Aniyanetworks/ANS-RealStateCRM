@@ -1,0 +1,33 @@
+/* Brokerage Accounting inside AgentHub: bodv's sidebar sits inside the page (next to the AgentHub sidebar)
+   instead of being fixed to the window, and there is no separate top bar. Loaded after bodv.css. */
+.dvac { border-radius: 14px; }
+/* No overflow:hidden here — it would stop the sidebar from staying in view (position: sticky). */
+.dvac .app { min-height: calc(100vh - 140px); align-items: stretch; border-radius: 14px; }
+.dvac .sidebar {
+  position: sticky !important;
+  top: 0;
+  inset: auto !important;
+  transform: none !important;
+  align-self: stretch;
+  height: auto;
+  min-height: calc(100vh - 140px);
+  flex: none;
+  border-radius: 14px 0 0 14px;
+}
+.dvac main { margin-left: 0 !important; width: auto !important; flex: 1; min-width: 0; }
+.dvac .content { padding: 26px 28px 44px; max-width: none; }
+.dvac .brand .close { display: none !important; }
+
+@media (max-width: 1100px) {
+  .dvac .app { flex-direction: column; }
+  .dvac .sidebar { position: static !important; width: 100% !important; max-width: none !important; height: auto; border-radius: 14px 14px 0 0; }
+  .dvac .sidebar nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 10px; }
+  .dvac .sidebar .nav { width: auto; margin: 0; }
+  .dvac .sidefoot { display: none; }
+  .dvac .content { padding: 18px 14px 32px; }
+}
+
+/* Screens that still use AgentHub (antd) components while they are being rebuilt. */
+.dvac .legacy-panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.dvac .legacy-panel table { min-width: 0; }
+.dvac .tabs.bodv-tabs { display: flex; gap: 8px; margin: 0 0 18px; flex-wrap: wrap; }

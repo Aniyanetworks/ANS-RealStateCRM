@@ -1,0 +1,51 @@
+/* ================ antdsign class override starts =========================== */
+
+/* antd default  spinner color */
+.ant-spin-dot-item {
+  @apply !bg-primaryPurple;
+}
+
+/* this is to sub item text color when item selected from submenu ---- sider  */
+.ant-menu-submenu-selected .ant-menu-submenu-title {
+  color: #fff !important;
+}
+
+/* Add border-bottom to each menu item */
+/* .ant-menu-item,
+    .ant-menu-submenu-title {
+      border-bottom: 1px solid #e0e0e0;
+    } */
+
+/* Optional: Remove the border from the last item if needed */
+/* .ant-menu-item:last-child {
+      border-bottom: none;
+    } */
+
+/* --------------------
+upload component styles
+--------------------*/
+
+.ant-upload {
+  /* border: 1px solid red; */
+}
+.ant-upload-select:hover {
+  border: 1px solid red !important;
+}
+
+/* Define the blinking effect */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Apply the blinking animation to elements with this class */
+.blinking {
+  animation: blink 1s infinite; /* 1s duration, infinite loop */
+}
