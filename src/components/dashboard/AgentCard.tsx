@@ -57,8 +57,8 @@ const AgentCard: React.FC<AgentCardProps> = ({ agentData }) => {
   const reco = agentData.recoRegNumber;
 
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md">
-      <Avatar agentData={agentData} size={48} />
+    <div className="flex items-center gap-2.5 rounded-xl border border-gray-100 bg-white p-2.5 shadow-sm transition hover:shadow-md sm:gap-3 sm:p-4">
+      <Avatar agentData={agentData} size={typeof window !== "undefined" && window.innerWidth < 640 ? 36 : 48} />
       <div className="min-w-0 flex-1">
         <h3 className="truncate font-semibold text-gray-800">{agentData.name}</h3>
         <p className="truncate text-xs capitalize text-gray-500">
@@ -68,7 +68,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agentData }) => {
       </div>
       <button
         onClick={() => setOpen(true)}
-        className="shrink-0 rounded-md border border-teal-200 px-3 py-1.5 text-[#0f766e] transition hover:bg-[#0f766e] hover:text-white"
+        className="shrink-0 rounded-md border border-teal-200 px-2.5 py-1 text-[11px] text-[#0f766e] sm:px-3 sm:py-1.5 sm:text-[12px] transition hover:bg-[#0f766e] hover:text-white"
       >
         Details
       </button>

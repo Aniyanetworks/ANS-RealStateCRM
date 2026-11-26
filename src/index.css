@@ -930,10 +930,10 @@ img, video, canvas, svg { max-width: 100%; }
   /* reminder pop-up footer buttons wrap instead of running off the screen */
   .ant-modal-footer .ant-space { flex-wrap: wrap; justify-content: center; row-gap: 8px; }
   /* header: notification count sits on the bell, not on the avatar */
-  header .ant-badge .ant-badge-count { inset-inline-end: 6px; transform: translate(0, -45%) !important; }
   header .flex.shrink-0.items-center { gap: 14px; }
 }
 
 @media (max-width: 767px) {
-  header .ant-badge .ant-badge-count { min-width: 15px; height: 15px; line-height: 15px; padding: 0 4px; font-size: 9px; inset-inline-end: 10px; }
+  header .ant-badge { margin-right: 8px; }
+  header .ant-badge .ant-badge-count { min-width: 15px; height: 15px; line-height: 15px; padding: 0 4px; font-size: 9px; }
 }

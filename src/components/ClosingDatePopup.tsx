@@ -183,11 +183,11 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
                   if (!firstProperty) return null;
                   return (
                     <div key={trade.id} className="bg-white px-3 py-1.5 rounded border border-gray-100 flex justify-between items-center">
-                      <p className="text-xs text-gray-700 truncate max-w-[340px]">
+                      <p className="min-w-0 flex-1 truncate text-xs text-gray-700 sm:max-w-[340px] sm:flex-none">
                         {trade.tradeSheetTypeId} ({firstProperty?.propertyAddress})
                       </p>
                       <div className="flex items-center gap-2 shrink-0">
-                        <p className="text-xs text-gray-500">📆 {moment.utc(firstProperty?.closingDate).format("D MMM, YYYY")}</p>
+                        <p className="hidden text-xs text-gray-500 sm:block">📆 {moment.utc(firstProperty?.closingDate).format("D MMM, YYYY")}</p>
                         <span className={`px-2 py-0.5 rounded-full text-xs whitespace-nowrap ${calculateTimeline(firstProperty?.closingDate) <= 7 ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}>
                           {calculateTimeline(firstProperty?.closingDate)} days remaining
                         </span>
@@ -224,11 +224,11 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
                   if (!firstProperty) return null;
                   return (
                     <div key={trade.id} className="bg-white px-3 py-1.5 rounded border border-gray-100 flex justify-between items-center">
-                      <p className="text-xs text-gray-700 truncate max-w-[340px]">
+                      <p className="min-w-0 flex-1 truncate text-xs text-gray-700 sm:max-w-[340px] sm:flex-none">
                         {trade.tradeSheetTypeId} ({firstProperty?.propertyAddress})
                       </p>
                       <div className="flex items-center gap-2 shrink-0">
-                        <p className="text-xs text-gray-500">📆 {moment.utc(firstProperty?.closingDate).format("D MMM, YYYY")}</p>
+                        <p className="hidden text-xs text-gray-500 sm:block">📆 {moment.utc(firstProperty?.closingDate).format("D MMM, YYYY")}</p>
                         <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs whitespace-nowrap">
                           {calculateTimeline(firstProperty?.closingDate)} days remaining
                         </span>
@@ -253,11 +253,11 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
                 .sort((a, b) => moment.utc(a.expiryDate).diff(moment.utc(b.expiryDate)))
                 .map((listing) => (
                   <div key={listing.id} className="bg-white px-3 py-1.5 rounded border border-gray-100 flex justify-between items-center">
-                    <p className="text-xs text-gray-700 truncate max-w-[340px]">
+                    <p className="min-w-0 flex-1 truncate text-xs text-gray-700 sm:max-w-[340px] sm:flex-none">
                       {listing.propertyListingTypeId} ({listing.address})
                     </p>
                     <div className="flex items-center gap-2 shrink-0">
-                      <p className="text-xs text-gray-500">📆 {moment.utc(listing.expiryDate).format("D MMM, YYYY")}</p>
+                      <p className="hidden text-xs text-gray-500 sm:block">📆 {moment.utc(listing.expiryDate).format("D MMM, YYYY")}</p>
                       <span className={`px-2 py-0.5 rounded-full text-xs whitespace-nowrap ${calculateTimeline(listing.expiryDate) <= 3 ? "bg-red-100 text-red-700" : "bg-orange-100 text-orange-700"}`}>
                         {calculateTimeline(listing.expiryDate)} days remaining
                       </span>

@@ -767,12 +767,12 @@ const Home = () => {
             </div>
 
             <div className="flex flex-wrap gap-2 items-center">
-              <div className="inline-flex items-center rounded-lg border border-gray-200 bg-gray-50 p-1">
+              <div className="inline-flex max-w-full items-center overflow-x-auto whitespace-nowrap rounded-lg border border-gray-200 bg-gray-50 p-1">
                 {[["All Time", "All time"], ["lastYear", "This year"], ["current", "This month"], ["previous", "Last month"]].map(([k, l]) => (
                   <button
                     key={k}
                     onClick={() => handlePresetFilterClick(k)}
-                    className={`rounded-md px-3.5 py-1.5 font-medium transition ${selectedMonth === k ? "bg-[#0f766e] text-white shadow-sm" : "text-gray-600 hover:bg-white"}`}
+                    className={`shrink-0 whitespace-nowrap rounded-md px-2.5 py-1 text-[11px] sm:px-3.5 sm:py-1.5 sm:text-[12px] font-medium transition ${selectedMonth === k ? "bg-[#0f766e] text-white shadow-sm" : "text-gray-600 hover:bg-white"}`}
                   >
                     {l}
                   </button>
@@ -780,7 +780,7 @@ const Home = () => {
                 <button
                   onClick={handleCalendarIconClick}
                   title="Custom Date Range"
-                  className={`ml-0.5 inline-flex items-center gap-1.5 rounded-md px-3.5 py-1.5 font-medium transition ${showDatePicker || selectedMonth === "custom" ? "bg-[#0f766e] text-white shadow-sm" : "text-gray-600 hover:bg-white"}`}
+                  className={`ml-0.5 inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1 text-[11px] sm:px-3.5 sm:py-1.5 sm:text-[12px] font-medium transition ${showDatePicker || selectedMonth === "custom" ? "bg-[#0f766e] text-white shadow-sm" : "text-gray-600 hover:bg-white"}`}
                 >
                   <CalendarOutlined style={{ fontSize: 13 }} /> Custom
                 </button>
