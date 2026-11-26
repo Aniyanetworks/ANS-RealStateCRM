@@ -2,12 +2,9 @@
 import * as seed from './seed';
 
 import { route, type Route } from './route';
+import { demoUserByEmail } from './demoUsers';
 export type { Ctx, Handler } from './route';
 
-const demoUser = {
-  id: 1, email: 'admin@ans.demo', firstName: 'Ava', lastName: 'Morgan', userType: 'superAdmin', roleId: 1,
-  isActive: 'yes', phoneNumber: null, smsOtpEnabled: false, agentAccount: [], userRole: { id: 1, name: 'Super Admin', permissions: [] }, branch: null,
-};
 
 
 const periodRange = (q: Record<string, string>): [Date, Date] | null => {
@@ -47,7 +44,7 @@ const filterAgentsByPeriod = (q: Record<string, string>) => {
 };
 
 export const demoRoutes: Route[] = [
-  route('POST', 'auth/login', () => ({ status: true, message: 'Login Successful', token: 'demo-token', data: { user: demoUser }, requiresOtp: false })),
+  route('POST', 'auth/login', ({ body }) => ({ status: true, message: 'Login Successful', token: 'demo-token', data: { user: demoUserByEmail(body?.email) }, requiresOtp: false })),
   route('POST', 'auth/logout', () => ({ status: true })),
   route('GET', 'superadmin/agent-reports/top-agent-list', ({ query }) => ({ status: true, data: { userData: filterAgentsByPeriod(query) } })),
   route('GET', 'superadmin/agent-management/list', () => ({ status: true, data: { userData: seed.agents } })),
