@@ -30,7 +30,6 @@ const Profile = () => {
   useEffect(() => {
     if (tabParam && tabParam.toLowerCase() === "document") {
       setShowDocInstruction(true);
-      // Optionally auto-hide after a few seconds:
       const timer = setTimeout(() => setShowDocInstruction(false), 10000);
       return () => clearTimeout(timer);
     }
@@ -39,14 +38,12 @@ const Profile = () => {
   const documentTab = {
     id: 5,
     name: "Documents",
-    // component: <AgentDocument agentAccount={user?.agentAccount[0]} mode="view" />,
     component: <AgentDocument agentAccount={user?.agentAccount[0]} />,
   };
 
   const PlanTab = {
     id: 5,
     name: "Plan",
-    // component: <AgentSelectedPlanDiscountAddon agentAccount={user?.agentAccount[0]} mode="view" />,
     component: <AgentSelectedPlanDiscountAddon agentAccount={user?.agentAccount[0]} />,
   };
 
@@ -89,7 +86,6 @@ const Profile = () => {
     ...(user.userType === 'agent' ? [documentTab,PlanTab] : []),
   ];
 
-  // Only select Documents tab if tab=document
   let defaultActiveKey = "1";
   if (tabParam && tabParam.toLowerCase() === "document") {
     const foundIndex = tabs.findIndex(

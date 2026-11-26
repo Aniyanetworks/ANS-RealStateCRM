@@ -23,12 +23,12 @@ interface DiscountSubItem {
 
 interface DiscountItem {
   name: string;
-  discountItem: string;    // New field for discount item selection
-  discountType: string;    // Yearly, Monthly, Weekly, Once, Date Range
-  duration: number;          // Number of years/months/weeks
+  discountItem: string;
+  discountType: string;
+  duration: number;
   startDate: string;
   endDate: string;
-  discountMethod: string;    // Amount or Percentage
+  discountMethod: string;
   discountValue: number;
   isOptional: boolean;
 }

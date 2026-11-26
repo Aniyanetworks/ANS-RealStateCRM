@@ -3,10 +3,8 @@ import { api } from "../apiSlice";
 
 const leadManagementApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Campaign Endpoints
     getCampaigns: builder.query({
       query: (branchId) => {
-        // Build URL with optional branchId query parameter
         const url =
           branchId && branchId !== "all"
             ? `/superadmin/leads/campaigns/list?branchId=${branchId}`
@@ -87,7 +85,6 @@ const leadManagementApi = api.injectEndpoints({
       invalidatesTags: ["Campaigns"],
     }),
 
-    // Lead Endpoints
     getLeadsByCampaign: builder.query({
       query: (campaignUuid) => ({
         url: `/superadmin/leads/list/${campaignUuid}`,
@@ -109,12 +106,7 @@ const leadManagementApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      // providesTags: (campaignUuid) => [
-      //   { type: 'Leads', id: campaignUuid },
-      //   'Leads'
-      // ],
     }),
-    // Lead Endpoints
     getLeadsByAgent: builder.query({
       query: (agentId) => ({
         url: `/superadmin/leads/list-agent/${agentId}`,
@@ -136,7 +128,7 @@ const leadManagementApi = api.injectEndpoints({
           },
         };
       },
-      invalidatesTags: ["Leads", "Campaigns"], // Invalidate leads and campaigns as total leads might change
+      invalidatesTags: ["Leads", "Campaigns"],
     }),
     exportLeads: builder.query({
       query: (campaignUuid) => ({
@@ -145,9 +137,8 @@ const leadManagementApi = api.injectEndpoints({
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
-        responseType: "blob", // To handle file download
+        responseType: "blob",
       }),
-      // invalidatesTags: ["Leads", "Campaigns"], // Invalidate leads and campaigns as total leads might change
     }),
     updateLead: builder.mutation({
       query: ({ uuid, data }) => ({
@@ -179,7 +170,7 @@ const leadManagementApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      invalidatesTags: ["Leads", "Campaigns"], // Invalidate leads and campaigns as total leads might change
+      invalidatesTags: ["Leads", "Campaigns"],
     }),
     deleteMultipleLeads: builder.mutation({
       query: (uuids) => ({
@@ -190,7 +181,7 @@ const leadManagementApi = api.injectEndpoints({
         },
         body: { uuids },
       }),
-      invalidatesTags: ["Leads", "Campaigns"], // Invalidate leads and campaigns as total leads might change
+      invalidatesTags: ["Leads", "Campaigns"],
     }),
     createLead: builder.mutation({
       query: ({ campaignUuid, data }) => ({
@@ -201,7 +192,7 @@ const leadManagementApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      invalidatesTags: ["Leads", "Campaigns"], // Invalidate leads and campaigns as total leads might change
+      invalidatesTags: ["Leads", "Campaigns"],
     }),
     assignMultipleLeadsToAgent: builder.mutation({
       query: ({ uuids, agentId }) => ({
@@ -226,7 +217,6 @@ const leadManagementApi = api.injectEndpoints({
       invalidatesTags: ["Leads", "Campaigns"],
     }),
 
-    // Validation Log Endpoints
     createValidationLogsFromLeads: builder.mutation({
       query: ({ uuids }) => ({
         url: `/superadmin/leads/create-validation-logs`,

@@ -2,9 +2,6 @@
 
 import moment from 'moment';
 
-/**
- * Format ISO date to YYYY-MM-DD format
- */
 export const formatDate = (isoDate: any): string => {
   if (isoDate) {
     return moment.utc(isoDate).format('YYYY-MM-DD');
@@ -12,9 +9,6 @@ export const formatDate = (isoDate: any): string => {
   return '';
 };
 
-/**
- * Normalize address parts for comparison
- */
 export const normalizeAddress = (addressParts: string[]): string => {
   return addressParts
     .filter(Boolean)
@@ -24,9 +18,6 @@ export const normalizeAddress = (addressParts: string[]): string => {
     .trim();
 };
 
-/**
- * Extract address parts from property address string
- */
 export const extractAddressParts = (propertyAddress: string) => {
   if (!propertyAddress) return { streetNumber: '', streetName: '', city: '' };
   
@@ -42,9 +33,6 @@ export const extractAddressParts = (propertyAddress: string) => {
   };
 };
 
-/**
- * Calculate Levenshtein distance between two strings
- */
 export const levenshteinDistance = (str1: string, str2: string): number => {
   const matrix = [];
   for (let i = 0; i <= str2.length; i++) {
@@ -69,9 +57,6 @@ export const levenshteinDistance = (str1: string, str2: string): number => {
   return matrix[str2.length][str1.length];
 };
 
-/**
- * Calculate similarity between two strings (Levenshtein distance based)
- */
 export const calculateSimilarity = (str1: string, str2: string): number => {
   if (!str1 || !str2) return 0;
   if (str1 === str2) return 100;

@@ -1,5 +1,3 @@
-// HST / Tax — the original ANS Accounting screen: summary cards, HST working paper (review → file → pay),
-// filing periods and "New HST Period". Amounts come from the ledger (HST collected 23000, ITCs 23001).
 import { useState } from "react";
 import { useAcct, useAcctAction } from "../acctShared";
 import { LuPercent, LuPlus } from "./icons";

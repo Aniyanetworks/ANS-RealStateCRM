@@ -44,11 +44,6 @@ const ClientPropertyListingManagement = () => {
   const [isUploading, setIsUploading] = useState(false);
   const { user } = useAppSelector((state) => state.user);
 
-  // const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  // const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] =
-  //   useState(false);
-  // const [deleteClientPropertyListingMultiple] =
-  //   useDeleteClientPropertyNoteMultipleMutation();
   const [searchText, setSearchText] = useState("");
 
   const filteredData = tableData?.filter((record) => {
@@ -133,48 +128,7 @@ const ClientPropertyListingManagement = () => {
     });
   };
 
-  // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-  //   console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-  //   setSelectedRowKeys(newSelectedRowKeys);
-  // };
 
-  // const rowSelection: TableRowSelection<DataType> = {
-  //   selectedRowKeys,
-  //   onChange: onSelectChange,
-  //   selections: [
-  //     Table.SELECTION_ALL,
-  //     Table.SELECTION_INVERT,
-  //     Table.SELECTION_NONE,
-  //     {
-  //       key: "odd",
-  //       text: "Select Odd Row",
-  //       onSelect: (changeableRowKeys) => {
-  //         let newSelectedRowKeys = [];
-  //         newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-  //           if (index % 2 !== 0) {
-  //             return false;
-  //           }
-  //           return true;
-  //         });
-  //         setSelectedRowKeys(newSelectedRowKeys);
-  //       },
-  //     },
-  //     {
-  //       key: "even",
-  //       text: "Select Even Row",
-  //       onSelect: (changeableRowKeys) => {
-  //         let newSelectedRowKeys = [];
-  //         newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-  //           if (index % 2 !== 0) {
-  //             return true;
-  //           }
-  //           return false;
-  //         });
-  //         setSelectedRowKeys(newSelectedRowKeys);
-  //       },
-  //     },
-  //   ],
-  // };
 
   const [createUpdatePropertyNote] =
     useCreateUpdateClientPropertyNoteMutation();
@@ -202,7 +156,7 @@ const ClientPropertyListingManagement = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyNote(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -266,108 +220,18 @@ const ClientPropertyListingManagement = () => {
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
 
-  // const handleDeleteMultipleClick = () => {
-  //   setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
-  // };
 
-  // const handleDeleteConfirmMultiple = async () => {
-  //   if (selectedRowKeys.length > 0) {
-  //     try {
-  //       const response = await deleteClientPropertyListingMultiple(selectedRowKeys);
-  //       setIsDeleteModalMultipleVisible(false);
-  //       // Ensure the refetch waits for the data to be refreshed
-  //       await refetch();
-  //       if (response.data.status == true) {
-  //         setSelectedRowKeys([]);
-  //         toast.success("Deleted successfully!");
-  //       } else {
-  //         toast.error("Failed to delete. Please try again.");
-  //       }
-  //     } catch (error) {
-  //       setIsDeleteModalMultipleVisible(false);
-  //       toast.error("Failed to delete. Please try again.");
-  //     }
-  //   } else {
-  //     toast.error("Please Select Items.");
-  //   }
-  // };
 
-  // const columns: TableColumnsType<DataType> = [
-  //   {
-  //     title: "#",
-  //     key: "serial",
-  //     width: 50,
-  //     render: (_, __, index) => index + 1,
-  //     fixed: "left",
-  //   },
-  //   {
-  //       title: "Note",
-  //       dataIndex: "note",
-  //       key: "note",
-  //       render: (note) => (
-  //         <span>
-  //           {note || "N/A"}
-  //         </span>
-  //       ),
 
-  //       width: 240,
-  //     },
-  //   {
-  //     title: "Client",
-  //     dataIndex: "user",
-  //     key: "user",
-  //     render: (user) => (
-  //       <span>
-  //         {user?.name || "N/A"}
-  //       </span>
-  //     ),
 
-  //     width: 240,
-  //   },
-  //   {
-  //     title: "Actions",
-  //     dataIndex: "uuid",
-  //     key: "actions",
-  //     fixed: "right",
-  //     render: (uuid, recoard) => (
-  //       <div className="flex gap-5 items-center">
-  //         <button
-  //           onClick={() => handleEdit(recoard)}
-  //           className="hover:text-red-500 text-lg duration-100"
-  //         >
-  //           <FaRegEdit />
-  //         </button>
 
-  //         {recoard.status === "rejected" && (
-  //           <button
-  //             onClick={() => handleRejectReasonView(recoard?.rejectReason)}
-  //             className="text-[16px] hover:text-primaryPurple duration-100 ml-4"
-  //           >
-  //             <FaComment className="text-red-500" />{" "}
-  //             {/* Reject Reason icon with red color */}
-  //           </button>
-  //         )}
 
-  //         {((user.userType === "agent") ||
-  //           user.userType === "superAdmin" ||
-  //           user.userType === "admin") && (
-  //           <button
-  //             onClick={() => handleDelete(uuid)}
-  //             className="hover:text-red-500 text-lg duration-100"
-  //           >
-  //             <MdDelete />
-  //           </button>
-  //         )}
 
-  //       </div>
-  //     ),
-  //   },
-  // ];
 
   const showModal = () => setIsModalOpen(true);
   return (
@@ -387,12 +251,6 @@ const ClientPropertyListingManagement = () => {
           <button onClick={showModal} className="primary-btn mx-3">
             Add New
           </button>
-          {/* <button
-            onClick={handleDeleteMultipleClick}
-            className="cancel-btn mx-3"
-          >
-            Delete All
-          </button> */}
         </div>
       </div>
 
@@ -438,7 +296,6 @@ const ClientPropertyListingManagement = () => {
                       </div>
 
                       <div>
-                        {/* <p className="mt-1 text-gray-600">{item.note}</p> */}
                         <div
                           dangerouslySetInnerHTML={{ __html: item.note }}
                           className="text-gray-700 leading-relaxed"
@@ -526,27 +383,6 @@ const ClientPropertyListingManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
-      {/* <Modal
-        title="Confirm Deletion"
-        open={isDeleteMultipleModalVisible}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="cancel" onClick={cancelDelete}>
-            Cancel
-          </Button>,
-          <Button
-            key="confirm"
-            type="primary"
-            danger
-            onClick={handleDeleteConfirmMultiple}
-          >
-            Confirm
-          </Button>,
-        ]}
-      >
-        Are you sure you want to delete selected items?
-      </Modal> */}
     </div>
   );
 };

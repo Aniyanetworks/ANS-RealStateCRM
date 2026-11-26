@@ -93,7 +93,7 @@ const ClockInReportTab: React.FC<ClockInReportTabProps> = ({
           const outTime = new Date(record.createdAt).getTime();
           const inTime = new Date(clockIn.createdAt).getTime();
           const durationMs = outTime - inTime;
-          const durationMinutes = Math.floor(durationMs / (1000 * 60)); // whole minutes only, ignore seconds
+          const durationMinutes = Math.floor(durationMs / (1000 * 60));
           const hours = durationMinutes / 60;
           hoursByDate[dateKey] = (hoursByDate[dateKey] || 0) + hours;
           delete clockInByUser[userId];

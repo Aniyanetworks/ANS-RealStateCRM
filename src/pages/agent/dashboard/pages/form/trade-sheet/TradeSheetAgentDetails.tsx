@@ -26,7 +26,6 @@ import {
 } from '../../../../../../utils/format';
 import { useGetStatesQuery, useGetCitiesQuery } from '../../../../../../redux/api/common/countryStateCitySlice';
 
-// Import Components
 import AgentSection from './components/AgentSection';
 import SharedUsersSection from './components/SharedUsersSection';
 import AgentCreationModal from './components/AgentCreationModal';
@@ -47,7 +46,6 @@ interface TextInputProps {
   disabled?: boolean;
 }
 
-// Reusable Text Input Component
 const TextInput = ({
   label,
   register,
@@ -87,7 +85,7 @@ const TextInput = ({
 const TradeSheetAgentDetails = () => {
   const { uuid } = useParams<{ uuid?: string }>();
   const navigate = useNavigate();
-  const { data, isLoading/* ,refetch:refetchTradeSheet */ } = useGetSpacificTradeSheetListDataQuery(uuid);
+  const { data, isLoading} = useGetSpacificTradeSheetListDataQuery(uuid);
   
   const [btnLoading, setBtnLoading] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -120,28 +118,23 @@ const TradeSheetAgentDetails = () => {
   const [validateBrokerageData] = useValidateBrokerageDataMutation();
   const [createBrokerage] = useCreateBrokerageDataMutation();
 
-  // Shared users mutations
   const [addSharedUser] = useAddSharedUserMutation();
   const [removeSharedUser] = useRemoveSharedUserMutation();
   const [updateSharedUserCommission] = useUpdateSharedUserCommissionMutation();
 
-  // Form instances for modals
   const sellerAgentForm = useForm();
   const buyerAgentForm = useForm();
   const brokerageForm = useForm();
 
-  // Modals state
   const [isSellerAgentCreateModalOpen, setIsSellerAgentCreateModalOpen] = useState(false);
   const [isBuyerAgentCreateModalOpen, setIsBuyerAgentCreateModalOpen] = useState(false);
   const [isSellerBrokerageCreateModalOpen, setIsSellerBrokerageCreateModalOpen] = useState(false);
   const [isBuyerBrokerageCreateModalOpen, setIsBuyerBrokerageCreateModalOpen] = useState(false);
   const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
 
-  // Shared users state
   const [sharedUsersData, setSharedUsersData] = useState<any[]>([]);
   const [hasSharedUsers, setHasSharedUsers] = useState(false);
 
-  // Watch form values
   const selectedCountry = 39;
   const selectedState = watch("sellerStateProvince");
   const selectedCity = watch("sellerCity");
@@ -151,24 +144,20 @@ const TradeSheetAgentDetails = () => {
   const sellerBrokerageId = watch('sellerBrokerageId');
   const buyerBrokerageId = watch('buyerBrokerageId');
 
-  // API hooks for states and cities
   const { data: states = [] } = useGetStatesQuery(selectedCountry, { skip: !selectedCountry });
   const { data: cities = [] } = useGetCitiesQuery(selectedState, { skip: !selectedState });
   const { data: buyerStates = [] } = useGetStatesQuery(selectedBuyerCountry, { skip: !selectedBuyerCountry });
   const { data: buyerCities = [] } = useGetCitiesQuery(selectedBuyerState, { skip: !selectedBuyerState });
   const { data: modalCitiesData } = useGetCitiesQuery(modalState, { skip: !modalState });
 
-  // Get representation data
   const { tradeSheetRepresentationData } = useAppSelector((state: any) => state.user);
   const { tradeSheetRepresentationTypeData } = useAppSelector((state: any) => state.user);
   
-  // Brokerage options
   const brokerageOptions = brokerageData?.data?.brokerageData?.map((brokerage: any) => ({
     value: brokerage?.id,
     label: `${brokerage?.brokerageName}`,
   })) || [];
 
-  // Agent options
   const sellerAgentOptions = sellerBrokerageId
     ? (internalAgent?.data?.userData?.filter(
         (agent: any) => String(agent.brokerageId) === String(sellerBrokerageId) && agent.status != "closed"
@@ -187,7 +176,6 @@ const TradeSheetAgentDetails = () => {
       }))
     : [];
 
-  // Determine agent labels based on representation
   const getAgentLabels = () => {
     
   let firstAgent ="Seller";
@@ -214,16 +202,13 @@ const TradeSheetAgentDetails = () => {
 
   const { firstAgent, secondAgent } = getAgentLabels();
 
-  // Replace your current useEffect that initializes form data with this:
 
-// Initialize form data
 useEffect(() => {
   const agentDetails = data?.data?.tradeSheetData?.agentDetails[0];
   const tradeSheet = data?.data?.tradeSheetData;
 
   if (agentDetails) {
     const formData = {
-      // Seller Brokerage (names in "First"/"Last" case, without a duplicated last name)
       sellerFirstName: cleanPersonName(agentDetails?.sellerFirstName, agentDetails?.sellerLastName).firstName,
       sellerLastName: cleanPersonName(agentDetails?.sellerFirstName, agentDetails?.sellerLastName).lastName,
       sellerEmail: agentDetails?.sellerEmail,
@@ -245,7 +230,6 @@ useEffect(() => {
       sellerCommercialCommission: agentDetails?.sellerCommercialCommission || [],
       sellerBrokerageBillingEmailAddress: agentDetails?.sellerBrokerage?.billingEmailAddress,
       
-      // Buyer Brokerage
       buyerFirstName: cleanPersonName(agentDetails?.buyerFirstName, agentDetails?.buyerLastName).firstName,
       buyerLastName: cleanPersonName(agentDetails?.buyerFirstName, agentDetails?.buyerLastName).lastName,
       buyerEmail: agentDetails?.buyerEmail,
@@ -270,7 +254,6 @@ useEffect(() => {
 
     reset(formData);
     
-    // Set individual values
     setValue("sellerBrokerageId", agentDetails?.sellerBrokerageId);
     setValue("buyerBrokerageId", agentDetails?.buyerBrokerageId);
     setValue("sellerStateProvince", agentDetails?.sellerBrokerage?.stateId);
@@ -278,10 +261,7 @@ useEffect(() => {
     setValue("buyerStateProvince", agentDetails?.buyerBrokerage?.stateId);
     setValue("buyerCity", agentDetails?.buyerBrokerage?.cityId);
     
-    // Explicitly set commission values to ensure they display correctly
-    // Use setTimeout to ensure values are set after form reset completes
     setTimeout(() => {
-      // Set seller commission (handle both string and number types, including 0)
       if (agentDetails?.sellerCommission !== null && agentDetails?.sellerCommission !== undefined) {
         const sellerCommValue = typeof agentDetails.sellerCommission === 'string' 
           ? agentDetails.sellerCommission 
@@ -294,7 +274,6 @@ useEffect(() => {
           : String(agentDetails.sellerCommissionAmount);
         setValue("sellerCommissionAmount", sellerCommAmtValue);
       }
-      // Set buyer commission (handle both string and number types, including 0)
       if (agentDetails?.buyerCommission !== null && agentDetails?.buyerCommission !== undefined) {
         const buyerCommValue = typeof agentDetails.buyerCommission === 'string' 
           ? agentDetails.buyerCommission 
@@ -309,7 +288,6 @@ useEffect(() => {
       }
     }, 0);
 
-    // Set formatted values
     setSellerBrokeragePhoneNumber(formatPhoneNumber(agentDetails?.sellerBrokerage?.phoneNumber));
     setSellerBrokerageFaxNumber(formatPhoneNumber(agentDetails?.sellerBrokerage?.faxNumber));
     setSellerBrokeragePostalZipCode(formatPostalCode(agentDetails?.sellerBrokerage?.postalZipCode));
@@ -317,10 +295,7 @@ useEffect(() => {
     setBuyerBrokerageFaxNumber(formatPhoneNumber(agentDetails?.buyerBrokerage?.faxNumber));
     setBuyerBrokeragePostalZipCode(formatPostalCode(agentDetails?.buyerBrokerage?.postalZipCode));
   } else {
-    console.log(brokerageData?.data?.brokerageData);
 
-    // Find brokerage by email for buyer and seller - THIS IS THE MISSING LOGIC
-    // const tradeSheet = data?.data?.tradeSheetData;
     const brokerageList = brokerageData?.data?.brokerageData || [];
     let buyerBrokerage, sellerBrokerage;
     
@@ -328,7 +303,6 @@ useEffect(() => {
       buyerBrokerage = brokerageList.find(
         (brokerage) => brokerage.agentData?.find((agent) => agent.email === tradeSheet?.email)
       );
-      // Find the agent in the brokerage's agentData
       const buyerAgent = buyerBrokerage?.agentData?.find((agent) => agent.email === tradeSheet?.email);
       
       const buyerFormData = {
@@ -359,7 +333,6 @@ useEffect(() => {
         setValue("buyerInternalAgent", buyerAgent.id);
       }
 
-      // Set formatted values for buyer
       setBuyerBrokeragePhoneNumber(formatPhoneNumber(buyerBrokerage?.phoneNumber));
       setBuyerBrokerageFaxNumber(formatPhoneNumber(buyerBrokerage?.faxNumber));
       setBuyerBrokeragePostalZipCode(formatPostalCode(buyerBrokerage?.postalZipCode));
@@ -398,7 +371,6 @@ useEffect(() => {
         setValue("sellerInternalAgent", sellerAgent.id);
       }
 
-      // Set formatted values for seller
       setSellerBrokeragePhoneNumber(formatPhoneNumber(sellerBrokerage?.phoneNumber));
       setSellerBrokerageFaxNumber(formatPhoneNumber(sellerBrokerage?.faxNumber));
       setSellerBrokeragePostalZipCode(formatPostalCode(sellerBrokerage?.postalZipCode));
@@ -408,7 +380,6 @@ useEffect(() => {
       const buyer_agent = internalAgent?.data?.userData?.find( item => item.id === tradeSheet?.buyer_tenant_agent_id );
 
       const bothFormData = {
-        // Seller details
         sellerFirstName: seller_agent?.firstName,
         sellerLastName: seller_agent?.lastName,
         sellerEmail: seller_agent?.email,
@@ -426,7 +397,6 @@ useEffect(() => {
         sellerBrokerageBillingEmailAddress: seller_agent.brokerageData?.billingEmailAddress,
         sellerInternalAgent: seller_agent?.id,
         
-        // Buyer details
         buyerFirstName: buyer_agent?.firstName,
         buyerLastName: buyer_agent?.lastName,
         buyerEmail: buyer_agent?.email,
@@ -456,7 +426,6 @@ useEffect(() => {
         setValue("buyerInternalAgent", buyer_agent?.id);
       }
 
-      // Set formatted values for both
       setSellerBrokeragePhoneNumber(formatPhoneNumber(seller_agent.brokerageData?.phoneNumber));
       setSellerBrokerageFaxNumber(formatPhoneNumber(seller_agent.brokerageData?.faxNumber));
       setSellerBrokeragePostalZipCode(formatPostalCode(seller_agent.brokerageData?.postalZipCode));
@@ -464,14 +433,12 @@ useEffect(() => {
       setBuyerBrokerageFaxNumber(formatPhoneNumber(buyer_agent.brokerageData?.faxNumber));
       setBuyerBrokeragePostalZipCode(formatPostalCode(buyer_agent.brokerageData?.postalZipCode));
     }else {
-      // For 'both' or other cases, set both buyer and seller details if available
       const brokerage = brokerageList.find(
         (brokerage) => brokerage.agentData?.find((agent) => agent.email === tradeSheet?.email)
       );
       const agent = brokerage?.agentData?.find((agent) => agent.email === tradeSheet?.email);
 
       const bothFormData = {
-        // Seller details
         sellerFirstName: tradeSheet?.firstName,
         sellerLastName: tradeSheet?.lastName,
         sellerEmail: tradeSheet?.email,
@@ -489,7 +456,6 @@ useEffect(() => {
         sellerBrokerageBillingEmailAddress: brokerage?.billingEmailAddress,
         sellerInternalAgent: agent?.id,
         
-        // Buyer details
         buyerFirstName: tradeSheet?.firstName,
         buyerLastName: tradeSheet?.lastName,
         buyerEmail: tradeSheet?.email,
@@ -519,7 +485,6 @@ useEffect(() => {
         setValue("buyerInternalAgent", agent.id);
       }
 
-      // Set formatted values for both
       setSellerBrokeragePhoneNumber(formatPhoneNumber(brokerage?.phoneNumber));
       setSellerBrokerageFaxNumber(formatPhoneNumber(brokerage?.faxNumber));
       setSellerBrokeragePostalZipCode(formatPostalCode(brokerage?.postalZipCode));
@@ -530,7 +495,6 @@ useEffect(() => {
   }
 }, [data, reset, setValue, brokerageData]);
 
-  // Preselect brokerage when agent creation modals open
   useEffect(() => {
     if (isSellerAgentCreateModalOpen && sellerBrokerageId) {
       sellerAgentForm.setValue('brokerageId', sellerBrokerageId);
@@ -543,38 +507,26 @@ useEffect(() => {
     }
   }, [isBuyerAgentCreateModalOpen, buyerBrokerageId]);
 
-// Initialize shared users data
 useEffect(() => {
   const agentDetails = data?.data?.tradeSheetData?.agentDetails[0];
   const tradeSheet = data?.data?.tradeSheetData;
   const apiSharedUsers = data?.data?.tradeSheetData?.sharedUsers;
 
-  console.log('=== INITIALIZING SHARED USERS ===');
-  console.log('API Shared Users:', apiSharedUsers);
-  console.log('Agent Details:', agentDetails);
-  console.log('Trade Sheet:', tradeSheet);
 
   if (apiSharedUsers && apiSharedUsers.length > 0) {
-    console.log('Setting shared users from API:', apiSharedUsers);
     setHasSharedUsers(true);
     setSharedUsersData(apiSharedUsers);
     setValue("sharedUsers", apiSharedUsers);
   } else {
-    console.log('No shared users found in API response');
     setHasSharedUsers(false);
     setSharedUsersData([]);
     setValue("sharedUsers", []);
   }
 }, [data, setValue]);
 
-// Add this debug useEffect to see what's happening
 useEffect(() => {
-  console.log('=== SHARED USERS STATE UPDATE ===');
-  console.log('sharedUsersData:', sharedUsersData);
-  console.log('hasSharedUsers:', hasSharedUsers);
 }, [sharedUsersData, hasSharedUsers]);
 
-  // Handle brokerage change
   const handleBrokerageChange = async (selectedOption: any, type: string) => {
     if (selectedOption) {
       const selectedValue = selectedOption;
@@ -597,7 +549,6 @@ useEffect(() => {
         setValue(`${type}BrokerageFaxNumber`, selectedBrokerage?.faxNumber);
         setValue(`${type}BrokerageBillingEmailAddress`, selectedBrokerage?.billingEmailAddress);
 
-        // Update formatted values
         if (type === "seller") {
           setSellerBrokeragePhoneNumber(formatPhoneNumber(selectedBrokerage?.phoneNumber));
           setSellerBrokerageFaxNumber(formatPhoneNumber(selectedBrokerage?.faxNumber));
@@ -609,7 +560,6 @@ useEffect(() => {
         }
       }
     } else {
-      // Clear values
       setValue(`${type}BrokerageName`, "");
       setValue(`${type}BrokerageAddress`, "");
       setValue(`${type}StreetAddress`, "");
@@ -634,12 +584,10 @@ useEffect(() => {
     }
   };
 
-  // Form submission
   const onSubmit = async (formData: any) => {
     setBtnLoading(formData.saveBtn);
     try {
       const isDraft = formData.saveBtn === "save-draft";
-      // Save agent names as "First" / "Last" (first letter capital, rest lower; no duplicated last name).
       const seller = cleanPersonName(formData.sellerFirstName, formData.sellerLastName);
       const buyer = cleanPersonName(formData.buyerFirstName, formData.buyerLastName);
       const named = {
@@ -689,7 +637,6 @@ useEffect(() => {
     }
   };
 
-  // Reset form
   const resetForm = () => {
     const sharedUsers = data?.data?.tradeSheetData?.sharedUsers;
     reset();
@@ -719,7 +666,6 @@ useEffect(() => {
     );
   };
 
-  // Phone number and formatting handlers
   const handleChangeSellerBrokeragePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const phoneNumber = e.target.value;
     const value = formatPhoneNumber(phoneNumber);
@@ -874,14 +820,12 @@ useEffect(() => {
 
         handleBrokerageChange(brokerageData.brokerageName, type);
 
-        // Reset modal state and form
         setModalState("");
         brokerageForm.reset();
         setPhoneNumber("");
         setFaxNumber("");
         setPostalCode("");
 
-        // Close the appropriate modal
         if (type === "seller") {
           setIsSellerBrokerageCreateModalOpen(false);
         } else {
@@ -893,7 +837,6 @@ useEffect(() => {
     }
   };
 
-  // Prefill agent details when agent is selected
   useEffect(() => {
     const selectedId = watch("sellerInternalAgent");
     if (sellerAgentOptions.length > 0 && selectedId) {
@@ -924,7 +867,6 @@ useEffect(() => {
     }
   }, [watch("buyerInternalAgent"), buyerAgentOptions, internalAgent, setValue]);
 
-  // Brokerage modal content
   const brokerageModalContent = () => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-2">
       <div className="flex flex-col gap-2">
@@ -1069,7 +1011,6 @@ useEffect(() => {
     <div>
       <TradeSheetSteps active={5} uuid={uuid} />
 
-      {/* Form */}
       {isLoading ? (
         <TableLoader />
       ) : (
@@ -1077,7 +1018,6 @@ useEffect(() => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
             <h3 className="py-2">Agent's Details:</h3>
             
-            {/* Seller's Agent Section */}
             <AgentSection
               type="seller"
               title={`${firstAgent}'s Agent`}
@@ -1106,7 +1046,6 @@ useEffect(() => {
               representation={data?.data?.tradeSheetData?.representation}
             />
 
-            {/* Buyer's Agent Section */}
             <AgentSection
               type="buyer"
               title={`${secondAgent}'s Agent`}
@@ -1135,7 +1074,6 @@ useEffect(() => {
               representation={data?.data?.tradeSheetData?.representation}
             />
 
-            {/* Shared Users Section */}
             <SharedUsersSection
               sharedUsersData={sharedUsersData}
               setSharedUsersData={setSharedUsersData}
@@ -1154,10 +1092,8 @@ useEffect(() => {
               addSharedUser={addSharedUser}
               removeSharedUser={removeSharedUser}
               updateSharedUserCommission={updateSharedUserCommission}
-              // refetchTradeSheet={refetchTradeSheet}
             />
 
-            {/* Action Buttons */}
             <div className="flex justify-between my-15 mx-5">
               <button
                 type="submit"
@@ -1210,7 +1146,6 @@ useEffect(() => {
         </div>
       )}
 
-      {/* Modals */}
       <AgentCreationModal
         isOpen={isSellerAgentCreateModalOpen}
         onClose={() => {

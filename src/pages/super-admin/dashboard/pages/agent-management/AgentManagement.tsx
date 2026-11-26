@@ -236,7 +236,6 @@ const AgentManagement: React.FC = () => {
   const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] =
     useState(false);
 
-  //otp
   const [isImpersonateOtpModalVisible, setIsImpersonateOtpModalVisible] = useState(false);
   const [impersonateOtp, setImpersonateOtp] = useState("");
   const [impersonateTarget, setImpersonateTarget] = useState<DataType | null>(null);
@@ -280,7 +279,6 @@ const AgentManagement: React.FC = () => {
 
   const filteredData = tableData?.filter((record) => {
 
-    // Brokerage filter
     if (parsedBrokerageId) {
       const hasMatchingBrokerage = record.brokerageId === parsedBrokerageId;
       if (!hasMatchingBrokerage) return false;
@@ -303,15 +301,13 @@ const AgentManagement: React.FC = () => {
 
   const nextFilteredData =
     agentStatus === "allAgents"
-      ? filteredData // Show all agents without any filtering
+      ? filteredData
       : agentStatus && agentStatus !== "otherAgent"
         ? filteredData
           ?.filter((record) => {
             if (agentStatus === "ourAgent") {
-              // Filter by brokerage ID 24 (ANS RealStateCRM Inc.)
               return (record?.brokerageId === 24 || record?.brokerageId === '24') && record?.status !== "closed";
             } else {
-              // Filter by status for other tabs
               return record?.status?.split(",").includes(agentStatus);
             }
           })
@@ -321,17 +317,15 @@ const AgentManagement: React.FC = () => {
                 ? "Approved"
                 : agentStatus == "closed"
                   ? "Terminated"
-                  : "Approved"; // Default key
+                  : "Approved";
 
             return (a[orderKey] || 0) - (b[orderKey] || 0);
           })
         : filteredData?.filter((record) => {
-          // Filter for "Other Agent" tab - exclude ANS RealStateCRM Inc.
           return record?.brokerageId !== 24 && record?.brokerageId !== '24' && record?.status !== "closed";
         });
 
 
-  console.log(nextFilteredData);
 
   const statusOptions = [
     { label: "Approved", value: "approved" },
@@ -344,7 +338,6 @@ const AgentManagement: React.FC = () => {
 
   useEffect(() => {
     if (data?.data?.userData) {
-      // Add isActive field to each agent with default value true if not present
       const agentsWithActiveStatus = data.data.userData.map((agent: any) => ({
         ...agent,
         isActive: agent.isActive !== undefined ? (agent.isActive === 'yes' || agent.isActive === true) : true,
@@ -360,7 +353,6 @@ const AgentManagement: React.FC = () => {
     setSearchText(localStorage.getItem('searchTextAgentList') || '')
   }, [data, searchText]);
 
-  // Set agentStatus to "allAgents" when filter is present
   useEffect(() => {
     if (filter) {
       setAgentStatus('allAgents');
@@ -389,7 +381,6 @@ const AgentManagement: React.FC = () => {
   };
 
   const handleDelete = (uuid: string) => {
-    console.log(uuid);
 
     setSelectedUUID(uuid);
     setIsModalVisible(true);
@@ -421,8 +412,6 @@ const AgentManagement: React.FC = () => {
   };
 
   const showAgentDetailsModal = (record: DataType) => {
-    console.log("record", record);
-    // Format the dates to YYYY-MM-DD
     const formattedRecoExpiryDate = record.recoExpiryDate
       ? record.recoExpiryDate.split("T")[0]
       : "";
@@ -442,7 +431,6 @@ const AgentManagement: React.FC = () => {
     const planArray = record.optionalPlanId
       ? record.optionalPlanId.split(",").map(Number)
       : [];
-    // Filter the optional plans where the plan id is included in the planArray
     const filteredOptionalPlans =
       planArray && optionalPlanData?.data?.optionalPlans
         ? optionalPlanData?.data?.optionalPlans.filter((plan: OptionalPlan) =>
@@ -459,7 +447,6 @@ const AgentManagement: React.FC = () => {
   const handleCancel2 = () => {
     setIsModal2Visible(false);
     setIsEditMode(false);
-    // resetForm();
   };
 
   const handleCancelAgentInvitation = () => {
@@ -478,12 +465,11 @@ const AgentManagement: React.FC = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -492,7 +478,6 @@ const AgentManagement: React.FC = () => {
         const selectedData = selectedRowKeys.map((item: any) => item?.uuid);
         const response = await deleteMultipleAgent(selectedData);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -501,7 +486,6 @@ const AgentManagement: React.FC = () => {
           toast.error("Failed to delete. Please try again.");
         }
       } catch (error: any) {
-        console.log(error);
         setIsDeleteModalMultipleVisible(false);
         toast.error("Failed to delete. Please try again.");
       }
@@ -549,7 +533,6 @@ const AgentManagement: React.FC = () => {
   };
 
   const [changeAgentAccountStatus] = useChangeAgentAccountStatusMutation();
-  // const [changeAgentAgreementStatus] = useChangeAgentAgreementStatusMutation();
 
   const handleChangeAccountStatus = async (newStatus: string, id: string) => {
     try {
@@ -566,7 +549,6 @@ const AgentManagement: React.FC = () => {
   const [specialNote, setSpecialNote] = useState("");
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
     localStorage.setItem("agentCurentPage", pagination?.current || 1);
@@ -906,8 +888,8 @@ const AgentManagement: React.FC = () => {
   );
 
   const handleOnViewDocument = (modalAgreementVisible, modal3Visible) => {
-    setIsModalAgreementVisible(modalAgreementVisible); // or false, depending on your need
-    setIsModal3Visible(modal3Visible); // or false, depending on your need
+    setIsModalAgreementVisible(modalAgreementVisible);
+    setIsModal3Visible(modal3Visible);
   };
 
 
@@ -948,7 +930,6 @@ const AgentManagement: React.FC = () => {
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(fontSize);
 
-    // Add logo
     const logoX = (pageWidth / 2) - 10;
     const logoY = 5;
     const logoWidth = 20;
@@ -1005,11 +986,9 @@ const AgentManagement: React.FC = () => {
       }).unwrap();
 
       if (response.requiresOtp) {
-        // Show OTP modal if OTP is required
         setIsImpersonateOtpModalVisible(true);
         toast.success('OTP sent to your phone number');
       } else if (response.status) {
-        // If no OTP required (shouldn't happen with OTP enabled)
         handleImpersonationSuccess(response);
       } else {
         toast.error(response.message || 'Failed to impersonate agent');
@@ -1048,21 +1027,17 @@ const AgentManagement: React.FC = () => {
     }
   };
 
-  // Auto-verify when OTP length reaches 6
   
 
   const handleImpersonationSuccess = useCallback((response: any) => {
-    // Store original user data in localStorage
     localStorage.setItem('originalUser', JSON.stringify({
       token: response.originalToken,
       user: response.originalUser
     }));
 
-    // Set new user data
     dispatch(setAccessToken(response.token));
     dispatch(setUser(response.user));
 
-    // Navigate to agent dashboard
     navigate('/');
     toast.success('Successfully impersonating agent');
   }, [dispatch, navigate]);
@@ -1096,7 +1071,6 @@ const AgentManagement: React.FC = () => {
 
   const handleResendImpersonationOtp = async () => {
     try {
-      // Get current user email from Redux store or localStorage
       const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
       const response = await resendImpersonateOtp({
@@ -1113,7 +1087,6 @@ const AgentManagement: React.FC = () => {
     }
   };
 
-  // Toggle Agent Status Handlers
   const handleToggleClick = (
     agentId: string,
     agentName: string,
@@ -1302,7 +1275,6 @@ const AgentManagement: React.FC = () => {
         ]}
       >
         <div>
-          {/* pass the record here */}
           <AgentDocument agentAccount={agentAccount} />
         </div>
       </Modal>
@@ -1327,7 +1299,6 @@ const AgentManagement: React.FC = () => {
               label: <span>Personal Details</span>,
               children: (
                 <AgentDetailsForm
-                  // key={agentAccount?.id}
                   register={register}
                   agentAccount={agentAccount}
                   statusOptions={statusOptions}
@@ -1398,7 +1369,6 @@ const AgentManagement: React.FC = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -1420,7 +1390,6 @@ const AgentManagement: React.FC = () => {
         Are you sure you want to delete selected items?
       </Modal>
 
-      {/* Ag */}
       <Modal
         title="Agreement"
         open={isModalAgreementVisible}
@@ -1445,7 +1414,6 @@ const AgentManagement: React.FC = () => {
 
       </Modal>
 
-      {/* Impersonation OTP Verification Modal */}
       <Modal
         title="Impersonation Verification"
         open={isImpersonateOtpModalVisible}
@@ -1501,7 +1469,6 @@ const AgentManagement: React.FC = () => {
         </div>
       </Modal>
 
-      {/* Toggle Agent Status Confirmation Modal */}
       <Modal
         title="Confirm Status Change"
         open={isToggleModalVisible}

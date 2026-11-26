@@ -54,7 +54,6 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
 
   useEffect(() => {
     if (isInstantNotification) {
-      // Reset all states for instant notification
       setSendEmail(false);
       setSendSms(false);
       setSelectedAgents([]);
@@ -109,41 +108,30 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
     setSelectedAgents(approvedAgentIds);
   }, [recipientScope, filteredAgentOptions]);
 
-  // Email validation function
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Canadian phone validation function - IMPROVED
 const isValidCanadianPhone = (phone: string) => {
   if (!phone || phone.trim().length === 0) return false;
   
-  // Remove all non-digit characters except leading +
   const cleaned = phone.replace(/[^\d+]/g, '');
   
-  // Check for common Canadian phone formats:
-  // +1XXXXXXXXXX (12 characters: +1 + 10 digits)
-  // 1XXXXXXXXXX (11 digits)
-  // XXXXXXXXXX (10 digits)
   
   if (cleaned.startsWith('+1') && cleaned.length === 12) {
-    // Format: +11234567890
-    const digitsOnly = cleaned.substring(2); // Remove +1
+    const digitsOnly = cleaned.substring(2);
     return /^\d{10}$/.test(digitsOnly);
   } else if (cleaned.startsWith('1') && cleaned.length === 11) {
-    // Format: 11234567890
-    const digitsOnly = cleaned.substring(1); // Remove leading 1
+    const digitsOnly = cleaned.substring(1);
     return /^\d{10}$/.test(digitsOnly);
   } else if (cleaned.length === 10) {
-    // Format: 1234567890
     return /^\d{10}$/.test(cleaned);
   }
   
   return false;
 };
 
-// Process comma-separated phones on blur - IMPROVED
 const processPhoneInput = () => {
   if (!customPhoneInput.trim()) return;
 
@@ -156,7 +144,6 @@ const processPhoneInput = () => {
   const invalidPhones: { phone: string, reason: string }[] = [];
 
   phones.forEach(phone => {
-    // Remove all non-digit characters for length check
     const digitsOnly = phone.replace(/\D/g, '');
     
     if (digitsOnly.length < 10) {
@@ -203,13 +190,10 @@ const processPhoneInput = () => {
     );
   }
 
-  // Clear input after processing
   setCustomPhoneInput('');
 };
 
-// Format phone for display
 const formatPhoneForDisplay = (phone: string) => {
-  // Convert +11234567890 to +1 (123) 456-7890 for display
   const cleaned = phone.replace(/\D/g, '');
   if (cleaned.length === 11 && cleaned.startsWith('1')) {
     const match = cleaned.match(/^1(\d{3})(\d{3})(\d{4})$/);
@@ -225,28 +209,22 @@ const formatPhoneForDisplay = (phone: string) => {
   return phone;
 };
 
-  // Format Canadian phone number to consistent +1XXXXXXXXXX format
   const formatCanadianPhone = (phone: string) => {
     if (!phone) return '';
     
-    // Remove all non-digit characters except leading +
     const cleaned = phone.replace(/[^\d+]/g, '');
     
     if (cleaned.startsWith('+1') && cleaned.length === 12) {
-      // Already in correct format
       return cleaned;
     } else if (cleaned.startsWith('1') && cleaned.length === 11) {
-      // Format: 11234567890 -> +11234567890
       return `+${cleaned}`;
     } else if (cleaned.length === 10) {
-      // Format: 1234567890 -> +11234567890
       return `+1${cleaned}`;
     }
     
-    return phone; // Return as is if doesn't match
+    return phone;
   };
 
-  // Process comma-separated emails on blur
   const processEmailInput = () => {
     if (!customEmailInput.trim()) return;
 
@@ -277,29 +255,24 @@ const formatPhoneForDisplay = (phone: string) => {
       toast.error(`Invalid email format: ${invalidEmails.join(', ')}`);
     }
 
-    // Clear input after processing
     setCustomEmailInput('');
   };
 
  
 
-  // Remove custom email
   const handleRemoveEmail = (emailToRemove: string) => {
     setCustomEmails(prev => prev.filter(email => email !== emailToRemove));
   };
 
-  // Remove custom phone
   const handleRemovePhone = (phoneToRemove: string) => {
     setCustomPhones(prev => prev.filter(phone => phone !== phoneToRemove));
   };
 
-  // Clear all emails
   const handleClearAllEmails = () => {
     setCustomEmails([]);
     setCustomEmailInput('');
   };
 
-  // Clear all phones
   const handleClearAllPhones = () => {
     setCustomPhones([]);
     setCustomPhoneInput('');
@@ -329,7 +302,6 @@ const formatPhoneForDisplay = (phone: string) => {
     }
 
 
-    // Validate custom emails if provided
     if (sendEmail && customEmails.length > 0) {
       const invalidEmails = customEmails.filter(email => !isValidEmail(email));
       if (invalidEmails.length > 0) {
@@ -338,7 +310,6 @@ const formatPhoneForDisplay = (phone: string) => {
       }
     }
 
-    // Validate custom phones if provided
     if (sendSms && customPhones.length > 0) {
       const invalidPhones = customPhones.filter(phone => !isValidCanadianPhone(phone));
       if (invalidPhones.length > 0) {
@@ -368,7 +339,6 @@ const formatPhoneForDisplay = (phone: string) => {
         customPhones,
       };
       
-      console.log('Sending notification data:', notificationData);
       onClose(notificationData);
     } catch (error) {
       console.error('Error sending announcement:', error);
@@ -553,7 +523,6 @@ const formatPhoneForDisplay = (phone: string) => {
           />
         </div>
 
-        {/* Custom Emails Section */}
         {sendEmail && (
           <div>
             <label className="block text-sm font-medium mb-2">

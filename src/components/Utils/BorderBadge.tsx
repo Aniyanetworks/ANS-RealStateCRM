@@ -4,14 +4,12 @@ interface BorderBadgeProps {
 }
 
 const BorderBadge = ({ value, colorMap }: BorderBadgeProps) => {
-  // Handle null or undefined value
   const safeValue = value || '';
   
-  // Capitalize the first letter of each word in the value
   const capitalizedValue = safeValue
-    .split(' ') // Split into words
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter of each word
-    .join(' '); // Join back into a single string
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 
   const { borderColor } = colorMap(safeValue) || { borderColor: 'gray' };
 

@@ -1,6 +1,3 @@
-// PDF File Splitter — the original ANS Accounting screen: page previews, select and reorder pages, then split
-// (one per page, custom ranges, groups) or combine selected pages into one PDF. Runs in the browser only.
-// Pages are rendered with pdf.js and rebuilt with jsPDF (image-based output at 2× resolution).
 import { useState } from "react";
 import jsPDF from "jspdf";
 import { pdfjs } from "react-pdf";

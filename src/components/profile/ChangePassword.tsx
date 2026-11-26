@@ -37,7 +37,6 @@ const ChangePassword = () => {
       }
 
       const response = await updatePassword(data);
-      console.log(response);
       if (response?.data?.status) {
         toast.success(response?.data?.message);
       } else if (response?.error?.data?.message) {
@@ -47,7 +46,6 @@ const ChangePassword = () => {
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     } finally {
       setIsLoading(false);
@@ -55,7 +53,6 @@ const ChangePassword = () => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* pasword start  */}
       <div className=" bg-white space-y-5 p-5 rounded-md">
         <h2>Change Password</h2>
         <div>
@@ -101,7 +98,6 @@ const ChangePassword = () => {
           </div>
         )}
       </div>
-      {/* pasword end */}
     </form>
   );
 };

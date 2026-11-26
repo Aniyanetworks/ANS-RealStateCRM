@@ -1,6 +1,3 @@
-// Trade finalize calculation — the same rules as Accounting → Trade List → Commissions
-// (components/accounting/tabs/Commission.tsx for buyer and multiple representation,
-// CommissionSeller.tsx for single seller representation), so finalizing here saves identical values.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type CommissionCalc = {
@@ -31,7 +28,6 @@ const fx = (n: number) => Number(n.toFixed(2));
 export function calcCommission(t: any): CommissionCalc {
   const d = t?.agentDetails?.[0] || {};
   const rep = t?.representation;
-  // Which existing tab applied: Commission.tsx (multiple or buyer), CommissionSeller.tsx (single seller), none otherwise.
   const mode: CommissionCalc["mode"] = t?.representationType === "multiple" || rep === "buyer" ? "buyer" : rep === "seller" ? "seller" : "none";
   let propertyCommission = 2.5, commissionAgent = 0, commissionBuyerAgent = 0, commissionOwner = 0, buySaleAdminFees = 0, isAgentHst = false, plan: any = null;
   const fromPlan = (account: any) => {
@@ -73,7 +69,6 @@ export function calcCommission(t: any): CommissionCalc {
   };
 }
 
-/** Body for POST /accounting/trade-accounting/transactions/create (same fields the existing tabs send). */
 export function finalizePayload(t: any, c: CommissionCalc) {
   const p = t?.properties?.[0] || {};
   return {

@@ -5,11 +5,9 @@ interface Table2Props {
 }
 
 const Table2: React.FC<Table2Props> = ({ table2Data }) => {
-  // Function to format the array
   function formatArray(array: any[], chunkSize: number) {
     const filteredArray = array.filter((obj) => {
-      // Check if Text is exactly an integer
-      return !String(obj.Text).match(/^\d+$/); // Keep only non-integer values
+      return !String(obj.Text).match(/^\d+$/);
     });
 
     const result = [];
@@ -19,7 +17,6 @@ const Table2: React.FC<Table2Props> = ({ table2Data }) => {
     return result;
   }
 
-  // Usage: Chunking into arrays of 7
   const formattedData = formatArray(table2Data?.slice(5), 7);
 
   return (

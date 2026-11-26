@@ -2,11 +2,9 @@ import moment from "moment-timezone";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-// Utility to convert all images in a section to CORS-safe data URLs
 export const preprocessImages = async (element: HTMLElement) => {
   const images = element.getElementsByTagName("img");
   const promises = Array.from(images).map((img) => {
-    // Skip if already a data URL
     if (img.src.startsWith("data:")) return Promise.resolve();
     return new Promise((resolve) => {
       const proxyImg = new window.Image();
@@ -20,12 +18,10 @@ export const preprocessImages = async (element: HTMLElement) => {
           ctx?.drawImage(proxyImg, 0, 0);
           img.src = canvas.toDataURL("image/png");
         } catch (e) {
-          // fallback: leave image as is
         }
         resolve(undefined);
       };
       proxyImg.onerror = () => resolve(undefined);
-      // Add cache busting param
       proxyImg.src = img.src.includes("?") ? `${img.src}&t=${Date.now()}` : `${img.src}?t=${Date.now()}`;
     });
   });
@@ -52,7 +48,6 @@ export const generatePDFFromElement = async (
     throw new Error("Element is null or undefined");
   }
   
-  // Store original styles to restore later
   const originalStyles = {
     display: element.style.display,
     visibility: element.style.visibility,
@@ -65,7 +60,6 @@ export const generatePDFFromElement = async (
     zIndex: element.style.zIndex,
   };
   
-  // Store parent styles if element has a parent
   const parent = element.parentElement;
   const originalParentStyles = parent ? {
     display: parent.style.display,
@@ -74,7 +68,6 @@ export const generatePDFFromElement = async (
   } : null;
   
   try {
-    // Make element and parent fully visible for html2canvas
     if (parent) {
       parent.style.display = "block";
       parent.style.visibility = "visible";
@@ -91,21 +84,16 @@ export const generatePDFFromElement = async (
     element.style.width = element.scrollWidth > 0 ? `${element.scrollWidth}px` : "800px";
     element.style.height = "auto";
     
-    // Force a reflow
     void element.offsetHeight;
     
-    // Wait for styles to apply and DOM to update
     await new Promise(resolve => setTimeout(resolve, 200));
     
-    // Preprocess images first
     try {
       await preprocessImages(element);
     } catch (imgError) {
       console.warn("Image preprocessing warning:", imgError);
-      // Continue even if image preprocessing fails
     }
     
-    // Wait for images to load with timeout
     const images = element.getElementsByTagName("img");
     if (images.length > 0) {
       const imageLoadPromises = Array.from(images).map(
@@ -126,7 +114,7 @@ export const generatePDFFromElement = async (
               img.onerror = () => {
                 clearTimeout(timeout);
                 console.warn(`Image load error for: ${img.src}`);
-                resolve(undefined); // Continue even if image fails
+                resolve(undefined);
               };
             }
           })
@@ -134,14 +122,12 @@ export const generatePDFFromElement = async (
       await Promise.all(imageLoadPromises);
     }
     
-    // Wait for final layout
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Generate canvas with error handling
     let canvas: HTMLCanvasElement;
     try {
       canvas = await html2canvas(element, {
-        scale: 1.5, // Reduced scale for better performance
+        scale: 1.5,
         useCORS: true,
         logging: false,
         allowTaint: false,
@@ -149,7 +135,6 @@ export const generatePDFFromElement = async (
         removeContainer: false,
         imageTimeout: 5000,
         onclone: (clonedDoc) => {
-          // Ensure cloned element is visible
           const clonedElement = clonedDoc.getElementById("printSection");
           if (clonedElement) {
             (clonedElement as HTMLElement).style.display = "block";
@@ -167,7 +152,6 @@ export const generatePDFFromElement = async (
       throw new Error("Generated canvas is empty or invalid");
     }
     
-    // Generate PDF
     const imgData = canvas.toDataURL("image/png", 0.92);
     if (!imgData || imgData === "data:,") {
       throw new Error("Failed to convert canvas to image data");
@@ -181,9 +165,7 @@ export const generatePDFFromElement = async (
     const ratio = canvasHeight / canvasWidth;
     const imgHeight = pdfWidth * ratio;
     
-    // Add image to PDF
     if (imgHeight > pdfHeight) {
-      // Multi-page PDF
       let heightLeft = imgHeight;
       let position = 0;
       
@@ -200,7 +182,6 @@ export const generatePDFFromElement = async (
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
     }
     
-    // Generate file
     const pdfBlob = pdf.output("blob");
     if (!pdfBlob || pdfBlob.size === 0) {
       throw new Error("Generated PDF blob is empty");
@@ -219,7 +200,6 @@ export const generatePDFFromElement = async (
     console.error("Error in generatePDFFromElement:", error);
     throw new Error(`PDF generation failed: ${error?.message || "Unknown error"}`);
   } finally {
-    // Restore original styles
     element.style.display = originalStyles.display;
     element.style.visibility = originalStyles.visibility;
     element.style.position = originalStyles.position;

@@ -1,7 +1,4 @@
 // @ts-nocheck
-// Commission Payroll — layered on the existing CRM commission cheque flow. Agents are still paid
-// from Accounting → Issue Agent Cheque; here the payout is checked against fee rules and trust
-// receipts, agent charges are deducted, and the payout is posted to the general ledger.
 import React, { useMemo, useState } from "react";
 import { Alert, Checkbox, DatePicker, Descriptions, Form, Input, InputNumber, Modal, Select, Space, Table, Tabs, Tag } from "antd";
 import dayjs from "dayjs";
@@ -143,7 +140,6 @@ const CommissionPayroll = () => {
   );
 };
 
-/** Correct a commission already posted to the ledger (amounts changed after payment). */
 const CorrectionModal = ({ commission, onClose }) => {
   const [form] = Form.useForm();
   const { run, loading } = useAcctAction();

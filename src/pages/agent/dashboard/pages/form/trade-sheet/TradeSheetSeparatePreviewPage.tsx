@@ -78,7 +78,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
     setIsInvoiceSendLogExpanded(prev => !prev);
   };
 
-  // Document Share Log (only share-document-email)
   const documentShareLogs = data?.data?.tradeSheetData?.activityLog?.filter(
     (log: ActivityLog) => log.activitySubArea === "share-document-email"
   ) || [];
@@ -96,15 +95,12 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
     }
   }, [isActivityLogExpanded, isLawyerShareLogExpanded, isDocumentShareLogExpanded, refetch]);
 
-  // Separate activity logs
   const activityLogs: ActivityLog[] = data?.data?.tradeSheetData?.activityLog || [];
   const lawyerShareLogs = activityLogs.filter((log: ActivityLog) => log.action === "lawyer_share");
-  // Exclude lawyer_share and share-document-email logs from otherLogs
   const otherLogs = activityLogs.filter(
     (log: ActivityLog) => log.action !== "lawyer_share" && log.activitySubArea !== "share-document-email"
   );
 
-  // Filtered logs based on search
   const filteredActivityLogs = otherLogs.filter((log: ActivityLog) =>
     log.historyText.toLowerCase().includes(activityLogSearch.toLowerCase())
   );
@@ -116,10 +112,8 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
     const input = pdfExportRef.current;
     if (!input) return;
     
-    // Clone the element to avoid modifying the original
     const element = input.cloneNode(true) as HTMLElement;
     
-    // Remove the absolute positioning used for hiding
     element.style.position = 'relative';
     element.style.left = '0';
     element.style.top = '0';
@@ -127,12 +121,10 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
     element.style.zIndex = '1';
     element.style.background = '#fff';
     
-    // Create a container for the PDF content
     const container = document.createElement('div');
     container.style.padding = '20px';
     container.style.fontFamily = 'Arial, sans-serif';
     
-    // Add logo and header
     const header = document.createElement('div');
     header.style.textAlign = 'center';
     header.style.marginBottom = '20px';
@@ -162,11 +154,9 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
     header.appendChild(title);
     header.appendChild(tradeNumber);
     
-    // Add header and content to container
     container.appendChild(header);
     container.appendChild(element);
     
-    // Set options for PDF generation
     const opt = {
       margin: 10,
       filename: 'tradesheet-preview.pdf',
@@ -179,7 +169,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     
-    // Generate PDF
     html2pdf().set(opt).from(container).save();
   };
 
@@ -187,7 +176,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
   const input = pdfExportRef.current;
   if (!input) return;
   
-  // Create a canvas of the export-only section
   const canvas = await html2canvas(input, { 
     scale: 2, 
     backgroundColor: '#fff',
@@ -196,7 +184,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
   });
   const imgData = canvas.toDataURL('image/png');
   
-  // Create a hidden iframe for printing
   const iframe = document.createElement('iframe');
   iframe.style.position = 'absolute';
   iframe.style.width = '0';
@@ -270,13 +257,11 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
   `);
   iframeDoc.close();
   
-  // Wait for image to load
   const img = iframeDoc.querySelector('img');
   if (img) {
     img.onload = function() {
       setTimeout(() => {
         iframe.contentWindow?.print();
-        // Remove iframe after printing
         setTimeout(() => {
           document.body.removeChild(iframe);
         }, 100);
@@ -328,7 +313,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
               />
             </div>
 
-            {/* Activity Log Section */}
             {user?.userType === "superAdmin" && otherLogs.length > 0 && (
               <div className="mt-10 mb-6">
                 <h3
@@ -402,7 +386,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
               </div>
             )}
 
-            {/* Lawyer Share Log Section */}
             {user?.userType === "superAdmin" && lawyerShareLogs.length > 0 && (
               <div className="mb-6">
                 <h3
@@ -476,7 +459,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
               </div>
             )}
 
-            {/* Document Share Log Section */}
             {user?.userType === "superAdmin" && documentShareLogs.length > 0 && (
               <div className="mb-6">
                 <h3
@@ -550,12 +532,10 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
               </div>
             )}
 
-            {/* Trade Notes Log Section */}
             {user?.userType === "superAdmin" && data?.data?.tradeSheetData?.id && (
               <TradeNotesLogSection tradeSheetId={data.data.tradeSheetData.id} />
             )}
 
-            {/* Invoice Send Log Section */}
             {user?.userType === "superAdmin" && (
               <div className="mb-6">
                 <h3
@@ -678,7 +658,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
 
   return (
     <div>
-      {/* Hidden export-only section for PDF generation */}
       <div ref={pdfExportRef} style={{ position: 'absolute', left: '-9999px', top: 0, width: '800px', background: '#fff', zIndex: -1 }}>
         <div className="max-w-full mt-2 p-2 border border-gray-300/30 rounded-md">
           <h2 className="uppercase text-center bg-[#c9c1c13d] py-5">
@@ -705,7 +684,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
                 <LayerDetails lawyerDetails={lawyerDetailsData} />
               )}
 
-              {/* Always show  SUBMITTED DOCUMENT heading, even if no documents */}
               <div style={{ marginTop: 24 }}>
                 <SubmittedDocuments
                   documents={data?.data?.tradeSheetData?.paperWorkAttachmentFiles}
@@ -718,7 +696,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
           </div>
         </div>
       </div>
-      {/* Visible UI section with tabs and logs */}
       <div ref={previewRef}>
         <div className="relative">
           <div className="bg-[#c9c1c13d] py-3 px-4 flex flex-col sm:flex-row items-center justify-between gap-2 w-full">
@@ -751,7 +728,6 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
 
 export default TradeSheetSeparatePreviewPage;
 
-// Trade Notes Log Section Component
 const TradeNotesLogSection = ({ tradeSheetId }: { tradeSheetId: number }) => {
   const { data } = useGetTradeSheetNoteQuery({ tradeSheetId });
   const [isExpanded, setIsExpanded] = useState(false);

@@ -2,11 +2,9 @@
 import { Link } from "react-router-dom";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
-// import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import Branding from "../login/Branding";
-// import EyeBtn from "../login/EyeBtn";
 import { useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useUserRegistrationMutation,useValidateAgentMutation } from "../../redux/api/userSlice";
@@ -17,7 +15,6 @@ import { cn } from "../../utils/cn";
 
 
 const Signup = () => {
-  // const [textType, setTextType] = useState(false);
   const { agent_id } = useParams<{ agent_id?: string }>();
   const [agentValidation, setAgentValidation] = useState<string | "null">("null");
 
@@ -43,12 +40,12 @@ const Signup = () => {
     } catch (error) {
       console.error("Error during validation:", error);
     }
-  }, [setAgentValidation,validateAgent]); // Depend on setAgentValidation if it changes
+  }, [setAgentValidation,validateAgent]);
 
   useEffect(() => {
     if (agent_id) {
-      setValue('agentId', agent_id); // Set value in the form
-      handleValueChange(agent_id);  // Call handleValueChange to validate agentId
+      setValue('agentId', agent_id);
+      handleValueChange(agent_id);
     }
   }, [agent_id, setValue, handleValueChange]);
   
@@ -56,18 +53,13 @@ const Signup = () => {
   
 
   const onSubmit = async (data: any) => {
-    console.log(data);
 
     const formData = new FormData();
 
-    // Append all fields to FormData
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
 
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
 
     const res = (await userRegistration(formData)) as any;
     if (res?.data?.status) {
@@ -87,12 +79,9 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row  ">
-      {/* Left Section */}
       <Branding />
 
-      {/* Right Section (Login Form) */}
       <div className="sm:w-[75%] bg-white p-8 flex flex-col">
-        {/* home button */}
         <div className="max-md:mb-10">
           <Link
             to={"/"}
@@ -104,15 +93,12 @@ const Signup = () => {
 
         <div className=" flex items-center justify-center  flex-1">
           <div className="w-full max-w-sm">
-            {/* Login Form */}
             <h1>Create client account</h1>
 
-            {/* Email/Password Login form -------------------------------------------------- */}
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-4"
             >
-              {/* Name--------------------------------------------- */}
               <div className="flex gap-3">
                 <div className="mt-5 w-full">
                   <label className="block mb-2 text-[15px]">First Name <span className="text-red-500 ml-1">*</span></label>
@@ -144,7 +130,6 @@ const Signup = () => {
                 </div>
               </div>
 
-              {/* email ---------------------------------------------*/}
               <div className="">
                 <label className="block mb-2 text-[15px]">Email <span className="text-red-500 ml-1">*</span></label>
                 <input
@@ -160,7 +145,6 @@ const Signup = () => {
                 )}
               </div>
 
-              {/* Agent ID ---------------------------------------------*/}
               <div className="">
                 <label className="block mb-2 text-[15px]">Agent Id <span className="text-red-500 ml-1">*</span></label>
                 <input
@@ -179,7 +163,6 @@ const Signup = () => {
 
               </div>
 
-              {/* captcha */}
               <div>
                 <Captcha
                   firstValue={firstValue}
@@ -210,7 +193,6 @@ const Signup = () => {
                 ) : null}
               </div>
 
-              {/* remeber me --------------------------------------------- */}
               <div className=" ">
                 <label
                   htmlFor="remember"
@@ -233,7 +215,6 @@ const Signup = () => {
               </button>
             </form>
 
-            {/* Sign Up */}
             <p className="mt-4 text-[15px]">
               Already have an account?
               <Link to="/login" className="text-primaryPurple underline">

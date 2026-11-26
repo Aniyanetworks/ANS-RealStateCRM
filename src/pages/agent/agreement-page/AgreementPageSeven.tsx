@@ -12,7 +12,6 @@ const AgreementPageSevent = () => {
 
     useEffect(() => {
         if (user.agentAccount) {
-            console.log(user.agentAccount);
             
             setAgent(user.agentAccount[0])
         }
@@ -79,11 +78,9 @@ const AgreementPageSevent = () => {
             <div className="mt-12 space-y-2">
                 <div className="pt-4">
                     <div className="flex flex-col items-end">
-                        {/* Signature Image */}
                         <div className="w-16 h-12 flex items-end justify-end">
                             <img src={getFileUrl(user?.signature)} alt="Signature" className="object-contain" />
                         </div>
-                        {/* Signature Text */}
                         <div className="border-t border-gray-300 text-end text-sm italic">
                             (Signature of Salesperson)
                         </div>
@@ -92,7 +89,6 @@ const AgreementPageSevent = () => {
             </div>
 
 
-            {/* Footer */}
             <div className="flex justify-between items-center mt-12">
                 <p className="text-sm">Page 7 of 7</p>
                 <div className="flex gap-4">

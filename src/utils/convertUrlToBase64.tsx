@@ -1,7 +1,7 @@
 export const convertUrlToBase64 = (imageUrl: string): Promise<string> => {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.crossOrigin = "Anonymous"; // Ensure CORS is handled if the image is hosted remotely
+      img.crossOrigin = "Anonymous";
       
       img.onload = () => {
         const canvas = document.createElement("canvas");
@@ -10,7 +10,7 @@ export const convertUrlToBase64 = (imageUrl: string): Promise<string> => {
           canvas.height = img.height;
           canvas.width = img.width;
           ctx.drawImage(img, 0, 0);
-          resolve(canvas.toDataURL());  // Resolves with the base64 string
+          resolve(canvas.toDataURL());
         } else {
           reject(new Error("Failed to get canvas context"));
         }

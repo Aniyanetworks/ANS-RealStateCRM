@@ -10,7 +10,6 @@ import type {
   TableColumnsType,
   TableProps,
 } from 'antd';
-// import TableLoader from "../loader/TableLoader";
 import {
   Table,
   Tag,
@@ -182,25 +181,21 @@ const TradeCommissionReport: React.FC<TradeCommissionReportProps> = ({ filteredD
     const pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
     const margin = 10;
-    const startY = 30; // Starting Y position for content
-    const lineHeight = 10; // Height of each line
-    const fontSize = 8; // Font size for the text
+    const startY = 30;
+    const lineHeight = 10;
+    const fontSize = 8;
 
-    // Set font and size
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(fontSize);
 
-    // Add logo (adjust x, y, width, and height here)
-    const logoX = (pageWidth / 2) - 10; // X position of the logo
-    const logoY = 5; // Y position of the logo
-    const logoWidth = 20; // Width of the logo
-    const logoHeight = 20; // Height of the logo
+    const logoX = (pageWidth / 2) - 10;
+    const logoY = 5;
+    const logoWidth = 20;
+    const logoHeight = 20;
     pdf.addImage(logo1, "PNG", logoX, logoY, logoWidth, logoHeight);
 
-    // Add title
     pdf.text("Trade Commission Report", pageWidth / 2, startY, { align: "center" });
 
-    // Define column headers
     const headers = [
       "Trade ID",
       "Representation",
@@ -210,18 +205,15 @@ const TradeCommissionReport: React.FC<TradeCommissionReportProps> = ({ filteredD
       "Created At",
     ];
 
-    // Define column widths
     const columnWidths = [20, 25, 40, 35, 35, 40];
 
-    // Add headers
     let x = margin;
     headers.forEach((header, index) => {
       pdf.text(header, x, startY + lineHeight);
       x += columnWidths[index];
     });
 
-    // Add rows
-    let currentY = startY + 2 * lineHeight; // Start below headers
+    let currentY = startY + 2 * lineHeight;
     filteredData.forEach((item) => {
       const row = [
         item.tradeSheet.tradeSheetTypeId,
@@ -232,24 +224,20 @@ const TradeCommissionReport: React.FC<TradeCommissionReportProps> = ({ filteredD
         format(new Date(item.createdAt), "dd MMMM yyyy, hh:mm a"),
       ];
 
-      // Check if the current row will exceed the page height
       if (currentY > pdf.internal.pageSize.getHeight() - margin) {
         pdf.addPage();
-        currentY = margin; // Reset Y position for the new page
+        currentY = margin;
       }
 
-      // Add row data
       x = margin;
       row.forEach((cell, index) => {
         pdf.text(cell, x, currentY);
         x += columnWidths[index];
       });
 
-      // Move to the next line
       currentY += lineHeight;
     });
 
-    // Save the PDF
     pdf.save("trade_commission_report.pdf");
   };
 

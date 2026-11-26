@@ -120,7 +120,6 @@ const ClientPropertyListingManagement = () => {
   } = useForm<DataType>({});
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -190,7 +189,7 @@ const ClientPropertyListingManagement = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyListing(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -251,13 +250,13 @@ const ClientPropertyListingManagement = () => {
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -265,7 +264,6 @@ const ClientPropertyListingManagement = () => {
       try {
         const response = await deleteClientPropertyListingMultiple(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -313,18 +311,6 @@ const ClientPropertyListingManagement = () => {
       key: "relation",
       width: 240,
     },
-    /* {
-      title: "Client",
-      dataIndex: "user",
-      key: "user",
-      render: (user) => (
-        <span>
-          {user?.name || "N/A"}
-        </span>
-      ),
-
-      width: 240,
-    }, */
     {
       title: "Actions",
       dataIndex: "uuid",
@@ -436,7 +422,6 @@ const ClientPropertyListingManagement = () => {
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">            
 
-            {/* Property Name */}
             <div className="flex flex-col gap-2">
               <label>
                 Name <span className="text-red-500 ml-1">*</span>
@@ -455,7 +440,6 @@ const ClientPropertyListingManagement = () => {
                 </p>
               )}
             </div> 
-            {/* Relation */}
             <div className="flex flex-col gap-2">
               <label>Relation</label>
               <input
@@ -471,7 +455,6 @@ const ClientPropertyListingManagement = () => {
                 </p>
               )}
             </div>         
-            {/* Email */}
             <div className="flex flex-col gap-2">
               <label>Email</label>
               <input
@@ -514,7 +497,6 @@ const ClientPropertyListingManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

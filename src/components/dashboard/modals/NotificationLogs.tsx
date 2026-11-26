@@ -174,7 +174,6 @@ const NotificationLogs: React.FC<NotificationLogsProps> = ({
     },
   ];
 
-  // serial number in the table
   const tableSourceData = filteredLogs?.map((item: any, index: number) => {
     return {
       ...item,
@@ -188,7 +187,7 @@ const NotificationLogs: React.FC<NotificationLogsProps> = ({
         <TableLoader />
       ) : (
         <Table
-          rowSelection={rowSelection} // Pass the rowSelection prop
+          rowSelection={rowSelection}
           rowKey="uuid"
           columns={columns}
           dataSource={tableSourceData}

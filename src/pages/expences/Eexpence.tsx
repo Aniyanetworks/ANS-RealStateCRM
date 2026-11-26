@@ -192,7 +192,6 @@ const ExpenseManagement = () => {
     setExistingFiles(existingFiles.filter(f => f.id !== file.id));
   };
 
-  // Function to set predefined date ranges
   const handlePeriodFilter = (period: string) => {
     const now = new Date();
     const startDate = new Date();
@@ -252,22 +251,18 @@ const ExpenseManagement = () => {
     }
   };
 
-  // Handle category filter change
   const handleCategoryFilter = (selectedCategoryIds: string[]) => {
     setSelectedCategories(selectedCategoryIds);
   };
 
-  // Handle branch filter change
   const handleBranchFilter = (selectedBranchIds: string[]) => {
     setSelectedBranches(selectedBranchIds);
   };
 
-  // Handle property listing filter change
   const handlePropertyListingFilter = (selectedPropertyListingIds: string[]) => {
     setSelectedPropertyListings(selectedPropertyListingIds);
   };
 
-  // Search function that matches the same fields used for suggestions
   const searchInObject = (item: any, searchTerm: string): boolean => {
     if (!item || !searchTerm) return false;
 
@@ -279,16 +274,13 @@ const ExpenseManagement = () => {
       item?.expenseCategory?.name,
       item?.branch?.name,
       item?.propertyListing?.propertyAddress,
-      // Date (human readable, same as suggestions / table)
       moment.utc(item.transactionDate).format("DD MMMM YYYY"),
-      // Amount / Tax / Total â€“ with and without $ prefix
       formatNumberWithCommasAndDecimals(item.amount),
       `$${formatNumberWithCommasAndDecimals(item.amount)}`,
       formatNumberWithCommasAndDecimals(item.tax),
       `$${formatNumberWithCommasAndDecimals(item.tax)}`,
       formatNumberWithCommasAndDecimals(item.total),
       `$${formatNumberWithCommasAndDecimals(item.total)}`,
-      // Recurring info
       item?.isRecurring ? "Recurring" : "One-time",
       item?.recurrenceType,
     ];
@@ -298,7 +290,6 @@ const ExpenseManagement = () => {
     );
   };
 
-  // Function to handle search input changes
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
@@ -328,19 +319,16 @@ const ExpenseManagement = () => {
     }
   };
 
-  // Function to handle suggestion selection
   const handleSuggestionClick = (suggestion: string) => {
     setSearchText(suggestion);
     setSearchSuggestions([]);
   };
 
-  // Memoized logic for filtering data
   const filteredData = useMemo(() => {
     if (!tableData) return [];
 
     let reportData = [...tableData];
 
-    // Filter by Date Range
     if (dateRange) {
       const [startStr, endStr] = dateRange;
       const start = moment.tz(startStr, "America/Toronto").startOf('day');
@@ -351,28 +339,24 @@ const ExpenseManagement = () => {
       });
     }
 
-    // Filter by Categories
     if (selectedCategories.length > 0) {
       reportData = reportData.filter((item) =>
         selectedCategories.includes(item.expenseCategory?.id)
       );
     }
 
-    // Filter by Branches
     if (selectedBranches.length > 0) {
       reportData = reportData.filter((item) =>
         selectedBranches.includes(item.branch?.id?.toString())
       );
     }
 
-    // Filter by Property Listings
     if (selectedPropertyListings.length > 0) {
       reportData = reportData.filter((item) =>
         selectedPropertyListings.includes(item.propertyListing?.id?.toString())
       );
     }
 
-    // Search Filter
     if (searchText) {
       reportData = reportData.filter((item) => searchInObject(item, searchText));
     }
@@ -399,14 +383,12 @@ const ExpenseManagement = () => {
   const [updateExpense] = useUpdateExpenseMutation();
   const [deleteExpense] = useDeleteExpenseMutation();
 
-  // Calculate total when amount or tax changes
   useEffect(() => {
     const amount = parseFloat(watch("amount") || "0");
     const tax = parseFloat(watch("tax") || "0");
     setValue("total", ((Number(amount) + Number(tax)).toFixed(2)));
   }, [watch("amount"), watch("tax")]);
 
-  // When create modal is open and branch is not set, default to first branch so it gets stored
   const branchData = activeBranches?.data?.branchData;
   useEffect(() => {
     if (isModalOpen && !isEditMode && (watch("branchId") === undefined || watch("branchId") === null)) {
@@ -642,7 +624,6 @@ const ExpenseManagement = () => {
   };
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
     localStorage.setItem("agentCurentPage", pagination?.current || 1);
@@ -771,31 +752,6 @@ const ExpenseManagement = () => {
       key: "isRecurring",
       render: (isRecurring) => isRecurring ? "Yes" : "No",
     },
-    /* {
-      title: "Expense Status",
-      dataIndex: "expenseStatus",
-      key: "expenseStatus",
-      render: (expenseStatus, record) => (
-        <Select
-          value={expenseStatus}
-          onChange={(newStatus) =>
-            handleChangeExpenseStatus(newStatus, record.id)
-          }
-          options={statusOptions}
-          style={{ width: 150 }}
-        />
-      ),
-      filters: [
-        { text: "Approved", value: "approved" },
-        { text: "Pending", value: "pending" },
-        { text: "Rejected", value: "rejected" },
-      ],
-      filteredValue: filteredInfo.expenseStatus || null,
-      onFilter: (value, record) => record.expenseStatus.includes(value as string),
-      sorter: (a, b) => a.expenseStatus.length - b.expenseStatus.length,
-      sortOrder: sortedInfo.columnKey === "expenseStatus" ? sortedInfo.order : null,
-      ellipsis: true,
-    }, */
     {
       title: "Recurrence Type",
       dataIndex: "recurrenceType",
@@ -868,23 +824,19 @@ const ExpenseManagement = () => {
 
   const showModal = () => setIsModalOpen(true);
 
-  // Generate PDF report
   const generatePDF = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
 
-    // Add logo
     const logoX = (pageWidth / 2) - 10;
     const logoY = 5;
     const logoWidth = 20;
     const logoHeight = 20;
     doc.addImage(logo1, "PNG", logoX, logoY, logoWidth, logoHeight);
 
-    // Add title
     doc.setFontSize(16);
     doc.text("Expense Report", pageWidth / 2, 32, { align: "center" });
 
-    // Add date range info if filtered
     if (periodFilter || dateRange) {
       doc.setFontSize(10);
       let filterText = "";
@@ -900,7 +852,6 @@ const ExpenseManagement = () => {
       doc.text(filterText, textX, 40);
     }
 
-    // Prepare data for the table
     const tableData = filteredData.filter(item => item.expenseStatus == 'approved').map(item => [
       item.invoice_number,
       item.name,
@@ -910,14 +861,11 @@ const ExpenseManagement = () => {
       `$${formatNumberWithCommasAndDecimals(item.total)}`,
       moment(item.transactionDate).format('MMM D, YYYY'),
       item.expenseCategory?.name || '-',
-      /* item.isRecurring ? 'Yes' : 'No',
-      item.recurrenceType || '-', */
     ]);
 
-    // Add table
     doc.autoTable({
       startY: 45,
-      head: [['Invoice', 'Name', 'Property Listing', 'Amount', 'Tax', 'Total', 'Date', 'Category'/* , 'Recurring', 'Recurrence' */]],
+      head: [['Invoice', 'Name', 'Property Listing', 'Amount', 'Tax', 'Total', 'Date', 'Category']],
       body: tableData,
       theme: "striped",
       headStyles: {
@@ -928,7 +876,6 @@ const ExpenseManagement = () => {
       margin: { left: 14 },
     });
 
-    // Add totals (approved expenses only)
     const approvedForTotals = filteredData.filter((item) => item.expenseStatus === "approved");
     const totalAmount = approvedForTotals.reduce((sum, item) => sum + Number(item.amount || 0), 0);
     const totalTax = approvedForTotals.reduce((sum, item) => sum + Number(item.tax || 0), 0);
@@ -959,7 +906,6 @@ const ExpenseManagement = () => {
     doc.save(`expense-report-${moment().format('YYYY-MM-DD')}.pdf`);
   };
 
-  // Generate Excel report
   const generateExcel = () => {
     const approvedForExcel = filteredData.filter((item) => item.expenseStatus === "approved");
     const excelData = approvedForExcel.map(item => ({
@@ -1039,7 +985,6 @@ const ExpenseManagement = () => {
         <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100">
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Expenses</h1>
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Inline stat cards */}
           <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #0f766e", background: "#f9f6f3" }}>
             <span className="text-xs text-gray-500 whitespace-nowrap">Total Expenses:</span>
             <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#0f766e" }}>${formatNumberWithCommasAndDecimals(calculateTotalExpenses())}</span>
@@ -1053,7 +998,6 @@ const ExpenseManagement = () => {
             <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#0f766e" }}>${formatNumberWithCommasAndDecimals(calculateTotalTax())}</span>
           </div>
           <div className="flex-1" />
-          {/* Search + Filter */}
           <div className="relative flex-shrink-0" style={{ width: 220 }}>
             <div className="flex">
               <input
@@ -1077,7 +1021,6 @@ const ExpenseManagement = () => {
                 <FaFilter size={10} /> Filter
               </button>
             </div>
-            {/* Search Suggestions */}
             {searchSuggestions.length > 0 && (
               <div className="absolute left-0 mt-1 w-full bg-white shadow-md border rounded-md z-20">
                 {searchSuggestions.map((suggestion, index) => (
@@ -1087,7 +1030,6 @@ const ExpenseManagement = () => {
                 ))}
               </div>
             )}
-            {/* Filter Dropdown */}
             {showDropdown && (
               <div className="absolute left-0 mt-1 w-[450px] bg-white shadow-md border rounded-md p-4 z-30">
                 <div className="mb-4">
@@ -1189,7 +1131,6 @@ const ExpenseManagement = () => {
               </div>
             )}
           </div>
-          {/* Export icons */}
           <FaFilePdf onClick={generatePDF} size={20} className="cursor-pointer text-red-600 hover:text-red-700 flex-shrink-0" title="Export to PDF" />
           <FaFileExcel onClick={generateExcel} size={20} className="cursor-pointer text-green-600 hover:text-green-700 flex-shrink-0" title="Export to Excel" />
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
@@ -1239,7 +1180,6 @@ const ExpenseManagement = () => {
           )}
         </div>
 
-      {/* Rest of the modals remain unchanged */}
       <Modal
         onCancel={handleCancel}
         open={isModalOpen}
@@ -1451,7 +1391,6 @@ const ExpenseManagement = () => {
             )}
           </div>
 
-          {/* Recurring Expense Section */}
           <div className="border p-4 rounded-md mt-4">
             <div className="flex items-center gap-2 mb-4">
               <Checkbox
@@ -1588,7 +1527,6 @@ const ExpenseManagement = () => {
         Are you sure you want to delete selected items?
       </Modal>
 
-      {/* View Expense Modal */}
       <Modal
         onCancel={closeViewModal}
         title="Expense Details"

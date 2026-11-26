@@ -53,7 +53,6 @@ const SelectDiscount: React.FC<SelectDiscountProps> = ({ discounts, selectedDisc
               <h3 className="text-xs font-semibold">{discount.name}</h3>
               <ul className="list-disc pl-5">
                 {discount.discountItems?.map((item: DiscountItem, itemIndex: number) => {
-                  // Helper function to get duration text with proper plural form
                   const getDurationText = (duration: number, type: string) => {
                     const durationTypes = {
                       'Weekly': duration === 1 ? 'Week Discount ' : 'Weeks Discount ',

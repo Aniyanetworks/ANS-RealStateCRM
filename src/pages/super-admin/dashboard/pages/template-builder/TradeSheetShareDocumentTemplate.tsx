@@ -63,7 +63,6 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
   >(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  // Fetch templates
   const { data, isLoading, refetch } = useGetTemplateBuilderListQuery({ type: "email", area: "tradesheet_share_document" });
 
   const templates = data?.data?.templateBuilders || [];
@@ -78,34 +77,29 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
     return inRecord;
   });
 
-  // Mutations
   const [createTemplate] = useCreateTemplateBuilderMutation();
   const [updateTemplate] = useUpdateTemplateBuilderMutation();
   const [deleteTemplateBuilder] = useDeleteTemplateBuilderMutation();
   const [deleteMultipleTemplateBuilder] = useDeleteMultipleTemplateBuildersMutation();
 
-  // Handle create
   const handleCreate = () => {
     setSelectedTemplate(null);
     setIsModalOpen(true);
   };
 
-  // Handle edit
   const handleEdit = (template: Announcement) => {
     setSelectedTemplate(template);
     setIsModalOpen(true);
   };
 
-  // Handle delete click, show confirmation modal
   const handleDeleteClick = (uuid: string) => {
     setAnnouncementToDelete(uuid);
-    setIsDeleteModalVisible(true); // Show delete confirmation modal
+    setIsDeleteModalVisible(true);
   };
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
-  // Confirm deletion
   const handleDeleteConfirm = async () => {
     if (announcementToDelete) {
       try {
@@ -113,12 +107,9 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
         await deleteTemplateBuilder(announcementToDelete);
 
         setIsDeleteModalVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
       } catch (error) {
-        console.log(error);
         setIsDeleteModalVisible(false);
-        // toast.error("Failed to delete template. Please try again.");
       }
     }
   };
@@ -127,7 +118,6 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
       try {
         const response = await deleteMultipleTemplateBuilder(selectedRowKeys);
 
-        // Ensure the refetch waits for the data to be refreshed
 
         if (response.data.status == true) {
           toast.success("Template deleted successfully!");
@@ -140,22 +130,18 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
         }
       } catch (error) {
         setIsDeleteModalMultipleVisible(false);
-        console.log(error);
-        // toast.error("Failed to delete template. Please try again.");
       }
     } else {
       toast.error("Please Select Items.");
     }
   };
 
-  // Cancel deletion
   const handleDeleteCancel = () => {
     setIsDeleteModalVisible(false);
     setIsDeleteModalMultipleVisible(false);
-    setAnnouncementToDelete(null); // Clear selected template for deletion
+    setAnnouncementToDelete(null);
   };
 
-  // Handle modal close (create/update template)
   const handleModalClose = async (data?: Announcement) => {
     setIsModalOpen(false);
     
@@ -185,7 +171,6 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
   
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -246,7 +231,7 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
       render: (description, record) => {
         const safeDescription = description || "";
         const isExpanded = expandedDescriptions.has(record.uuid!);
-        const maxLength = 50; // Adjust this value to change the initial text length
+        const maxLength = 50;
 
         const toggleExpand = (uuid: string) => {
           const newExpanded = new Set(expandedDescriptions);
@@ -344,7 +329,6 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
     },
   ];
 
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -404,7 +388,6 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteModalVisible}
@@ -430,7 +413,6 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
         Are you sure you want to delete this template?
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

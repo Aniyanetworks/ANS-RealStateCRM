@@ -1,9 +1,7 @@
-// Employees, Branches & GPS, Management Access, General Settings, Calendar Settings, My Profile.
 import { useEffect, useState } from "react";
 import { useCan, useTcAction, useTimeClock, Me } from "../TimeClockContext";
 import { Branch, Holiday, Member, fmtDate, money } from "../tcUtils";
 
-// ---------- Employees ----------
 
 function AddEmployeeForm() {
   const { branches, toast, closeModal, me } = useTimeClock();
@@ -83,14 +81,12 @@ function EditEmployeeForm({ e }: { e: Member }) {
   };
   const initials = (e.fullName || e.email || "?").split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
   const toggleBranch = (id: string) => setAssigned((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
-  // Only the amount that matches the pay type is shown; the others are kept and saved unchanged.
   const payField = f.payType === "monthly"
     ? { key: "monthlySalary" as const, label: "Monthly Salary" }
     : f.payType === "yearly" ? { key: "yearlySalary" as const, label: "Yearly Salary" } : { key: "hourlyRate" as const, label: "Hourly Rate" };
   const section = (title: string) => <div className="span3" style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.4, textTransform: "uppercase", color: "var(--muted)", borderTop: "1px solid var(--line)", paddingTop: 12, marginTop: 2 }}>{title}</div>;
   return (
     <>
-      {/* Who is being edited: name, email and type come from the ANS RealStateCRM user / agent record */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, border: "1px solid var(--line)", borderRadius: 12, background: "#f8f9fb", marginBottom: 16 }}>
         <span style={{ display: "grid", placeItems: "center", width: 42, height: 42, borderRadius: "50%", background: "var(--navy)", color: "#fff", fontWeight: 800, flex: "0 0 auto" }}>{initials}</span>
         <div style={{ minWidth: 0 }}>
@@ -185,7 +181,6 @@ export function EmployeesSection() {
   );
 }
 
-// ---------- Branches & GPS ----------
 
 function BranchForm({ b }: { b?: Branch }) {
   const { toast, closeModal } = useTimeClock();
@@ -243,7 +238,6 @@ export function BranchesSection() {
   );
 }
 
-// ---------- Management Access ----------
 
 export function AccessSection() {
   const { members, me, toast, realMe } = useTimeClock();
@@ -317,7 +311,6 @@ export function AccessSection() {
   );
 }
 
-// ---------- General Settings ----------
 
 export function SettingsSection() {
   const { settings, toast } = useTimeClock();
@@ -415,8 +408,6 @@ export function SettingsSection() {
   );
 }
 
-// ---------- Calendar Settings / My Profile ----------
-// (Passwords are managed by the ANS RealStateCRM login, so the time clock no longer offers a password change here.)
 
 export function AccountSection() {
   return (

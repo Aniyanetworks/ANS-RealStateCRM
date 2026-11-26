@@ -64,13 +64,11 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     const amount = soldPrice(tradeSheetData);
 
     if (commissionType === "amount") {
-      // Fixed amount - use commissionAmount directly
       const commissionAmount = isBuyerOrTenant
         ? tradeSheetData?.agentDetails?.[0]?.sellerCommissionAmount || 0.0
         : tradeSheetData?.agentDetails?.[0]?.buyerCommissionAmount || 0.0;
       return commissionAmount;
     } else {
-      // Percentage - calculate from percentage
       const commissionRate = isBuyerOrTenant
         ? tradeSheetData?.agentDetails?.[0]?.sellerCommission || 0.0
         : tradeSheetData?.agentDetails?.[0]?.buyerCommission || 0.0;
@@ -78,7 +76,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     }
   };
 
-  // Helper function to get commission display value
   const getCommissionDisplayValue = () => {
     const isBuyerOrTenant = selectedRepresentation === "buyer" || selectedRepresentation === "tenant";
 
@@ -100,7 +97,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
   };
 
 
-  // Total commission amount used for GST and balance due (commercial vs regular)
   const getTotalCommissionAmountForInvoice = () => {
     if (hasCommercial && commercialCommissionData?.length) {
       if (commercialCommissionType === "percentage") {
@@ -125,7 +121,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     return (commissionRate / 100) * amount;
   };
 
-  // Calculate shared users' total commission for selected representation
   const sharedUsersCommissionCalculation = () => {
     const isBuyerOrTenant = selectedRepresentation === "buyer" || selectedRepresentation === "tenant";
     const representationType = isBuyerOrTenant ? "buyer" : "seller";
@@ -142,16 +137,13 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
       return 0;
     }
 
-    // Get the total commission first
     const totalCommission = sellingCommissionCalculation();
     let totalSharedCommission = 0;
 
     filteredSharedUsers.forEach((user) => {
       if (user.commissionType === "amount") {
-        // Fixed amount - subtract directly
         totalSharedCommission += parseFloat(user.commission || 0);
       } else {
-        // Percentage of total commission (e.g., 10% of total commission)
         const commissionRate = parseFloat(user.commission || 0);
         totalSharedCommission += (commissionRate / 100) * totalCommission;
       }
@@ -160,14 +152,12 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     return totalSharedCommission;
   };
 
-  // Calculate primary agent commission (total - shared users commission)
   const primaryAgentCommissionCalculation = () => {
     const totalCommission = sellingCommissionCalculation();
     const sharedCommission = sharedUsersCommissionCalculation();
     return totalCommission - sharedCommission;
   };
 
-  // Get primary agent commission display value
   const getPrimaryAgentCommissionDisplayValue = () => {
     const isBuyerOrTenant = selectedRepresentation === "buyer" || selectedRepresentation === "tenant";
     const representationType = isBuyerOrTenant ? "buyer" : "seller";
@@ -176,7 +166,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
       ? tradeSheetData?.agentDetails?.[0]?.buyerCommissionType || "percentage"
       : tradeSheetData?.agentDetails?.[0]?.sellerCommissionType || "percentage";
 
-    // Get shared users for this representation
     const filteredSharedUsers = tradeSheetData?.sharedUsers?.filter(
       (user) => user.representationType === representationType
     ) || [];
@@ -189,8 +178,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
       const primaryCommissionAmount = totalCommissionAmount - sharedCommissionAmount;
       return `$${formatNumberWithCommasAndDecimals(primaryCommissionAmount)}`;
     } else {
-      // Calculate primary agent percentage
-      // If shared users have percentages of total commission, primary gets the remainder
       let totalSharedPercentage = 0;
       filteredSharedUsers.forEach((user) => {
         if (user.commissionType === "percentage") {
@@ -203,7 +190,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     }
   };
 
-  // Get primary agent name
   const getPrimaryAgentName = () => {
     const isBuyerOrTenant = selectedRepresentation === "buyer" || selectedRepresentation === "tenant";
     if (isBuyerOrTenant) {
@@ -213,20 +199,17 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     }
   };
 
-  // Calculate individual shared user commission
   const calculateIndividualSharedUserCommission = (user) => {
     const totalCommission = sellingCommissionCalculation();
 
     if (user.commissionType === "amount") {
       return parseFloat(user.commission || 0);
     } else {
-      // Percentage of total commission
       const commissionRate = parseFloat(user.commission || 0);
       return (commissionRate / 100) * totalCommission;
     }
   };
 
-  // Get individual shared user commission display value
   const getIndividualSharedUserCommissionDisplay = (user) => {
     if (user.commissionType === "amount") {
       return `$${formatNumberWithCommasAndDecimals(parseFloat(user.commission || 0))}`;
@@ -235,7 +218,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     }
   };
 
-  // Get filtered shared users for selected representation
   const getFilteredSharedUsers = () => {
     const isBuyerOrTenant = selectedRepresentation === "buyer" || selectedRepresentation === "tenant";
     const representationType = isBuyerOrTenant ? "buyer" : "seller";
@@ -250,13 +232,11 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
   };
 
   const totalSellingCommissionCalculation = () => {
-    // Use the same base as GST (commercial total or regular selling commission)
     const commissionAmount = getTotalCommissionAmountForInvoice();
     const gst = gstCalculation(13, commissionAmount);
     return Number(commissionAmount) + Number(gst);
   };
 
-  // Commercial Commission Helper Functions
   const formatCurrency = (value: number | string) => {
     const numValue = typeof value === 'string' ? parseFloat(value) : value;
     if (isNaN(numValue)) return '$0.00';
@@ -298,7 +278,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
         (item.commission && parseFloat(String(item.commission)) > 0));
   };
 
-  // Get commercial commission data based on selected representation
   const getCommercialCommissionData = () => {
     const isBuyerOrTenant = selectedRepresentation === "buyer" || selectedRepresentation === "tenant";
     if (isBuyerOrTenant) {
@@ -328,7 +307,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     setIsEmailSend(true);
 
     try {
-      // Generate PDF attachment with full multi-page support
       await new Promise((resolve, reject) => {
         const input = sectionRef.current;
         html2canvas(input, {
@@ -371,7 +349,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
           });
       });
 
-      // Get form values from React Hook Form after the PDF generation is complete
       const data = getValues();
       const formDataEmail = new FormData();
       formDataEmail.append(
@@ -390,20 +367,17 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
         tradeSheetData?.propertyListingId
       );
 
-      // Split recipients and append them to formData as an array of emails
       const recipientsArray = data.recipients
         .split(",")
-        .map((email) => email.trim()); // Ensure emails are trimmed
-      formDataEmail.append("recipients", recipientsArray); // Append recipients as a JSON string
+        .map((email) => email.trim());
+      formDataEmail.append("recipients", recipientsArray);
 
       for (const key in data) {
         if (data.hasOwnProperty(key) && key !== "recipients") {
-          // Skip recipients field here as we've already handled it
           formDataEmail.append(key, data[key]);
         }
       }
 
-      // Send the email with the generated PDF as an attachment
       const response = await sendBuyerCommissionInvoice({
         data: formDataEmail,
       }).unwrap();
@@ -414,14 +388,12 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
       }
       resetForm();
     } catch (error) {
-      console.log("Error:", error); // Log the error for debugging
       toast.error(`Error: ${error?.message || "Something went wrong"}`);
     } finally {
       setIsEmailSend(false);
     }
   };
 
-  // Watch the data field for ReactQuill
   const emailBody = watch("data");
 
   const handleChange = (value: any) => {
@@ -474,20 +446,16 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     }
   }, [tradeSheetData]);
 
-  // Set default email subject and body when tradeSheetData is available
   useEffect(() => {
     if (tradeSheetData && tradeSheetData?.properties?.[0]?.propertyAddress && !defaultsInitialized.current) {
-      // Get property address
       const propertyAddress = capitalizeFirstLetter(
         tradeSheetData?.properties?.[0]?.propertyAddress || ""
       );
 
-      // Get closing date
       const closingDate = tradeSheetData?.properties?.[0]?.closingDate
         ? moment.utc(tradeSheetData?.properties?.[0]?.closingDate).format("MMMM DD, YYYY")
         : "";
 
-      // Show the counterparty's agent (not our own DVR-side agent)
       const representationForEmail =
         tradeSheetData?.representationType === "single"
           ? tradeSheetData?.representation
@@ -504,11 +472,9 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
         : tradeSheetData?.agentDetails?.[0]?.buyerLastName || "";
       const agentsText = `${otherAgentFirstName} ${otherAgentLastName}`.trim() || "N/A";
 
-      // Set default subject
       const defaultSubject = `Buyer Commission Invoice - ${propertyAddress} - ${closingDate}`;
       setValue("subject", defaultSubject, { shouldValidate: false, shouldDirty: false });
 
-      // Set default body (HTML format for ReactQuill)
       const defaultBody = `<p>Please find attached the commission statement for ${propertyAddress}, scheduled to close on ${closingDate}.</p><p>Your Agents for this transaction: ${agentsText}.</p><p>Kindly confirm receipt of this email at your earliest convenience.</p><p>Thank you.</p><p>Deal Administrator</p><p>Tel: 416-951-9929, Ext. 1002</p><p>Email: admin@dvrealty.ca</p>`;
       setValue("data", defaultBody, { shouldValidate: false, shouldDirty: false });
 
@@ -516,11 +482,9 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
     }
   }, [tradeSheetData, selectedRepresentation, setValue]);
 
-  // Enhanced image loader with CORS handling
   const loadAndConvertImages = async (element: HTMLElement): Promise<void> => {
     const images = element.getElementsByTagName("img");
     const promises = Array.from(images).map((img) => {
-      // Skip data URLs and local images
       if (
         img.src.startsWith("data:") ||
         img.src.startsWith(window.location.origin)
@@ -551,7 +515,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
           console.error("Failed to load image:", img.src);
           resolve();
         };
-        // Add cache busting parameter
         proxyImg.src = img.src.includes("?")
           ? `${img.src}&t=${new Date().getTime()}`
           : `${img.src}?t=${new Date().getTime()}`;
@@ -639,7 +602,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
           {isDownloading && <ButtonLoader />}Download
         </button>
       </div>
-      {/* Tabs */}
       <div className="mt-6 border-b flex mb-2">
         <button
           className={`px-4 py-2 ${activeTab === "sendInvoice"
@@ -655,7 +617,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
         <div>
           <div ref={sectionRef} className="bg-[#0f766e] min-h-[1122px] flex flex-col">
             <div className="ml-5 pl-10 pr-10 py-10 border-[#0b3331] border-y-8 bg-white flex-1 text-[13px] leading-6">
-              {/* Header */}
               <div className="flex gap-10 items-start border-b pb-4">
                 <div className="flex gap-3 w-[50%] items-end">
                   <img
@@ -681,7 +642,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                 </div>
               </div>
 
-              {/* Invoice Info */}
               {selectedRepresentation === "seller" || selectedRepresentation === "landlord" ? (
                 <div className="mt-1">
                   <p className="pb-3">Date: {moment().format("MMMM DD, YYYY")}</p>
@@ -707,7 +667,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
               )}
 
 
-              {/* Statement of Account */}
               <div className="mt-2">
                 <h3 className="font-bold underline">STATEMENT OF ACCOUNT</h3>
                 <p>
@@ -751,7 +710,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                 </p>
               </div>
 
-              {/* Financial Details */}
               <div className="mt-4">
                 <table className="w-full">
                   <colgroup>
@@ -828,7 +786,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                 </table>
               </div>
 
-              {/* Payment Instructions */}
               <div className="mt-4">
                 <p>
                   Please make cheque payable to{" "}
@@ -840,7 +797,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                 </p>
               </div>
 
-              {/* EFT Details */}
               <div className="mt-2">
                 <h3 className="font-bold underline">
                   Electronic Fund Transfer (EFT) Details:
@@ -849,7 +805,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                 <p>Transit # 17902, Branch # 004, Account # 5278840</p>
               </div>
 
-              {/* Buyer's Solicitor */}
               {selectedRepresentation === "seller" && (
                 <div className="mt-2">
                   <h3 className="font-bold underline">Buyer's Solicitor:</h3>
@@ -868,7 +823,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                   </p>
                 </div>
               )}
-              {/* Seller's Solicitor */}
               {selectedRepresentation === "buyer" && (
                 <div className="mt-2">
                   <h3 className="font-bold underline">Seller's Solicitor:</h3>
@@ -889,7 +843,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
               )}
 
 
-              {/* Footer */}
               <div className="mt-6 text-gray-700">
                 <p>Thank you and feel free to reach out to us any time if you have any questions.</p>
                 <p className="mt-4">Sincerely,</p>
@@ -920,7 +873,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
             <div>
               <h5 className="mb-2 text-center font-bold">Send Email</h5>
 
-              {/* Recipients Input */}
               <div className="mb-4">
                 <label className="font-bold">Recipients Email:</label>
                 <input
@@ -938,7 +890,6 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                 )}
               </div>
 
-              {/* Subject Input (Text Area) */}
               <div className="mb-4">
                 <label className="font-bold">Email Subject:</label>
                 <input
@@ -955,15 +906,8 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                 )}
               </div>
 
-              {/* Data Input (Text Area) */}
               <div className="mb-4">
                 <label className="font-bold">Email Body:</label>
-                {/* <textarea
-                  rows={5}
-                  className="w-full p-2 border rounded"
-                  placeholder="Email Body/Content"
-                  {...register("data", { required: "Email body is required" })}
-                /> */}
                 <ReactQuill
                   value={emailBody || ""}
                   onChange={handleChange}
@@ -984,11 +928,10 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                   <span className="text-red-500">{errors.data.message}</span>
                 )}
               </div>
-              {/* Submit Button */}
               <div>
                 <button
                   className="bg-[#0f766e] text-white p-2 rounded-md flex gap-2 items-center"
-                  onClick={onSubmitEmail} // Hook form submit
+                  onClick={onSubmitEmail}
                   disabled={isEmailSend}
                 >
                   {isEmailSend && <ButtonLoader />}

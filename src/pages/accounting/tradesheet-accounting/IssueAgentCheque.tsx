@@ -186,7 +186,6 @@ const IssueAgentCheque: React.FC = () => {
   };
 
   const handleDelete = (uuid: string) => {
-    console.log(uuid);
 
     setSelectedUUID(uuid);
     setIsModalVisible(true);
@@ -217,7 +216,6 @@ const IssueAgentCheque: React.FC = () => {
   };
 
   const showAgentDetailsModal = (record: DataType) => {
-    // Format the dates to YYYY-MM-DD
     const formattedRecoExpiryDate = record.recoExpiryDate
       ? record.recoExpiryDate.split("T")[0]
       : "";
@@ -232,16 +230,13 @@ const IssueAgentCheque: React.FC = () => {
     const planArray = record.optionalPlanId
       ? record.optionalPlanId.split(",").map(Number)
       : [];
-    // Filter the optional plans where the plan id is included in the planArray
     const filteredOptionalPlans =
       planArray && optionalPlanData?.data?.optionalPlans
         ? optionalPlanData?.data?.optionalPlans.filter((plan: OptionalPlan) =>
             planArray.includes(Number(plan.id))
           )
         : [];
-    console.log('record',record?.tradeAgentCommission)
     setTradeAgentCommission(record?.tradeAgentCommission)
-    // setAgentTradeSheet(record?.)
     setOptionalPlans(filteredOptionalPlans);
     setAgentAccount(record as unknown as AgentAccount);
     setSpecialNote(record?.special_note);
@@ -266,12 +261,11 @@ const IssueAgentCheque: React.FC = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -280,7 +274,6 @@ const IssueAgentCheque: React.FC = () => {
         const selectedData = selectedRowKeys.map((item: any) => item?.uuid);
         const response = await deleteMultipleAgent(selectedData);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -365,7 +358,6 @@ const IssueAgentCheque: React.FC = () => {
   const [specialNote, setSpecialNote] = useState("");
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
@@ -408,76 +400,6 @@ const IssueAgentCheque: React.FC = () => {
       dataIndex: "cellPhone",
       key: "cellPhone",
     },
-    // {
-    //   title: "Agent Plan",
-    //   dataIndex: "plan",
-    //   render: (plan: Plan) => plan?.name,
-    //   key: "plan",
-    // },
-    // {
-    //   title: "Account Status",
-    //   dataIndex: "status",
-    //   key: "status",
-    //   render: (status, record) => (
-    //     <Select
-    //       value={status}
-    //       onChange={(newStatus) =>
-    //         handleChangeAccountStatus(newStatus, record.id)
-    //       }
-    //       options={statusOptions}
-    //       style={{ width: 150 }}
-    //     />
-    //   ),
-    //   filters: [
-    //     { text: "Approved", value: "approved" },
-    //     { text: "Pending", value: "pending" },
-    //     { text: "Draft", value: "draft" },
-    //     {
-    //       text: "Under Review",
-    //       value: "underReview",
-    //     },
-    //     { text: "Rejected", value: "rejected" },
-    //     { text: "Closed", value: "closed" },
-    //   ],
-    //   filteredValue: filteredInfo.status || null,
-    //   onFilter: (value, record) => record.status.includes(value as string),
-    //   sorter: (a, b) => a.status.length - b.status.length,
-    //   sortOrder: sortedInfo.columnKey === "status" ? sortedInfo.order : null,
-    //   ellipsis: true,
-    // },
-    // {
-    //   title: "Agreement Status",
-    //   dataIndex: "agreementStatus",
-    //   key: "agreementStatus",
-    //   render: (agreementStatus, record) => (
-    //     <Select
-    //       value={agreementStatus}
-    //       onChange={(newStatus) =>
-    //         handleChangeAgreementStatus(newStatus, record.id)
-    //       }
-    //       options={statusOptions}
-    //       style={{ width: 150 }}
-    //     />
-    //   ),
-    //   filters: [
-    //     { text: "Approved", value: "approved" },
-    //     { text: "Pending", value: "pending" },
-    //     { text: "Draft", value: "draft" },
-    //     {
-    //       text: "Under Review",
-    //       value: "underReview",
-    //     },
-    //     { text: "Rejected", value: "rejected" },
-    //     { text: "Closed", value: "closed" },
-    //   ],
-    //   filteredValue: filteredInfo.agreementStatus || null,
-    //   onFilter: (value, record) =>
-    //     record.agreementStatus.includes(value as string),
-    //   sorter: (a, b) => a.agreementStatus.length - b.agreementStatus.length,
-    //   sortOrder:
-    //     sortedInfo.columnKey === "agreementStatus" ? sortedInfo.order : null,
-    //   ellipsis: true,
-    // },
     {
       title: "Actions",
       key: "actions",
@@ -498,54 +420,6 @@ const IssueAgentCheque: React.FC = () => {
                   </button>
                 ),
               },
-            //   hasPermissionForSlug("edit-agent") && {
-            //     key: "edit",
-            //     label: (
-            //       <Link
-            //         className="flex items-center w-full gap-2"
-            //         to={`/dashboard/super-admin/agent-create/${record.user.uuid}`}
-            //       >
-            //         <FaRegEdit />
-            //         Edit
-            //       </Link>
-            //     ),
-            //   },
-            //   {
-            //     key: "agreement",
-            //     label: (
-            //       <Link
-            //         to={`/dashboard/super-admin/agreement-preview/${record.user.uuid}`}
-            //         className="flex items-center w-full gap-2"
-            //         target="_blank"
-            //       >
-            //         <FaFileArrowUp />
-            //         Agreement
-            //       </Link>
-            //     ),
-            //   },
-            //   hasPermissionForSlug("edit-agent") && {
-            //     key: "documents",
-            //     label: (
-            //       <button
-            //         onClick={() => handleDocumentSubmit(record)}
-            //         className="flex items-center w-full gap-2"
-            //       >
-            //         <FaFileArrowUp />
-            //         Documents
-            //       </button>
-            //     ),
-            //   },
-            //   hasPermissionForSlug("delete-agent") && {
-            //     key: "delete",
-            //     label: (
-            //       <button
-            //         onClick={() => handleDelete(record.user.uuid)}
-            //         className="flex items-center w-full gap-2"
-            //       >
-            //         <MdDelete /> Delete
-            //       </button>
-            //     ),
-            //   },
             ],
           }}
         >
@@ -650,7 +524,6 @@ const IssueAgentCheque: React.FC = () => {
           <table className="min-w-full table-auto border-collapse">
             <thead>
               <tr>
-                {/* <th className="border px-4 py-2">Select</th> */}
                 <th className="border px-4 py-2">Agent Name</th>
                 <th className="border px-4 py-2">Tradesheet Id</th>
                 <th className="border px-4 py-2">Tradesheet Address</th>
@@ -663,13 +536,6 @@ const IssueAgentCheque: React.FC = () => {
             <tbody>
               {tradeAgentCommission.map((data) => (
                 <tr key={data.id}>
-                  {/* <td className="border px-4 py-2">
-                    <input
-                      type="checkbox"
-                      // checked={selectedRows.includes(row.id)}
-                      // onChange={() => handleCheckboxChange(row.id)}
-                    />
-                  </td> */}
                   <td className="border px-4 py-2">{data?.tradeSheet?.name}</td>
                   <td className="border px-4 py-2">
                     {data?.tradeSheet?.tradeSheetTypeId}
@@ -724,7 +590,6 @@ const IssueAgentCheque: React.FC = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

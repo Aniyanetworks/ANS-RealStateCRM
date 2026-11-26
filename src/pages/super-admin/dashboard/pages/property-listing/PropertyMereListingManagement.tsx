@@ -71,7 +71,6 @@ const PropertyListingManagement = () => {
   const { filter } = useParams('filter');
   const { hasPermissionForSlug } = usePermissions();
   const [tableData, setTableData] = useState<DataType[]>([]);
-  // Add user.id as a query param to force refetch when user changes
   const { user } = useAppSelector((state) => state.user);
   const { data, isLoading, refetch } = useGetPropertyListingQuery({
     userId: user?.id || "",
@@ -181,17 +180,7 @@ const PropertyListingManagement = () => {
     },
   ];
 
-  // const formatDate = (isoDate: any) => {
-  //   if(isoDate)
-  //   {
-  //     return format(new Date(isoDate), "yyyy-MM-dd");
-  //   }
-  //   else
-  //   {
-  //     return "";
-  //   }
 
-  // };
 
   const formatDate = (isoDate: any) => {
     if (isoDate) {
@@ -219,7 +208,6 @@ const PropertyListingManagement = () => {
   } = useForm<DataType>({});
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -290,7 +278,6 @@ const PropertyListingManagement = () => {
   };
 
   const handleEdit = (record: DataType) => {
-    // Create a new object with formatted date fields
     const formattedRecord = {
       ...record,
       contractDate: formatDate(record.contractDate),
@@ -298,7 +285,6 @@ const PropertyListingManagement = () => {
       offerDate: formatDate(record.offerDate),
     };
 
-    // Reset the form with the formatted record
     reset(formattedRecord);
     setIsEditMode(true);
     setSelectedUUID(record.uuid);
@@ -306,7 +292,7 @@ const PropertyListingManagement = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyListing(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -372,7 +358,7 @@ const PropertyListingManagement = () => {
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
@@ -410,7 +396,6 @@ const PropertyListingManagement = () => {
       status: changeStatus || newStatus,
       rejectReason: rejectReason,
     };
-    console.log("requestData", requestData);
 
     try {
       const response = await changePropertyListingStatus({
@@ -435,7 +420,7 @@ const PropertyListingManagement = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -443,7 +428,6 @@ const PropertyListingManagement = () => {
       try {
         const response = await deleteMultiplePropertyListing(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -517,7 +501,7 @@ const PropertyListingManagement = () => {
             padding: 0,
             color: "inherit",
             font: "inherit",
-            textDecoration: "none", // No underline by default
+            textDecoration: "none",
           }}
           onMouseEnter={(e) => (e.currentTarget.style.textDecoration = "underline")}
           onMouseLeave={(e) => (e.currentTarget.style.textDecoration = "none")}
@@ -539,9 +523,9 @@ const PropertyListingManagement = () => {
             setSelectedListingId(record?.id || "");
           }}
           style={{
-            color: record.status === "rejected" ? "red" : "inherit", // Apply red color if status is 'rejected'
+            color: record.status === "rejected" ? "red" : "inherit",
           }}
-          className={record.status === "rejected" ? "blinking" : ""} // Apply blinking class if status is 'rejected'
+          className={record.status === "rejected" ? "blinking" : ""}
         >
           {propertyAddress || "N/A"}
         </button>
@@ -561,8 +545,8 @@ const PropertyListingManagement = () => {
     },
     {
       title: "Shared Agent",
-      dataIndex: "name", // Keep dataIndex as is, unless you want to map it differently
-      key: "name", // Keep key as is
+      dataIndex: "name",
+      key: "name",
       render: (text, record) => {
         const multipleUserArray = record?.sharedUsers;
         return multipleUserArray?.map((rep: string, index: number) => (
@@ -745,7 +729,7 @@ const PropertyListingManagement = () => {
                       setSelectedUuid(recoard.uuid);
                       setSelectedListingId(recoard?.id || "");
                     }}
-                    className=" flex items-center gap-2" // Added margin left for spacing
+                    className=" flex items-center gap-2"
                   >
                     <FaFileAlt /> File Manager
                   </button>
@@ -814,7 +798,6 @@ const PropertyListingManagement = () => {
 
   const filterProps = filter ? getFilteredData().filter((item) => item.listingStatus === filter) : getFilteredData();
 
-  // serial number in the table
   const tableSourceData = filterProps?.map((item: any, index: number) => {
     return {
       ...item,
@@ -1037,7 +1020,6 @@ const PropertyListingManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Reject Modal */}
       <Modal
         title="Add Reject Reasons"
         visible={isRejectModalVisible}
@@ -1050,9 +1032,9 @@ const PropertyListingManagement = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#072f2d", // Custom background color
-              borderColor: "#072f2d", // Custom border color
-              color: "#fff", // Text color to ensure contrast
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
+              color: "#fff",
             }}
           >
             Save
@@ -1063,14 +1045,13 @@ const PropertyListingManagement = () => {
         ]}
       >
         <Input.TextArea
-          rows={4} // You can adjust the number of rows
+          rows={4}
           placeholder="Enter reject reason here"
-          value={rejectReason} // Assuming you have a state for the reason
-          onChange={(e) => setRejectReason(e.target.value)} // Assuming you have a setRejectReason function
+          value={rejectReason}
+          onChange={(e) => setRejectReason(e.target.value)}
         />
       </Modal>
 
-      {/* Reject Reasons View Modal */}
       <Modal
         title="Reject Reasons View"
         visible={isRejectReasonViewModalVisible}
@@ -1084,7 +1065,6 @@ const PropertyListingManagement = () => {
         <div>{rejectReason}</div>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -1106,7 +1086,6 @@ const PropertyListingManagement = () => {
         Are you sure you want to delete selected items?
       </Modal>
 
-      {/* Popup File manager */}
       <Modal
         title="File Manager"
         open={isModalFileManagerVisible}
@@ -1126,7 +1105,6 @@ const PropertyListingManagement = () => {
         </div>
       </Modal>
 
-      {/* Property Preview */}
       <Modal
         title="Property Preview"
         open={isModalPropertyListPreviewVisible}

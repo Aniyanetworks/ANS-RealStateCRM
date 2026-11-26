@@ -7,7 +7,7 @@ const errorMiddleware: Middleware = () => (next) => (action: any) => {
   if (action.type.endsWith("rejected")) {
     if (action?.payload?.data?.message?.includes("Unauthorized")) {
       localStorage.removeItem("accessToken");
-      window.location.href = `${appUrl}/login`; // Redirect on auth error
+      window.location.href = `${appUrl}/login`;
     }
   }
   return next(action);

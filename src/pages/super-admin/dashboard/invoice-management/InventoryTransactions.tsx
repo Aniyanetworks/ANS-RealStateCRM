@@ -93,7 +93,6 @@ const InventoryTransactions = () => {
     }
   }, [inventoryData, setValue]);
 
-  // Helper function to get user display name
   const getUserDisplayName = (user: TransactionType["user"]) => {
     if (!user) return "N/A";
     return (
@@ -104,7 +103,6 @@ const InventoryTransactions = () => {
     );
   };
 
-  // Get unique users for filter
   const uniqueUsers = React.useMemo(() => {
     return Array.from(
       new Map(
@@ -284,7 +282,6 @@ const InventoryTransactions = () => {
         </div>
       </div>
 
-      {/* ==== transactions table ========= */}
       <div>
         {isLoading ? (
           <TableLoader />
@@ -299,7 +296,6 @@ const InventoryTransactions = () => {
         )}
       </div>
 
-      {/* ======== create transaction ======== */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}

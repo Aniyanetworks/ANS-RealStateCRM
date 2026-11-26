@@ -2,7 +2,6 @@
 // eslint-disable @typescript-eslint/no-explicit-any
 import React, { useState, useRef } from "react";
 import { format } from "date-fns";
-// import TableLoader from "../loader/TableLoader";
 import { Table, Tag } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import * as XLSX from "xlsx";
@@ -248,7 +247,7 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
       Agent_Commission_Transfer: item.status,
       Base_Office_Commission: `${item.tradeSheet.tradeTransaction?.[0]?.baseOfficeCommissionTotal}%`,
       Net_Commission: `${item.tradeSheet.tradeTransaction?.[0]?.netCommissionTotal}%`,
-      Agent_Commission: `$${(Number(item.agentCommissionTotal) || 0).toFixed(2)}`, // Ensure number
+      Agent_Commission: `$${(Number(item.agentCommissionTotal) || 0).toFixed(2)}`,
       Issued_date: item.createdAt ? format(new Date(item.createdAt), "dd MMMM yyyy, hh:mm a") : "No date",
     }));
 
@@ -286,14 +285,14 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
         x += columnWidths[index];
     });
 
-    let currentY = startY + 2 * lineHeight; // Start below headers
+    let currentY = startY + 2 * lineHeight;
     filteredData.forEach((item) => {
         const row = [
           item.tradeSheet?.tradeSheetTypeId || "N/A",
           item.status,
           `${item.tradeSheet.tradeTransaction?.[0]?.baseOfficeCommissionTotal}%`,
           `${item.tradeSheet.tradeTransaction?.[0]?.netCommissionTotal}%`,
-          `$${(Number(item.agentCommissionTotal) || 0).toFixed(2)}`, // Ensure number
+          `$${(Number(item.agentCommissionTotal) || 0).toFixed(2)}`,
           item.createdAt ? format(new Date(item.createdAt), "dd MMMM yyyy, hh:mm a") : "No date",
         ];
 
@@ -304,7 +303,7 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
 
         x = margin;
         row.forEach((cell, index) => {
-            pdf.text(String(cell), x, currentY); // Convert to string to avoid errors
+            pdf.text(String(cell), x, currentY);
             x += columnWidths[index];
         });
 
@@ -316,9 +315,7 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
 
   return (
     <div>
-      {/* Commission Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-3">
-        {/* Total Trades */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-indigo-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Trades</span>
@@ -328,7 +325,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
           </div>
         </div>
 
-        {/* Total Sales */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-orange-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Listing Price</span>
@@ -338,7 +334,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
           </div>
         </div>
 
-        {/* Total Sales */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-orange-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Sales Price</span>
@@ -348,7 +343,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
           </div>
         </div>
 
-        {/* Total Sales */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-orange-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Sold Price</span>
@@ -358,7 +352,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
           </div>
         </div>
 
-        {/* Total Income */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Base Office Commission</span>
@@ -367,7 +360,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
             </span>
           </div>
         </div>
-        {/* Total Income */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Net Commission</span>
@@ -376,7 +368,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
             </span>
           </div>
         </div>
-        {/* Total Income */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Commission to Agent</span>
@@ -386,7 +377,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
           </div>
         </div>
 
-        {/* Transferred Amount */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Transferred Amount to Agent</span>
@@ -396,7 +386,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
           </div>
         </div>
 
-        {/* Average Commission Rate */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-red-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Average Commission Rate</span>
@@ -405,7 +394,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
             </span>
           </div>
         </div>
-        {/* Average Tax Rate */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Average Tax Rate</span>
@@ -416,7 +404,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
         </div>
       </div>
 
-      {/* Export Buttons */}
       <div className="flex gap-3 justify-end my-3">
         <FaFilePdf
           onClick={handlePdfExport}
@@ -432,7 +419,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
         />
       </div>
 
-      {/* Table */}
       <div ref={tableRef}>
         <Table
           rowKey="id"

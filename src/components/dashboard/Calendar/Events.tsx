@@ -37,7 +37,6 @@ const Events = ({ events }: { events: any[] }) => {
     const isSameDate =
       selectedDate && format(parseISO(selectedDate), "YYYY-MM-DD") === selected;
 
-    // Check if the selected date already matches or is invalid
     if (isSameDate || !events.some((event) => event.date === selected)) {
       return;
     }
@@ -55,10 +54,6 @@ const Events = ({ events }: { events: any[] }) => {
         <Calendar dateCellRender={dateCellRender} onSelect={onDateSelect} />
       </div>
 
-      {/*##########################
-      #### Event Details Modal #### 
-      ############################
-      */}
 
       {setSelectedDate && (
         <Modal

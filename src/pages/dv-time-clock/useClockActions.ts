@@ -1,8 +1,3 @@
-// Clock in / clock out as the dvclock app does it: GPS geofence check against the clock-in branch
-// (today's shift branch, else the primary branch, else the Main Branch; a branch without GPS in the
-// Clock In/Out settings allows clock-in from anywhere, as on the Clock In/Out page), late clock-in reason after the
-// 10-minute grace, payable hours capped to the scheduled shift, and a management approval request for
-// extra minutes after a late clock-out. Offsite clock-in uses an approved one-time request.
 import { useCallback } from "react";
 import { useLazyTcGetQuery } from "../../redux/api/common/dvTimeClockSlice";
 import { useTcAction, useTimeClock } from "./TimeClockContext";
@@ -21,7 +16,6 @@ export function useClockActions() {
     return (rows || []).length > 0;
   }, [get]);
 
-  /** Branch for today's clock-in: the branch picked on the page, else today's shift branch, else primary branch, else the Main Branch. */
   const getClockBranch = useCallback(async (pickedBranchId?: number | null): Promise<{ branch?: Branch; shift?: Shift | null; error?: string }> => {
     const today = new Date().toLocaleDateString("en-CA");
     const todayShifts = (await get<Shift[]>("/shifts", { userId: me.userId, from: today, to: today, notStatus: "cancelled" })) || [];
@@ -37,7 +31,6 @@ export function useClockActions() {
     const target = await getClockBranch(pickedBranchId);
     if (target.error || !target.branch) throw new Error(target.error);
     if (target.branch.latitude == null || target.branch.longitude == null) {
-      // No GPS set for this branch: clock in from anywhere; the location is recorded when available.
       const pos = await getPosition().catch(() => null);
       return { branch: target.branch, shift: target.shift, lat: pos?.coords.latitude ?? null, lon: pos?.coords.longitude ?? null, distance: null, radius: null, gps: false };
     }
@@ -70,7 +63,6 @@ export function useClockActions() {
     return reason.trim();
   };
 
-  /** GPS-verified clock in. Returns true when recorded. */
   const clockIn = useCallback(async (pickedBranchId?: number | null) => {
     try {
       if (await hasOpenAttendance(me.userId)) {
@@ -89,7 +81,6 @@ export function useClockActions() {
     }
   }, [act, hasOpenAttendance, me.userId, toast, verifyClockInLocation]);
 
-  /** Clock out: payable time is capped to the scheduled shift; >10 min late needs a reason and approval. */
   const clockOut = useCallback(async (a: Attendance) => {
     const actualOut = new Date(), actualIn = new Date(a.clockIn);
     let shift: Shift | null = null, scheduledEnd: Date | null = null;
@@ -132,7 +123,6 @@ export function useClockActions() {
     return true;
   }, [act, get, toast]);
 
-  /** Clock in with an approved offsite request (location recorded when available, not verified). */
   const clockInOffsite = useCallback(async (requestUuid: string) => {
     try {
       if (await hasOpenAttendance(me.userId)) {
@@ -148,7 +138,6 @@ export function useClockActions() {
       const pos = await getPosition();
       coords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
     } catch {
-      /* location is optional for an approved offsite clock-in */
     }
     try {
       await act("/attendance/clock-in", "POST", { userId: me.userId, offsiteRequestUuid: requestUuid, lat: coords.lat, lng: coords.lng });

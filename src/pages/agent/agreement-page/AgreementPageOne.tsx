@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 
 const getCurrentDate = () => {
   const currentDate = new Date();
-  const day = currentDate.getDate().toString().padStart(2, '0'); // Day (02, 03, ...)
-  const month = currentDate.toLocaleString('default', { month: 'long' }); // Month (January, February, ...)
-  const year = currentDate.getFullYear(); // Full year (2024)
+  const day = currentDate.getDate().toString().padStart(2, '0');
+  const month = currentDate.toLocaleString('default', { month: 'long' });
+  const year = currentDate.getFullYear();
 
   return {
     day,
@@ -24,7 +24,7 @@ const AgreementPageOne = () => {
   const currentDate = getCurrentDate();
 
   const data = {
-    contractDate: currentDate, // Use dynamic current date
+    contractDate: currentDate,
     broker: {
       name: "ANS REALSTATECRM INC., BROKERAGE",
       title: "BROKER"
@@ -52,7 +52,6 @@ const AgreementPageOne = () => {
   return (
     <div className="max-w-[850px] mx-auto p-8 bg-white">
 
-      {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 border border-gray-300">
           <img
@@ -69,7 +68,6 @@ const AgreementPageOne = () => {
 
 
 
-      {/* Agreement Intro */}
       <div className="mb-8 text-center">
         <p className="mb-4">
           THIS INDEPENDENT CONTRACTOR'S AGREEMENT is made in duplicate for a term of one year,
@@ -81,7 +79,6 @@ const AgreementPageOne = () => {
         </p>
       </div>
 
-      {/* Parties */}
       <div className="space-y-6 mb-8">
         <div className="grid grid-cols-[100px_1fr] gap-2">
           <p className="font-bold">BETWEEN:</p>
@@ -100,7 +97,6 @@ const AgreementPageOne = () => {
         </div>
       </div>
 
-      {/* Legal Text */}
       <div className="space-y-6 mb-8 text-sm">
         <p>
           In this Agreement, the term "Salesperson" includes a Broker registered under the Real Estate and Business Brokers Act,
@@ -160,7 +156,6 @@ const AgreementPageOne = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="flex justify-between items-center mt-12">
         <p className="text-sm">Page 1 of 5</p>
         <div className="flex gap-4">

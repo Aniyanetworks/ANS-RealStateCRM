@@ -1,4 +1,3 @@
-// components/ValidationModal.tsx
 import Modal from 'antd/es/modal';
 
 interface ValidationModalProps {

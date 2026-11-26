@@ -9,7 +9,6 @@ import { Table, Modal, Button, Dropdown, Space, Select, Tag } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaEye, FaFile, FaSearch, FaTimes } from "react-icons/fa";
 import logo from "/logo.svg";
-// import { baseUrl } from "../../../../utils/constant";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import TableLoader from "../../../../components/loader/TableLoader";
@@ -71,7 +70,6 @@ const ClientPropertyListingManagement = () => {
 const [sortedInfo, setSortedInfo] = useState<Record<string, any>>({});
 
 const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter) => {
-  console.log('Various parameters', pagination, filters, sorter);
   setFilteredInfo(filters);
   setSortedInfo(sorter);
 };
@@ -132,8 +130,8 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
   const handleTabChange = (key: string) => {
     const tab = tabs.find((t) => t.id === key);
     if (tab) {
-      setActiveKey(key); // Update the active tab
-      navigate(tab.link); // Update the URL
+      setActiveKey(key);
+      navigate(tab.link);
     }
   };
 
@@ -169,7 +167,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
   } = useForm<DataType>({});
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -177,7 +174,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
       setIsDownloading(true);
       const element = sectionRef.current;
     
-      // Wait for images to load
       const images = element.getElementsByTagName('img');
       const imageLoadPromises = Array.from(images).map(
         (img) =>
@@ -189,32 +185,28 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     
       await Promise.all(imageLoadPromises);
     
-      // Calculate maximum height for an image to fit on a single page
-      const pageHeightInPixels = 1122; // A4 height in pixels at 96 DPI (297mm â‰ˆ 1122px)
-      const marginInPixels = 10; // Margin in pixels
+      const pageHeightInPixels = 1122;
+      const marginInPixels = 10;
     
       Array.from(images).forEach((img) => {
        
         const imgHeight = img.clientHeight;
         if (imgHeight > pageHeightInPixels - marginInPixels) {
-          // Scale the image to fit within the page
           const scaleFactor = (pageHeightInPixels - marginInPixels) / imgHeight;
           img.style.width = `${img.clientWidth * scaleFactor}px`;
           img.style.height = `${imgHeight * scaleFactor}px`;
         }
       });
     
-      // Options for the PDF
       const options = {
         margin: marginInPixels,
         filename: 'invoice.pdf',
         image: { type: 'png', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true }, // Enable CORS for external images
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: 'css' }, 
       };
     
-      // Generate and download the PDF
       html2pdf().from(element).set(options).save();
       setIsDownloading(false);
     };
@@ -233,7 +225,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
       </style>
     `;
 
-    // Open a new window
     const newWindow = window.open("", "_blank");
     newWindow.document.write(`
       <html>
@@ -251,7 +242,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     `);
     newWindow.document.close();
 
-    // Wait for the new window to load content before printing
     newWindow.onload = () => {
       newWindow.print();
       newWindow.close();
@@ -317,15 +307,9 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     setSelectedUUID("null");
   };
 
-  /* const handleEdit = (record: DataType) => {
-    reset(record);
-    setIsEditMode(true);
-    setSelectedUUID(record.uuid);
-    showModal();
-  }; */
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyListing(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -399,13 +383,13 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -415,7 +399,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
           selectedRowKeys
         );
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -466,7 +449,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     { text: "Paid", value: "Paid" },
     { text: "Due", value: "Due" },
   ],
-  filteredValue: filteredInfo?.status || null, // Fixed this line
+  filteredValue: filteredInfo?.status || null,
   onFilter: (value, record) => record.status === value,
   render: (status, record) => (
     <Select
@@ -585,7 +568,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     },
   ];
 
-  //================ orderDetails columns for checkout  table
   const orderDetailsItemColumns = [
     {
       title: "Product Name",
@@ -637,7 +619,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
 
   const filterProps = filter ? filteredData?.filter((item) => item.status === filter) : filteredData;
 
-  // for serial number in table
   const tableSourceData = filterProps?.map((item: any, index: number) => {
     return {
       ...item,
@@ -647,9 +628,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
   return (
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        {/* Toolbar + Tabs row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <Link
@@ -665,9 +644,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
               </Link>
             ))}
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style={{ fontSize: 10, left: 8 }} />
             <input
@@ -688,9 +665,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {(user.userType == "superAdmin" || user.userType == "admin") &&
               hasPermissionForSlug("delete-agent-marketplace") && (
@@ -727,7 +702,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Property Name */}
             <div className="flex flex-col gap-2">
               <label>
                 Name <span className="text-red-500 ml-1">*</span>
@@ -744,7 +718,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 <p className="text-red-500 text-sm">{errors.name.message}</p>
               )}
             </div>
-            {/* Relation */}
             <div className="flex flex-col gap-2">
               <label>Relation</label>
               <input
@@ -759,7 +732,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 </p>
               )}
             </div>
-            {/* Email */}
             <div className="flex flex-col gap-2">
               <label>Email</label>
               <input
@@ -776,7 +748,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
         </form>
       </ModalMain>
 
-      {/*==============  order details modal */}
       <ModalMain
         title="Order Details"
         hideFooter={true}
@@ -793,9 +764,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
             rowKey="uuid"
           />
 
-          {/* Total Section */}
           <div className="space-y-3 mt-6 border border-neutral-300/30 p-4 rounded-md">
-            {/* discount */}
             <div className="flex justify-between  ">
               <span className="text-sm text-gray-600">Discount</span>
               <span className="font-medium">
@@ -806,7 +775,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
               </span>
             </div>
 
-            {/* tax */}
 
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">Tax ({taxRate}%)</span>
@@ -814,7 +782,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 ${formatNumberWithCommasAndDecimals(details_data.tax)}
               </span>
             </div>
-            {/* online_transection_charge */}
 
             {details_data.payment_method == "Card" && (
               <div className="flex justify-between">
@@ -828,13 +795,11 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
               </div>
             )}
 
-            {/* sub total */}
             <div className="flex justify-between  ">
               <span className="text-sm text-gray-600">Sub Total</span>
               <span className="font-medium"> ${formatNumberWithCommasAndDecimals(calculateSubTotal())}</span>
             </div>
 
-            {/* total */}
             <div className="flex justify-between items-center  border-t border-gray-100 pt-2">
               <span className="text-[16px] font-medium text-gray-900">
                 Totals
@@ -846,14 +811,8 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
           </div>
         </div>
 
-        {/* <div className="col-span-2">
-                  <pre className="mt-4 p-2 border rounded bg-gray-100 text-sm">
-                    {JSON.stringify(details_data, null, 2)}
-                  </pre>
-                </div> */}
       </ModalMain>
 
-      {/*  delete confirmation modal ====== */}
       <Modal
         title="Confirm Deletion"
         visible={isModalVisible}
@@ -876,7 +835,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -898,7 +856,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
         Are you sure you want to delete selected items?
       </Modal>
 
-      {/* View Invoice Modal  */}
       <ModalMain
         okBtnText="Download"
         printBtnText="Print"
@@ -924,7 +881,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
           </div>
           <div className=" space-y-5 p-5">
             <div className="px-4 py-2">
-              {/* Invoice Information */}
               <div className="flex justify-between text-sm">
                 <div className="flex gap-1">
                   <label className="font-semibold">Invoice ID:</label>
@@ -941,7 +897,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 </div>
               </div>
 
-              {/* Agent Information */}
               <div className="flex justify-between text-sm mt-2">
                 <div className="flex gap-1">
                   <label className="font-semibold">Payment Method:</label>
@@ -954,7 +909,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                   <p>{details_data.agent?.name || "N/A"}</p>
                 </div>
               </div>
-              {/* Agent Information */}
               <div className="flex justify-between text-sm mt-2">
               {details_data.payment_method=='Card' && (
                   <div className="flex gap-1">
@@ -972,7 +926,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 </div>
               </div>
 
-              {/* Payment Information */}
               <div className="flex justify-between text-sm mt-2">
                 <div className="flex gap-1">
                   <label className="font-semibold">Payment Status:</label>
@@ -981,7 +934,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 
               </div>
 
-              {/* Additional Details */}
 
               <div className="flex justify-between text-sm mt-2"></div>
             </div>
@@ -995,9 +947,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 rowKey="uuid"
               />
 
-              {/* Total Section */}
               <div className="space-y-3 mt-6 border border-neutral-300/30 p-4 rounded-md">
-                {/* discount */}
                 <div className="flex justify-between  ">
                   <span className="text-sm text-gray-600">Discount</span>
                   <span className="font-medium">
@@ -1008,7 +958,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                   </span>
                 </div>
 
-                {/* tax */}
 
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">
@@ -1019,7 +968,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                   </span>
                 </div>
 
-                {/* onlineTransectionCharge */}
                 {details_data.payment_method == "Card" && (
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">
@@ -1032,13 +980,11 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                   </div>
                 )}
 
-                {/* sub total */}
                 <div className="flex justify-between  ">
                   <span className="text-sm text-gray-600">Sub Total</span>
                   <span className="font-medium"> ${ calculateSubTotal()}</span>
                 </div>
 
-                {/* total */}
                 <div className="flex justify-between items-center  border-t border-gray-100 pt-2">
                   <span className="text-[16px] font-medium text-gray-900">
                     Total

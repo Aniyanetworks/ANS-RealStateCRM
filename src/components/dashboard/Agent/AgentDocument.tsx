@@ -48,9 +48,7 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
     Record<FileKeys, boolean> | any
   >({});
   const [agentAccountInfo, setAgentAccount] = useState<any>(null);
-  // Removed unused agentAccountInfoForFile, setAgentAccountForFile
 
-  // Fetch and manage other documents
   const { data: agentOtherDocuments, refetch: refetchOtherDocuments } =
     useGetAgentOtherDocumentsQuery(agentAccount?.id);
 
@@ -58,7 +56,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
   const [removeAgentFile] = useRemoveAgentFileMutation();
   const [removeOtherFile] = useRemoveOtherFileMutation();
 
-  // Refs for file inputs
   const fileRefs: Record<FileKeys, React.RefObject<HTMLInputElement>> = {
     nationalIdentity: useRef<HTMLInputElement>(null),
     recoLicence: useRef<HTMLInputElement>(null),
@@ -67,7 +64,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
     others: useRef<HTMLInputElement>(null),
   };
 
-  // File fields
   const fileFields: { key: FileKeys; label: string }[] = [
     { label: "Government Issued ID", key: "nationalIdentity" },
     {
@@ -78,16 +74,14 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
     { label: "Agreement File", key: "agreementFile" },
   ];
 
-  // Add these new states for document preview
   const [selectedDocument, setSelectedDocument] = useState<any>(null);
   const [previewCollapsed, setPreviewCollapsed] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Sync agentAccount prop to state
   useEffect(() => {
     if (agentAccount) {
       setAgentAccount(agentAccount);
-      refetchOtherDocuments(); // Refetch documents when agentAccount changes
+      refetchOtherDocuments();
     }
   }, [agentAccount]);
 
@@ -116,7 +110,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
         setAgentAccount(response.data.newFileAttachment);
         toast.success(response.message || "File uploaded successfully");
 
-        // Refetch other documents after a successful upload
         refetchOtherDocuments();
       }
     } catch (error: any) {
@@ -160,7 +153,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
         agent_id: agentAccount.id,
         type: "otherDocument",
       }).unwrap();
-      console.log(response);
       if (response) {
         toast.success("Other document uploaded successfully");
         setOtherDocumentName("");
@@ -188,13 +180,11 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
     }
   };
 
-  // Add document preview handler
   const handleDocumentPreview = (document: any) => {
     setSelectedDocument(document);
     setError(null);
   };
 
-  // Add document download handler
   const handleDocumentDownload = async (filePath: string): Promise<void> => {
     try {
       const response = await fetch(getFileUrl(filePath));
@@ -225,22 +215,10 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
 
   return (
     <div className="flex h-[calc(100vh-7rem)]">
-      {/* Left side - Document List */}
       <div className={`w-[400px] bg-white p-4 rounded-l-lg shadow-sm overflow-y-auto ${previewCollapsed ? 'hidden' : 'block'}`}>
         <p className="text-lg font-semibold mb-4">Document List</p>
 
-        {/* Table Header */}
-        {/* <div className="flex mt-5 bg-white px-4 py-3 items-center justify-between rounded-t-lg">
-          <div className="w-full font-medium text-gray-700">
-            
-            <p>Uploaded Attachments List</p>
-          </div>
-          <div>
-            <img src={sortArrow} alt="Sort" className="w-4 h-4" />
-          </div>
-        </div> */}
 
-        {/* File Upload Fields */}
         {fileFields.map((file, index) => (
           <div
             key={file.key}
@@ -248,7 +226,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
           >
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-0 justify-between  w-full">
-                {/* <p className="w-[30px] text-gray-600">{index + 1}.</p> */}
              <div className='flex  w-full justify-between'>
              <p className="text-gray-800 font-medium flex items-center gap-2">
                <svg
@@ -267,7 +244,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
                                     />
                                   </svg> {file.label}
               </p>
-                {/* {mode !== "view" && (!agentAccountInfo?.[file.key] || file.key === "agreementFile") && ( */}
                 {mode !== "view" && (
                   (file.key !== "agreementFile" || (file.key === "agreementFile" && (user.userType === "superAdmin" || user.userType === "admin"))) && (
                     <label htmlFor={`upload-${file.key}`} className="cursor-pointer ml-2 flex items-center gap-2 text-blue-500 hover:text-blue-600">
@@ -292,7 +268,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
               </div>
             </div>
 
-            {/* Show uploaded files */}
             <div className="ml-[30px] mt-2">
               {file.key === "agreementFile" ? (
                 <div className="space-y-0 ">
@@ -348,7 +323,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
                 </div>
 
               ) : (
-                // Other Files
                 agentAccountInfo?.[file.key] && (
                   <div className="flex items-center gap-4  hover:bg-gray-50 rounded">
                     <span
@@ -364,8 +338,8 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
                       <span
                         className="cursor-pointer hover:text-red-500"
                         onClick={(e) => {
-                          e.preventDefault();  // Prevent default action
-                          handleRemoveFile(file.key);  // Call the file removal function
+                          e.preventDefault();
+                          handleRemoveFile(file.key);
                         }}
                       >
                         <FaTimes />
@@ -378,7 +352,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
           </div>
         ))}
 
-        {/* Other Documents Section */}
         <div className="mt-4 px-4">
           <div className="flex items-center  mb-3 gap-2">
             <svg
@@ -398,7 +371,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
                                   </svg> <p className="text-gray-800 font-medium"> Other Documents</p>
           </div>
           
-          {/* Other Documents Upload Form */}
           {mode !== "view" && (
             <div className="ml-[30px]  mb-2 flex items-center gap-3">
               <input
@@ -429,7 +401,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
             </div>
           )}
 
-          {/* Other Documents List */}
           <div className="ml-[30px] ">
             {agentOtherDocuments?.data?.agentOtherDocuments
               ?.filter((doc: any) => doc.type === "otherDocument")
@@ -459,7 +430,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
               ))}
           </div>
 
-          {/* Left Arrow Button */}
           <div className="mt-4 flex justify-center">
             <button 
               onClick={(e) => {
@@ -476,13 +446,12 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
         </div>
       </div>
 
-      {/* Right side - Document Preview */}
       <div className="flex-1 bg-white rounded-r-lg shadow-sm p-4">
         <div className="flex justify-between items-center mb-4 border-b pb-4">
           <h3 className="font-medium flex items-center gap-2">
             <button  onClick={(e) => {
-                e.preventDefault();  // Prevent default action
-                setPreviewCollapsed(!previewCollapsed);  // Toggle preview collapsed state
+                e.preventDefault();
+                setPreviewCollapsed(!previewCollapsed);
               }}>
               <AlignLeftOutlined></AlignLeftOutlined>
             </button>
@@ -502,7 +471,6 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
           <div className="h-[calc(100vh-12rem)]">
             {error && <p className="text-red-500">{error}</p>}
             <iframe
-              // src={`${selectedDocument.filePath}`}
               src={getFileUrl(selectedDocument.filePath)}
               className="w-full h-full rounded-lg"
               title="Document Preview"

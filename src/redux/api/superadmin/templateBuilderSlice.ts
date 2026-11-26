@@ -32,7 +32,7 @@ const templateBuilderApi = api.injectEndpoints({
             query: ({ type, area }) => ({
                 url: `/superadmin/template-builder/list`,
                 method: "GET",
-                params: { type, area }, // <- this is how you pass query params in RTK Query
+                params: { type, area },
                 headers: {
                     authorization: `Bearer ${getEnvUrls().accessToken}`,
                 },

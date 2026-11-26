@@ -31,7 +31,6 @@ const CommissionSeller = ({ data }) => {
   } = useForm();
 
   useEffect(() => {
-    console.log('propertyCommission',propertyCommission);
     setTradeSheetData(data?.data?.tradeSheetData);
 
     if (data?.data?.tradeSheetData?.representation == "seller") {
@@ -49,10 +48,6 @@ const CommissionSeller = ({ data }) => {
       );
 
       setCommissionBuyerAgent( data?.data?.tradeSheetData?.agentDetails?.[0]?.buyerCommission ?? 2.5 );
-      // setCommissionAgent(
-      //   tradesheetData?.agentDetails?.[0]?.sellerAgentAccount?.plan
-      //     ?.planItems?.[1]?.commissionAgent || 0.0
-      // );
 
       if(tradesheetData?.agentDetails?.[0]?.sellerAgentAccount?.hstNo)
       {
@@ -119,7 +114,6 @@ const CommissionSeller = ({ data }) => {
   const handleThirdModalConfirm = async () => {
     handleThirdModalClose(false);
     try {
-      // Assuming you have all the necessary data to create a TradeTransaction
       const tradeTransactionData = {
         tradeSheetId: tradesheetData?.id,
 
@@ -147,13 +141,11 @@ const CommissionSeller = ({ data }) => {
         netCommissionTotal: calculateNetOfficeCommissionTotal || 0.0,
       };
 
-      // Call the mutation to create the trade transaction
       const response = await createTradeTransaction(
         tradeTransactionData
       ).unwrap();
 
       toast.success("Trade transaction created successfully.");
-      // Navigate to the accounting cheque posting page or handle further actions
       navigate(
         "/dashboard/accounting/account-cheque-posting/" +
           response?.data?.newTradeTransaction?.uuid
@@ -163,7 +155,6 @@ const CommissionSeller = ({ data }) => {
     }
   };
 
-  // Calculate Base Office Commission based on representation
   const calculateBaseOfficeCommission =
     tradesheetData?.representation === "buyer"
       ? (
@@ -175,13 +166,11 @@ const CommissionSeller = ({ data }) => {
           100
         ).toFixed(2);
 
-  // Calculate Base Office Commission Tax
   const calculateBaseOfficeCommissionTax = (
     (calculateBaseOfficeCommission * 13) /
     100
   ).toFixed(2);
 
-  // Calculate Total Base Office Commission
   const calculateBaseOfficeCommissionTotal = (
     Number(calculateBaseOfficeCommission) +
     Number(calculateBaseOfficeCommissionTax)
@@ -206,17 +195,14 @@ const CommissionSeller = ({ data }) => {
   ).toFixed(2);
 
 
-  // Buyer Agent Commission
   const calculateAgentBuyerCommission = (
     (calculateBaseOfficeCommission * commissionBuyerAgent) / 100
   ).toFixed(2);
 
-  // Buyer Agent Commission Tax (assuming 0% like the other one, change if needed)
   const calculateAgentBuyerCommissionTax = (
     (calculateAgentBuyerCommission * 0.0) / 100
   ).toFixed(2);
 
-  // Buyer Agent Commission Total
   const calculateAgentBuyerCommissionTotal = (
     Number(calculateAgentBuyerCommission) + Number(calculateAgentBuyerCommissionTax)
   ).toFixed(2);
@@ -242,12 +228,10 @@ const CommissionSeller = ({ data }) => {
           <div className="overflow-auto h-[70vh]">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
-              {/* Tradesheet Section */}
               <div className=" rounded-md">
                 
                 <div className="rounded-md">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {/* Seller Info Section */}
                     <div className="border rounded-lg shadow-lg bg-gray-50 hover:bg-gray-100 transition-colors p-4 rounded-md">
                       <h3 className=" text-lg mb-3">Seller Information</h3>
                       <div className="flex items-center text-xs gap-2">
@@ -290,7 +274,6 @@ const CommissionSeller = ({ data }) => {
                       </div>
                     </div>
 
-                    {/* Buyer Info Section */}
                     <div className="border rounded-lg shadow-lg bg-gray-50 hover:bg-gray-100 transition-colors p-4 rounded-md">
                       <h3 className=" text-lg mb-3">Buyer Information</h3>
                       <div className="flex items-center text-xs gap-2">
@@ -333,14 +316,13 @@ const CommissionSeller = ({ data }) => {
                     </div>
                   </div>
 
-                  {/* Agent Plans */}
                   <div className="mt-6">
                     {plan ? (
                       <div>
                         <p className="font-bold py-3 mb-5">Agent Plans</p>
                         <ul className="space-y-4">
                           <li
-                            key={plan.id} // Assuming each plan has a unique ID
+                            key={plan.id}
                             className={`border rounded-lg shadow-lg bg-gray-50 hover:bg-gray-100 transition-colors p-4 ${
                               plan.id ? "bg-gray-200" : ""
                             }`}
@@ -558,7 +540,6 @@ const CommissionSeller = ({ data }) => {
 
               
 
-              {/* Submit Button */}
               <div className="flex justify-end mt-4">
                 {tradesheetData?.tradeTransaction?.[0]?.chequePosting?.length >
                 0 ? (
@@ -598,7 +579,6 @@ const CommissionSeller = ({ data }) => {
               </div>
             </form>
 
-            {/* Modal for received the funds yet */}
             {showFirstModal && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
                 <div className="bg-white p-6 rounded-md shadow-lg max-w-sm mx-auto">
@@ -623,12 +603,10 @@ const CommissionSeller = ({ data }) => {
               </div>
             )}
 
-            {/* Modal for received the funds yet */}
             {showSecondModal && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
                 <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-md mx-auto">
                   <div className="flex justify-between items-center border-b pb-4">
-                    {/* Listing Price */}
                     <div className="flex flex-col items-center">
                       <p className="text-xs">Commissions</p>
                       <div className="text-xs">
@@ -636,12 +614,10 @@ const CommissionSeller = ({ data }) => {
                       </div>
                     </div>
 
-                    {/* Subtraction Sign */}
                     <div className="flex items-center justify-center text-xs">
                       -
                     </div>
 
-                    {/* Funds Hold */}
                     <div className="flex flex-col items-center">
                       <p className="text-xs">Funds Hold</p>
                       <div className="text-xs text-gray-800">
@@ -649,12 +625,10 @@ const CommissionSeller = ({ data }) => {
                       </div>
                     </div>
 
-                    {/* Equal Sign and A/R */}
                     <div className="flex items-center justify-center text-xs">
                       =
                     </div>
 
-                    {/* A/R */}
                     <div className="flex flex-col items-center">
                       <p className="text-xs">A/R</p>
                       <div className="text-xs">
@@ -682,7 +656,6 @@ const CommissionSeller = ({ data }) => {
               </div>
             )}
 
-            {/* Modal for Cash Receipt Confirmation */}
             {showThirdModal && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
                 <div className="bg-white p-6 rounded-md shadow-lg max-w-sm mx-auto">

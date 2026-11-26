@@ -1,6 +1,4 @@
 // @ts-nocheck
-// Agent Fees & Plans: agents' accounting profiles, fee plans, promotions, recurring fees,
-// subscriptions, chargeable items, agent charges & payments, billing run, fee calculator.
 import React, { useState } from "react";
 import { Alert, Checkbox, DatePicker, Descriptions, Drawer, Form, Input, InputNumber, Modal, Popconfirm, Select, Space, Switch, Table, Tabs, Tag } from "antd";
 import dayjs from "dayjs";
@@ -10,7 +8,6 @@ const TYPE_OPTS = [{ value: "AMOUNT", label: "$ Amount" }, { value: "PERCENT", l
 const RENEWAL_OPTS = [{ value: "NOT_STARTED", label: "Not started" }, { value: "IN_PROGRESS", label: "Renewal in progress" }, { value: "ELIGIBLE", label: "Eligible to trade (confirmed)" }];
 const toNum = (v) => (v === null || v === undefined || v === "" ? undefined : Number(v));
 
-/** Fee schedule inputs. splitName: "Percent" (plans/rules) or "Override" (agent profile). */
 const FeeFields = ({ splitName = "Percent", nullable = false }) => {
   const hint = nullable ? "Blank = use plan" : undefined;
   const pair = (label, base) => (
@@ -41,7 +38,6 @@ const numericize = (obj) => {
   return out;
 };
 
-// ---------- Agent drawer ----------
 
 const AgentDrawer = ({ agentId, onClose }) => {
   const { rows: d, isFetching } = useAcct(agentId ? `/agents/${agentId}` : null);
@@ -180,7 +176,6 @@ const AgentDrawer = ({ agentId, onClose }) => {
   );
 };
 
-// ---------- Shared modals & tables ----------
 
 const SubscriptionModal = ({ agentId, onClose }) => {
   const [form] = Form.useForm();
@@ -299,7 +294,6 @@ const ChargesTable = ({ rows, onPay, extra, showAgent = false, loading = false }
   );
 };
 
-// ---------- Tabs ----------
 
 const Agents = () => {
   const [includeInactive, setIncludeInactive] = useState(false);

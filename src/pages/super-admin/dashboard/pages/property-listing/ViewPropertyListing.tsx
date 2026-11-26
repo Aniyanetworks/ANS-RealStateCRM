@@ -17,7 +17,6 @@ import { Tabs } from 'antd';
 import PropertyListingNoteLog from '../../../../../components/dashboard/tradeSheet/PropertyListingNoteLog';
 import { formatNumberWithCommasAndDecimals } from './../../../../../utils/formatNumberWithCommasAndDecimals';
 import PropertyListingPaperworkFileManager from "./PropertyListingPaperworkFileManager";
-// Reusable Text Input Component
 const DataDisplay = ({ label, value }: { label: string; value: any }) => (
   <div className="flex justify-between border-b border-gray-300 py-2">
     <span className="text-sm">{label}:</span>
@@ -50,7 +49,6 @@ const TextInput = ({
   </div>
 );
 
-// Reusable Date Input Component
 const DateInput = ({ label, control, name, errors, required }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -60,7 +58,7 @@ const DateInput = ({ label, control, name, errors, required }: any) => (
       name={name}
       control={control}
       defaultValue=""
-      rules={{ required: required ? `${label} is required` : false }} // Add validation rules conditionally
+      rules={{ required: required ? `${label} is required` : false }}
       render={({ field }) => (
         <input {...field} type="date" className="border rounded p-2 w-full" />
       )}
@@ -71,7 +69,6 @@ const DateInput = ({ label, control, name, errors, required }: any) => (
   </div>
 );
 
-// Reusable Select Input Component
 const SelectInput = ({ label, register, name, errors, options = [] }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -104,7 +101,6 @@ const formatDate = (isoDate: any) => {
 const ViewPropertyListing = ({ uuid }) => {
   const { user } = useAppSelector((state: any) => state.user);
   const navigate = useNavigate();
-  // const [btnLoading, setBtnLoading] = useState("");
   const [propertiesData, setPropertiesData] = useState([]);
   const [sellersInfo, setSellersInfo] = useState([]);
   const { data, isLoading } = useGetSpacificPropertyListingQuery(uuid);
@@ -194,7 +190,6 @@ const ViewPropertyListing = ({ uuid }) => {
     return <TableLoader />;
   }
 
-  // Only render tabs if we have the propertyListingId
   if (!propertiesData.id) {
     return <TableLoader />;
   }
@@ -205,7 +200,6 @@ const ViewPropertyListing = ({ uuid }) => {
       label: 'Preview',
       children: (
         <>
-          {/* Property Details Section (existing content) */}
           <div className="mb-6">
             <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               PROPERTY DETAILS
@@ -273,7 +267,6 @@ const ViewPropertyListing = ({ uuid }) => {
             </table>
           </div>
 
-          {/* Seller/Landlord Information Section */}
           <div className="mb-6">
             <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               {propertiesData?.propertyListingType === "For rent"
@@ -287,18 +280,6 @@ const ViewPropertyListing = ({ uuid }) => {
                   <col key={index} className="w-1/6" />
                 ))}
               </colgroup>
-              {/* <thead>
-                <tr>
-                  <th className="border border-gray-400 px-2 py-1 bg-gray-100"></th>
-                  {sellersInfo?.sellersInfo?.map((seller, index) => (
-                    <th key={index} className="border border-gray-400 px-2 py-1 bg-gray-100 font-semibold">
-                      {propertiesData?.propertyListingType === "For rent"
-                        ? `Landlord ${index + 1}`
-                        : `Seller ${index + 1}`}
-                    </th>
-                  ))}
-                </tr>
-              </thead> */}
               <tbody>
                 <tr>
                   <td className="border border-gray-400 px-2 py-1 bg-gray-100 font-semibold">Name</td>
@@ -320,7 +301,6 @@ const ViewPropertyListing = ({ uuid }) => {
             </table>
           </div>
 
-          {/* Dates Section */}
           <div className="mb-6">
             <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               IMPORTANT DATES
@@ -354,15 +334,12 @@ const ViewPropertyListing = ({ uuid }) => {
                       ? new Date(propertiesData?.offerDate).toLocaleDateString()
                       : "N/A"}
                   </td>
-                 {/*  <td className="border border-gray-400 px-2 py-1 bg-gray-100 font-semibold">List Type</td>
-                  <td className="border border-gray-400 px-2 py-1">{propertiesData?.listType || "N/A"}</td> */}
                 </tr>
                 
               </tbody>
             </table>
           </div>
 
-          {/* Attachments Section */}
           {(user?.id == propertiesData?.createdBy || user?.userType == "superAdmin") && (
             <div className="mb-6">
             <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
@@ -427,10 +404,8 @@ const ViewPropertyListing = ({ uuid }) => {
           )}
           
 
-          {/* Property Listing Notes Log Section (read-only, no editor) */}
           <PropertyListingNoteLog propertyListingId={propertiesData.id} />
 
-          {/* Activity Log Section */}
           {user?.userType == "superAdmin" && (
             <div className="mb-6">
               <h3
@@ -481,7 +456,6 @@ const ViewPropertyListing = ({ uuid }) => {
             </div>
           )}
 
-          {/* Invoice Log Section */}
           {user?.userType === "superAdmin" && (
             <div className="mb-6">
               <h3
@@ -500,7 +474,7 @@ const ViewPropertyListing = ({ uuid }) => {
                 <div className="max-h-[400px] overflow-y-auto">
                   <table className="w-full text-xs border-collapse border border-gray-400">
                     <colgroup>
-                      <col className="w-3/5" /> {/* Adjusted for better proportion */}
+                      <col className="w-3/5" />
                       <col className="w-2/5" />
                     </colgroup>
                     <thead>
@@ -538,7 +512,6 @@ const ViewPropertyListing = ({ uuid }) => {
    
   ];
 
-  // Conditionally add tabs
 if (user?.id == propertiesData?.createdBy || user?.userType == "superAdmin") {
   tabItems.push(
     {

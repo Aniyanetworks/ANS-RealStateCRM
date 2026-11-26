@@ -79,7 +79,6 @@ const AnnouncementModal: React.FC<AnnouncementModalProps> = ({ announcement, onC
     }
   });
 
-  // Watch the description field to use as editor value
   const description = watch('description');
 
   useEffect(() => {
@@ -117,7 +116,6 @@ const AnnouncementModal: React.FC<AnnouncementModalProps> = ({ announcement, onC
   }, [isSuperAdmin, userBranchId]);
 
   useEffect(() => {
-    // Preserve prefilled selected users while editing existing announcements.
     if (recipientScope === "all_users" && !announcement) {
       setSelectedAgents([]);
     }

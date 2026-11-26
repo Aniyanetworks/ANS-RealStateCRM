@@ -1,4 +1,3 @@
-// components/CommercialCommissionTable.tsx
 import { Controller, useFieldArray } from 'react-hook-form';
 import { useEffect, useRef } from 'react';
 
@@ -30,16 +29,13 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
   });
   const initialized = useRef(false);
   
-  // Watch commission type to update display
   const currentCommissionType = watch(`${type}CommissionType`) || commissionType;
   const isPercentage = currentCommissionType === "percentage";
 
-  // Initialize with existing data or one year if empty (only once)
   useEffect(() => {
     if (!initialized.current) {
       const currentValue = watch(fieldName);
       if (currentValue && Array.isArray(currentValue) && currentValue.length > 0) {
-        // Use existing data - ensure proper format
         const formattedData = currentValue.map((item: any, idx: number) => ({
           year: item.year || idx + 1,
           yearlyRent: item.yearlyRent?.toString() || item.numberOfYears?.toString() || '',
@@ -47,28 +43,23 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
         }));
         replace(formattedData);
       } else if (!currentValue || currentValue.length === 0) {
-        // Initialize with one empty row
         append({ year: 1, yearlyRent: '', commission: '' });
       }
       initialized.current = true;
     }
   }, [append, replace, fieldName, watch]);
 
-  // Calculate commission amount for a single row
   const calculateCommissionAmount = (yearlyRent: string, commission: string): number => {
     const rent = parseFloat(yearlyRent) || 0;
     const comm = parseFloat(commission) || 0;
     
     if (isPercentage) {
-      // If percentage: (yearlyRent * commission) / 100
       return (rent * comm) / 100;
     } else {
-      // If amount: use commission directly
       return comm;
     }
   };
 
-  // Calculate totals
   const calculateTotals = () => {
     const years = watch(fieldName) || [];
     const totalYearlyRent = years.reduce((sum: number, year: CommissionYear) => {
@@ -88,13 +79,6 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
     return { totalYearlyRent, totalCommission, totalCalculatedCommission };
   };
   
-  // const formatCommissionValue = (value: number) => {
-  //   if (isPercentage) {
-  //     return formatPercentage(value);
-  //   } else {
-  //     return formatCurrency(value);
-  //   }
-  // };
 
   const { totalYearlyRent, totalCommission, totalCalculatedCommission } = calculateTotals();
 
@@ -180,7 +164,6 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
                             className="w-full border border-gray-300 px-1.5 py-1 rounded text-sm"
                             onChange={(e) => {
                               const value = e.target.value;
-                              // Allow empty, numbers, and one decimal point
                               if (value === '' || /^\d*\.?\d*$/.test(value)) {
                                 inputField.onChange(value);
                               }
@@ -206,7 +189,6 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
                             className="w-full border border-gray-300 px-1.5 py-1 rounded text-sm"
                             onChange={(e) => {
                               const value = e.target.value;
-                              // Allow empty, numbers, and one decimal point
                               if (value === '' || /^\d*\.?\d*$/.test(value)) {
                                 inputField.onChange(value);
                               }
@@ -227,7 +209,6 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
                 </tr>
               );
             })}
-            {/* Add Year Row */}
             <tr>
               <td className="border border-gray-300 px-2 py-1.5"></td>
               <td className="border border-gray-300 px-2 py-1.5"></td>
@@ -242,7 +223,6 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
               </td>
               <td className="border border-gray-300 px-2 py-1.5"></td>
             </tr>
-            {/* Total Row */}
             <tr className="bg-gray-50 font-semibold">
               <td className="border border-gray-300 px-2 py-1.5 text-sm">Total</td>
               <td className="border border-gray-300 px-2 py-1.5 text-sm">
@@ -250,12 +230,10 @@ const CommercialCommissionTable: React.FC<CommercialCommissionTableProps> = ({
               </td>
               <td className="border border-gray-300 px-2 py-1.5 text-sm">
                 {isPercentage ? (
-                  // For percentage type, show weighted average percentage based on total yearly rent
                   totalYearlyRent > 0 
                     ? formatPercentage((totalCalculatedCommission / totalYearlyRent) * 100)
                     : formatPercentage(0)
                 ) : (
-                  // For amount type, show sum of commission amounts
                   formatCurrency(totalCommission)
                 )}
               </td>

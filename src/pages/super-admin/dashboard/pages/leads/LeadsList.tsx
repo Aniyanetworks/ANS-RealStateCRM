@@ -170,8 +170,6 @@ const LeadsList = () => {
 
 
   const handleEdit = (record: Lead) => {
-    console.log('record', record.agentAssigned)
-    // Populate form with lead data
     const leadDateForForm = record.leadDate
       ? moment.utc(record.leadDate).local().format("YYYY-MM-DD")
       : "";
@@ -195,7 +193,7 @@ const LeadsList = () => {
     try {
       const response = await deleteLead(selectedUUID).unwrap();
       toast.success(`${response?.message}`);
-      refetch(); // Refetch leads after deletion
+      refetch();
     } catch (error) {
       toast.error("Delete failed. Something went wrong!");
       console.error("Delete error:", error);
@@ -216,7 +214,6 @@ const LeadsList = () => {
 
     try {
       if (uuid) {
-        // Update lead
         await leadToClient({ data: { uuid }, uuid }).unwrap();
         toast.success(`Lead Successfully converted to Client`);
         navigate('/dashboard/clients/client-list')
@@ -240,8 +237,6 @@ const LeadsList = () => {
       email,
       agentId: agentAcc
     }
-    // alert(data.agentId)
-    console.log("data for inviting client:-----------", data);
     try {
       const res = await sendInvitation({
         data
@@ -273,8 +268,8 @@ const LeadsList = () => {
     try {
       const response = await deleteMultipleLeads(selectedRowKeys).unwrap();
       toast.success(`${response?.message}`);
-      refetch(); // Refetch data to update the table
-      setSelectedRowKeys([]); // Clear selected rows
+      refetch();
+      setSelectedRowKeys([]);
     } catch (error) {
       toast.error("Delete failed. Something went wrong!");
       console.error("Delete error:", error);
@@ -326,18 +321,15 @@ const LeadsList = () => {
 
 
   const onSubmit = async (data: Lead) => {
-    console.log("lead data", data)
     try {
       if (selectedUUID) {
-        // Update lead
         const response = await updateLead({ uuid: selectedUUID, data }).unwrap();
         toast.success(`${response?.message}`);
       } else {
-        // Create lead
         const response = await createLead({ campaignUuid, data }).unwrap();
         toast.success(`${response?.message}`);
       }
-      refetch(); // Refetch data after update/create
+      refetch();
       handleCancel();
     } catch (error: unknown) {
       toast.error("Operation failed. Something went wrong!");
@@ -372,7 +364,6 @@ const LeadsList = () => {
   };
 
   const handleAssignConfirm = async (agentId: number) => {
-    console.log("first=----------")
     try {
       setIsAssigning(true);
       const response = await assignMultipleLeadsToAgent({
@@ -382,9 +373,7 @@ const LeadsList = () => {
 
       if (response.status) {
         toast.success(response.message);
-        // Ensure dates are properly handled in the refetch
         const updatedData = await refetch();
-        // Explicitly handle dates in the updated data
         setTableData(updatedData.data?.data?.leads.map(lead => ({
           ...lead,
           leadDate: lead.leadDate ? moment.utc(lead.leadDate).format() : null,
@@ -422,7 +411,6 @@ const LeadsList = () => {
         toast.error(response.message);
       }
     } catch (error) {
-      // toast.error("Failed to change status for selected leads");
       console.error("Status Change error:", error);
     } finally {
       setIsAssigning(false);
@@ -580,94 +568,6 @@ const LeadsList = () => {
         },
         sorter: (a, b) => a.email?.localeCompare(b.email || "") || 0,
       },
-      // {
-      //   title: "Platform",
-      //   dataIndex: "platform",
-      //   key: "platform",
-      //   filterDropdown: ({
-      //     setSelectedKeys,
-      //     selectedKeys,
-      //     confirm,
-      //     clearFilters,
-      //   }) => (
-      //     <div style={{ padding: 8 }}>
-      //       <Input
-      //         placeholder={`Search platform`}
-      //         value={selectedKeys[0]}
-      //         onChange={(e) =>
-      //           setSelectedKeys(e.target.value ? [e.target.value] : [])
-      //         }
-      //         onPressEnter={() => confirm()}
-      //         style={{ marginBottom: 8, display: "block" }}
-      //       />
-      //       <Space>
-      //         <Button
-      //           type="primary"
-      //           onClick={() => confirm()}
-      //           icon={<FaRegEdit />}
-      //           size="small"
-      //           style={{ width: 90 }}
-      //         >
-      //           Search
-      //         </Button>
-      //         <Button
-      //           onClick={() => clearFilters && clearFilters()}
-      //           size="small"
-      //           style={{ width: 90 }}
-      //         >
-      //           Reset
-      //         </Button>
-      //       </Space>
-      //     </div>
-      //   ),
-      //   onFilter: (value, record) =>
-      //     record.platform?.toLowerCase().includes(value.toLowerCase()),
-      //   sorter: (a, b) => a.platform?.localeCompare(b.platform || "") || 0,
-      // },
-      // {
-      //   title: "Form Name",
-      //   dataIndex: "form",
-      //   key: "form",
-      //   filterDropdown: ({
-      //     setSelectedKeys,
-      //     selectedKeys,
-      //     confirm,
-      //     clearFilters,
-      //   }) => (
-      //     <div style={{ padding: 8 }}>
-      //       <Input
-      //         placeholder={`Search form`}
-      //         value={selectedKeys[0]}
-      //         onChange={(e) =>
-      //           setSelectedKeys(e.target.value ? [e.target.value] : [])
-      //         }
-      //         onPressEnter={() => confirm()}
-      //         style={{ marginBottom: 8, display: "block" }}
-      //       />
-      //       <Space>
-      //         <Button
-      //           type="primary"
-      //           onClick={() => confirm()}
-      //           icon={<FaRegEdit />}
-      //           size="small"
-      //           style={{ width: 90 }}
-      //         >
-      //           Search
-      //         </Button>
-      //         <Button
-      //           onClick={() => clearFilters && clearFilters()}
-      //           size="small"
-      //           style={{ width: 90 }}
-      //         >
-      //           Reset
-      //         </Button>
-      //       </Space>
-      //     </div>
-      //   ),
-      //   onFilter: (value, record) =>
-      //     record.form?.toLowerCase().includes(value.toLowerCase()),
-      //   sorter: (a, b) => a.form?.localeCompare(b.form || "") || 0,
-      // },
       {
         title: "Preferred Location",
         dataIndex: "prefLocation",
@@ -993,17 +893,13 @@ const LeadsList = () => {
         dataIndex: "leadDate",
         key: "leadDate",
         render: (text) => {
-          // Explicitly check for null/undefined/empty string
           if (!text) return "-";
 
-          // Create moment object in UTC
           const date = moment.utc(text);
 
-          // Check validity and format
           return date.isValid() ? date.local().format("DD MMMM YYYY") : "-";
         },
         sorter: (a, b) => {
-          // Handle null values in sorting
           const dateA = a.leadDate ? moment.utc(a.leadDate).valueOf() : 0;
           const dateB = b.leadDate ? moment.utc(b.leadDate).valueOf() : 0;
           return dateA - dateB;
@@ -1175,11 +1071,9 @@ const LeadsList = () => {
         <div className="flex">
           <NavLink to="/dashboard/super-admin/leads" className="primary-btn mx-3 flex items-center gap-2">
             Go Back
-            {/* <IoArrowBack /> */}
           </NavLink>
           <button onClick={showModal} className="primary-btn mx-3 flex items-center gap-2">
             Add New
-            {/* <FaPlus /> */}
           </button>
           {
             selectedRowKeys.length > 0 && (
@@ -1221,7 +1115,6 @@ const LeadsList = () => {
         />
       )}
 
-      {/* Edit Lead Modal */}
       <Modal
         title={selectedUUID ? "Edit Lead" : "Add Lead"}
         open={isModalOpen}
@@ -1372,7 +1265,6 @@ const LeadsList = () => {
         </form>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Delete"
         open={isDeleteModalVisible}
@@ -1385,7 +1277,6 @@ const LeadsList = () => {
         <p>Are you sure you want to delete this lead?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Delete Selected"
         open={isDeleteMultipleModalVisible}
@@ -1398,7 +1289,6 @@ const LeadsList = () => {
         <p>Are you sure you want to delete the selected leads?</p>
       </Modal>
 
-      {/* Lead Notes Modal */}
       {selectedLeadForNotes && (
         <LeadNotes
           leadId={selectedLeadForNotes.id}
@@ -1409,7 +1299,6 @@ const LeadsList = () => {
         />
       )}
 
-      {/* Assign Multiple Modal */}
       <Modal
         title="Assign Selected Leads"
         open={isAssignModalVisible}
@@ -1425,7 +1314,6 @@ const LeadsList = () => {
             showSearch
             optionFilterProp="children"
             onChange={(value) => {
-              console.log("value-------", value)
               handleAssignConfirm(value);
             }}
             disabled={isAssigning}
@@ -1445,7 +1333,6 @@ const LeadsList = () => {
         </div>
       </Modal>
 
-      {/* Change Status Multiple Modal */}
       <Modal
         title="Change Selected Status Leads"
         open={isChangeStatusModalVisible}

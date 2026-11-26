@@ -139,10 +139,8 @@ const CreateAndUpdateUser = () => {
     currentStatus: boolean;
   } | null>(null);
 
-  // Toggle User Status State
   const [isToggleModalVisible, setIsToggleModalVisible] = useState(false);
 
-  // Delete Multiple
   const [deleteMultipleUser] = useDeleteMultipleUserMutation();
   const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] =
     useState(false);
@@ -151,17 +149,14 @@ const CreateAndUpdateUser = () => {
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
   const [searchText, setSearchText] = useState("");
 
-  // User filter state - default to "ourUsers"
   const [userFilter, setUserFilter] = useState<string>("ourUsers");
 
-  // Force clock out state
   const [isClockOutModalVisible, setIsClockOutModalVisible] = useState(false);
   const [clockOutTarget, setClockOutTarget] = useState<DataType | null>(null);
   const [forceClockOut, { isLoading: isClockingOut }] = useForceClockOutMutation();
   const { data: activeClockData } = useGetActiveClockUsersQuery(undefined, { pollingInterval: 30000 });
   const activeClockUserIds: number[] = activeClockData?.data?.map((u: any) => u.userId ?? u.id) ?? [];
 
-  // Impersonate state
   const [isImpersonateOtpModalVisible, setIsImpersonateOtpModalVisible] = useState(false);
   const [impersonateOtp, setImpersonateOtp] = useState("");
   const [impersonateTarget, setImpersonateTarget] = useState<DataType | null>(null);
@@ -170,29 +165,23 @@ const CreateAndUpdateUser = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  // Define tabs for user filtering
   const userFilterTabs = [
     { id: "ourUsers", label: "Our Users" },
     { id: "otherUsers", label: "Other Users" },
   ];
 
-  // Filter logic with user role filter
   const filteredData = tableData?.filter((record) => {
-    // First apply the user filter based on selected tab
     if (userFilter === "ourUsers") {
-      // Show users who have branchId OR roleId == 1
       const hasBranchId = !!record.branch;
       const isSuperAdmin = record?.roleId == 1;
       if (!hasBranchId && !isSuperAdmin) return false;
     } else if (userFilter === "otherUsers") {
-      // Show users who don't have branchId AND roleId != 1
       const hasBranchId = !!record.branch;
       const isSuperAdmin = record?.roleId == 1;
       if (hasBranchId || isSuperAdmin) return false;
       if (record.branch) return false;
     }
 
-    // Then apply search filter
     const searchTerm = searchText?.toLowerCase();
     const inRecord = Object.values(record).some((value) =>
       String(value).toLowerCase().includes(searchTerm)
@@ -202,7 +191,6 @@ const CreateAndUpdateUser = () => {
 
   useEffect(() => {
     if (data?.data?.userData) {
-      // Add isActive field to each user with default value true if not present
       const usersWithActiveStatus = data.data.userData.map((user: any) => ({
         ...user,
         isActive: user.isActive === 'yes' ? true : user.isActive === 'no' ? false : true,
@@ -211,7 +199,6 @@ const CreateAndUpdateUser = () => {
     }
   }, [data]);
 
-  // Toggle User Status Handlers
   const handleToggleClick = (
     userId: string,
     userName: string,
@@ -354,7 +341,6 @@ const CreateAndUpdateUser = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -396,7 +382,6 @@ const CreateAndUpdateUser = () => {
     ],
   };
 
-  // Extract unique branches for filter
   const uniqueBranches = Array.from(
     new Set(
       tableData
@@ -518,7 +503,6 @@ const CreateAndUpdateUser = () => {
       sortOrder: sortedInfo.columnKey === "branch" ? sortedInfo.order : null,
       render: (branch, record) => {
         if (!branch) {
-          // If user is superadmin, show "All Branch", otherwise "No Branch"
           const isSuperAdmin = record?.roleId == 1;
           return (
             <Tag color="default">
@@ -773,7 +757,6 @@ const CreateAndUpdateUser = () => {
     }
   };
 
-  // Serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -781,7 +764,6 @@ const CreateAndUpdateUser = () => {
     };
   });
 
-  // Impersonate handlers
   const handleImpersonate = async (record: DataType) => {
     try {
       setImpersonateTarget(record);
@@ -792,11 +774,9 @@ const CreateAndUpdateUser = () => {
       }).unwrap();
 
       if (response.requiresOtp) {
-        // Show OTP modal if OTP is required
         setIsImpersonateOtpModalVisible(true);
         toast.success('OTP sent to your phone number');
       } else if (response.status) {
-        // If no OTP required (shouldn't happen with OTP enabled)
         handleImpersonationSuccess(response);
       } else {
         toast.error(response.message || 'Failed to impersonate user');
@@ -836,20 +816,16 @@ const CreateAndUpdateUser = () => {
   };
 
   const handleImpersonationSuccess = useCallback((response: any) => {
-    // Reset all API cache before switching
     dispatch(api.util.resetApiState());
 
-    // Store original user data in localStorage
     localStorage.setItem('originalUser', JSON.stringify({
       token: response.originalToken,
       user: response.originalUser
     }));
 
-    // Set new user data
     dispatch(setAccessToken(response.token));
     dispatch(setUser(response.user));
 
-    // Navigate to dashboard
     navigate('/');
     toast.success('Successfully impersonating user');
   }, [dispatch, navigate]);
@@ -883,7 +859,6 @@ const CreateAndUpdateUser = () => {
 
   const handleResendImpersonationOtp = async () => {
     try {
-      // Get current user email from Redux store or localStorage
       const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
       const response = await resendImpersonateOtp({
@@ -982,7 +957,6 @@ const CreateAndUpdateUser = () => {
         </div>
       </div>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isModalVisible}
@@ -1005,7 +979,6 @@ const CreateAndUpdateUser = () => {
         <p>Are you sure you want to delete this user?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -1027,7 +1000,6 @@ const CreateAndUpdateUser = () => {
         Are you sure you want to delete selected items?
       </Modal>
 
-      {/* Toggle User Status Confirmation Modal */}
       <Modal
         title="Confirm Status Change"
         open={isToggleModalVisible}
@@ -1061,7 +1033,6 @@ const CreateAndUpdateUser = () => {
         )}
       </Modal>
 
-      {/* Force Clock Out Confirmation Modal */}
       <Modal
         title={
           <div className="flex items-center gap-2 text-orange-600">
@@ -1099,7 +1070,6 @@ const CreateAndUpdateUser = () => {
         )}
       </Modal>
 
-      {/* Impersonation OTP Verification Modal */}
       <Modal
         title="Impersonation Verification"
         open={isImpersonateOtpModalVisible}

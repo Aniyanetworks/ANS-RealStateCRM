@@ -62,7 +62,6 @@ import {
   formatStringCamelCasecapitalize,
 } from '../../../../../utils/stringUtils';
 
-// const { Option } = Select;
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
@@ -73,19 +72,16 @@ interface Campaign {
   name: string;
   status: string;
   _count?: {
-    // Add _count to match Prisma relation count
     leads: number;
   };
-  createdAt: string; // Or Date type if parsed
+  createdAt: string;
 }
 
 interface SkippedLead {
-  // Define the expected structure of a skipped lead item from the backend
   name?: string;
   email?: string;
   phone?: string;
   reason: string;
-  // Include other potential fields from the uploaded file if needed for display
 }
 
 interface ImportStats {
@@ -141,17 +137,14 @@ const CampaignManagement = () => {
   const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analyzeCampaignMerge] = useAnalyzeCampaignMergeMutation();
-  // NEW: State for campaign type filter
   const [activeTypeFilter, setActiveTypeFilter] = useState<string>("all");
 
-  // NEW: Campaign types array
   const campaignTypes = ["Tenant", "Landload", "Seller", "Buyer"];
 
   useEffect(() => {
     setTableData(data?.data?.campaigns);
   }, [data]);
 
-  // Fetch active branches for super admin
   const { data: activeBranches } = useGetActiveBranchListDataQuery("", {
     skip: !isSuperAdmin,
   });
@@ -228,7 +221,6 @@ const CampaignManagement = () => {
     setIsModalVisible(false);
     setSelectedUUID(null);
     setSelectedCampaignName(null);
-    // setIsDeleteModalMultipleVisible(false);
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
@@ -276,21 +268,18 @@ const CampaignManagement = () => {
   const onSubmit = async (data: CampaignFormData) => {
     try {
       if (isEditMode) {
-        // Update campaign
         const response = await updateCampaign({
           uuid: selectedUUID,
           data,
         }).unwrap();
         toast.success(`${response?.message}`);
       } else {
-        // Create campaign
         const response = await createCampaign(data).unwrap();
         toast.success(`${response?.message}`);
       }
-      refetch(); // Refetch data after create/update
+      refetch();
       handleCancel();
     } catch (error: unknown) {
-      // Use unknown for catch block error
       toast.error(
         error?.data?.message || "Operation failed. Something went wrong!"
       );
@@ -301,19 +290,16 @@ const CampaignManagement = () => {
   const handleImportLeads = async (campaignUuid: string) => {
     setSelectedUUID(campaignUuid);
 
-    // Check if campaign has existing leads
     const campaign = data?.data?.campaigns?.find(
       (c) => c.uuid === campaignUuid
     );
     const hasExistingLeads = campaign?._count?.leads > 0;
 
     if (hasExistingLeads) {
-      // Skip field selection for campaigns with existing leads
       setIsImportModalVisible(true);
-      setFileHeaders([]); // Clear any existing headers
-      setSelectedFields([]); // Clear any existing selected fields
+      setFileHeaders([]);
+      setSelectedFields([]);
     } else {
-      // Show field selection for new campaigns
       setIsImportModalVisible(true);
     }
   };
@@ -328,7 +314,6 @@ const CampaignManagement = () => {
           let headers: string[] = [];
 
           if (file.name.endsWith(".xlsx") || file.name.endsWith(".xls")) {
-            // Handle Excel files
             const workbook = XLSX.read(data, { type: "array" });
             const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
             const jsonData = XLSX.utils.sheet_to_json(firstSheet, {
@@ -336,19 +321,15 @@ const CampaignManagement = () => {
             });
             headers = jsonData[0] as string[];
           } else {
-            // Handle CSV/TSV files
             const content = data as string;
             const lines = content.split("\n");
 
-            // Detect delimiter - check for tabs first (TSV), then fall back to comma (CSV)
             const isTSV = content.includes("\t");
             const delimiter = isTSV ? "\t" : ",";
 
-            // Split headers using the detected delimiter
             headers = lines[0].split(delimiter).map((h) => h.trim());
           }
 
-          // Filter out empty headers and ensure all are strings
           headers = headers.filter(Boolean).map(String);
           resolve(headers);
         } catch (error) {
@@ -373,17 +354,14 @@ const CampaignManagement = () => {
     if (!file) return;
 
     setSelectedFile(file);
-    // setImportStats(null);
     setFileHeaders([]);
     setSelectedFields([]);
 
     try {
-      // Read the file and extract headers with proper format detection
       const headers = await parseFileHeaders(file);
       setFileHeaders(headers);
-      setSelectedFields(headers); // Select all by default
+      setSelectedFields(headers);
 
-      // For Excel files, show a success message
       if (file.name.endsWith(".xlsx") || file.name.endsWith(".xls")) {
         toast.success("Excel file headers loaded successfully");
       }
@@ -412,9 +390,8 @@ const CampaignManagement = () => {
       toast.success(
         `Successfully imported ${response.data.importedCount} leads. ${response.data.skippedCount} leads were skipped.`
       );
-      refetch(); // Refresh the campaigns list
+      refetch();
 
-      // Close the modal after successful import
       setIsImportModalVisible(false);
       setSelectedFile(null);
       setImportStats(null);
@@ -433,7 +410,6 @@ const CampaignManagement = () => {
   const handleExportSubmit = () => {
     if (!exportData) return;
 
-    // Create a blob from the response data
     const blob = new Blob([exportData], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -446,7 +422,6 @@ const CampaignManagement = () => {
     setIsExportModalVisible(false);
   };
 
-  // merge related code
   const handleMergeClick = async () => {
     if (selectedRowKeys.length < 2) {
       toast.error("Please select at least 2 campaigns to merge");
@@ -461,7 +436,6 @@ const CampaignManagement = () => {
 
       setMergeAnalysis(response.data);
 
-      // Auto-select logic...
       const uniqueLeadUuids = response.data.uniqueLeadsDetails.map(
         (lead: any) => lead.uuid
       );
@@ -483,7 +457,6 @@ const CampaignManagement = () => {
     } catch (error: any) {
       console.error("Analysis error:", error);
 
-      // Specific error messages based on response
       if (error?.data?.message) {
         toast.error(`Analysis failed: ${error.data.message}`);
       } else if (error?.status === 404) {
@@ -568,7 +541,6 @@ const CampaignManagement = () => {
     setIsMergeModalVisible(false);
   };
 
-  // delete multiple campaigns related code
   const calculateTotalLeads = (): number => {
     if (!tableData || selectedRowKeys.length === 0) return 0;
 
@@ -595,7 +567,6 @@ const CampaignManagement = () => {
         }
       );
 
-      // Send the data in the correct format that backend expects
       const response = await deleteMultipleCampaigns({
         campaignUuids: selectedRowKeys.map((key) => key.toString()),
       }).unwrap();
@@ -608,7 +579,6 @@ const CampaignManagement = () => {
         }
       );
 
-      // Remove deleted campaigns from local state
       setTableData(
         (prevData) =>
           prevData?.filter((item) => !selectedRowKeys.includes(item.uuid)) || []
@@ -618,7 +588,6 @@ const CampaignManagement = () => {
     } catch (error: unknown) {
       console.error("Delete multiple error details:", error);
 
-      // More detailed error handling
       if (error?.data?.message) {
         toast.error(error.data.message, {
           id: "delete-multiple-campaigns",
@@ -717,7 +686,6 @@ const CampaignManagement = () => {
         return record.typeOfCampaign === filterValue;
       },
     },
-    // NEW: Branch Column
     {
       title: "Branch",
       dataIndex: "branch",
@@ -757,7 +725,7 @@ const CampaignManagement = () => {
         let hours = date.getHours();
         const minutes = String(date.getMinutes()).padStart(2, "0");
         const ampm = hours >= 12 ? "PM" : "AM";
-        hours = hours % 12 || 12; // Convert to 12-hour format and handle midnight
+        hours = hours % 12 || 12;
 
         return `${year}-${month}-${day}, ${hours}:${minutes} ${ampm}`;
       },
@@ -866,9 +834,7 @@ const CampaignManagement = () => {
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Manage Leads</h1>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Filter tabs */}
           <div className="flex items-center gap-1">
             <button
               onClick={() => setActiveTypeFilter("all")}
@@ -926,7 +892,6 @@ const CampaignManagement = () => {
               ))}
             </select>
           )}
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
           {hasPermissionForSlug("ai_validation") && (
             <NavLink to={"/dashboard/super-admin/leads/validation-logs"} className="primary-btn whitespace-nowrap">AI Validations</NavLink>
@@ -976,7 +941,6 @@ const CampaignManagement = () => {
         )}
       </div>
 
-      {/* Create/Edit Campaign Modal */}
       <Modal
         title={isEditMode ? "Edit Campaign" : "Create Campaign"}
         open={isModalOpen}
@@ -1020,7 +984,6 @@ const CampaignManagement = () => {
             )}
           </div>
 
-          {/* Branch Selection - Only for Super Admin */}
           {isSuperAdmin ? (
             <div className="mt-3">
               <label>Assign to Branch:</label>
@@ -1061,7 +1024,6 @@ const CampaignManagement = () => {
               </>
             )}
 
-          {/* Show user's branch (read-only) for branch users */}
           {!isSuperAdmin && user?.branch && (
             <div className="mt-3">
               <label>Branch:</label>
@@ -1113,7 +1075,6 @@ const CampaignManagement = () => {
         </form>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Delete!"
         open={isDeleteModalVisible}
@@ -1136,7 +1097,6 @@ const CampaignManagement = () => {
         )}
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Delete Selected Campaigns"
         open={isDeleteModalMultipleVisible}
@@ -1166,7 +1126,7 @@ const CampaignManagement = () => {
                   ?.filter((campaign) =>
                     selectedRowKeys.includes(campaign.uuid)
                   )
-                  .slice(0, 10) // Show only first 10 to avoid overflow
+                  .slice(0, 10)
                   .map((campaign) => (
                     <li key={campaign.uuid}>{campaign.name}</li>
                   ))}
@@ -1181,7 +1141,6 @@ const CampaignManagement = () => {
         </div>
       </Modal>
 
-      {/* Import Leads Modal */}
       <Modal
         title="Import Leads"
         open={isImportModalVisible}
@@ -1242,7 +1201,6 @@ const CampaignManagement = () => {
             />
           </div>
 
-          {/* Only show field selection if campaign has no existing leads */}
           {fileHeaders.length > 0 && !campaignHasLeads && (
             <div className="mt-4">
               <div className="flex justify-between items-center mb-2">
@@ -1264,7 +1222,6 @@ const CampaignManagement = () => {
                 </button>
               </div>
 
-              {/* Improved fields container */}
               <div className="border rounded p-4 max-h-[300px] overflow-y-auto bg-gray-50">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {fileHeaders.map((header) => (
@@ -1323,11 +1280,9 @@ const CampaignManagement = () => {
             </div>
           )}
 
-          {/* ... (rest of the modal content remains the same) */}
         </div>
       </Modal>
 
-      {/* Export Leads Modal */}
       <Modal
         title="Export Leads"
         open={isExportModalVisible}
@@ -1350,7 +1305,6 @@ const CampaignManagement = () => {
         <p>Click Export to download the leads data in CSV format.</p>
       </Modal>
 
-      {/* Merge Campaigns Modal */}
       <Modal
         title={`Merge ${selectedRowKeys.length} Campaigns`}
         open={isMergeModalVisible}
@@ -1463,7 +1417,6 @@ const CampaignManagement = () => {
                 </ul>
               </div>
 
-              {/* Legend for Agent Indicators */}
               <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
                 <p className="font-semibold mb-2 text-sm">Legend:</p>
                 <div className="flex flex-wrap gap-4 text-xs">
@@ -1484,7 +1437,6 @@ const CampaignManagement = () => {
                 </div>
               </div>
 
-              {/* Duplicate Leads Section */}
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-3">
                   <h4 className="font-semibold">
@@ -1556,7 +1508,6 @@ const CampaignManagement = () => {
                             className="h-4 w-4 mt-1 flex-shrink-0"
                           />
 
-                          {/* Agent Status Icon */}
                           <div className="flex-shrink-0 mt-1">
                             {lead.hasAgent ? (
                               <FaUserCheck
@@ -1620,7 +1571,6 @@ const CampaignManagement = () => {
                   </div>
                 ))}
 
-                {/* Unique Leads Section */}
                 {mergeAnalysis.uniqueLeadsDetails.length > 0 && (
                   <div className="mb-4">
                     <div className="flex justify-between items-center mb-3">
@@ -1649,7 +1599,6 @@ const CampaignManagement = () => {
                             className="h-4 w-4 mt-1 flex-shrink-0"
                           />
 
-                          {/* Agent Status Icon */}
                           <div className="flex-shrink-0 mt-1">
                             {lead.hasAgent ? (
                               <FaUserCheck

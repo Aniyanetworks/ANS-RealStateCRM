@@ -51,7 +51,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [updatingCommissionId, setUpdatingCommissionId] = useState<number | null>(null);
 
-  // Get available agents based on brokerage - handle null/undefined values
   const sellerAgentOptions = sellerBrokerageId
     ? (internalAgent?.data?.userData?.filter(
         (agent: any) => agent?.brokerageId && String(agent.brokerageId) === String(sellerBrokerageId) && agent.status !== "closed"
@@ -76,21 +75,17 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
       }))
     : [];
 
-  // FIXED: Handle both single and multiple representation types
   const checkRepresentationMatch = (userRepType: string, targetTypes: string[]) => {
     if (!userRepType) return false;
     
-    // Handle multiple representation types (comma-separated)
     if (userRepType.includes(',')) {
       const userTypes = userRepType.split(',').map(type => type.trim());
       return userTypes.some(type => targetTypes.includes(type));
     }
     
-    // Handle single representation type
     return targetTypes.includes(userRepType);
   };
 
-  // FIXED: Get representation types for each side
   const getSellerRepresentationTypes = () => {
     return ['seller', 'landlord'];
   };
@@ -99,7 +94,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
     return ['buyer', 'tenant'];
   };
 
-  // FIXED: Filter shared users with support for multiple representation types
   const sellerRepresentationTypes = getSellerRepresentationTypes();
   const buyerRepresentationTypes = getBuyerRepresentationTypes();
 
@@ -111,12 +105,10 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
     return checkRepresentationMatch(user.representationType, buyerRepresentationTypes);
   }) || [];
 
-  // Add shared user and update local state
   const handleAddAgent = async (type: 'seller' | 'buyer') => {
     const selectedAgent = type === 'seller' ? selectedSellerAgent : selectedBuyerAgent;
     const agentOptions = type === 'seller' ? sellerAgentOptions : buyerAgentOptions;
     
-    // Use single representation type when adding new agents
     const representationType = type === 'seller' ? 'seller' : 'buyer';
 
     if (!selectedAgent) {
@@ -145,14 +137,12 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
         }).unwrap();
 
         if (response?.status && response.data) {
-          // Add the new shared user to local state
           const updatedSharedUsers = [...sharedUsersData, response.data];
           setSharedUsersData(updatedSharedUsers);
           setValue("sharedUsers", updatedSharedUsers);
           
           toast.success("Agent added successfully");
           
-          // Close modal and reset selection
           if (type === 'seller') {
             setIsSellerAddModalOpen(false);
             setSelectedSellerAgent(null);
@@ -170,14 +160,12 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
     }
   };
 
-  // Remove shared user and update local state
   const handleRemoveAgent = async (agentId: number) => {
     setIsLoading(true);
     try {
       const response = await removeSharedUser(agentId).unwrap();
       
       if (response?.status && response.data) {
-        // Remove the shared user from local state
         const updatedSharedUsers = sharedUsersData.filter(user => user.id !== agentId);
         setSharedUsersData(updatedSharedUsers);
         setValue("sharedUsers", updatedSharedUsers);
@@ -192,7 +180,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
     }
   };
 
-  // Commission update handler - only updates on blur
   const handleUpdateCommission = async (agentId: number, field: string, value: any) => {
     setUpdatingCommissionId(agentId);
     
@@ -205,7 +192,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
         commission: field === 'commission' ? (value === '' ? 0 : parseFloat(value)) : currentAgent.commission
       };
 
-      // Update local state immediately for better UX
       const updatedSharedUsers = sharedUsersData.map(user => 
         user.id === agentId 
           ? { ...user, ...updateData }
@@ -214,7 +200,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
       setSharedUsersData(updatedSharedUsers);
       setValue("sharedUsers", updatedSharedUsers);
 
-      // Make API call
       const response = await updateSharedUserCommission({
         id: agentId,
         data: updateData
@@ -227,7 +212,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
       console.error("Failed to update commission:", error);
       toast.error(error?.data?.message || "Failed to update commission");
       
-      // Revert local state on error
       setSharedUsersData([...sharedUsersData]);
       setValue("sharedUsers", [...sharedUsersData]);
     } finally {
@@ -235,7 +219,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
     }
   };
 
-  // Handle commission blur for saving
   const handleCommissionBlur = (agentId: number, value: string) => {
     if (value === '' || value === null || value === undefined) {
       handleUpdateCommission(agentId, 'commission', 0);
@@ -248,12 +231,10 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
     }
   };
 
-  // Handle commission type change
   const handleCommissionTypeChange = (agentId: number, value: string) => {
     handleUpdateCommission(agentId, 'commissionType', value);
   };
 
-  // Check if brokerage has agents available
   const hasSellerAgents = sellerAgentOptions.length > 0;
   const hasBuyerAgents = buyerAgentOptions.length > 0;
 
@@ -314,12 +295,10 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    {/* Hidden fields for IDs */}
                     <input type="hidden" {...register(`sharedUsers.${globalIndex}.id`)} value={user.id} />
                     <input type="hidden" {...register(`sharedUsers.${globalIndex}.sharedUserId`)} value={user.sharedUserId} />
                     <input type="hidden" {...register(`sharedUsers.${globalIndex}.representationType`)} value={user.representationType} />
                     
-                    {/* User Name */}
                     <TextInput
                       disabled={true}
                       label="Agent Name"
@@ -330,7 +309,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
                       defaultValue={user.name || `${user.firstName} ${user.lastName}`}
                     />
                     
-                    {/* User Email */}
                     <TextInput
                       disabled={true}
                       label="Agent Email"
@@ -342,7 +320,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
                       defaultValue={user.email}
                     />
                     
-                    {/* Commission Type */}
                     <div className="flex flex-col gap-2">
                       <label>Commission Type</label>
                       <select
@@ -356,7 +333,6 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
                       </select>
                     </div>
                     
-                    {/* Commission Value */}
                     <div className="flex flex-col gap-2">
                       <label>
                         {user.commissionType === "percentage" ? "Commission (%)" : "Commission Amount"}
@@ -487,21 +463,18 @@ const SharedUsersSection: React.FC<SharedUsersSectionProps> = ({
         <strong>Note:</strong> Agents who will share commission for this trade sheet.
       </span>
       
-      {/* Seller Shared Users */}
       <SharedUsersList 
         users={sellerSharedUsers} 
         title={`${firstAgent} Shared Agents`} 
         type="seller" 
       />
       
-      {/* Buyer Shared Users */}
       <SharedUsersList 
         users={buyerSharedUsers} 
         title={`${secondAgent} Shared Agents`} 
         type="buyer" 
       />
 
-      {/* Add Agent Modals */}
       <AddAgentModal
         isOpen={isSellerAddModalOpen}
         onClose={() => {

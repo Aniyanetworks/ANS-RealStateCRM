@@ -3,7 +3,6 @@ import { api } from "../apiSlice";
 
 const vendorApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Vendor endpoints
     getVendors: builder.query({
       query: () => ({
         url: `/superadmin/vendor-list/list`,
@@ -123,7 +122,6 @@ const vendorApi = api.injectEndpoints({
       invalidatesTags: ["Vendor"],
     }),
 
-    // Company endpoints
     getCompanies: builder.query({
       query: () => ({
         url: `/superadmin/company-list/list`,
@@ -207,7 +205,6 @@ const vendorApi = api.injectEndpoints({
 });
 
 export const {
-  // Vendor hooks
   useGetVendorsQuery,
   useGetVendorByIdQuery,
   useGetVendorsByStatusQuery,
@@ -218,7 +215,6 @@ export const {
   useDeleteVendorMutation,
   useDeleteMultipleVendorsMutation,
   
-  // Company hooks
   useGetCompaniesQuery,
   useGetCompanyByIdQuery,
   useCreateCompanyMutation,

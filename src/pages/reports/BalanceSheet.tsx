@@ -29,7 +29,7 @@ interface TradeData {
   netCommissionTax: string;
   agentCommissionTotal: string;
   netCommissionTotal: string;
-  createdAt: string; // Assuming createdAt is a string in ISO format
+  createdAt: string;
 }
 
 interface ApiResponse {
@@ -54,7 +54,6 @@ const BalanceSheet = () => {
     equity: [],
   });
 
-  // Function to set predefined date ranges
   const handlePeriodFilter = (period: string) => {
     const now = new Date();
     const startDate = new Date();
@@ -105,7 +104,6 @@ const BalanceSheet = () => {
     }
   };
 
-  // Improved search function
   const searchInObject = (obj: any, searchTerm: string): boolean => {
     if (!obj) return false;
 
@@ -123,13 +121,11 @@ const BalanceSheet = () => {
     });
   };
 
-  // Memoized logic for filtering data
   const filteredData = useMemo(() => {
     if (!data?.data?.tradeData) return [];
 
     let reportData = data.data.tradeData;
 
-    // Filter by Date Range
     if (dateRange) {
       const [startStr, endStr] = dateRange;
       const start = moment.tz(startStr, "America/Toronto").startOf('day');
@@ -140,7 +136,6 @@ const BalanceSheet = () => {
       });
     }
 
-    // Search Filter
     if (searchText) {
       reportData = reportData.filter((item) => searchInObject(item, searchText));
     }
@@ -148,12 +143,10 @@ const BalanceSheet = () => {
     return reportData;
   }, [data, dateRange, searchText]);
 
-  // Function to handle search input changes
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
 
-    // Generate search suggestions based on the input
     if (value.trim() === "") {
       setSearchSuggestions([]);
     } else {
@@ -175,15 +168,14 @@ const BalanceSheet = () => {
         ])
         .flat()
         .filter((field) => field?.toLowerCase().includes(value.toLowerCase()))
-        .slice(0, 5); // Limit to 5 suggestions
+        .slice(0, 5);
       setSearchSuggestions(suggestions as string[]);
     }
   };
 
-  // Function to handle suggestion selection
   const handleSuggestionClick = (suggestion: string) => {
     setSearchText(suggestion);
-    setSearchSuggestions([]); // Clear suggestions
+    setSearchSuggestions([]);
   };
 
 
@@ -274,10 +266,8 @@ const BalanceSheet = () => {
   };
 
   const generateExcel = () => {
-    // Create a new workbook
     const workbook = XLSX.utils.book_new();
 
-    // Convert balanceData to a worksheet with formatted amounts and $ sign
     const assetsSheet = XLSX.utils.json_to_sheet([
       ...balanceData.assets.map((item) => ({
         name: item.name,
@@ -300,12 +290,10 @@ const BalanceSheet = () => {
       { name: "Total Equity", amount: `$${formatNumberWithCommasAndDecimals(calculateTotal(balanceData.equity))}` },
     ]);
 
-    // Add sheets to the workbook
     XLSX.utils.book_append_sheet(workbook, assetsSheet, "Assets");
     XLSX.utils.book_append_sheet(workbook, liabilitiesSheet, "Liabilities");
     XLSX.utils.book_append_sheet(workbook, equitySheet, "Equity");
 
-    // Export the workbook as an Excel file
     XLSX.writeFile(workbook, "balance-sheet.xlsx");
   };
 

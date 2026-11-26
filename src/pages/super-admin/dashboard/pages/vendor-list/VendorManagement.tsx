@@ -211,7 +211,6 @@ const VendorManagement = () => {
   const handleDeleteCategory = async (id: number, categoryName: string) => {
     try {
       await deleteMultipleVendorCategory([id]).unwrap();
-      // If deleted category was selected in form, remove it
       const current: string[] = getValues("category") || [];
       if (current.includes(categoryName)) {
         setValue("category", current.filter((c) => c !== categoryName));
@@ -222,7 +221,6 @@ const VendorManagement = () => {
     }
   };
 
-  // API hooks
   const { data, isLoading, refetch } = useGetVendorsQuery("");
   const { data: companiesData } = useGetCompaniesQuery("");
   
@@ -232,7 +230,6 @@ const VendorManagement = () => {
   const [deleteMultipleVendors] = useDeleteMultipleVendorsMutation();
   const [updateVendorStatus] = useUpdateVendorStatusMutation();
 
-  // Form
   const {
     register,
     formState: { errors },
@@ -255,12 +252,10 @@ const VendorManagement = () => {
 
   const watchCategory = watch("category", []);
 
-  // Combined memoization for all vendor data
   const { allVendorEntries, companiesWithoutVendors, companyAsVendors } = useMemo(() => {
     const vendors = data?.data?.vendors || [];
     const companies = companiesData?.data?.companies || [];
 
-    // Parse vendor categories
     const parsedVendors = vendors.map((vendor: any) => {
       let categoryArray: string[] = [];
       if (vendor.category) {
@@ -282,15 +277,12 @@ const VendorManagement = () => {
       };
     });
 
-    // Create vendor entries for companies that don't have vendors
     const companiesWithoutVendors = companies.filter((company: Company) => {
       const hasVendor = parsedVendors.some((vendor: Vendor) => vendor.companyId === company.id);
       return !hasVendor;
     });
 
-    // Convert companies to vendor format
     const companyAsVendors: Vendor[] = companiesWithoutVendors.map((company: Company) => {
-      // Handle company category - it might be string or array
       let companyCategory: string[] = [];
       if (company.category) {
         if (Array.isArray(company.category)) {
@@ -323,7 +315,6 @@ const VendorManagement = () => {
       };
     });
 
-    // Combine both real vendors and company-as-vendor entries
     const allVendorEntries = [...parsedVendors, ...companyAsVendors];
 
     return {
@@ -333,7 +324,6 @@ const VendorManagement = () => {
     };
   }, [data?.data?.vendors, companiesData?.data?.companies]);
 
-  // Filtered data for search
   const filteredData = useMemo(() => {
     return allVendorEntries.filter((record: Vendor) => {
       const searchTerm = searchText?.toLowerCase() || "";
@@ -358,7 +348,6 @@ const VendorManagement = () => {
     });
   }, [allVendorEntries, searchText]);
 
-  // Reset form
   const resetForm = () => {
     reset({
       companyId: "",
@@ -370,7 +359,6 @@ const VendorManagement = () => {
     });
   };
 
-  // Modal handlers
   const handleCancel = () => {
     resetForm();
     setIsModalOpen(false);
@@ -388,7 +376,6 @@ const VendorManagement = () => {
     setSelectedVendor(null);
   };
 
-  // Platform helper functions
   const getPlatformIcon = (platformValue: string) => {
     const platform = SOCIAL_PLATFORMS.find(p => p.value === platformValue);
     return platform ? platform.icon : FaExternalLinkAlt;
@@ -401,12 +388,10 @@ const VendorManagement = () => {
 
   const handleEdit = (record: Vendor) => {
     if (record.isCompanyAsVendor) {
-      // Redirect to company management for editing the company
       window.location.href = `/dashboard/super-admin/companies?edit_id=${record.companyId}`;
       return;
     }
     
-    // Ensure category is properly handled
     let categoryArray: string[] = [];
     if (record.category) {
       if (Array.isArray(record.category)) {
@@ -464,7 +449,6 @@ const VendorManagement = () => {
     setIsModalVisible(true);
   };
 
-  // Handle status change
   const handleStatusChange = async (id: number, newStatus: string) => {
     const vendor = allVendorEntries.find(v => v.id === id);
     if (vendor && vendor.isCompanyAsVendor) {
@@ -481,14 +465,12 @@ const VendorManagement = () => {
     }
   };
 
-  // Phone number formatting handlers
   const handleContactPersonPhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const formattedValue = formatPhoneNumber(value);
     setValue("contactPersonPhoneNumber", formattedValue);
   };
 
-  // Table row selection
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -531,14 +513,12 @@ const VendorManagement = () => {
     ],
   };
 
-  // Delete multiple
   const handleDeleteMultipleClick = () => {
     setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
     if (selectedRowKeys.length > 0) {
-      // Filter out company-as-vendor entries
       const deletableIds = selectedRowKeys.filter(id => {
         const vendor = allVendorEntries.find(v => v.id === id);
         return !vendor?.isCompanyAsVendor;
@@ -564,7 +544,6 @@ const VendorManagement = () => {
     }
   };
 
-  // Share functionality
   const handleShareVendors = () => {
     if (selectedRowKeys.length === 0) {
       toast.error("Please select vendors to share.");
@@ -586,7 +565,6 @@ const VendorManagement = () => {
   };
 
   const handleSendEmail = async () => {
-    // Clean and validate emails one more time before sending
     const cleanedEmails = selectedEmails
       .map(email => email.trim())
       .filter(email => email.length > 0);
@@ -596,7 +574,6 @@ const VendorManagement = () => {
       return;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const invalidEmails = cleanedEmails.filter(email => !emailRegex.test(email));
     
@@ -607,7 +584,6 @@ const VendorManagement = () => {
 
     setIsSharing(true);
     try {
-      // Prepare vendor data for email
       const vendorTableData = selectedVendorsForSharing.map(vendor => {
         const categories = vendor.isCompanyAsVendor 
           ? (Array.isArray(vendor.company?.category) 
@@ -626,11 +602,7 @@ const VendorManagement = () => {
         };
       });
 
-      console.log("Sending email to:", cleanedEmails);
-      console.log("Message:", emailMessage);
-      console.log("Vendor Data:", vendorTableData);
 
-      // Send to backend API
       const response = await shareVendor({
         vendors: vendorTableData,
         agentEmails: cleanedEmails,
@@ -653,17 +625,14 @@ const VendorManagement = () => {
     }
   };
 
-  // Create/Edit submit
   const onSubmit = async () => {
     const formData = getValues();
     
-    // Validate at least one category is selected
     if (!formData.category || formData.category.length === 0) {
       setError("category", { type: "manual", message: "At least one category is required" });
       return;
     }
 
-    // Prepare API data
     const apiData = {
       companyId: formData.companyId ? parseInt(formData.companyId) : null,
       category: formData.category,
@@ -710,7 +679,6 @@ const VendorManagement = () => {
     }
   };
 
-  // Format date for display
   const formatDate = (dateString: string) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -720,7 +688,6 @@ const VendorManagement = () => {
     });
   };
 
-  // Get status tag color
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'green';
@@ -730,7 +697,6 @@ const VendorManagement = () => {
     }
   };
 
-  // Get company name by ID
   const getCompanyName = useCallback((companyId: number | null) => {
     if (!companyId) return "N/A";
     const companies = companiesData?.data?.companies || [];
@@ -738,7 +704,6 @@ const VendorManagement = () => {
     return company?.companyName || "N/A";
   }, [companiesData?.data?.companies]);
 
-  // Table columns
   const columns: TableColumnsType<Vendor> = [
     {
       title: "Contact Person",
@@ -870,7 +835,6 @@ const VendorManagement = () => {
         return recordCategories.includes(value as string);
       },
       render: (categories: any, record: Vendor) => {
-        // Safely handle categories data
         let categoriesArray: string[] = [];
         
         if (categories) {
@@ -886,7 +850,6 @@ const VendorManagement = () => {
           }
         }
 
-        // For company-as-vendor, use company categories
         const displayCategories = record.isCompanyAsVendor 
           ? (Array.isArray(record.company?.category) 
               ? record.company.category 
@@ -1031,7 +994,6 @@ const VendorManagement = () => {
       : []),
   ];
 
-  // Add index for serial number
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -1101,7 +1063,6 @@ const VendorManagement = () => {
         </div>
       </div>
 
-      {/* Create/Edit Vendor Modal */}
       <Modal
         onCancel={handleCancel}
         open={isModalOpen}
@@ -1127,7 +1088,6 @@ const VendorManagement = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Company Selection */}
             <div className="flex flex-col gap-2">
               <label>Vendor</label>
               <select
@@ -1226,7 +1186,6 @@ const VendorManagement = () => {
         </form>
       </Modal>
 
-      {/* View Vendor Details Modal */}
       <Modal
         open={isViewModalOpen}
         onCancel={handleCloseViewModal}
@@ -1240,7 +1199,6 @@ const VendorManagement = () => {
       >
         {selectedVendor && (
           <div className="space-y-6">
-            {/* Header Section */}
             <div className="bg-gray-50 p-4 rounded-lg border">
               <div className="flex justify-between items-start">
                 <div>
@@ -1276,14 +1234,12 @@ const VendorManagement = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Company Information */}
               <div className="border border-gray-200 rounded-lg p-4 bg-white shadow-xs">
                 <div className="flex items-center gap-2 mb-3">
                   <h4 className="text-base font-semibold text-gray-800">Vendor Information</h4>
                 </div>
 
                 <div className="space-y-3">
-                  {/* Vendor Name */}
                   <div className="flex gap-1">
                     <label className="block text-xs font-medium mb-1">Vendor Name :</label>
                     <p className="text-xs text-gray-800">
@@ -1291,7 +1247,6 @@ const VendorManagement = () => {
                     </p>
                   </div>
 
-                  {/* Vendor Website */}
                   <div>
                     <label className="block text-xs font-medium mb-1">Vendor Website</label>
                     {selectedVendor.company?.companyWebsite ? (
@@ -1312,7 +1267,6 @@ const VendorManagement = () => {
                     )}
                   </div>
 
-                  {/* Phone & Email */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex gap-1">
                       <label className="block text-xs font-medium mb-1">Phone :</label>
@@ -1335,19 +1289,15 @@ const VendorManagement = () => {
       (() => {
         const categoryData = selectedVendor.company.category;
         
-        // Handle different data types
         if (Array.isArray(categoryData)) {
-          // If it's already an array, use it directly
           return categoryData.map((cat, index) => (
             <Tag key={index} color="blue" className="text-xs">
               {String(cat)}
             </Tag>
           ));
         } else if (typeof categoryData === 'string') {
-          // If it's a string, process it
           const categoryStr = categoryData;
           
-          // Extract all content from quoted strings
           const categories = categoryStr.match(/"([^"]+)"/g)?.map(cat => cat.replace(/"/g, '')) || [categoryStr];
           
           return categories.map((cat, index) => (
@@ -1356,7 +1306,6 @@ const VendorManagement = () => {
             </Tag>
           ));
         } else {
-          // Fallback for other types (number, object, etc.)
           return (
             <Tag color="blue" className="text-xs">
               {String(categoryData)}
@@ -1370,7 +1319,6 @@ const VendorManagement = () => {
   </div>
 </div>
 
-                  {/* Discount Section - FIXED */}
                   <div className="mt-3">
                     <label className="block text-xs font-medium mb-1">Discount</label>
                     {selectedVendor.company?.discountType && selectedVendor.company.discount ? (
@@ -1401,7 +1349,6 @@ const VendorManagement = () => {
                     )}
                   </div>
 
-                  {/* Platforms / Social URLs - FIXED */}
                   <div className="mt-3">
                     <label className="block text-xs font-medium mb-1">Platforms</label>
                     {selectedVendor.company?.socialUrls && selectedVendor.company.socialUrls.length > 0 ? (
@@ -1447,7 +1394,6 @@ const VendorManagement = () => {
                 </div>
               </div>
 
-              {/* Contact Person */}
               <div className="border border-gray-200 rounded-lg p-4 bg-white shadow-xs">
                 <div className="flex items-center gap-2 mb-3">
                   <h4 className="text-base font-semibold text-gray-800">Contact Person</h4>
@@ -1477,7 +1423,6 @@ const VendorManagement = () => {
         )}
       </Modal>
 
-      {/* Share Vendors Modal */}
       <Modal
         open={isShareModalOpen}
         onCancel={handleCloseShareModal}
@@ -1504,7 +1449,6 @@ const VendorManagement = () => {
         ]}
       >
         <div className="space-y-6">
-          {/* Vendor Information Section */}
           <div>
             <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1">
               Vendor Information
@@ -1582,7 +1526,6 @@ const VendorManagement = () => {
             </div>
           </div>
 
-          {/* Email Section */}
           <div>
             <h4 className="text-lg font-semibold mb-3">Email</h4>
             <div className="space-y-4">
@@ -1643,7 +1586,6 @@ const VendorManagement = () => {
         </div>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isModalVisible}
@@ -1676,7 +1618,6 @@ const VendorManagement = () => {
         </div>
       </Modal>
 
-      {/* Category Management Modal */}
       <Modal
         title={
           <div className="flex items-center gap-2">
@@ -1698,7 +1639,6 @@ const VendorManagement = () => {
         zIndex={1100}
       >
         <div className="space-y-5 pt-1">
-          {/* Add new category */}
           <div className="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-4">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Add New Category</p>
             <div className="flex gap-2">
@@ -1721,7 +1661,6 @@ const VendorManagement = () => {
             </div>
           </div>
 
-          {/* Existing categories */}
           <div>
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
               Existing Categories
@@ -1815,7 +1754,6 @@ const VendorManagement = () => {
         </div>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

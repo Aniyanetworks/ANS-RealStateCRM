@@ -40,29 +40,24 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
   const printRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // Initialize form data when modal opens or orderData changes
   useEffect(() => {
     if (isOpen && orderData) {
       setComment(orderData.comment || "");
       
-      // Handle existing signature
       if (orderData.signature) {
         if (orderData.signature.startsWith('http') || orderData.signature.startsWith('data:')) {
           setUploadSignatureImage(orderData.signature);
         } else {
-          // Use baseUrl for signature path
           setUploadSignatureImage(`${baseUrl}${orderData.signature}`);
         }
       } else {
         setUploadSignatureImage("");
       }
       
-      // Handle existing attachment
       if (orderData.attatchment) {
         if (orderData.attatchment.startsWith('http') || orderData.attatchment.startsWith('data:')) {
           setAttachmentPreview(orderData.attatchment);
         } else {
-          // Use baseUrl for attachment path
           const fullAttachmentUrl = `${baseUrl}${orderData.attatchment}`;
           setAttachmentPreview(fullAttachmentUrl);
         }
@@ -70,12 +65,10 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
         setAttachmentPreview("");
       }
       
-      // Reset attachment state
       setAttachment("");
     }
   }, [isOpen, orderData]);
 
-  // Reset form when modal closes
   useEffect(() => {
     if (!isOpen) {
       setIsAgreed(false);
@@ -89,7 +82,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     }
   }, [isOpen]);
 
-  // Clear signature function
   const clearSignature = () => {
     if (signatureRef.current) {
       signatureRef.current.clear();
@@ -97,7 +89,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     setUploadSignatureImage("");
   };
 
-  // Save signature function
   const saveSignature = () => {
     if (signatureRef.current.isEmpty()) {
       toast.error("Please provide a signature");
@@ -112,17 +103,14 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     toast.success("Signature saved successfully");
   };
 
-  // Handle attachment upload
   const handleAttachmentUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("File size must be less than 5MB");
         return;
       }
 
-      // Check file type
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
       if (!allowedTypes.includes(file.type)) {
         toast.error("Only JPEG, PNG, JPG images and PDF files are allowed");
@@ -152,7 +140,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     }
   };
 
-  // Convert file to base64
   const convertFileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -162,7 +149,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     });
   };
 
-  // Handle agreement
   const handleAgree = () => {
     if (!isAgreed) {
       toast.error("Please agree to the terms and conditions");
@@ -174,29 +160,23 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
       return;
     }
 
-    // Extract base64 data without data URL prefix for signature
     let signatureData = uploadSignatureImage;
     if (uploadSignatureImage.startsWith('data:')) {
       signatureData = uploadSignatureImage.split(',')[1];
     } else if (uploadSignatureImage.startsWith(baseUrl)) {
-      // If it's an existing signature from server, send 'existing'
       signatureData = 'existing';
     }
 
-    // Handle attachment data
     let attachmentData = attachment;
     if (attachment && attachment.startsWith('data:')) {
-      // New attachment - extract base64
       attachmentData = attachment.split(',')[1];
     } else if (!attachment && orderData?.attatchment) {
-      // Keep existing attachment
       attachmentData = 'existing';
     }
 
     onAgree(signatureData, comment, attachmentData);
   };
 
-  // Get print content HTML
   const getPrintContent = () => {
     return `
       <!DOCTYPE html>
@@ -370,7 +350,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     `;
   };
 
-  // Download PDF functionality
   const downloadPDF = async () => {
     setIsDownloading(true);
     
@@ -378,7 +357,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = content;
     
-    // Wait for images to load
     const images = tempDiv.getElementsByTagName('img');
     const imageLoadPromises = Array.from(images).map(
       (img) =>
@@ -395,7 +373,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     try {
       await Promise.all(imageLoadPromises);
     } catch (error) {
-      console.log('Some images failed to load, continuing with PDF generation...');
     }
 
     const options = {
@@ -426,7 +403,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
     }
   };
 
-  // Print functionality
   const handlePrint = () => {
     const printContent = getPrintContent();
     const printWindow = window.open('', '_blank', 'width=1000,height=800,scrollbars=yes');
@@ -435,7 +411,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
       printWindow.document.write(printContent);
       printWindow.document.close();
       
-      // Add styles for better print layout
       const style = printWindow.document.createElement('style');
       style.textContent = `
         @media print {
@@ -453,7 +428,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
       
       printWindow.focus();
       
-      // Wait for images to load before printing
       printWindow.onload = () => {
         setTimeout(() => {
           printWindow.print();
@@ -487,7 +461,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
       className="compact-modal"
     >
       <div ref={modalRef} className="space-y-4 text-sm">
-        {/* Header */}
         <div className="text-center border-b pb-3">
           <div className="flex items-center justify-center gap-2 mb-2">
             <img src={logo} alt="ANS RealStateCRM" className="h-8 w-auto" />
@@ -504,7 +477,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
           </div>
         </div>
 
-        {/* Terms and Conditions */}
         <div className="terms-section">
           <h3 className="font-semibold mb-2 text-gray-800 border-b pb-1 text-sm">Terms & Conditions:</h3>
           <ul className="list-disc pl-4 space-y-1 text-xs">
@@ -514,7 +486,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
           </ul>
         </div>
 
-        {/* Comment Field - Above Signature */}
         <div className="comment-section">
           <label className="block text-xs font-medium text-gray-700 mb-1">
             Comments
@@ -528,13 +499,10 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
           />
         </div>
 
-        {/* Signature and Attachment Section - Side by Side */}
         <div className="signature-attachment-section grid grid-cols-2 gap-4 border-t pt-3">
-          {/* Left Side - Signature */}
           <div className="signature-section">
             <h3 className="font-semibold mb-2 text-sm">Signature</h3>
             
-            {/* Show signature canvas only if no signature is uploaded */}
             {!uploadSignatureImage ? (
               <>
                 <div className="border border-gray-300 rounded p-1 w-full h-[120px]">
@@ -585,7 +553,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
               </div>
             )}
 
-            {/* Show existing signature if available but not currently editing */}
             {orderData?.signature && !uploadSignatureImage && (
               <div className="mt-3">
                 <p className="mb-1 text-xs font-medium">Existing Signature:</p>
@@ -598,7 +565,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      // Clear existing signature display and allow new one
                       setUploadSignatureImage("");
                       if (signatureRef.current) {
                         signatureRef.current.clear();
@@ -613,7 +579,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
             )}
           </div>
 
-          {/* Right Side - Attachment */}
           <div className="attachment-section">
             <h3 className="font-semibold mb-2 text-sm">Attachment</h3>
             
@@ -678,7 +643,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
               </div>
             )}
 
-            {/* Show existing attachment if available but not currently editing */}
             {orderData?.attatchment && !attachmentPreview && (
               <div className="mt-3">
                 <p className="mb-1 text-xs font-medium">Existing Attachment:</p>
@@ -692,7 +656,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
                       <Button
                         icon={<FaEye />}
                         onClick={() => {
-                          // Construct full URL for preview
                           const fullUrl = `${baseUrl}${orderData.attatchment}`;
                           setAttachmentPreview(fullUrl);
                           setShowAttachmentModal(true);
@@ -706,7 +669,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
                       <Button
                         icon={<FaTimes />}
                         onClick={() => {
-                          // Remove existing attachment
                           setAttachment("");
                           setAttachmentPreview("");
                         }}
@@ -725,7 +687,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
           </div>
         </div>
 
-        {/* Agreement Checkbox */}
         <div className="flex items-center space-x-2 mt-3">
           <input
             type="checkbox"
@@ -739,7 +700,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
           </label>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex justify-between items-center pt-3 border-t">
           <Space>
             <Button 
@@ -777,14 +737,12 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
           </Space>
         </div>
 
-        {/* Footer */}
         <div className="text-center border-t pt-2 text-gray-500 text-xs">
           <p>This agreement is electronically generated and legally binding.</p>
           <p>ANS RealStateCRM Inc. - {new Date().getFullYear()}</p>
         </div>
       </div>
 
-      {/* Attachment Preview Modal */}
       <Modal
         open={showAttachmentModal}
         onCancel={() => setShowAttachmentModal(false)}
@@ -823,7 +781,6 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
         </div>
       </Modal>
 
-      {/* Hidden print template */}
       <div style={{ display: 'none' }}>
         <div ref={printRef} id="print-template">
           {getPrintContent()}

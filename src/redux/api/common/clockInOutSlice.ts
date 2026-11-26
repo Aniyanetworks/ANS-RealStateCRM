@@ -241,7 +241,6 @@ const clockInOutApi = api.injectEndpoints({
       invalidatesTags: ["ClockScheduleTag"],
     }),
 
-    // Single-date shifts (true calendar schedules)
     getShiftList: builder.query({
       query: (params?: {
         page?: number;
@@ -272,7 +271,7 @@ const clockInOutApi = api.injectEndpoints({
         userId?: number | null;
         userIds?: number[];
         branchId: number;
-        date: string; // YYYY-MM-DD
+        date: string;
         startTime?: string | null;
         endTime?: string | null;
       }) => ({

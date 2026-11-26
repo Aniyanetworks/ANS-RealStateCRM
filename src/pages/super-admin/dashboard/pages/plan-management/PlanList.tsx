@@ -1,6 +1,5 @@
-// PlanList.tsx
-import { Plan } from './types';  // Import Plan type
-import PlanItemComponent from './PlanItem'; // PlanItem component
+import { Plan } from './types';
+import PlanItemComponent from './PlanItem';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 

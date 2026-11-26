@@ -95,7 +95,6 @@ export const SyncMLSModal = ({
                 width: 250,
                 render: (_, record: any) => (
                   <div>
-                    {/* <div className="font-semibold text-sm">Property Listing:</div> */}
                     <div className="text-xs text-gray-600">{record.propertyListing.propertyAddress}</div>
                     <div className="text-xs text-gray-500 mt-1">Current MLS: {record.propertyListing.currentMLS}</div>
                   </div>
@@ -107,7 +106,6 @@ export const SyncMLSModal = ({
                 width: 250,
                 render: (_, record: any) => (
                   <div>
-                    {/* <div className="font-semibold text-sm">IDX Property:</div> */}
                     <div className="text-xs text-gray-600">{record.realtorProperty.propertyAddress}</div>
                     <div className="text-xs text-blue-600 mt-1">MLS: {record.realtorProperty.mlsNumber}</div>
                   </div>

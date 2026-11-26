@@ -13,7 +13,6 @@ import TableLoader from "../../../../../../components/loader/TableLoader";
 import ButtonLoader from "../../../../../../components/loader/buttonLoader";
 import { useAppSelector } from "../../../../../../redux/hooks";
 
-// Reusable Text Input Component
 const TextInput = ({
   label,
   register,
@@ -42,7 +41,7 @@ const TextInput = ({
 
 const TradeSheetBuyerInformation = () => {
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const [btnLoading, setBtnLoading] = useState('');
   const {
     register,
@@ -51,7 +50,7 @@ const TradeSheetBuyerInformation = () => {
     formState: { errors },
     reset,
   } = useForm();
-  const [buyers, setBuyers] = useState([{ id: Date.now() }]); // Initial buyer state
+  const [buyers, setBuyers] = useState([{ id: Date.now() }]);
     const { tradeSheetRepresentationData } = useAppSelector(
       (state: any) => state.user
     );
@@ -88,7 +87,6 @@ const TradeSheetBuyerInformation = () => {
   setBtnLoading(formData.saveBtn);
   
   try {
-    // Build buyer array from form data
     const buyersArray = buyers.map((_buyer, index) => ({
       firstName: formData[`buyer${index + 1}FirstName`],
       lastName: formData[`buyer${index + 1}LastName`],
@@ -121,7 +119,6 @@ const TradeSheetBuyerInformation = () => {
           break;
       }
   
-      // Navigate to the determined path
       if (navigatePath) {
         navigate(navigatePath, { replace: true });
       }
@@ -155,7 +152,6 @@ const TradeSheetBuyerInformation = () => {
 
   return (
     <div>
-      {/* <h2 className="uppercase text-center bg-[#c9c1c13d] py-5">Trade Sheet</h2> */}
       <TradeSheetSteps active={4} uuid={uuid} />
 
       {isLoading ? (
@@ -213,7 +209,6 @@ const TradeSheetBuyerInformation = () => {
               </div>
             </div>
             <div className="flex justify-between my-15 mx-5">
-              {/* Save and Next Button */}
               <button
                 type="submit"
                 onClick={() => {
@@ -271,7 +266,6 @@ const TradeSheetBuyerInformation = () => {
                 {btnLoading === "reset" ? <ButtonLoader /> : "Rest Form"}
               </button>
 
-              {/* Cancel Button */}
               <button
                 onClick={cancelSubmit}
                 type="button"

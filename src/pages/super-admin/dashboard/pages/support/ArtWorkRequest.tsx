@@ -90,7 +90,6 @@ interface User {
 }
 
 const SupportRequestList: React.FC = () => {
-  // const [uploadArtWorkFile, setUploadArtWorkFile] = useState<ImageItem[]>([]);
   const { id, filter } = useParams();
   const {
     data,
@@ -102,7 +101,7 @@ const SupportRequestList: React.FC = () => {
   const [singleData, setSingleData] = useState<object>("");
   const { data: singleArtWorkFileData, refetch: refetchArtworkFile } =
     useGetArtWorkFilesQuery(singleData.id, {
-      skip: !singleData.id, // Skip the query if there's no valid `id`
+      skip: !singleData.id,
     });
 
   useEffect(() => {
@@ -159,7 +158,6 @@ const SupportRequestList: React.FC = () => {
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
-  // get auth user
   const authUser = useSelector((state: RootState) => state.user.user as User);
   const { hasPermissionForSlug } = usePermissions();
   const userType = authUser?.userType;
@@ -266,7 +264,6 @@ const SupportRequestList: React.FC = () => {
   });
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
@@ -300,7 +297,6 @@ const SupportRequestList: React.FC = () => {
       formData.append("teamId", values.teamId || "");
       formData.append("teamMemberId", values.teamMemberId || "");
 
-      // Prepare selected artworks with id and platform
       const selectedArtworks = Object.entries(selectedRequests).map(
         ([id, platform]) => ({ id, platform })
       );
@@ -352,7 +348,6 @@ const SupportRequestList: React.FC = () => {
       title: "",
       priority: "",
       type: "",
-      // status: '',
       teamId: 2,
       teamMemberId: "",
     });
@@ -398,7 +393,6 @@ const SupportRequestList: React.FC = () => {
         setDeleteRequestUuid(null);
         setIsDeleteModalVisible(false);
       } catch (err) {
-        console.log(err);
         message.error("Failed to delete support request");
       }
     }
@@ -410,7 +404,6 @@ const SupportRequestList: React.FC = () => {
         refetchArtworkFile();
         message.success("Artwork file deleted successfully");
       } catch (err) {
-        console.log(err);
         message.error("Failed to delete artwork file");
       }
     }
@@ -498,7 +491,7 @@ const SupportRequestList: React.FC = () => {
     multiple: true,
     beforeUpload: (file) => {
       setNewFiles((prevFiles) => [...prevFiles, file]);
-      return false; // Prevent automatic upload
+      return false;
     },
     onRemove: (file) => {
       handleRemoveFile(file as unknown as File);
@@ -510,11 +503,6 @@ const SupportRequestList: React.FC = () => {
     })),
   };
 
-  /*  const handleAssign = (record: SupportRequest) => {
-    setEditingRequest(record);
-    setSelectedMember(record?.assignments?.[0]?.teamMemberId?.toString() || null);
-    setIsAssignModalVisible(true);
-  }; */
   const handleSuportDetails = (record: any) => {
     setSingleData(record);
     setSupportId(record.id);
@@ -541,7 +529,6 @@ const SupportRequestList: React.FC = () => {
         supportRequestId: supportId,
         teamMemberId: e,
       }).unwrap();
-      console.log(response);
       if (response.status) {
         toast.success("Support request assigned successfully");
         refetchSuport();
@@ -621,12 +608,6 @@ const SupportRequestList: React.FC = () => {
     }
   };
 
-  /* const downloadFile = (filePath) => {
-  const link = document.createElement('a');
-  link.href = `http://localhost:4000/download/${filePath}`;  // Adjust the URL as necessary
-  link.download = filePath; // Suggests the file name for download
-  link.click();
-}; */
 
   const downloadFile = async (filePath) => {
     if (!filePath) {
@@ -634,8 +615,8 @@ const SupportRequestList: React.FC = () => {
       return;
     }
 
-    const fileName = filePath.split("/").pop(); // Extract just the filename
-    const pdfUrl = filePath; // Assuming filePath is a valid URL
+    const fileName = filePath.split("/").pop();
+    const pdfUrl = filePath;
 
     try {
       const response = await fetch(pdfUrl);
@@ -644,15 +625,13 @@ const SupportRequestList: React.FC = () => {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
 
-      // Create a temporary link to download the file
       const link = document.createElement("a");
       link.href = url;
-      link.download = fileName; // Use extracted file name
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      // Release the URL object
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading the file:", error);
@@ -855,15 +834,6 @@ const SupportRequestList: React.FC = () => {
             <Dropdown
               menu={{
                 items: [
-                  /* { 
-                  key: "assign", 
-                  label: (
-                    <div className="flex items-center gap-2 p-2" onClick={() => handleAssign(record)}>
-                      <FaUser />
-                      Assign
-                    </div>
-                  ),
-                }, */
                   hasPermissionForSlug("artwork-request-edit") && {
                     key: "edit",
                     label: (
@@ -909,7 +879,6 @@ const SupportRequestList: React.FC = () => {
   return (
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        {/* Single toolbar row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
@@ -1258,33 +1227,6 @@ const SupportRequestList: React.FC = () => {
             Assigned By:{" "}
             <span className="font-bold"> {singleData?.user?.name}</span>
           </p>
-          {/* <p className="my-2 text-gray-600">
-            Assigned TO:{" "}
-            <span className="font-bold">
-              {" "}
-              {singleData ? singleData?.assignments[0]?.teamMember?.name : ""}
-            </span>
-          </p>
-          <p className="my-2 text-gray-600">
-            Status:
-            {singleData?.status === "completed" ? (
-              <Tag color="blue" className="mx-2">
-                Completed
-              </Tag>
-            ) : singleData?.status === "inProgress" ? (
-              <Tag color="orange" className="mx-2">
-                In Progress
-              </Tag>
-            ) : singleData?.status === "closed" ? (
-              <Tag color="green" className="mx-2">
-                Closed
-              </Tag>
-            ) : (
-              <Tag color="red " className="mx-2">
-                Open
-              </Tag>
-            )}
-          </p> */}
           <p className="my-2 text-gray-600">
             Priority:{" "}
             {singleData?.priority === "Low" ? (
@@ -1370,19 +1312,6 @@ const SupportRequestList: React.FC = () => {
               </select>
             </div>
           )}
-          {/* <p className="my-2 text-gray-600">Assign TO:</p>
-            <select
-              value={selectedMember || ""}
-              onChange={(e) => handleAssignRequest(e.target.value)}
-              className="global-input"
-            >
-              <option value="" disabled>Select a member</option>
-              {Array.isArray(supportTeamData?.data) && supportTeamData?.data?.map((member: SupportMember) => (
-                <option key={member.id} value={member.id}>
-                  {member.name}
-                </option>
-              ))}
-            </select> */}
 
           <div className="mt-3">
             <Tabs
@@ -1407,7 +1336,7 @@ const SupportRequestList: React.FC = () => {
                 singleData.files.map((file) => (
                   <a
                     key={file.id}
-                    href={`${file.filePath}`} // Linking to the file path
+                    href={`${file.filePath}`}
                     className="text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-black transition duration-200 text-[12px]"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1545,7 +1474,7 @@ const SupportRequestList: React.FC = () => {
                 singleData.files.map((file) => (
                   <a
                     key={file.id}
-                    href={`${file.filePath}`} // Linking to the file path
+                    href={`${file.filePath}`}
                     className="text-sm text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-white transition duration-200"
                     target="_blank"
                     rel="noopener noreferrer"

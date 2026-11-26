@@ -18,7 +18,6 @@ const DeleteConfirmModals = ({
 }: DeleteConfirmModalsProps) => {
   return (
     <>
-      {/* Delete single receipt */}
       <Modal
         title="Confirm Deletion"
         visible={isModalVisible}
@@ -41,7 +40,6 @@ const DeleteConfirmModals = ({
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

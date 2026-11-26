@@ -1,6 +1,4 @@
 // @ts-nocheck
-// Staff Payroll: employees, hours (manual + Time Clock import), payroll runs with CRA deductions,
-// posting, CRA remittances, YTD opening balances, paystubs and a deductions calculator.
 import React, { useState } from "react";
 import { Alert, Checkbox, DatePicker, Descriptions, Drawer, Form, Input, InputNumber, Modal, Popconfirm, Select, Space, Switch, Tabs } from "antd";
 import dayjs from "dayjs";

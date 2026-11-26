@@ -24,7 +24,6 @@ import { pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
-/** Render each page of a PDF data URI to a PNG data URI (first `maxPages` pages). */
 async function pdfToImages(dataUrl: string, maxPages = 10, scale = 1.6): Promise<string[]> {
   const bytes = Uint8Array.from(atob(dataUrl.split(",")[1] || ""), (c) => c.charCodeAt(0));
   const doc = await pdfjs.getDocument({ data: bytes }).promise;
@@ -56,14 +55,12 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
   const { register, errors, watch, setValue, getValues } = useForm();
   const [isEmailSend, setIsEmailSend] = useState<boolean>(false);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState("deposit"); // Active tab state
-  const [imagesLoading, setImagesLoading] = useState<boolean>(false); // Track image loading
+  const [activeTab, setActiveTab] = useState("deposit");
+  const [imagesLoading, setImagesLoading] = useState<boolean>(false);
   const [signatureBase64, setSignatureBase64] = useState<string>("");
   const [bankDraftBase64Images, setBankDraftBase64Images] = useState<string[]>([]);
-  // True while bank receipt PDFs are being rendered into page images (shows a skeleton).
   const [bankImagesLoading, setBankImagesLoading] = useState<boolean>(false);
 
-  // Api hook
   const [sendDepositReceiptInvoiceEmail] =
     useSendDepositReceiptInvoiceEmailMutation();
 
@@ -71,9 +68,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
     setValue("data", value);
   };
 
-  // Images are returned as base64 data URLs from the backend — sync into state.
-  // Bank receipt PDFs (data:application/pdf) are rendered page by page into images, so they show in the
-  // receipt and are included in Print, Download and the emailed PDF like any other bank draft image.
   useEffect(() => {
     if (!isReceiptModalOpen || !receiptModalData) return;
     let cancelled = false;
@@ -156,12 +150,10 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
     }
   }, [activeTab]);
 
-  // Enhanced image loader with CORS handling
   const loadAndConvertImages = async (element: HTMLElement): Promise<void> => {
     setImagesLoading(true);
     const images = element.getElementsByTagName("img");
     const promises = Array.from(images).map((img) => {
-      // Skip data URLs and local images
       if (
         img.src.startsWith("data:") ||
         img.src.startsWith(window.location.origin)
@@ -192,7 +184,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
           console.error("Failed to load image:", img.src);
           resolve();
         };
-        // Add cache busting parameter
         proxyImg.src = img.src.includes("?")
           ? `${img.src}&t=${new Date().getTime()}`
           : `${img.src}?t=${new Date().getTime()}`;
@@ -203,11 +194,9 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
     setImagesLoading(false);
   };
 
-  // Regenerate the email attachment PDF whenever the deposit tab is active and images are ready
   useEffect(() => {
     if (!isReceiptModalOpen || activeTab !== "deposit" || !sectionRef.current) return;
 
-    // Skip if images are expected but not yet converted
     const signatureExpected = !!receiptModalData?.signature;
     let bankDraftExpected = false;
     if (receiptModalData?.bankDraftImagePath) {
@@ -223,7 +212,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
 
     const generatePdf = async () => {
       try {
-        // Convert any S3 URL images to base64 data URLs so html2canvas can capture them
         await loadAndConvertImages(sectionRef.current!);
 
         const canvas = await html2canvas(sectionRef.current!, {
@@ -257,7 +245,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
     try {
       if (!sectionRef.current) throw new Error("Content not available for PDF generation");
 
-      // Convert any S3 URL images to base64 data URLs before capturing
       await loadAndConvertImages(sectionRef.current);
 
       const options = {
@@ -379,7 +366,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
       }).unwrap();
       toast.success(`${response?.message}`);
     } catch (error: unknown) {
-      console.log("Error:", error);
     } finally {
       setIsEmailSend(false);
     }
@@ -418,7 +404,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
         </Button>,
       ]}
     >
-      {/* Tab Navigation */}
       <div className="flex justify-around mb-4">
         <button
           className={`py-2 px-4 ${
@@ -438,10 +423,8 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
         </button>
       </div>
 
-      {/* Conditional Content based on Active Tab */}
       {activeTab === "deposit" && (
         <div className="space-y-1 pt-4" ref={sectionRef} id="printSection">
-          {/* Deposit Receipt Title */}
           <div className=" flex flex-col items-center gap-2  ">
             <img src={logo} alt="" className={`w-[50px]`} />
             <h2
@@ -457,7 +440,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
             </h2>
           </div>
           <div className=" space-y-3 p-5">
-            {/* Date */}
             <div className="flex  gap-1">
               <label className="font-bold">Receipt No:</label>
 
@@ -474,7 +456,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
               </p>
             </div>
 
-            {/* Property Address */}
             <div className="flex  gap-1 ">
               <label className="font-bold  ">
                 Property Address:
@@ -482,7 +463,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
               <p className="  ">{receiptModalData.propertyAddress}</p>
             </div>
 
-            {/* Received From*/}
             <div className="flex   gap-1 ">
               <label className="font-bold">
                 Received From:
@@ -497,7 +477,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
             </div>
 
             <div className="flex gap-5 ">
-              {/* Type of Payment */}
               <div className="flex gap-1 ">
                 <label className="font-bold">
                   Type of Payment:
@@ -511,7 +490,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
                 </div>
               </div>
 
-              {/* Payment Method */}
               <div className="flex gap-1">
                 <label className="font-bold">
                   Payment Method:
@@ -538,7 +516,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
             </div>
 
             <div className="flex gap-1">
-              {/* Transaction Type */}
               <div className="flex gap-1">
                 <label className="font-bold">
                   Transaction Type:
@@ -551,7 +528,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
               </div>
             </div>
 
-            {/* Amount Received */}
             <div className="flex gap-1">
               <label className="font-bold">
                 Amount Received:
@@ -573,7 +549,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
             </div>
 
             <div className="flex items-start gap-1">
-              {/* Received By */}
               <div className="flex w-1/2 gap-1">
                 <label className="font-bold">
                   Received By:
@@ -581,7 +556,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
                 <p className=" ">{receiptModalData.receivedBy}</p>
               </div>
 
-              {/* Signature */}
               <div className="flex  w-1/2 gap-1">
                 <label className="font-bold w-[100px]">Signature:</label>
                 {signatureBase64 ? (
@@ -597,7 +571,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
             </div>
 
             <div className="!mt-5">
-              {/* Skeleton while bank receipt PDF pages are being rendered */}
               {bankImagesLoading && (
                 <div className="flex flex-col gap-2" data-html2canvas-ignore="true">
                   <Skeleton.Node active style={{ width: 480, maxWidth: "100%", height: 300 }}>
@@ -627,7 +600,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
           <div>
             <h5 className="mb-2 text-center font-bold">Send Email</h5>
 
-            {/* Recipients Input */}
             <div className="mb-4">
               <label className="font-bold">Recipients Email:</label>
               <input
@@ -645,7 +617,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
               )}
             </div>
 
-            {/* Subject Input (Text Area) */}
             <div className="mb-4">
               <label className="font-bold">Email Subject:</label>
               <input
@@ -662,7 +633,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
               )}
             </div>
 
-            {/* Data Input (Text Area) */}
             <div className="mb-4">
               <label className="font-bold">Email Body:</label>
               <ReactQuill
@@ -685,7 +655,6 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
                 <span className="text-red-500">{errors?.data?.message}</span>
               )}
             </div>
-            {/* Submit Button */}
             <div>
               <button
                 className="bg-[#0f766e] text-white p-2 rounded-md flex gap-2 items-center"

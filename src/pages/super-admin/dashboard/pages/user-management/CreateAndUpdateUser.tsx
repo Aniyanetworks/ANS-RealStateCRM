@@ -19,7 +19,7 @@ import toast from 'react-hot-toast';
 import {
   FaCrop,
   FaUserCircle,
-} from 'react-icons/fa'; // Importing the crop icon
+} from 'react-icons/fa';
 import ReactCrop, {
   centerCrop,
   convertToPixelCrop,
@@ -57,15 +57,9 @@ import {
 } from '../../../../../utils/format';
 import { getFileUrl } from '../../../../../utils/constant';
 
-// set ratio of crop image
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 
-// interface CustomError {
-//   data?: {
-//     message?: string;
-//   };
-// }
 
 const CreateAndUpdateUser = () => {
   const navigate = useNavigate();
@@ -103,7 +97,6 @@ const CreateAndUpdateUser = () => {
   const { data, isLoading } = useGetSpacificUserDataQuery(uuid);
   const { data: agentList } = useGetAgentListDataQuery("");
 
-  // Fetch active branches
   const { data: activeBranches, isLoading: branchesLoading } =
     useGetActiveBranchListDataQuery("");
 
@@ -121,21 +114,17 @@ const CreateAndUpdateUser = () => {
   const selectedCity = watch("cityId");
   const roleIdWatch = watch("roleId");
 
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [] } = useGetCitiesQuery(selectedState, {
-    skip: !selectedState, // Skip if no state is selected
+    skip: !selectedState,
   });
 
   useEffect(() => {
-    setValue("countryId", 39); //by defult set county canada
+    setValue("countryId", 39);
     if (data?.data?.userData) {
       const userData = data.data.userData;
       const { password, ...userWithoutPassword } = userData;
@@ -146,7 +135,6 @@ const CreateAndUpdateUser = () => {
       setPostalCode(formatPostalCode(userWithoutPassword.postalCode));
       setValue("agentId", userData?.clientAccount?.[0]?.agentId);
 
-      // Set branchId if exists
       if (userData.branchId) {
         setValue("branchId", userData.branchId);
       }
@@ -159,35 +147,33 @@ const CreateAndUpdateUser = () => {
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; // Safely access the first file
-    if (!file) return; // Return if no file is selected
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       const imageElement = new Image();
-      const imageUrl = reader.result?.toString() || ""; // Safely convert result to string
+      const imageUrl = reader.result?.toString() || "";
       imageElement.src = imageUrl;
 
       imageElement.addEventListener("load", (event: Event) => {
         const { naturalWidth, naturalHeight } =
           event.currentTarget as HTMLImageElement;
 
-        setImageFile(null); // Resetting the file
+        setImageFile(null);
 
         if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
           alert("Image must be at least 1000 x 500 pixels.");
-          return setSelectedImage(""); // Reset the selected image if the dimensions are invalid
+          return setSelectedImage("");
         }
 
-        // Set the selected image if the dimensions are valid
         setSelectedImage(imageUrl);
       });
     });
 
-    reader.readAsDataURL(file); // Read the file as Data URL
+    reader.readAsDataURL(file);
   };
 
-  // crop image
   const onImageLoad = (e: React.ChangeEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget;
     const cropWidthInPercent = (MIN_DIMENSION / width) * 100;
@@ -220,10 +206,8 @@ const CreateAndUpdateUser = () => {
       const { password, confirmPassword, ...rest } = data;
       data = rest;
     }
-    console.log(data);
 
     const formData = new FormData();
-    // Append form data
     Object.entries(data).forEach(([key, value]) => formData.append(key, value));
 
     if (imageFile) {
@@ -240,7 +224,6 @@ const CreateAndUpdateUser = () => {
   };
 
   const handleChangePostalCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Get the input value
     const postalCode = e.target.value;
     const value = formatPostalCode(postalCode);
 
@@ -284,7 +267,6 @@ const CreateAndUpdateUser = () => {
                 </label>
               </div>
 
-              {/* croper start  */}
 
               <div>
                 {imageFile ? (
@@ -368,7 +350,6 @@ const CreateAndUpdateUser = () => {
                 )}
               </div>
 
-              {/* croper end */}
 
               <div className="w-1/2 flex justify-center">
                 {imageFile ? (
@@ -416,7 +397,6 @@ const CreateAndUpdateUser = () => {
               {(user.userType == "superAdmin" || user.userType == "admin") &&
                 roleIdWatch == 3 && (
                   <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mb-6 w-full ">
-                    {/* Select Agent */}
                     <div className="flex flex-col gap-2 ">
                       <div className="flex flex-col ">
                         <label htmlFor="">Select Agent From Existing One</label>
@@ -462,7 +442,6 @@ const CreateAndUpdateUser = () => {
                 )}
             </div>
 
-            {/* Select Branch Dropdown - UPDATED */}
             {isSuperAdmin ? (
               <div>
                 <label htmlFor="branchId">Select Branch (If any)</label>
@@ -512,7 +491,6 @@ const CreateAndUpdateUser = () => {
               </>
             )}
           </div>
-          {/* Personal Information */}
           <div className="bg-white space-y-5 p-5 rounded-md">
             <h2>Personal Information</h2>
             <div className="grid grid-cols-2 gap-5">
@@ -537,7 +515,6 @@ const CreateAndUpdateUser = () => {
                 )}
               </div>
 
-              {/* Other fields with similar error handling */}
               <div>
                 <label htmlFor="gender">Gender</label>
                 <select {...register("gender")}>
@@ -602,7 +579,6 @@ const CreateAndUpdateUser = () => {
               </div>
             </div>
           </div>
-          {/* Contact Information Section */}
           <div className="bg-white space-y-5 p-5 rounded-md">
             <h2>Contact Information</h2>
             <div>

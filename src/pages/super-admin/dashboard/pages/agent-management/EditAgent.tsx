@@ -30,7 +30,6 @@ import {
   useGetPlanListDataQuery,
 } from '../../../../../redux/api/superadmin/plan-management/planManagementSlice';
 
-// Type definitions
 interface DataType {
   key?: React.Key;
   id?: string;
@@ -83,7 +82,6 @@ const EditAgent: React.FC = () => {
   const { data: optionalPlanData } = useGetOptionalPlanListDataQuery("");
   const [updateAgent] = useUpdateAgentMutation();
   
-  // Fetch active branches
   const { data: activeBranches, isLoading: branchesLoading } =
     useGetActiveBranchListDataQuery("");
   const [isUpdating, setIsUpdating] = useState(false);
@@ -115,7 +113,6 @@ const EditAgent: React.FC = () => {
 
   useEffect(() => {
     if (agentData && agentData.data) {
-      console.log(agentData.data.agentDetails.agentAccount);
 
       const agent = agentData.data.agentDetails.agentAccount[0];
       const formattedRecoExpiryDate = agent.recoExpiryDate
@@ -131,7 +128,6 @@ const EditAgent: React.FC = () => {
       const planArray = agent.optionalPlanId
         ? agent.optionalPlanId.split(",").map(Number)
         : [];
-      // Filter the optional plans where the plan id is included in the planArray
       const filteredOptionalPlans =
         planArray && optionalPlanData?.data?.optionalPlans
           ? optionalPlanData?.data?.optionalPlans.filter((plan: OptionalPlan) =>
@@ -142,7 +138,6 @@ const EditAgent: React.FC = () => {
       setSelectedPlanId(agent.planId || null);
       setSelectedOptionalPlans(filteredOptionalPlans || []);
       
-      // Set branchId if exists
       if (agent.branchId) {
         setValue("branchId", agent.branchId);
       }
@@ -163,15 +158,8 @@ const EditAgent: React.FC = () => {
         });
         toast.error(response.error.data.message || "Error updating agent");
       } else {
-        console.log(response);
 
         toast.success(response?.data?.message || "Agent updated successfully");
-        // navigate("/dashboard/super-admin/agent-management", { replace: true });
-        console.log(response?.data?.data?.agentData?.uuid);
-        // navigate(
-        //   `/dashboard/super-admin/agent-file-upload/${response?.data?.data?.agentData?.uuid}`,
-        //   { replace: true }
-        // );
       }
     } catch (error) {
       console.error("Update error:", error);

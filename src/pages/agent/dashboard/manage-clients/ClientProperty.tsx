@@ -83,29 +83,25 @@ const ClientPropertyListingManagement = () => {
   const selectedPostalCode = watch("postalCode");
   const selectedAddress = watch("address");
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [], isLoading: isCityLoading } = useGetCitiesQuery(
     selectedState,
     {
-      skip: !selectedState, // Skip if no state is selected
+      skip: !selectedState,
     }
   );
 
   useEffect(() => {
-    setValue("countryId", 39); //by defult set county canada
+    setValue("countryId", 39);
 
-    // Recompute the property address whenever any field changes
     const stateName =
       states?.data?.states?.find((state) => state.id == selectedState)?.name ||
       "";
     const cityName =
       cities?.data?.cities?.find((city) => city.id == selectedCity)?.name || "";
-    // const formattedAddress = `${selectedAddress}, ${selectedPostalCode}, ${cityName}, ${stateName}, Canada`;
     const formattedAddress = `${selectedAddress}, ${cityName}, ${stateName}, ${selectedPostalCode}`;
 
     setValue("propertyAddress", formattedAddress);
@@ -181,7 +177,6 @@ const ClientPropertyListingManagement = () => {
   }, [data]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -252,13 +247,11 @@ const ClientPropertyListingManagement = () => {
   };
 
   const handleEdit = (record: DataType) => {
-    // Create a new object with formatted date fields
     const formattedRecord = {
       ...record,
       visitingDate: formatDate(record.visitingDate),
     };
 
-    // Reset the form with the formatted record
     reset(formattedRecord);
     setIsEditMode(true);
     setSelectedUUID(record.uuid);
@@ -270,14 +263,13 @@ const ClientPropertyListingManagement = () => {
       visitingDate: formatDate(record.visitingDate),
     };
 
-    // Reset the form with the formatted record
     reset(formattedRecord);
     setIsVisitingMode(true);
     setSelectedUUID(record.uuid);
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyListing(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -325,7 +317,7 @@ const ClientPropertyListingManagement = () => {
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
@@ -372,7 +364,7 @@ const ClientPropertyListingManagement = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -382,7 +374,6 @@ const ClientPropertyListingManagement = () => {
           selectedRowKeys
         );
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -406,18 +397,6 @@ const ClientPropertyListingManagement = () => {
       key: "mlsNumber",
       width: 240,
     },
-    /* {
-      title: "Client",
-      dataIndex: "user",
-      key: "user",
-      render: (user) => (
-        <span>
-          {user?.name || "N/A"}
-        </span>
-      ),
-
-      width: 240,
-    }, */
     {
       title: "Property Address",
       dataIndex: "propertyAddress",
@@ -439,7 +418,6 @@ const ClientPropertyListingManagement = () => {
               rel="noopener noreferrer"
               className="flex items-center text-blue-500 hover:underline"
             >
-              {/* {url} */}
               <FaExternalLinkAlt className="ml-2 text-sm" />
             </a>
           ) : (
@@ -591,7 +569,6 @@ const ClientPropertyListingManagement = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* MLS Number */}
             <div className="flex flex-col gap-2">
               <label>MLS Number</label>
               <input
@@ -606,7 +583,6 @@ const ClientPropertyListingManagement = () => {
                 </p>
               )}
             </div>
-            {/* Property Url */}
             <div className="flex flex-col gap-2">
               <label>Property Url</label>
               <input
@@ -636,7 +612,6 @@ const ClientPropertyListingManagement = () => {
                   </option>
                 ))}
               </select>
-              {/* Error message for Province */}
               {errors.stateId && (
                 <p className="text-red-500">{errors.stateId.message}</p>
               )}
@@ -654,7 +629,6 @@ const ClientPropertyListingManagement = () => {
                   </option>
                 ))}
               </select>
-              {/* Error message for City */}
               {errors.cityId && (
                 <p className="text-red-500">{errors.cityId.message}</p>
               )}
@@ -672,13 +646,11 @@ const ClientPropertyListingManagement = () => {
                 id="postalCode"
                 className="w-full"
               />
-              {/* Error message for Postal Code */}
               {errors.postalCode && (
                 <p className="text-red-500">{errors.postalCode.message}</p>
               )}
             </div>
 
-            {/* Property Address */}
             <div className="flex flex-col gap-2">
               <label>
                 Property Address <span className="text-red-500 ml-1">*</span>
@@ -697,16 +669,6 @@ const ClientPropertyListingManagement = () => {
                 </p>
               )}
             </div>
-            {/* Deposit Date */}
-            {/* <div className="flex flex-col gap-2">
-              <label>Visiting Date</label>
-              <input {...register("visitingDate")} type="datetime-local" className="" />
-              {errors.visitingDate && (
-                <p className="text-red-500 text-sm">
-                  {errors.visitingDate.message}
-                </p>
-              )}
-            </div> */}
           </div>
         </form>
       </ModalMain>
@@ -730,7 +692,6 @@ const ClientPropertyListingManagement = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Deposit Date */}
             <div className="flex flex-col gap-2 w-full">
               <label>Visiting Date and Time</label>
               <input
@@ -769,7 +730,6 @@ const ClientPropertyListingManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

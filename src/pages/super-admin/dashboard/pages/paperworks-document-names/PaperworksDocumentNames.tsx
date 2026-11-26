@@ -5,7 +5,6 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import ModalMain from "../../../../../components/ui/Modal";
 import { useForm } from "react-hook-form";
 import type { TableColumnsType, TableProps } from "antd";
-// drag and drop
 import { HolderOutlined } from "@ant-design/icons";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { DndContext } from "@dnd-kit/core";
@@ -161,10 +160,8 @@ const FileUploadNames = () => {
   const [representation, setRepresentation] = useState<string | null>(null);
   const [activeTabId, setActiveTabId] = useState(2);
 
-  // for drag and drop
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -253,7 +250,7 @@ const FileUploadNames = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -261,7 +258,6 @@ const FileUploadNames = () => {
       try {
         const response = await deleteMultipleFileUploadName(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -297,35 +293,14 @@ const FileUploadNames = () => {
     reset(record);
     setSelectedUUID(record?.uuid);
 
-    // Set selected main category based on the record
-    // const mainCategory = categories.find(
-    //   (category) => category.id === record.uploadFileCategory.id
-    // );
-    // setSelectedMainCategory(
-    //   mainCategory
-    //     ? { value: mainCategory.id, label: mainCategory.label }
-    //     : null
-    // );
 
-    // // Set main category ID in form state
-    // setValue("uploadFileCategoryId", mainCategory ? mainCategory.id : null);
 
-    // Ensure subcategories are available for selection
-    // const selectedCategory = categories.find(
-    //   (category) => category.id === record.uploadFileCategory.id
-    // );
-    // const availableSubcategories = selectedCategory
-    //   ? selectedCategory.subcategories
-    //   : [];
-    // setSubcategories(availableSubcategories);
 
-    // Split the comma-separated 'representation' string into an array
     const representationValue = record.representation;
     const representationArray = representationValue
       ? representationValue?.split(",")
       : [];
 
-    // Map representation values to their corresponding labels
     const selectedOptions = representationArray
       .map((rep: string) => {
         const foundSubcategory = subcategories.find((sub) => sub.value === rep);
@@ -333,9 +308,8 @@ const FileUploadNames = () => {
           ? { value: foundSubcategory.value, label: foundSubcategory.label }
           : null;
       })
-      .filter((option: string) => option !== null); // Filter out any null values
+      .filter((option: string) => option !== null);
 
-    // Set selected subcategories based on the array of subcategory values
     setSelectedSubcategories(selectedOptions);
     setValue(
       "subcategories",
@@ -472,7 +446,7 @@ const FileUploadNames = () => {
                 ? "buyerOrder"
                 : representation === "Tenant"
                 ? "tenantOrder"
-                : "landlordOrder"; // Default to landlordOrder
+                : "landlordOrder";
             return a[orderKey] - b[orderKey];
           })
       : filteredData;
@@ -502,8 +476,6 @@ const FileUploadNames = () => {
             onClick={() => handleEdit(record)}
             style={{
               cursor: "pointer",
-              // color: "#1890ff", // Optional: blue link color
-              // textDecoration: "underline", // Optional: underline to show it's clickable
             }}
           >
             {text?.length > 30 ? `${text?.slice(0, 30)}...` : text}
@@ -511,12 +483,6 @@ const FileUploadNames = () => {
         </Tooltip>
       ),
     },
-    // {
-    //   title: "Category Name",
-    //   dataIndex: "uploadFileCategory",
-    //   key: "categoryName",
-    //   render: (uploadFileCategory) => uploadFileCategory.name,
-    // },
     {
       title: "Paper Type",
       dataIndex: "paperType",
@@ -683,7 +649,6 @@ const FileUploadNames = () => {
 
   const onDragEnd = async ({ active, over }: DragEndEvent) => {
     setIsOrderLoading(true);
-    // setDataReorder(true);
     if (active.id !== over?.id) {
       setTableData((prevState) => {
         const activeIndex = prevState.findIndex(
@@ -694,7 +659,6 @@ const FileUploadNames = () => {
         );
         const updatedData = arrayMove(prevState, activeIndex, overIndex);
 
-        // Update sellerOrder and buyerOrder
         const reorderedData = updatedData.map((record, index) => ({
           ...record,
           sellerOrder:
@@ -812,29 +776,6 @@ const FileUploadNames = () => {
         modalClass={"lg:!w-[60%] z-[99999]"}
       >
         <form className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-          {/* Category and Representation Inputs */}
-          {/* <div className="flex flex-col gap-2">
-            <label>
-              Category <span className="text-red-500 ml-1">*</span>
-            </label>
-            <Select
-              {...register("uploadFileCategoryId", {
-                required: "Category is required",
-              })}
-              options={categories.map((category) => ({
-                value: category.id,
-                label: category.label,
-              }))}
-              onChange={handleMainCategoryChange}
-              classNamePrefix="react-select"
-              value={selectedMainCategory}
-            />
-            {errors.uploadFileCategoryId && (
-              <p className="text-red-500 text-sm">
-                {errors.uploadFileCategoryId.message}
-              </p>
-            )}
-          </div> */}
 
           <div className="flex flex-col gap-2">
             <label>
@@ -849,7 +790,6 @@ const FileUploadNames = () => {
               value={selectedSubcategories}
               onChange={handleSubcategoryChange}
               classNamePrefix="react-select"
-              // isDisabled={!selectedMainCategory}
             />
             {errors.subcategories && (
               <p className="text-red-500 text-sm">
@@ -858,7 +798,6 @@ const FileUploadNames = () => {
             )}
           </div>
 
-          {/* File Name */}
           <div className="flex flex-col gap-2">
             <label>
               Name <span className="text-red-500 ml-1">*</span>
@@ -874,7 +813,6 @@ const FileUploadNames = () => {
             )}
           </div>
 
-          {/* Paper Type */}
           <div className="flex flex-col gap-2">
             <label>
               Paper Type <span className="text-red-500 ml-1">*</span>
@@ -891,7 +829,6 @@ const FileUploadNames = () => {
             )}
           </div>
 
-          {/* List Type */}
           <div className="flex flex-col gap-2">
             <label>
               List type <span className="text-red-500 ml-1">*</span>
@@ -910,7 +847,6 @@ const FileUploadNames = () => {
             )}
           </div>
 
-          {/* Required */}
           <div className="flex flex-col gap-2">
             <label>
               Is Required <span className="text-red-500 ml-1">*</span>
@@ -927,7 +863,6 @@ const FileUploadNames = () => {
             )}
           </div>
 
-          {/* Additional */}
           <div className="flex flex-col gap-2">
             <label className="flex items-center">
               Has Additional File
@@ -937,7 +872,6 @@ const FileUploadNames = () => {
                 title="When tradesheet is approved, if Has Additional File is yes agent can't upload additional file in this section."
               >
                 <AiOutlineInfoCircle className="text-lg" />{" "}
-                {/* Adjust the size here */}
               </span>
             </label>
 
@@ -955,7 +889,6 @@ const FileUploadNames = () => {
             )}
           </div>
 
-          {/* Status */}
           <div className="flex flex-col gap-2">
             <label>
               Status <span className="text-red-500 ml-1">*</span>
@@ -978,10 +911,8 @@ const FileUploadNames = () => {
               <span className="text-red-500 ml-1">*</span>
               <span
                 className="ml-2 text-gray-500 cursor-pointer"
-                // title="When tradesheet is approved, if Has Additional File is yes agent can't upload additional file in this section."
               >
                 <AiOutlineInfoCircle className="text-lg" />{" "}
-                {/* Adjust the size here */}
               </span>
             </label>
 
@@ -1005,10 +936,8 @@ const FileUploadNames = () => {
               <span className="text-red-500 ml-1">*</span>
               <span
                 className="ml-2 text-gray-500 cursor-pointer"
-                // title="When tradesheet is approved, if Has Additional File is yes agent can't upload additional file in this section."
               >
                 <AiOutlineInfoCircle className="text-lg" />{" "}
-                {/* Adjust the size here */}
               </span>
             </label>
 
@@ -1049,7 +978,7 @@ const FileUploadNames = () => {
       >
         <div className="p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-md">
           <div className="flex items-center">
-            <AiFillWarning className="text-2xl mr-2" /> {/* Warning icon */}
+            <AiFillWarning className="text-2xl mr-2" />
             <p className="font-semibold text-sm">
               Are you sure you want to delete this item?
             </p>
@@ -1065,7 +994,6 @@ const FileUploadNames = () => {
           </p>
         </div>
       </Modal>
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

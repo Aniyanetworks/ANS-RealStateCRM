@@ -1,5 +1,4 @@
 // @ts-nocheck
-// Accounting settings: company / HST details and system GL account mapping.
 import React, { useEffect } from "react";
 import { Alert, Card, Form, Input, InputNumber, Select } from "antd";
 import { useAcct, useAcctAction } from "../acctShared";

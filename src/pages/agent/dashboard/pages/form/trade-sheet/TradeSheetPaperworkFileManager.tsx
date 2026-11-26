@@ -22,14 +22,12 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
-// Worker is copied to public/ by the Vite plugin in vite.config.ts.
-// Stable path (no hash) avoids MIME-type / module-worker fetch issues in production.
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 import { Tooltip } from "antd";
 import { AlignLeftOutlined } from "@ant-design/icons";
-import { Button, Input, Modal } from "antd"; // Import Modal here
+import { Button, Input, Modal } from "antd";
 import ButtonLoader from "../../../../../../components/loader/buttonLoader";
 import { useAppSelector } from "../../../../../../redux/hooks";
 import { formatStringCamelCasecapitalize } from "../../../../../../utils/stringUtils";
@@ -42,7 +40,6 @@ const TradeSheetPaperworkFileManager: React.FC = ({ uuid, resetTrigger }) => {
   const { guardFile, modal: pdfSizeReductionModal } = usePdfSizeGuard(MAX_FILE_SIZE);
   const [sidebarWidth, setSidebarWidth] = useState<number>(310);
   const [isResizing, setIsResizing] = useState<boolean>(false);
-  // const { uuid } = useParams<{ uuid?: string }>();
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState(false);
   const [paperworkDocuments, setPaperworkDocuments] = useState<any[]>([]);
@@ -69,7 +66,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
     try {
       await toggleImportantFile({ tradeSheetUuid: uuid, uploadFileNameId }).unwrap();
     } catch {
-      // silent
     }
     setTogglingImportant(null);
   };
@@ -81,51 +77,44 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
       ? "listing-paperwork"
       : "co-op-paperwork";
   const { data } = useGetUploadFileCategoriesQuery({
-    slug: uploadFileCategory, // Ensure uploadFileCategory is available and valid
+    slug: uploadFileCategory,
     representation:
-      spacificTradeSheetLisData?.data?.tradeSheetData?.representation, // Safely access the representation
+      spacificTradeSheetLisData?.data?.tradeSheetData?.representation,
   });
 
 
   const representation = spacificTradeSheetLisData?.data?.tradeSheetData?.representation;
 
   useEffect(() => {
-  if (!isLoading && data) { // Changed from !spacificTradeSheetLisData to !isLoading
+  if (!isLoading && data) {
     setFetchLoading(true);
     const tradesheetListType = spacificTradeSheetLisData?.data?.tradeSheetData?.properties?.[0]?.listType || 
                                 spacificTradeSheetLisData?.data?.tradeSheetData?.listType;
 
     const activeDocuments = data?.data?.uploadFileCategoryData?.uploadFileNames?.filter(
       (file: any) => {
-        // Filter by status
         if (file.status !== "active") {
           return false;
         }
         
-        // Filter by listType if tradesheet has a listType
         if (tradesheetListType) {
           const fileListType = file.listType;
           
-          // If tradesheet is "Both", show all documents
           if (tradesheetListType === "Both") {
             return true;
           }
           
-          // If tradesheet is "Commercial", show documents with "Commercial" or "Both"
           if (tradesheetListType === "Commercial") {
             return fileListType === "Commercial" || fileListType === "Both";
           }
           
-          // If tradesheet is "Residential", show documents with "Residential" or "Both"
           if (tradesheetListType === "Residential") {
             return fileListType === "Residential" || fileListType === "Both";
           }
           
-          // If tradesheet listType doesn't match any known value, show documents with matching listType or "Both"
           return fileListType === tradesheetListType || fileListType === "Both";
         }
         
-        // If no listType on tradesheet, show all active documents
         return true;
       }
     );
@@ -136,7 +125,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
           (upload: any) => upload.uploadFileNameId === file.id
         );
 
-        // ✅ pick the correct order field based on representation
         let sortOrder = 9999;
         switch (representation) {
           case "seller":
@@ -213,9 +201,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
     { value: "rejected", label: "Rejected" },
   ];
 
-  // State to manage the selected status value
-  // const [selectedStatus, setSelectedStatus] = useState(pdfToView.status || 'underReview');
-  // Define a function to determine the color based on the status
   const getStatusColor = (status) => {
     switch (status) {
       case "Approved":
@@ -244,14 +229,12 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
 
   const [changeTradeSheetAttachmentOtherStatus] =
     useChangeTradeSheetAttachmentOtherStatusMutation();
-  // Handle the status change when the user selects a new value
   const handleStatusChange = (value, id, type) => {
   setSelectedStatus(value);
   setChangeFileId(id);
 
   if (value === "rejected") {
     setIsRejectModalVisible(true);
-    // Store the type in state so we know which API to call later
     setChangeFileType(type);
   } else {
     if (type === 'regular') {
@@ -339,10 +322,8 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
       setSelectedStatus(pdfToView?.status);
     }
 
-    // Add event listener on component mount
     window.addEventListener("resize", handleResize);
 
-    // Remove event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -354,8 +335,7 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
 
   const handleMouseMove = (e) => {
     if (isResizing) {
-      // Calculate the new width in pixels
-      const newWidth = Math.max(300, Math.min(e.clientX, 500)); // Min 200px, Max 500px
+      const newWidth = Math.max(300, Math.min(e.clientX, 500));
       setSidebarWidth(newWidth);
     }
   };
@@ -373,9 +353,7 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
   };
 
   const handleViewClick = (file: object) => {
-    console.log(file);
     
-    // Clear any existing timeout
     if (loadingTimeout) {
       clearTimeout(loadingTimeout);
     }
@@ -388,7 +366,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
     setError(null);
 
     if (file?.filePath?.endsWith(".pdf")) {
-      // Fetch PDF via JSON proxy (base64) — IDM and similar extensions never intercept JSON
       fetch(getPdfProxyUrl(file.filePath))
         .then((res) => {
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -408,7 +385,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
           setLoading(false);
         });
     } else {
-      // Non-PDF: let the img onLoad handle loading state
       const timeout = setTimeout(() => {
         setLoading(false);
         setLoadingTimeout(null);
@@ -427,7 +403,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
 
-      // Create a temporary link to download the file
       const link = document.createElement("a");
       link.href = url;
       link.download = pdfToView.filePath;
@@ -435,13 +410,11 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
       link.click();
       document.body.removeChild(link);
 
-      // Release the URL object
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading the PDF:", error);
     }
   };
-  // Calculate slice size dynamically based on sidebar width
   const sliceSize = Math.floor((sidebarWidth - 300) / 15) + (sidebarWidth > 310 ? 35 : 28);
 
   const handlePaperWorkFileResubmit = async (
@@ -459,7 +432,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
           return;
         }
 
-        // Determine file type based on current pdfToView
         const isOtherDocument = !pdfToView?.uploadFileName?.name;
 
         setIsUploading(isOtherDocument ? "paperWorkOtherFile" : "paperWorkFile");
@@ -479,7 +451,6 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
               }).unwrap()
           );
 
-          // Update state based on file type
           const updatedFile = isOtherDocument 
             ? response?.data?.updatedOtherAttachment 
             : response?.data?.newFileAttachment;
@@ -501,22 +472,18 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
         }
       };
 
-  // Add this with your existing state variables
 const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 const [editingFile, setEditingFile] = useState<any>(null);
 
-  // Add this function with your existing functions
 const handleEditClick = (file: any) => {
   setEditingFile(file);
   setIsEditModalVisible(true);
 };
 
-  // Reset pdfToView when resetTrigger or uuid changes (i.e., when modal is closed or tradesheet changes)
   useEffect(() => {
     setPdfToView({});
   }, [resetTrigger, uuid]);
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (loadingTimeout) {
@@ -529,7 +496,6 @@ const handleEditClick = (file: any) => {
     <div className=" relative">
       <div>
         <div className="flex h-[calc(100vh-7rem)]">
-          {/* Resizer */}
 
           <div
             style={{ width: `${sidebarWidth}px` }}
@@ -748,10 +714,6 @@ const handleEditClick = (file: any) => {
                             )}
                           </div>
                           <div
-                           /*  className={`space-y-3  ml-6 transition-all duration-500 ease-in-out overflow-hidden ${categoryId == file.id
-                              ? "max-h-[1000px]  opacity-100"
-                              : "max-h-0 opacity-0"
-                              }`} */
                               className={`space-y-3 ml-6 transition-all duration-500 ease-in-out overflow-hidden ${
   !collapsedCategories.has(file.id) ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
 }`}
@@ -777,14 +739,14 @@ const handleEditClick = (file: any) => {
                                               : uploadFile.status ===
                                                 "underReview"
                                                 ? "#f59e0b"
-                                                : "green", // Apply color based on status
+                                                : "green",
                                         }}
                                         className={
                                           uploadFile.status === "rejected" ||
                                             uploadFile.status === "pending"
                                             ? ""
                                             : ""
-                                        } // Apply blinking class if status is 'rejected' or 'underReview'
+                                        }
                                         onClick={() =>
                                           handleViewClick(uploadFile)
                                         }
@@ -810,7 +772,7 @@ const handleEditClick = (file: any) => {
                   <ul
                     key={i}
                     onClick={() => [
-                      setCategoryId("someId"), // Use the appropriate category ID if needed
+                      setCategoryId("someId"),
                       handleViewClick(uploadFile),
                     ]}
                     className={`flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${uploadFile.filePath === pdfToView.filePath &&
@@ -887,12 +849,6 @@ const handleEditClick = (file: any) => {
                         )}
                     </div>
                     <div
-                      // className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hidden max-h-[1000px] opacity-100`}
-                      // className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hidden  ${categoryId === "someId"
-                      //   ? "max-h-[1000px] opacity-100"
-                      //   : "max-h-0 opacity-0"
-                      //   }`}
-                      // Replace the categoryId check with collapsedCategories check
 className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hidden ${
   !collapsedCategories.has("other") ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
 }`}
@@ -914,7 +870,7 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                                         ? "red"
                                         : uploadFile.status === "underReview"
                                           ? "#f59e0b"
-                                          : "green", // Apply color based on status
+                                          : "green",
                                   }}
                                 onClick={() => handleViewClick(uploadFile)}
                               >
@@ -951,20 +907,14 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
               </h3>
               <div className="flex items-center flex-shrink-0 gap-1">
                 {selectedStatus &&
-                  // pdfToView?.uploadFileName?.name &&
                   user?.userType === "superAdmin" && (
                     <div>
                       <Select
-                        id="status-select" // Added id for accessibility
+                        id="status-select"
                         value={selectedStatus}
-                        /* onChange={
-                          (value) => handleStatusChange(value, pdfToView?.id) 
-                          
-                          // Ensure this updates the selected status
-                        } */
 
                         onChange={
-                          (value) => handleStatusChange(value, pdfToView?.id, (pdfToView?.uploadFileName?.name ? 'regular' : 'other')) // Ensure this updates the selected status
+                          (value) => handleStatusChange(value, pdfToView?.id, (pdfToView?.uploadFileName?.name ? 'regular' : 'other'))
                         }
                         style={{
                           width: 150,
@@ -1000,16 +950,9 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                     </button>
                   </div>
                 )}
-                {/* <Link
-                  to="/dashboard/agent/pages/form/trade-sheet/my-submission-trade-list"
-                  className="primary-btn mx-3 w-[100px]"
-                >
-                  Go Back
-                </Link> */}
               </div>
             </div>
             <div className="flex justify-between items-center mb-2">
-              {/* React Select dropdown for status */}
               <div>
                 {pdfToView.status === "rejected" &&
                   pdfToView?.uploadFileName?.name && (
@@ -1020,34 +963,14 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                       className=" flex  border-gray-300 hover:border-red rounded-lg p-2 hover:bg-red-500 hover:text-white transition duration-200  "
                     >
                       
-                      {/* Reject Reason icon with red color */}
                       <span className="flex gap-3 text-sm font-medium">
                        <p>View Reject Reason</p><FaComment className="text-red-500 mr-2" /> 
                       </span>
-                      {/* Text next to the icon */}
                     </button>
                   )}
               </div>
 
               <div className="flex">
-               {/*  {pdfToView.status === "rejected" &&
-                  pdfToView?.uploadFileName?.name && (
-                    <div className="w-[200px]">
-                      <p className="mb-2">Resubmit File</p>
-                      <label className="flex justify-center items-center py-[6px] border border-dashed border-gray-400 rounded-md gap-2 hover:border-blue-500 cursor-pointer w-full">
-                        <input
-                          type="file"
-                          className="hidden"
-                          onChange={(event) =>
-                            handlePaperWorkFileResubmit(event, pdfToView?.id)
-                          }
-                          accept="application/pdf" // Restrict to PDF file types
-                        />
-                        {isUploading == "paperWorkFile" && <ButtonLoader />}
-                        <span>Upload files</span>
-                      </label>
-                    </div>
-                  )} */}
                 {selectedStatus &&
                   pdfToView?.uploadFileName?.name &&
                   user?.userType !== "superAdmin" && (
@@ -1075,7 +998,6 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                   </div>
                 )}
 
-                {/* PDF Viewer */}
                 {!loading && pdfToView.filePath.endsWith(".pdf") ? (
                   <div className="flex flex-col items-center w-full">
                     {pdfData ? (
@@ -1113,7 +1035,6 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                           }
                         </Document>
 
-                        {/* Pagination — mobile/tablet only */}
                         {windowWidth < 1024 && pdfNumPages > 1 && (
                           <div className="sticky bottom-0 w-full flex items-center justify-center gap-3 py-2 mt-2 bg-white border-t border-gray-200 shadow-sm z-10">
                             <button
@@ -1144,7 +1065,6 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                   </div>
                 ) : (
                   !loading && (
-                    // Image Viewer
                     <div className="w-full flex justify-center">
                       <img
                         src={getFileUrl(pdfToView.filePath)}
@@ -1176,7 +1096,6 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
         </div>
       </div>
 
-      {/* Reject Reasons */}
       <Modal
         title="Add Reject Reasons"
         visible={isRejectModalVisible}
@@ -1186,7 +1105,6 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
             key="confirm"
             type="primary"
             danger
-            // onClick={() => changeStatusApi(selectedStatus, changeFileId)}
             onClick={() => {
               if (changeFileType === 'regular') {
                 changeStatusApi(selectedStatus, changeFileId);
@@ -1196,9 +1114,9 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
             }}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#072f2d", // Custom background color
-              borderColor: "#072f2d", // Custom border color
-              color: "#fff", // Text color to ensure contrast
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
+              color: "#fff",
             }}
           >
             Save
@@ -1209,14 +1127,13 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
         ]}
       >
         <Input.TextArea
-          rows={4} // You can adjust the number of rows
+          rows={4}
           placeholder="Enter reject reason here"
-          value={rejectReason} // Assuming you have a state for the reason
-          onChange={(e) => setRejectReason(e.target.value)} // Assuming you have a setRejectReason function
+          value={rejectReason}
+          onChange={(e) => setRejectReason(e.target.value)}
         />
       </Modal>
 
-      {/* Reject Reasons View Modal */}
       <Modal
         title="Reject Reasons View"
         visible={isRejectReasonViewModalVisible}
@@ -1247,7 +1164,7 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
         className="hidden"
         onChange={(event) => {
           if (editingFile?.id) {
-            handlePaperWorkFileResubmit(event, editingFile.id); // Same function handles both
+            handlePaperWorkFileResubmit(event, editingFile.id);
             setIsEditModalVisible(false);
           }
         }}

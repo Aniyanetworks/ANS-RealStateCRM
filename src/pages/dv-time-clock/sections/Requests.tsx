@@ -1,4 +1,3 @@
-// Approvals (management), My Requests (employee self-service) and Availability.
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useLazyTcGetQuery, useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { nameOf, useCan, useTcAction, useTimeClock } from "../TimeClockContext";
@@ -9,7 +8,6 @@ type ShiftRequest = { uuid: string; shiftUuid: string; userId: number; status: s
 type Offsite = { uuid: string; userId: number; reason: string; status: string; createdAt: string };
 type Availability = { uuid: string; userId: number; availabilityType: string; startDate: string; endDate: string; startTime: string | null; endTime: string | null; notes: string | null; status: string };
 
-/** Short description of a request (the original's requestDetailsText). */
 export function requestDetailsText(r: TcRequest, shifts: Shift[] = [], nameFor: (id: number) => string = (id) => String(id)) {
   const d = requestPayload(r.details) as Record<string, string>;
   const shiftLabel = (uuid: string) => {
@@ -113,7 +111,6 @@ export function ApprovalsSection() {
       toast((e as Error).message);
     }
   };
-  /** The original's reviewEmployeeRequest: swaps, late clock-out time and attendance corrections are applied on approval. */
   const reviewEmployee = async (r: TcRequest, status: string) => {
     const p = requestPayload(r.details) as Record<string, string>;
     try {
@@ -154,7 +151,6 @@ export function ApprovalsSection() {
         if (!(await tcConfirm("Apply the employee’s requested clock-in/clock-out correction?", { title: "Apply correction", confirmText: "Apply" }))) return;
         await act(`/attendance/${p.attendance_id}`, "PATCH", { clockIn: p.correct_clock_in, clockOut: p.correct_clock_out || null });
       }
-      // As before: skipping the note still completes the review (any swap or correction above is already applied).
       const note = (await tcPrompt("Add an optional note for the employee.", { title: "Note for employee", placeholder: "Note (optional)", multiline: true, confirmText: "Save", cancelText: "No note" })) || "";
       await act(`/requests/${r.uuid}`, "PATCH", { status, managementNote: note });
       toast(`Request ${status}.`);
@@ -177,7 +173,6 @@ export function ApprovalsSection() {
     <><button className="tc-btn-sm" onClick={onApprove}>Approve</button><button className="tc-btn-sm tc-btn-outline-danger" onClick={onReject}>Reject</button></>
   );
   const statusPill = (s: string) => <span className={`tc-status tc-status-${s}`}>{s.charAt(0).toUpperCase() + s.slice(1)}</span>;
-  // One card per request type; a type with nothing in this tab collapses to a single line.
   const group = (title: string, hint: string, n: number, emptyText: string, table: ReactNode) => (
     <section className={`tc-group${n ? "" : " tc-group-empty"}`}>
       <div className="tc-group-head">
@@ -283,7 +278,6 @@ export function ApprovalsSection() {
   );
 }
 
-// ---------- My Requests (employee) ----------
 
 function NewRequestForm() {
   const { me, members, toast, closeModal } = useTimeClock();
@@ -408,7 +402,6 @@ export function MyRequests() {
   const rows = useMemo(() => (q.data || []) as TcRequest[], [q.data]);
   const shifts = (useTcGetQuery({ path: "/shifts", params: { userId: me.userId } }).data || []) as Shift[];
   const [search, setSearch] = useState("");
-  // Seeing the list marks decided requests as read (clears the badge), as in the original.
   useEffect(() => {
     const unseen = rows.filter((r) => r.status !== "pending" && !r.employeeSeenAt).map((r) => r.uuid);
     if (unseen.length) act("/requests/seen", "POST", { uuids: unseen }).catch(() => undefined);
@@ -438,7 +431,6 @@ export function MyRequests() {
   );
 }
 
-// ---------- Availability ----------
 
 function AvailabilityForm() {
   const { me, members, isEmployeeView, toast, closeModal } = useTimeClock();

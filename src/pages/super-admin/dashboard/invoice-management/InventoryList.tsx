@@ -259,26 +259,22 @@ const InventoryList = () => {
   };
 
   const handleAssign = (record: DataType) => {
-    // Reset form fields first
     transactionForm.reset({
       userId: undefined,
       quantity: undefined,
       notes: "",
     });
-    // Then set the product (this won't be cleared)
     setSelectedProductForTransaction(record);
     setTransactionType("give");
     setIsAssignModalOpen(true);
   };
 
   const handleReturn = (record: DataType) => {
-    // Reset form fields first
     transactionForm.reset({
       userId: undefined,
       quantity: undefined,
       notes: "",
     });
-    // Then set the product (this won't be cleared)
     setSelectedProductForTransaction(record);
     setTransactionType("return");
     setIsReturnModalOpen(true);
@@ -286,13 +282,11 @@ const InventoryList = () => {
 
   const handleAssignFromDetails = (outstandingProduct: OutstandingProduct) => {
     if (!selectedRecord) return;
-    // Reset form fields first
     transactionForm.reset({
       userId: outstandingProduct.userId.toString(),
       quantity: undefined,
       notes: "",
     });
-    // Set the product
     setSelectedProductForTransaction(selectedRecord);
     setTransactionType("give");
     setIsDetailsModalOpen(false);
@@ -301,13 +295,11 @@ const InventoryList = () => {
 
   const handleReturnFromDetails = (outstandingProduct: OutstandingProduct) => {
     if (!selectedRecord) return;
-    // Reset form fields first
     transactionForm.reset({
       userId: outstandingProduct.userId.toString(),
       quantity: undefined,
       notes: "",
     });
-    // Set the product
     setSelectedProductForTransaction(selectedRecord);
     setTransactionType("return");
     setIsDetailsModalOpen(false);
@@ -374,7 +366,6 @@ const InventoryList = () => {
         branchId: formData.branchId ?? undefined,
       };
 
-      // Inventory endpoint validates JSON body fields; include image as base64 payload.
       if (imageFile) {
         const imageBase64 = await toBase64(imageFile);
         data.image = imageBase64;
@@ -531,7 +522,6 @@ const InventoryList = () => {
       ellipsis: true,
       render: (description: string) => {
         if (!description) return "â€”";
-        // Strip HTML tags and get plain text
         const textContent = description.replace(/<[^>]*>/g, "").trim();
         const maxLength = 50;
         const truncated = textContent.length > maxLength 
@@ -692,7 +682,6 @@ const InventoryList = () => {
       )
     : [];
 
-  // Calculate outstanding products per user (assigned but not returned)
   interface OutstandingProduct {
     userId: number;
     user: TransactionLogType["user"];
@@ -704,7 +693,6 @@ const InventoryList = () => {
   const calculateOutstandingProducts = (): OutstandingProduct[] => {
     if (!selectedRecord) return [];
 
-    // Group transactions by user
     const userTransactions: Record<number, { given: number; returned: number; lastGive: TransactionLogType | null }> = {};
 
     productLogs.forEach((log) => {
@@ -715,7 +703,6 @@ const InventoryList = () => {
 
       if (log.transactionType === "give") {
         userTransactions[userId].given += log.quantity;
-        // Track the most recent assignment
         if (!userTransactions[userId].lastGive || new Date(log.createdAt) > new Date(userTransactions[userId].lastGive!.createdAt)) {
           userTransactions[userId].lastGive = log;
         }
@@ -724,7 +711,6 @@ const InventoryList = () => {
       }
     });
 
-    // Calculate outstanding products and filter out users with zero outstanding
     const outstanding: OutstandingProduct[] = Object.entries(userTransactions)
       .map(([userId, data]) => {
         const outstandingQty = data.given - data.returned;
@@ -746,7 +732,6 @@ const InventoryList = () => {
 
   const outstandingProducts = calculateOutstandingProducts();
 
-  // Get unique users for table filter
   const uniqueUsersForTableFilter = React.useMemo(() => {
     return Array.from(
       new Map(
@@ -758,7 +743,6 @@ const InventoryList = () => {
     }));
   }, [outstandingProducts]);
 
-  // Filter outstanding products by search
   const filteredOutstandingProducts = outstandingProducts.filter((item) => {
     const searchLower = detailsLogSearch.trim().toLowerCase();
     if (!searchLower) return true;
@@ -767,15 +751,12 @@ const InventoryList = () => {
     return userName.includes(searchLower) || notes.includes(searchLower);
   });
 
-  // Calculate description text length (strip HTML tags)
   const getDescriptionTextLength = (html: string) => {
     if (!html) return 0;
-    // Strip HTML tags and get text length
     const textContent = html.replace(/<[^>]*>/g, "").trim();
     return textContent.length;
   };
 
-  // Log statistics - show outstanding products
   const totalOutstandingQty = outstandingProducts.reduce((sum, item) => sum + item.outstandingQty, 0);
   const totalAssignedQty = productLogs
     .filter((log) => log.transactionType === "give")
@@ -788,16 +769,13 @@ const InventoryList = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Title */}
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             Inventory Management
             <span className="ml-1 text-gray-400 font-normal text-[11px]">({tableData.length})</span>
           </h1>
           {isSuperAdmin && (
             <>
-              {/* Divider */}
               <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-              {/* Branch tabs */}
               <div className="flex items-center gap-1">
                 <button
                   type="button"
@@ -827,9 +805,7 @@ const InventoryList = () => {
               </div>
             </>
           )}
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -859,9 +835,7 @@ const InventoryList = () => {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <button
               onClick={() => navigate("/dashboard/marketplace/inventory/transactions")}
@@ -884,7 +858,6 @@ const InventoryList = () => {
           </div>
         </div>
 
-      {/* ==== product table ========= */}
       <div>
 
         {isLoading ? (
@@ -901,7 +874,6 @@ const InventoryList = () => {
         )}
       </div>
 
-      {/* ======== create update product ======== */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}
@@ -948,7 +920,6 @@ const InventoryList = () => {
               )}
             </div>
 
-            {/* Branch (superAdmin: dropdown; others: hidden + display) */}
             {isSuperAdmin ? (
               <div className="flex flex-col gap-2">
                 <label className="text-[13px] font-medium">Branch (If any)</label>
@@ -1038,7 +1009,6 @@ const InventoryList = () => {
         </form>
       </ModalMain>
 
-      {/* Assign Product Modal */}
       <ModalMain
         handleCancel={() => {
           setIsAssignModalOpen(false);
@@ -1156,7 +1126,6 @@ const InventoryList = () => {
         </form>
       </ModalMain>
 
-      {/* Return Product Modal */}
       <ModalMain
         handleCancel={() => {
           setIsReturnModalOpen(false);
@@ -1262,7 +1231,6 @@ const InventoryList = () => {
         </form>
       </ModalMain>
 
-      {/* View product Details Modal */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isDetailsModalOpen}
@@ -1271,7 +1239,6 @@ const InventoryList = () => {
       >
         {selectedRecord && (
           <div className="space-y-4 pt-8">
-            {/* Product info header with actions */}
             <div className="border border-[#70707036] rounded-md p-4 bg-gray-50/50">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
@@ -1295,7 +1262,6 @@ const InventoryList = () => {
                     </span>
                   </div>
                 </div>
-                {/* Action buttons */}
                 {(user?.userType === "superAdmin" ||
                   user?.userType === "admin") &&
                   hasPermissionForSlug("edit-agent-marketplace") && (
@@ -1325,7 +1291,6 @@ const InventoryList = () => {
               </div>
             </div>
 
-            {/* Description with expand/collapse */}
             {selectedRecord.description && (
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -1381,7 +1346,6 @@ const InventoryList = () => {
               </div>
             )}
 
-            {/* Product logs - Outstanding Products */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 {outstandingProducts.length > 0 && (
@@ -1396,7 +1360,6 @@ const InventoryList = () => {
                   </div>
                 )}
               </div>
-              {/* Search */}
               {outstandingProducts.length > 0 && (
                 <div className="mb-3">
                   <input
@@ -1527,7 +1490,6 @@ const InventoryList = () => {
         )}
       </ModalMain>
 
-      {/* Delete Confirmation Modal */}
       <ModalMain
         handleCancel={cancelDelete}
         isModalOpen={isDeleteModalVisible}
@@ -1539,7 +1501,6 @@ const InventoryList = () => {
         <p>Are you sure you want to delete this product?</p>
       </ModalMain>
 
-      {/* Delete Multiple Confirmation Modal */}
       <ModalMain
         handleCancel={() => setIsDeleteMultipleModalVisible(false)}
         isModalOpen={isDeleteMultipleModalVisible}

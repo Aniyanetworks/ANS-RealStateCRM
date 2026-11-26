@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { formatDate, parseISO } from 'date-fns';
-// import TableLoader from '../loader/TableLoader';
 import { Table } from 'antd';
 import type { TableColumnsType, TableProps } from "antd";
 import * as XLSX from 'xlsx';
@@ -39,8 +38,7 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
-  const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
+  const handleChange: OnChange = (_pagination, filters, sorter) => {
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
@@ -183,13 +181,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
       sortOrder: sortedInfo.columnKey === "status" ? sortedInfo.order : null,
       ellipsis: true,
     },
-    /* {
-      title: "Name",
-      dataIndex: "sellersInfo",
-      key: "sellersInfo",
-      render: (sellersInfo) => <span>{JSON.parse(sellersInfo).sellersInfo[0]?.firstName}  {JSON.parse(sellersInfo).sellersInfo[0]?.lastName}</span>,
-      ellipsis: true,
-    }, */
     {
       title: "Address",
       dataIndex: "address",
@@ -212,7 +203,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
 
   
 
-  // Function to handle Excel export
   const handleExport = () => {
     const exportData = filteredData.map(item => ({
       mlsNumber: item.mlsNumber,
@@ -260,7 +250,7 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
         x += columnWidths[index];
     });
 
-    let currentY = startY + 2 * lineHeight; // Start below headers
+    let currentY = startY + 2 * lineHeight;
     filteredData.forEach((item) => {
         const row = [
             item.mlsNumber || "...",
@@ -278,7 +268,7 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
 
         x = margin;
         row.forEach((cell, index) => {
-            pdf.text(String(cell), x, currentY); // Convert to string to avoid errors
+            pdf.text(String(cell), x, currentY);
             x += columnWidths[index];
         });
 
@@ -288,7 +278,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
     pdf.save("property_listing_report.pdf");
 };
 
-  // Calculate status counts
   const statusCounts = filteredData.reduce((acc, item) => {
     const listingStatus = item?.listingStatus?.toLowerCase();
     if (listingStatus) {
@@ -300,9 +289,7 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
 
   return (
     <div>
-      {/* Main Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-3">
-        {/* Total Listings */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Listings</span>
@@ -312,7 +299,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Listed/Approved */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Listed</span>
@@ -322,7 +308,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Pending MLS */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-yellow-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Pending MLS</span>
@@ -332,7 +317,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Under Review */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Under Review</span>
@@ -343,9 +327,7 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
         </div>
       </div>
 
-      {/* Secondary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
-        {/* Available */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-cyan-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Available</span>
@@ -355,7 +337,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Sold */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-emerald-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Sold</span>
@@ -365,7 +346,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Leased */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-indigo-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Leased</span>
@@ -375,7 +355,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Closed */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-gray-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Closed</span>
@@ -386,9 +365,7 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
         </div>
       </div>
 
-      {/* Additional Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
-        {/* Exclusive */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-amber-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Exclusive</span>
@@ -398,7 +375,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Sold Conditionally */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-lime-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Sold Conditionally</span>
@@ -408,7 +384,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Terminated */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-rose-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Terminated</span>
@@ -418,7 +393,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Rejected */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-red-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Rejected</span>
@@ -429,7 +403,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
         </div>
       </div>
 
-      {/* Export Buttons */}
       <div className="flex gap-3 justify-end"> 
         <FaFilePdf
           onClick={handlePdfExport}
@@ -447,7 +420,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
         />
       </div>
 
-      {/* Table */}
       <div id="table-container" ref={tableRef}>
         <Table
           rowKey="id"

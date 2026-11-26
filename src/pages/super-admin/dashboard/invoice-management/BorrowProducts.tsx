@@ -74,7 +74,6 @@ const ClientPropertyListingManagement = () => {
     }
   }, [data]);
 
-  // Edit form
   const {
     handleSubmit: handleSubmitEdit,
     reset: resetEdit,
@@ -85,32 +84,27 @@ const ClientPropertyListingManagement = () => {
 
   const [changeOrderItemStatus] = useChangeOrderItemStatusMutation();
 
-  // Edit cancel handler
   const handleEditCancel = () => {
     setIsEditModalOpen(false);
     setEditingOrder(null);
     resetEdit();
   };
 
-  // Edit handler
   const handleEdit = (record: any) => {
     setEditingOrder(record);
     setIsEditModalOpen(true);
     
-    // Pre-fill form with existing data
     setValueEdit("quantity", record.quantity);
     setValueEdit("order_item_status", record.order_item_status);
     setValueEdit("pickup_date", record.pickup_date ? formatDateForInput(record.pickup_date) : "");
     setValueEdit("due_date", record.due_date ? formatDateForInput(record.due_date) : "");
   };
 
-  // Helper function to format date for datetime-local input
   const formatDateForInput = (dateString: string) => {
     const date = parseISO(dateString);
     return formatDate(date, "yyyy-MM-dd'T'HH:mm");
   };
 
- // Update the onEditSubmit function:
 const onEditSubmit = async (data: any) => {
   setIsEditUploading(true);
   
@@ -295,7 +289,6 @@ const onEditSubmit = async (data: any) => {
       return formatDate(date, "dd MMMM yyyy, hh:mm a");
     },
   },
-  // Actions column - Only for admin and superadmin
   ...((user.userType === "superAdmin" || user.userType === "admin") ? [{
     title: "Actions",
     key: "actions",
@@ -330,7 +323,6 @@ const onEditSubmit = async (data: any) => {
   }] : [])
 ];
 
-  // Handle column resizing
   const handleResize =
     (index: number) =>
     (_: any, { size }: any) => {
@@ -344,7 +336,6 @@ const onEditSubmit = async (data: any) => {
       });
     };
 
-  // Attach resizable functionality to columns
   const mergedColumns = columns.map((col, index) => ({
     ...col,
     onHeaderCell: (column: any) => ({
@@ -370,13 +361,11 @@ const onEditSubmit = async (data: any) => {
 
   const filterProps = filter
   ? filteredData?.filter((item) => {
-      // Check if invoice exists and has invoice_number that matches the filter
       return item.invoice?.invoice_number === filter;
     })
   : filteredData;
     
 
-  // Generate serial number in table
   const tableSourceData = filterProps?.map((item: any, index: number) => ({
     ...item,
     serial: index + 1,
@@ -386,14 +375,11 @@ const onEditSubmit = async (data: any) => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Title */}
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             Products for Borrow
             <span className="ml-1 text-gray-400 font-normal text-[11px]">({tableData.length})</span>
           </h1>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <Link
@@ -409,9 +395,7 @@ const onEditSubmit = async (data: any) => {
               </Link>
             ))}
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -462,7 +446,6 @@ const onEditSubmit = async (data: any) => {
         )}
       </div>
 
-      {/* Edit Order Modal */}
       <ModalMain
         handleCancel={handleEditCancel}
         isModalOpen={isEditModalOpen}
@@ -473,7 +456,6 @@ const onEditSubmit = async (data: any) => {
       >
         <form className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Quantity */}
             <div className="flex flex-col gap-2">
               <label>
                 Quantity <span className="text-red-500 ml-1">*</span>
@@ -496,7 +478,6 @@ const onEditSubmit = async (data: any) => {
               )}
             </div>
 
-            {/* Status */}
             <div className="flex flex-col gap-2">
               <label>
                 Status <span className="text-red-500 ml-1">*</span>
@@ -519,7 +500,6 @@ const onEditSubmit = async (data: any) => {
               )}
             </div>
 
-            {/* Pickup Date */}
             <div className="flex flex-col gap-2">
               <label>Pickup Date</label>
               <Controller
@@ -535,7 +515,6 @@ const onEditSubmit = async (data: any) => {
               />
             </div>
 
-            {/* Due Date */}
             <div className="flex flex-col gap-2">
               <label>Return Due Date</label>
               <Controller

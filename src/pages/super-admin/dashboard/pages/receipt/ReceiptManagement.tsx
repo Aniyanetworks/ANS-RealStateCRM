@@ -32,7 +32,6 @@ const ReceiptManagement = () => {
   const { user } = useAppSelector((state: { user: { signature?: string; firstName?: string; lastName?: string } }) => state.user);
   const { hasPermissionForSlug } = usePermissions();
 
-  // Modal Open Close Variable
   const [isReceiptCreateModalOpen, setIsReceiptCreateModalOpen] =
     useState(false);
   const [, setIsEditMode] = useState(false);
@@ -44,13 +43,8 @@ const ReceiptManagement = () => {
   const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] =
     useState(false);
 
-  // Set Data Variable
   const signatureRef = useRef({});
-  // Tracks whether an existing receipt is currently loaded for editing, so the
-  // async "autofill my own profile signature" effect below can't race ahead of
-  // handleEditReceiptMode and stomp the receipt's own saved signature.
   const isEditingReceiptRef = useRef(false);
-  // Signature the receipt was loaded with (edit mode), so an unchanged signature isn't re-uploaded on save.
   const originalSignatureRef = useRef<string>("");
   const [tableData, setTableData] = useState<DataType[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -64,7 +58,6 @@ const ReceiptManagement = () => {
   const [uploadSignatureImage, setUploadSignatureImage] = useState("");
   const [, setUploadRefundReceipt] = useState("");
 
-  // Api hook
   const { data, isLoading, refetch } = useGetReceiptManageQuery("");
   const { data: propertyListingData } = useGetPropertyListingQuery("");
 
@@ -86,7 +79,6 @@ const ReceiptManagement = () => {
     trigger,
   } = useForm<DataType>({});
 
-  //Other Variable
   const propertyListingOptions =
     propertyListingData?.data?.propertyListingData
       ?.map((item) => {
@@ -114,14 +106,11 @@ const ReceiptManagement = () => {
 
   const [searchText, setSearchText] = useState("");
 
-  // Pre-fills the Signature Upload field with the logged-in user's own saved
-  // profile signature, for the "Create New Receipt" flow. Guarded so it can
-  // never overwrite an existing receipt's own signature loaded for editing.
   const autofillOwnSignature = () => {
     if (!user?.signature) return;
     convertUrlToBase64(user.signature)
       .then((base64String) => {
-        if (isEditingReceiptRef.current) return; // an existing receipt's own signature is loaded; don't overwrite it
+        if (isEditingReceiptRef.current) return;
         setUploadSignatureImage(base64String);
         setValue("signatureIamge", base64String);
       })
@@ -142,7 +131,6 @@ const ReceiptManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  // Add cleanup effect for object URLs
   useEffect(() => {
     return () => {
       uploadBankReceiptImages.forEach((image) => {
@@ -154,23 +142,17 @@ const ReceiptManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Function related code added
   const showModalReceiptCreate = () => setIsReceiptCreateModalOpen(true);
 
   const handleCreateNewReceiptModal = () => {
     isEditingReceiptRef.current = false;
     setSelectedPropertyListingId("");
-    // Start from a clean signature field, then refill from the profile
-    // signature — covers reopening "Add New" after a Cancel, where the
-    // [data]-effect (tied to receipt list refetches, not modal opens) won't
-    // have re-run to refill it on its own.
     setUploadSignatureImage("");
     setValue("signatureIamge", "");
     autofillOwnSignature();
     showModalReceiptCreate();
   };
 
-  // The receipt shown in the preview/refund modals, re-read from the latest list so updates appear right away.
   const liveReceiptModalData =
     tableData.find((r: any) => r?.uuid && r.uuid === (receiptModalData as any)?.uuid) || receiptModalData;
 
@@ -205,14 +187,12 @@ const ReceiptManagement = () => {
     setUploadSignatureImage("");
     setSelectedUUID("null");
 
-    // First, clean up any object URLs
     uploadBankReceiptImages.forEach((image) => {
       if (!image.isExisting && image.preview) {
         URL.revokeObjectURL(image.preview);
       }
     });
 
-    // Clear signature pad if exists
     if (signatureRef.current) {
       signatureRef.current.clear();
     }
@@ -250,15 +230,11 @@ const ReceiptManagement = () => {
     }
   };
 
-  // Create and Edit receipt
   const onSubmit = async () => {
     try {
       const data = getValues();
       const formData = new FormData();
 
-      // Send only the fields the API saves. The edit form is loaded with the whole receipt record, which includes
-      // base64 copies of the bank receipt files (bankDraftImagePath) and signature; posting those exceeds the
-      // upload field limit ("Field value too long") and re-saves file contents.
       const RECEIPT_FIELDS = [
         "date", "propertyAddress", "propertyListingId", "receivedFrom", "representation", "paymentType",
         "paymentMethod", "bankDraftNumber", "transactionType", "amountReceived", "receivedBy",
@@ -266,14 +242,11 @@ const ReceiptManagement = () => {
       for (const key of RECEIPT_FIELDS) {
         if (data[key] !== undefined && data[key] !== null) formData.append(key, data[key]);
       }
-      // Signature: only when it was drawn/uploaded in this form (an unchanged signature is kept by the API).
       if (data.signatureIamge && data.signatureIamge !== originalSignatureRef.current) {
         formData.append("signatureIamge", data.signatureIamge);
       }
 
-      // Handle images
       if (selectedUUID === "null") {
-        // For new creation
         uploadBankReceiptImages
           .filter((item) => item.file)
           .forEach((item) => {
@@ -282,14 +255,11 @@ const ReceiptManagement = () => {
             }
           });
       } else {
-        // For updates
-        // Add existing image paths
         const existingPaths = uploadBankReceiptImages
           .filter((item) => item.isExisting)
           .map((item) => item.path);
         formData.append("existingImages", JSON.stringify(existingPaths));
 
-        // Add new files
         uploadBankReceiptImages
           .filter((item) => !item.isExisting && item.file)
           .forEach((item) => {
@@ -299,13 +269,6 @@ const ReceiptManagement = () => {
           });
       }
 
-      console.log("Submitting form data:", {
-        uuid: selectedUUID,
-        existingImages: uploadBankReceiptImages.filter((img) => img.isExisting)
-          .length,
-        newImages: uploadBankReceiptImages.filter((img) => !img.isExisting)
-          .length,
-      });
 
       const response = await createUpdateReceiptManage({
         uuid: selectedUUID,
@@ -326,27 +289,21 @@ const ReceiptManagement = () => {
     }
   };
 
-  // Edit method
   const handleEditReceiptMode = (record: DataType) => {
     isEditingReceiptRef.current = true;
     try {
-      // Format date for the form
       const formattedRecord = {
         ...record,
         date: moment
           .utc(record.date)
           .tz("America/Toronto")
           .format("YYYY-MM-DDTHH:mm"),
-        // Ensure numeric values are properly formatted
         propertyListingId: record.propertyListingId?.toString(),
         amountReceived: record.amountReceived?.toString(),
       };
 
-      // Set property listing ID
       setSelectedPropertyListingId(formattedRecord?.propertyListingId || "");
 
-      // Handle existing bank draft images: keep each file's stored location (path) for saving and show its
-      // displayable copy (src). Older API responses only have bankDraftImagePath (display copies).
       try {
         const existingItems: { path: string; src: string | null }[] = Array.isArray(record.bankDraftImages)
           ? record.bankDraftImages
@@ -362,7 +319,6 @@ const ReceiptManagement = () => {
         setUploadBankReceiptImages([]);
       }
 
-      // Handle signature image (remember the loaded one so an unchanged signature isn't re-uploaded on save)
       originalSignatureRef.current = record.signature || "";
       if (record.signature) {
         setUploadSignatureImage(record.signature);
@@ -372,7 +328,6 @@ const ReceiptManagement = () => {
         setValue("signatureIamge", "");
       }
 
-      // Handle refund receipt and mutual release files if they exist
       if (record.refundReceiptAndMutualReleaseFile) {
         setUploadRefundReceipt(record.refundReceiptAndMutualReleaseFile);
         setValue(
@@ -381,10 +336,8 @@ const ReceiptManagement = () => {
         );
       }
 
-      // Reset form with formatted record data
       reset(formattedRecord);
 
-      // Set all form values explicitly to ensure they're properly set
       setValue("date", formattedRecord.date);
       setValue("propertyListingId", formattedRecord.propertyListingId);
       setValue("propertyAddress", formattedRecord.propertyAddress);
@@ -398,7 +351,6 @@ const ReceiptManagement = () => {
       setValue("receivedBy", formattedRecord.receivedBy);
       setValue("status", formattedRecord.status || "approved");
 
-      // Set email related fields if they exist
       if (formattedRecord.recipients) {
         setValue("recipients", formattedRecord.recipients);
       }
@@ -409,10 +361,7 @@ const ReceiptManagement = () => {
         setValue("data", formattedRecord.data);
       }
 
-      // Log the values being set for debugging
-      console.log("Setting form values:", formattedRecord);
 
-      // Set audit info for display
       setAuditInfo({
         createdByName: record.createdByName || undefined,
         updatedByName: record.updatedByName || undefined,
@@ -420,12 +369,10 @@ const ReceiptManagement = () => {
         updatedAt: record.updatedAt || undefined,
       });
 
-      // Set edit mode and show modal
       setIsEditMode(true);
       setSelectedUUID(record.uuid);
       showModalReceiptCreate();
 
-      // Trigger form validation
       trigger();
     } catch (error) {
       console.error("Error in handleEditReceiptMode:", error);
@@ -480,7 +427,6 @@ const ReceiptManagement = () => {
       img.src = objectUrl;
     });
 
-  // Bank receipt image
   const handleChangeBankReceiptImage = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -502,7 +448,6 @@ const ReceiptManagement = () => {
       const newImages = [...prev];
       const removedImage = newImages[index];
 
-      // Clean up URL object if it's a new image
       if (!removedImage.isExisting && removedImage.preview) {
         URL.revokeObjectURL(removedImage.preview);
       }
@@ -512,7 +457,6 @@ const ReceiptManagement = () => {
     });
   };
 
-  // Signature Script
   const convertFileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -571,7 +515,6 @@ const ReceiptManagement = () => {
     toast.success("Signature saved successfully");
   };
 
-  // Single delete code
   const confirmDelete = async () => {
     if (!selectedUUID) return;
     try {
@@ -593,7 +536,6 @@ const ReceiptManagement = () => {
     setIsModalDeleteVisible(true);
   };
 
-  // Multiple delete code
   const handleDeleteMultipleClick = () => {
     setIsDeleteModalMultipleVisible(true);
   };
@@ -618,9 +560,7 @@ const ReceiptManagement = () => {
     }
   };
 
-  // Table Related Code
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -656,7 +596,6 @@ const ReceiptManagement = () => {
         hasPermissionForSlug={hasPermissionForSlug}
       />
 
-      {/* Create Receipt Modal */}
       <ReceiptForm
         isOpen={isReceiptCreateModalOpen}
         isLoading={isLoadingCreate}
@@ -684,8 +623,6 @@ const ReceiptManagement = () => {
         auditInfo={auditInfo}
       />
 
-      {/* View Receipt Modal: always the latest copy of the receipt from the reloaded list, and remounted
-          when the receipt changes, so an update shows immediately (no page refresh needed). */}
       {isReceiptModalOpen && (
         <ReceiptModal
           key={`${liveReceiptModalData?.uuid || "receipt"}-${liveReceiptModalData?.updatedAt || ""}`}
@@ -695,7 +632,6 @@ const ReceiptManagement = () => {
         />
       )}
 
-      {/* View Refund Modal */}
       {isRefundModal && (
         <RefundSection
           receiptModalData={liveReceiptModalData}
@@ -703,7 +639,6 @@ const ReceiptManagement = () => {
         />
       )}
 
-      {/* Delete Modals */}
       <DeleteModals
         isModalDeleteVisible={isModalDeleteVisible}
         isDeleteMultipleModalVisible={isDeleteMultipleModalVisible}

@@ -1,4 +1,3 @@
-// Attendance & Reports: filterable daily attendance report (print/PDF, CSV), manual hours, corrections.
 import { useMemo, useState } from "react";
 import { useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { useCan, useTcAction, useTimeClock } from "../TimeClockContext";
@@ -138,7 +137,7 @@ export function AttendanceSection() {
   const employees = members.filter((m) => m.isEmployee);
   const memberOf = (id: number) => members.find((m) => m.userId === id);
   const savePref = (which: string, v: string) => {
-    try { localStorage.setItem(prefKey(me.userId, which), v); } catch { /* storage unavailable */ }
+    try { localStorage.setItem(prefKey(me.userId, which), v); } catch { }
   };
 
   const rows = useMemo(() => all.filter((a) => {

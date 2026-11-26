@@ -1,7 +1,3 @@
-// Brokerage Accounting — laid out like the original ANS Accounting back office (bodv): its sidebar,
-// page headings, panels and styling, inside ANS RealStateCRM. The section is kept in the URL
-// (/dashboard/brokerage-accounting/:section). Screens are being rebuilt in the bodv look one at a time;
-// the rest still use the ANS RealStateCRM components inside a bodv panel until they are rebuilt.
 import { ComponentType, ReactNode, Suspense, lazy, useState } from "react";
 import {
   LuLayoutDashboard, LuLandmark, LuReceipt, LuTrophy, LuWallet, LuDollarSign, LuIdCard, LuPercent, LuFileText, LuChartBar, LuClipboardCheck, LuSettings, LuScissors,
@@ -18,7 +14,6 @@ type Section = { key: string; label: string; icon: ReactNode; desc?: string; com
 
 const legacy = (loader: () => Promise<{ default: ComponentType<SectionProps> }>) => lazy(loader);
 
-// Same order and names as the original sidebar (Data Migration is not included: it only imported old Supabase data).
 const SECTIONS: Section[] = [
   { key: "dashboard", label: "Dashboard", icon: <LuLayoutDashboard size={18} />, component: lazy(() => import("./bodv/Dashboard")), rebuilt: true },
   { key: "banking", label: "Banking & Reconciliation", icon: <LuLandmark size={18} />, component: lazy(() => import("./bodv/Banking")), rebuilt: true },
@@ -48,7 +43,6 @@ const SECTIONS: Section[] = [
   { key: "pdf-splitter", label: "PDF File Splitter", icon: <LuScissors size={18} />, component: lazy(() => import("./bodv/PdfSplitter")), rebuilt: true },
 ];
 
-// Old section links keep working.
 const ALIASES: Record<string, [string, string?]> = {
   trust: ["banking"], "audit-log": ["settings", "audit"], "personnel-documents": ["agent-fees", "documents"],
 };

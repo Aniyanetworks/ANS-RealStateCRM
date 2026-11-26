@@ -1,5 +1,3 @@
-// Shared building blocks with the original ANS Accounting (bodv) markup, so screens use its exact styling
-// (classes come from ../bodv.css, scoped to the .dvac page wrapper).
 import { ReactNode } from "react";
 import { LuCircleAlert, LuFile, LuX } from "./icons";
 
@@ -34,7 +32,6 @@ export function Panel({ title, hint, right, children, style }: { title: ReactNod
   );
 }
 
-/** Stat card (the original's Pn). */
 export function Stat({ title, value, sub, style }: { title: ReactNode; value: ReactNode; sub?: ReactNode; style?: React.CSSProperties }) {
   return (
     <div className="card" style={style}>
@@ -45,7 +42,6 @@ export function Stat({ title, value, sub, style }: { title: ReactNode; value: Re
   );
 }
 
-/** Modal dialog (the original's Di). */
 export function Modal({ title, onClose, children, wide = false }: { title: ReactNode; onClose: () => void; children: ReactNode; wide?: boolean }) {
   return (
     <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
@@ -63,7 +59,6 @@ export function Modal({ title, onClose, children, wide = false }: { title: React
   );
 }
 
-/** Empty state (the original's Bl). */
 export function Empty({ icon, title = "Nothing here yet", text = "Create your first record to get started." }: { icon?: ReactNode; title?: string; text?: string }) {
   return (
     <div className="empty">
@@ -74,12 +69,10 @@ export function Empty({ icon, title = "Nothing here yet", text = "Create your fi
   );
 }
 
-/** Info notice with the alert icon. */
 export const Notice = ({ children, style }: { children: ReactNode; style?: React.CSSProperties }) => (
   <div className="notice" style={style}><LuCircleAlert />{children}</div>
 );
 
-/** Dollar amount input (the original's money input look). */
 export function MoneyInput({ value, onChange, step = "0.01", min, required, disabled, prefix = "$" }: { value: string | number; onChange: (v: string) => void; step?: string; min?: number; required?: boolean; disabled?: boolean; prefix?: string }) {
   return (
     <div className="money-input-wrap" style={{ display: "flex", alignItems: "center", gap: 4, width: "100%", minHeight: 38, border: "1px solid #d0d5dd", borderRadius: 8, padding: "7px 10px", background: disabled ? "#f2f4f7" : "#fff", opacity: disabled ? 0.7 : 1 }}>
@@ -89,7 +82,6 @@ export function MoneyInput({ value, onChange, step = "0.01", min, required, disa
   );
 }
 
-/** Highlighted count row used at the top of dashboard panels. */
 export const CountNotice = ({ label, count }: { label: string; count: number }) => (
   <div className="notice" style={{ marginBottom: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
     <span>{label}</span>

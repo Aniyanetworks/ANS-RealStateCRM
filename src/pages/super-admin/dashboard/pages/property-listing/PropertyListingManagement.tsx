@@ -67,7 +67,6 @@ const PropertyListingManagement = () => {
     }
   );
 
-  // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -94,7 +93,6 @@ const PropertyListingManagement = () => {
     "current" | "previous" | "all"
   >("current");
 
-  // Sync states
   const [isSyncModalVisible, setIsSyncModalVisible] = useState(false);
   const [matchedPairs, setMatchedPairs] = useState<any[]>([]);
   const [selectedPairsToSync, setSelectedPairsToSync] = useState<string[]>([]);
@@ -108,11 +106,9 @@ const PropertyListingManagement = () => {
   const [selectedPairForLog, setSelectedPairForLog] = useState<any>(null);
   const [differenceLog, setDifferenceLog] = useState<any[]>([]);
 
-  // Realtor properties query
   const { data: realtorData, isLoading: isLoadingRealtor } =
     useGetRealtorPropertiesQuery();
 
-  // Mutations
   const [createUpdatePropertyListing] =
     useCreateUpdatePropertyListingMutation();
   const [changePropertyListingStatus] =
@@ -121,7 +117,6 @@ const PropertyListingManagement = () => {
   const [deleteMultiplePropertyListing] =
     useDeletePropertyListingMultipleMutation();
 
-  // Custom hooks
   const { handleSyncMLS, handleSyncUpdatedData, isSyncing, isSyncingData } =
     usePropertyListingSync(refetch);
   const { findAndMatchProperties, findAndMatchPropertiesForDataSync } =
@@ -390,7 +385,6 @@ const PropertyListingManagement = () => {
     }
   };
 
-  console.log(getFilteredData());
 
   const filterProps = filter
     ? getFilteredData().filter((item) => item.listingStatus === filter)
@@ -401,7 +395,6 @@ const PropertyListingManagement = () => {
     serial: index + 1,
   }));
 
-  // Sync handlers
   const handleFindAndMatchProperties = () => {
     const result = findAndMatchProperties();
     const { pairs, propertiesWithoutMLSCount } = result;
@@ -508,19 +501,15 @@ const PropertyListingManagement = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
 
-        {/* Toolbar */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
 
-          {/* Title */}
           <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             Property Listing
             <span className="ml-1 text-gray-400 font-normal text-[11px]">({allCount})</span>
           </h1>
 
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabList.map((tab) => (
               <button
@@ -542,10 +531,8 @@ const PropertyListingManagement = () => {
             ))}
           </div>
 
-          {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -573,10 +560,8 @@ const PropertyListingManagement = () => {
             )}
           </div>
 
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {hasPermissionForSlug("create-property-listing") && (
               <>
@@ -599,7 +584,6 @@ const PropertyListingManagement = () => {
           </div>
         </div>
 
-        {/* Table */}
         <div>
           {isLoading ? (
             <TableLoader />

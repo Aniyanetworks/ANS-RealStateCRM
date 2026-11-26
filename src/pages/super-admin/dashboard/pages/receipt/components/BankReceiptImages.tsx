@@ -9,7 +9,6 @@ interface BankReceiptImagesProps {
   onImageRemove: (index: number) => void;
 }
 
-/** True when the item is a PDF (new upload, base64 copy from the server, or stored .pdf path). */
 const isPdf = (item: ImageItem) =>
   item.file?.type === "application/pdf" ||
   /^data:application\/pdf/i.test(item.preview || "") ||
@@ -18,7 +17,6 @@ const isPdf = (item: ImageItem) =>
 const fileName = (item: ImageItem) =>
   item.file?.name || decodeURIComponent(String(item.path || "").split(/[/\\?]/).filter(Boolean).pop() || "") || "Document";
 
-/** Open a file in a new tab. data: URIs are converted to a blob URL (browsers block opening data: URIs directly). */
 const openFile = async (src: string) => {
   if (!src) return;
   let url = src;
@@ -45,7 +43,6 @@ const BankReceiptImages = ({
           multiple
           onChange={(e) => {
             onImageChange(e);
-            // Reset so choosing the same file again (e.g. after Remove) still triggers a change.
             e.target.value = "";
           }}
         />

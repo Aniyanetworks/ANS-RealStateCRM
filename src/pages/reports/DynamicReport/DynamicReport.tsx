@@ -32,7 +32,6 @@ export default function DynamicReport() {
     const isSuperAdmin = user?.roleId == 1;
     const { data: activeBranches, isLoading: branchesLoading } = useGetActiveBranchListDataQuery("");
 
-    // If not superadmin, automatically filter by user's branch
     const branchFilter = isSuperAdmin
         ? selectedBranches
         : user?.branchId

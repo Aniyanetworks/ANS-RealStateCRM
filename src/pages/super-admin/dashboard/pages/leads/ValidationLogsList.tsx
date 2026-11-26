@@ -62,7 +62,6 @@ const ValidationLogsList = () => {
   const [searchParams] = useSearchParams();
   const campaignUuidFromUrl = searchParams.get("campaignUuid");
 
-  // New state for call logs and summary modals
   const [isCallLogsModalVisible, setIsCallLogsModalVisible] = useState(false);
   const [isCallSummaryModalVisible, setIsCallSummaryModalVisible] =
     useState(false);
@@ -85,7 +84,6 @@ const ValidationLogsList = () => {
   const [deleteMultipleValidationLogs] =
     useDeleteMultipleValidationLogsMutation();
 
-  // Update selectedCampaignUuid when URL param changes
   useEffect(() => {
     if (campaignUuidFromUrl) {
       setSelectedCampaignUuid(campaignUuidFromUrl);
@@ -182,7 +180,6 @@ const ValidationLogsList = () => {
     }
   };
 
-  // New handlers for call logs and summary modals
   const handleViewCallLogs = (
     logs: Array<Record<string, any>> | null,
     name: string
@@ -535,13 +532,10 @@ const ValidationLogsList = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Title */}
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             Validation Logs
           </h1>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style={{ fontSize: 10, left: 8 }} />
             <input
@@ -557,9 +551,7 @@ const ValidationLogsList = () => {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {selectedRowKeys.length > 0 && (
               <button onClick={handleDeleteMultipleClick} className="cancel-btn">
@@ -572,7 +564,6 @@ const ValidationLogsList = () => {
           </div>
         </div>
 
-      {/* Table */}
       {isLoading ? (
         <TableLoader />
       ) : (
@@ -585,7 +576,6 @@ const ValidationLogsList = () => {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Delete"
         open={isDeleteModalVisible}
@@ -598,7 +588,6 @@ const ValidationLogsList = () => {
         <p>Are you sure you want to delete this validation log?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Delete Selected"
         open={isDeleteModalMultipleVisible}
@@ -614,7 +603,6 @@ const ValidationLogsList = () => {
         </p>
       </Modal>
 
-      {/* SMS Logs Modal */}
       <Modal
         title={`SMS Logs - ${selectedLogName}`}
         open={isCallLogsModalVisible}
@@ -630,7 +618,6 @@ const ValidationLogsList = () => {
           {selectedCallLogs && selectedCallLogs.length > 0 ? (
             <div className="space-y-3">
               {selectedCallLogs.map((log, index) => {
-                // Check if it's the initial SMS (no role property)
                 if (!log.role && log.message) {
                   return (
                     <div
@@ -645,7 +632,6 @@ const ValidationLogsList = () => {
                   );
                 }
 
-                // Customer or AI messages
                 const isCustomer = log.role === "customer";
                 const bgColor = isCustomer ? "bg-gray-50" : "bg-green-50";
                 const borderColor = isCustomer
@@ -678,7 +664,6 @@ const ValidationLogsList = () => {
         </div>
       </Modal>
 
-      {/* Call Summary Modal */}
       <Modal
         title={`Call Summary - ${selectedLogName}`}
         open={isCallSummaryModalVisible}

@@ -39,7 +39,6 @@ const branchManageApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      // providesTags: ["getBranchListDataTag"],
     }),
 
     getSpecificBranchData: builder.query({

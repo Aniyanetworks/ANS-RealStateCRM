@@ -25,7 +25,7 @@ type TProps = {
   handleCheckoutState?: boolean;
   showOkButton?: boolean;
   modalClass?: string;
-  hideFooter?: boolean; // New prop to control footer visibility
+  hideFooter?: boolean;
 };
 
 const Modal = ({
@@ -49,7 +49,7 @@ const Modal = ({
   handleCheckoutState = true,
   showOkButton = true,
   modalClass,
-  hideFooter = false, // Default is false to show footer
+  hideFooter = false,
 }: TProps) => {
   return (
     <AntdModal

@@ -2,7 +2,7 @@
 // eslint-disable @typescript-eslint/no-explicit-any
 import { useEffect, useState } from "react";
 import type { TableColumnsType, TableProps } from "antd";
-import { Table, Modal, Button, Input } from "antd"; // Import Modal here
+import { Table, Modal, Button, Input } from "antd";
 import {
   FaEye,
   FaRegEdit,
@@ -40,7 +40,7 @@ interface DataType {
   role: any;
   representation: any;
   createdAt: any;
-  uuid: string; // Ensure uuid is included in DataType
+  uuid: string;
 }
 
 const MySubmissionsArchiveTradeList = () => {
@@ -86,12 +86,9 @@ const MySubmissionsArchiveTradeList = () => {
   ];
 
   useEffect(() => {
-    // refetch()
-    // user?.userType
     setTableData(data?.data?.tradeSheetData);
   }, [data, tableData]);
 
-  //Change Item Status
   const [changeTradeAdminStatus] = useChangeTradeAdminStatusMutation();
   const handleChangeStatus = async (newStatus: string, uuid: string) => {
     setChangeStatus(newStatus);
@@ -149,7 +146,7 @@ const MySubmissionsArchiveTradeList = () => {
 
   const cancelDelete = () => {
     setIsModalVisible(false);
-    setDeleteUuid(null); // Reset deleteUuid
+    setDeleteUuid(null);
 
     setIsRejectModalVisible(false);
     setIsRejectReasonViewModalVisible(false);
@@ -165,7 +162,7 @@ const MySubmissionsArchiveTradeList = () => {
   const [searchText, setSearchText] = useState("");
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -173,7 +170,6 @@ const MySubmissionsArchiveTradeList = () => {
       try {
         const response = await archiveMultipleTradeSheets(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -192,7 +188,6 @@ const MySubmissionsArchiveTradeList = () => {
 
   const filteredData = tableData?.filter((record) => {
     const searchTerm = searchText?.toLowerCase();
-    // if (!searchTerm) return true;
     const inProperties = record.properties?.some((property) =>
       Object.values(property).some((value) =>
         String(value).toLowerCase().includes(searchTerm)
@@ -217,7 +212,7 @@ const MySubmissionsArchiveTradeList = () => {
                 ? "red"
                 : record.status === "underReview"
                 ? "#f59e0b"
-                : "inherit", // Apply blue color if status is 'underReview'
+                : "inherit",
           }}
           className={
             record.status === "rejected"
@@ -225,7 +220,7 @@ const MySubmissionsArchiveTradeList = () => {
               : record.status === "underReview"
               ? ""
               : ""
-          } // Apply blinking class if status is 'rejected' or 'underReview'
+          }
         >
           {tradeSheetTypeId || "N/A"}
         </span>
@@ -235,8 +230,8 @@ const MySubmissionsArchiveTradeList = () => {
     },
     {
       title: "Property Address",
-      dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
-      key: "tradeSheetTypeId", // Keep key as is
+      dataIndex: "tradeSheetTypeId",
+      key: "tradeSheetTypeId",
       render: (text, record): any =>
         record?.properties[0]?.propertyAddress || "N/A",
     },
@@ -249,7 +244,6 @@ const MySubmissionsArchiveTradeList = () => {
           },
         ]
       : []),
-    // { title: "Email", dataIndex: "email", key: "email" },
     {
       title: "Representation",
       dataIndex: "representation",
@@ -265,30 +259,6 @@ const MySubmissionsArchiveTradeList = () => {
       sorter: (a, b): any => a.representation - b.representation,
       width: 150,
     },
-    // {
-    //   title: "Status",
-    //   dataIndex: "status",
-    //   key: `status`,
-    //   render: (status, record) => (
-    //     <Select
-    //       value={status}
-    //       onChange={(newStatus) => handleChangeStatus(newStatus, record.uuid)}
-    //       options={statusOptions} // Use the updated options
-    //       style={{
-    //         width: 150,
-    //         // color: status === "rejected" ? "red" : "inherit", // Apply red color for rejected status
-    //         // background: status === "rejected" ? "red" : "inherit", // Optional: Change border color to red for rejected
-    //       }}
-    //       disabled={user.userType === "agent"} // Disable condition
-    //     />
-    //   ),
-    //   filters: statusOptions.map((status): any => ({
-    //     text: status,
-    //     value: status,
-    //   })),
-    //   onFilter: (value, record) => record.status === value,
-    //   width: 180,
-    // },
     {
       title: "Submitted at",
       dataIndex: "createdAt",
@@ -302,72 +272,9 @@ const MySubmissionsArchiveTradeList = () => {
       },
       width: 230,
     },
-    // {
-    //   title: "Actions",
-    //   dataIndex: "uuid",
-    //   key: "actions",
-    //   render: (uuid, record) => (
-    //     <div className="flex gap-5 items-center">
-    //       {((user.userType === "agent" &&
-    //         (record.status === "draft" || record.status === "rejected")) ||
-    //         user.userType === "superAdmin" ||
-    //         user.userType === "admin") && (
-    //         <Link
-    //           to={`/dashboard/agent/pages/form/trade-sheet/agent-basic-info/${uuid}`}
-    //           className="text-[16px] hover:text-primaryPurple duration-100"
-    //         >
-    //           <FaRegEdit />
-    //         </Link>
-    //       )}
-    //       {record.status === "rejected" && (
-    //         <button
-    //           onClick={() => handleRejectReasonView(record?.rejectReason)}
-    //           className="text-[16px] hover:text-primaryPurple duration-100 ml-4"
-    //         >
-    //           <FaComment className="text-red-500" />{" "}
-    //           {/* Reject Reason icon with red color */}
-    //         </button>
-    //       )}
-    //       <Link
-    //         to={`/dashboard/agent/pages/form/trade-sheet/separate-preview-page/${uuid}`}
-    //         className="text-[16px] hover:text-primaryPurple duration-100"
-    //       >
-    //         <FaEye /> {/* Preview icon */}
-    //       </Link>
-    //       <Link
-    //         to={`/dashboard/agent/pages/form/trade-sheet/paperwork-file-manager/${uuid}`}
-    //         className="text-[16px] hover:text-primaryPurple duration-100" // Added margin left for spacing
-    //       >
-    //         <FaFileAlt /> {/* File manager icon */}
-    //       </Link>
-    //       {record.status === "approved" && (
-    //         <Link
-    //           title="Additional Document"
-    //           to={`/dashboard/agent/pages/form/trade-sheet/additional-document/${uuid}`}
-    //           className="text-[16px] hover:text-primaryPurple duration-100" // Added margin left for spacing
-    //         >
-    //           <FaFileUpload /> {/* File manager icon */}
-    //         </Link>
-    //       )}
-    //       {((user.userType === "agent" && record.status === "draft") ||
-    //         user.userType === "superAdmin" ||
-    //         user.userType === "admin") && (
-    //         <button
-    //           onClick={() => handleDelete(uuid)}
-    //           className="hover:text-red-500 text-lg duration-100"
-    //         >
-    //           <MdDelete /> {/* Delete icon */}
-    //         </button>
-    //       )}
-    //     </div>
-    //   ),
-    //   fixed: "right",
-    //   width: 190,
-    // },
   ];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -431,12 +338,6 @@ const MySubmissionsArchiveTradeList = () => {
             >
               Go Back Tradesheet
             </Link>
-            {/* <button
-              onClick={handleDeleteMultipleClick}
-              className="cancel-btn mx-3"
-            >
-              Delete
-            </button> */}
           </div>
         </div>
       </div>
@@ -476,7 +377,7 @@ const MySubmissionsArchiveTradeList = () => {
       >
         <div className="p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-md">
           <div className="flex items-center">
-            <AiFillWarning className="text-2xl mr-2" /> {/* Warning icon */}
+            <AiFillWarning className="text-2xl mr-2" />
             <p className="font-semibold text-sm">
               Are you sure you want to delete this item?
             </p>
@@ -497,7 +398,6 @@ const MySubmissionsArchiveTradeList = () => {
           </p>
         </div>
       </Modal>
-      {/* Reject Modal */}
       <Modal
         title="Add Reject Reasons"
         visible={isRejectModalVisible}
@@ -510,9 +410,9 @@ const MySubmissionsArchiveTradeList = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#072f2d", // Custom background color
-              borderColor: "#072f2d", // Custom border color
-              color: "#fff", // Text color to ensure contrast
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
+              color: "#fff",
             }}
           >
             Save
@@ -523,14 +423,13 @@ const MySubmissionsArchiveTradeList = () => {
         ]}
       >
         <Input.TextArea
-          rows={4} // You can adjust the number of rows
+          rows={4}
           placeholder="Enter reject reason here"
-          value={rejectReason} // Assuming you have a state for the reason
-          onChange={(e) => setRejectReason(e.target.value)} // Assuming you have a setRejectReason function
+          value={rejectReason}
+          onChange={(e) => setRejectReason(e.target.value)}
         />
       </Modal>
 
-      {/* Reject Reasons View Modal */}
       <Modal
         title="Reject Reasons View"
         visible={isRejectReasonViewModalVisible}
@@ -544,7 +443,6 @@ const MySubmissionsArchiveTradeList = () => {
         <div>{rejectReason}</div>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -565,7 +463,7 @@ const MySubmissionsArchiveTradeList = () => {
       >
         <div className="p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-md">
           <div className="flex items-center">
-            <AiFillWarning className="text-2xl mr-2" /> {/* Warning icon */}
+            <AiFillWarning className="text-2xl mr-2" />
             <p className="font-semibold text-sm">
               Are you sure you want to delete this item?
             </p>

@@ -1,5 +1,3 @@
-// ANS Time Clock helpers — ported from the dvclock app (dates, pay periods, Ontario holidays,
-// shift maths and conflict checks). Kept as plain functions so the screens behave exactly the same.
 
 export type Holiday = { name: string; start_date?: string; end_date?: string; date?: string };
 export type Settings = { payPeriodType: string; anchorDate: string; optionalHolidays: Holiday[] };
@@ -51,7 +49,6 @@ export function rowHours(r: Pick<Attendance, "clockIn" | "clockOut">, now = new 
   const a = new Date(r.clockIn), b = r.clockOut ? new Date(r.clockOut) : now;
   return Number.isFinite(+a) && Number.isFinite(+b) ? Math.max(0, (+b - +a) / 3600000) : 0;
 }
-/** Hours used in reports: approved payable hours when set, otherwise actual time. */
 export function attendanceReportHours(a: Attendance) {
   if (!a.clockIn || !a.clockOut) return 0;
   const actual = Math.max(0, (+new Date(a.clockOut) - +new Date(a.clockIn)) / 3600000);
@@ -69,7 +66,6 @@ export const localInputDateTime = (d: string | Date) => {
 };
 export const fmtTime = (v?: string | null) => (v ? new Date(v).toLocaleString("en-CA") : "—");
 
-/** Current pay period for a date (weekly/biweekly from the anchor date, semi-monthly, monthly). */
 export function periodBounds(dateStr: string | null, cfg: Pick<Settings, "payPeriodType" | "anchorDate">) {
   const d = new Date((dateStr || todayKey()) + "T12:00:00"), type = cfg.payPeriodType || "biweekly";
   let start: Date, end: Date;
@@ -90,7 +86,6 @@ export function periodBounds(dateStr: string | null, cfg: Pick<Settings, "payPer
   return { start: start.toISOString().slice(0, 10), end: end.toISOString().slice(0, 10) };
 }
 
-/** Payroll page period picker (Weekly / Bi-Weekly / Semi-Monthly / Monthly / Yearly). */
 export function dateForPeriod(period: string, anchor?: string) {
   const d = new Date((anchor || todayKey()) + "T12:00:00");
   let start = new Date(d), end = new Date(d);
@@ -115,7 +110,6 @@ export function dateForPeriod(period: string, anchor?: string) {
   return { from: start.toISOString().slice(0, 10), to: end.toISOString().slice(0, 10) };
 }
 
-/** Gross pay for a period: hourly × hours, or prorated monthly/yearly salary. */
 export function salaryGrossForPeriod(e: Pick<Member, "payType" | "hourlyRate" | "monthlySalary" | "yearlySalary">, from: string, to: string, hours: number) {
   if (e.payType === "hourly") return hours * Number(e.hourlyRate || 0);
   if (!from || !to || to < from) return 0;
@@ -138,7 +132,6 @@ export function salaryGrossForPeriod(e: Pick<Member, "payType" | "hourlyRate" | 
   return 0;
 }
 
-// ---------- Ontario statutory holidays + optional holidays from settings ----------
 function easterSunday(y: number) {
   const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
   const hh = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - hh - k) % 7, m = Math.floor((a + 11 * hh + 22 * l) / 451);
@@ -183,13 +176,11 @@ export function holidayName(key: string, optional: Holiday[] = []) {
   return found?.name || builtinHolidayName(key);
 }
 
-// ---------- shifts ----------
 export const shiftMinutes = (t?: string | null) => {
   const a = String(t || "00:00").split(":").map(Number);
   return (a[0] || 0) * 60 + (a[1] || 0);
 };
 type ShiftLike = { uuid?: string; userId: number | null; shiftDate: string; startTime: string; endTime: string; totalHours?: number };
-/** Overlap / duplicate / >12h checks; returns the warnings (empty when the shifts are fine). */
 export function shiftConflictWarnings(proposed: ShiftLike[], existing: ShiftLike[], excludeUuid: string | null = null) {
   const candidates = proposed.filter((x) => x.userId);
   const warnings: string[] = [];
@@ -219,7 +210,6 @@ export function shiftConflictWarnings(proposed: ShiftLike[], existing: ShiftLike
   });
   return [...new Set(warnings)];
 }
-/** Do two shifts for the same employee overlap (used by swap approvals)? */
 export function overlaps(candidate: ShiftLike, others: ShiftLike[], excludeUuid?: string) {
   const mins = shiftMinutes;
   let cs = mins(candidate.startTime), ce = mins(candidate.endTime);
@@ -232,7 +222,6 @@ export function overlaps(candidate: ShiftLike, others: ShiftLike[], excludeUuid?
   });
 }
 
-// ---------- geolocation ----------
 export function distanceMeters(lat1: number, lon1: number, lat2: number, lon2: number) {
   const R = 6371000, toRad = (x: number) => (x * Math.PI) / 180, dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
   const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
@@ -245,7 +234,6 @@ export function getPosition(): Promise<GeolocationPosition> {
   });
 }
 
-/** Parse a request's details (JSON text written by the app, or free text). */
 export function requestPayload(details: unknown): Record<string, unknown> {
   if (details && typeof details === "object") return details as Record<string, unknown>;
   try {

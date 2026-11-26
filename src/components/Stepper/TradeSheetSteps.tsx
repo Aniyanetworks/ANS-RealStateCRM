@@ -5,8 +5,8 @@ import { AiOutlineDoubleRight } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 interface TradeSheetStepsProps {
-  active: any; // Current active step
-  uuid: any; // UUID as a string
+  active: any;
+  uuid: any;
 }
 
 const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active, uuid }) => {
@@ -29,13 +29,11 @@ const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active, uuid }) => {
     }
   }
 
-  // Define your steps
   const steps = [
     {
       label: "Agent's Basic Info",
       path: `/dashboard/agent/pages/form/trade-sheet/agent-basic-info/${uuid}`,
     },
-    // Conditionally add "Property Details" step based on tradeSheetRepresentationData
     ...((tradeSheetData?.representation === "buyer" || tradeSheetData?.representation === "tenant") && tradeSheetData?.representationType=='single'
       ? [
           {
@@ -74,7 +72,7 @@ const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active, uuid }) => {
     },
     ...(tradeSheetData?.representation === "tenant" ||
     tradeSheetData?.representation === "landlord" || (tradeSheetData?.representationType != "single" && (tradeSheetData?.multipleRepresentation === "tenant,landlord" || tradeSheetData?.multipleRepresentation === "landlord,tenant"))
-      ? [] // If representation is tenant or landlord, do not include the lawyer's details
+      ? []
       : [
           {
             label: "Lawyer's Details",
@@ -105,8 +103,6 @@ const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active, uuid }) => {
     },
   ];
 
-  // Seller / landlord trades: the property address is locked to the selected listing, so show the listing's
-  // address (the saved Property Details copy can be older, e.g. after the listing was changed or edited).
   const listingAddress =
     tradeSheetData?.representationType === "single" &&
     (tradeSheetData?.representation === "seller" || tradeSheetData?.representation === "landlord")

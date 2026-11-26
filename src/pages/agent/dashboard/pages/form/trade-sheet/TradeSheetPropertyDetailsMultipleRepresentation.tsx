@@ -25,7 +25,6 @@ import TradeSheetSteps from "../../../../../../components/Stepper/TradeSheetStep
 import { formatPostalCode } from "../../../../../../utils/format";
 import moment from "moment";
 import ConditionalSection from "../../../../../../components/ConditionalSection";
-// Reusable Text Input Component
 const TextInput = ({
   label,
   register,
@@ -52,7 +51,6 @@ const TextInput = ({
   </div>
 );
 
-// Reusable Date Input Component
 const DateInput = ({ label, control, name, errors, required }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -62,7 +60,7 @@ const DateInput = ({ label, control, name, errors, required }: any) => (
       name={name}
       control={control}
       defaultValue=""
-      rules={{ required: required ? `${label} is required` : false }} // Add validation rules conditionally
+      rules={{ required: required ? `${label} is required` : false }}
       render={({ field }) => (
         <input {...field} type="date" className="border rounded p-2 w-full" />
       )}
@@ -73,7 +71,6 @@ const DateInput = ({ label, control, name, errors, required }: any) => (
   </div>
 );
 
-// Reusable Select Input Component
 const SelectInput = ({ label, register, name, errors, options = [] }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -95,17 +92,7 @@ const SelectInput = ({ label, register, name, errors, options = [] }: any) => (
     )}
   </div>
 );
-// const formatDate = (isoDate: any) => {
-//   if(isoDate)
-//   {
-//     return format(new Date(isoDate), "yyyy-MM-dd");
-//   }
-//   else
-//   {
-//     return "";
-//   }
 
-// };
 
 const formatDate = (isoDate: any) => {
   if (isoDate) {
@@ -117,7 +104,7 @@ const formatDate = (isoDate: any) => {
 
 const TradeSheetPropertyDetailsMultipleRepresentation = () => {
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const [btnLoading, setBtnLoading] = useState("");
   const [propertiesData, setPropertiesData] = useState([]);
   const {
@@ -128,7 +115,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
   const { tradeSheetRepresentationData } = useAppSelector(
     (state: any) => state.user
   );
-  // Handle loading and error states
   const {
     register,
     handleSubmit,
@@ -139,7 +125,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
     watch,
     getValues,
   } = useForm();
-  console.log("spacificTradeSheetListData");
   const selectedCountry = 39;
   const selectedState = watch("stateId");
   const selectedCity = watch("cityId");
@@ -147,20 +132,17 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
   const selectedAddress = watch("address");
   const selectedPropertyType = watch("propertyType");
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [], isLoading: isCityLoading } = useGetCitiesQuery(
     selectedState,
     {
-      skip: !selectedState, // Skip if no state is selected
+      skip: !selectedState,
     }
   );
 
-  // Watch the value of 'conditional' field
   const conditionalValue = watch("conditional");
   const conditionalOptionValue = watch("conditionalOption");
 
@@ -205,15 +187,13 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
   }, [reset, spacificTradeSheetListData, setPropertiesData]);
 
   useEffect(() => {
-    setValue("countryId", 39); //by defult set county canada
+    setValue("countryId", 39);
 
-    // Recompute the property address whenever any field changes
     const stateName =
       states?.data?.states?.find((state) => state.id == selectedState)?.name ||
       "";
     const cityName =
       cities?.data?.cities?.find((city) => city.id == selectedCity)?.name || "";
-    // const formattedAddress = `${selectedAddress}, ${selectedPostalCode}, ${cityName}, ${stateName}, Canada`;
     const formattedAddress = `${selectedAddress}, ${cityName}, ${stateName}, ${selectedPostalCode}`;
 
     setValue("propertyAddress", formattedAddress);
@@ -239,7 +219,7 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
   }
 
   const onSubmit = async (data: any) => {
-    setBtnLoading(data.saveBtn); // Start loading state
+    setBtnLoading(data.saveBtn);
 
     try {
       const isDraft = data.saveBtn === "save-draft";
@@ -250,7 +230,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
         uuid,
       }).unwrap();
 
-      // Show success message
       toast.success(`${response?.message}`);
       setBtnLoading("");
 
@@ -267,17 +246,14 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
           break;
       }
 
-      // Navigate to the determined path
       if (navigatePath) {
         navigate(navigatePath, { replace: true });
       }
     } catch (error: any) {
       setBtnLoading("");
-      // Handle error
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
     }
 
-    // Reset loading state
     setBtnLoading("");
   };
 
@@ -295,17 +271,13 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
 
   return (
     <div>
-      {/* <h2 className="uppercase text-center bg-[#c9c1c13d] py-5">Trade Sheet</h2> */}
       <TradeSheetSteps active={2} uuid={uuid} />
-      {/* <TradeSheetSteps active={2} uuid={uuid} /> */}
 
       <div className="max-w-full mt-8 p-8 border border-gray-300/30 rounded-md  border-2">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-          {/* Property Details: */}
           <div className="max-FULL  p-6 bg-[#c9c1c13d] rounded-lg shadow-md">
             <h3 className="py-2">Property Details:</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-              {/* MLS # */}
               <TextInput
                 label="MLS #"
                 register={register}
@@ -329,7 +301,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                     </option>
                   ))}
                 </select>
-                {/* Error message for Province */}
                 {errors.stateId && (
                   <p className="text-red-500">{errors.stateId.message}</p>
                 )}
@@ -349,7 +320,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                     </option>
                   ))}
                 </select>
-                {/* Error message for City */}
                 {errors.cityId && (
                   <p className="text-red-500">{errors.cityId.message}</p>
                 )}
@@ -372,7 +342,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                     setValue("postalCode", formatPostalCode(e.target.value));
                   }}
                 />
-                {/* Error message for Postal Code */}
                 {errors.postalCode && (
                   <p className="text-red-500">{errors.postalCode.message}</p>
                 )}
@@ -391,7 +360,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                   id="address"
                   className="w-full"
                 />
-                {/* Error message for Address */}
                 {errors.address && (
                   <p className="text-red-500">{errors.address.message}</p>
                 )}
@@ -409,13 +377,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 name="salesPrice"
                 errors={errors}
               />
-              {/* <DateInput
-                label="Offer date (if any)"
-                required={false} // This will make the field optional
-                control={control}
-                name="offerDate"
-                errors={errors}
-              /> */}
               <TextInput
                 label="Offer date (if any)"
                 register={register}
@@ -424,14 +385,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 type="date"
               />
 
-              {/* Acceptance Date */}
-              {/* <DateInput
-                label="Acceptance Date"
-                required
-                control={control}
-                name="acceptanceDate"
-                errors={errors}
-              /> */}
               <TextInput
                 label="Acceptance Date"
                 register={register}
@@ -441,7 +394,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 type="date"
               />
 
-              {/* Closing Date */}
               <DateInput
                 label="Closing Date"
                 required
@@ -450,43 +402,9 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 errors={errors}
               />
 
-              {/* Conditional */}
-              {/*               {conditionalValue === "yes" && (
-                <SelectInput
-                  label="Conditional Option"
-                  required
-                  register={register}
-                  name="conditionalOption"
-                  errors={errors}
-                  options={[
-                    { value: "Finance", label: "Finance" },
-                    { value: "Home Inspection", label: "Home Inspection" },
-                    { value: "Due Diligence", label: "Due Diligence" },
-                    { value: "Others", label: "Others" },
-                  ]}
-                />
-              )} */}
 
-              {/*  {conditionalOptionValue === "Others" && (
-                <TextInput
-                  label="Write other condition"
-                  register={register}
-                  name="otherCondition"
-                  errors={errors}
-                />
-              )} */}
 
-              {/*  {conditionalValue === "yes" && (
-                <DateInput
-                  label="Condition Expiry Date"
-                  required={false}
-                  control={control}
-                  name="conditionExpiryDate"
-                  errors={errors}
-                />
-              )} */}
 
-              {/* Continue Showings */}
               {tradeSheetRepresentationData === "seller" && (
                 <SelectInput
                   label="Continue Showings"
@@ -501,7 +419,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 />
               )}
 
-              {/* Deposit Amount */}
               <TextInput
                 label="Deposit Amount"
                 register={register}
@@ -511,7 +428,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 type="number"
               />
 
-              {/* Deposit Date */}
               <DateInput
                 label="Deposit Date"
                 required
@@ -520,7 +436,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 errors={errors}
               />
 
-              {/* Update MLS Status */}
               {tradeSheetRepresentationData === "seller" && (
                 <SelectInput
                   label="Update MLS Status"
@@ -536,7 +451,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 />
               )}
 
-              {/* Conditional */}
               <SelectInput
                 label="Conditional"
                 required
@@ -549,7 +463,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 ]}
               />
 
-              {/* FIRM Date */}
               {conditionalValue === "no" && (
                 <DateInput
                   label="FIRM Date"
@@ -560,14 +473,12 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
                 />
               )}
             </div>
-            {/* Conditional Section */}
             <ConditionalSection
               tradeSheetId={tradeSheetId}
               isConditional={conditionalValue === "yes"}
             />
           </div>
           <div className="flex justify-between my-15 mx-5">
-            {/* Save and Next Button */}
             <button
               type="submit"
               onClick={() => {
@@ -578,7 +489,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
               {btnLoading == "save-next" ? <ButtonLoader /> : "Save and Next"}
             </button>
 
-            {/* Save and Exit Button */}
 
             <button
               type="submit"
@@ -589,7 +499,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
               {btnLoading == "save-exit" ? <ButtonLoader /> : "Save and Exit"}
             </button>
 
-            {/* Save as Draft Button */}
             <button
               type="submit"
               onClick={() => setValue("saveBtn", "save-draft")}
@@ -614,7 +523,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
               Rest Form
             </button>
 
-            {/* Cancel Button */}
             <button
               onClick={cancelSubmit}
               type="button"
@@ -626,7 +534,6 @@ const TradeSheetPropertyDetailsMultipleRepresentation = () => {
         </form>
       </div>
 
-      {/* Form */}
     </div>
   );
 };

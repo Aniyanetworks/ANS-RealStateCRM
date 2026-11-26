@@ -66,24 +66,19 @@ const CreatePassword = () => {
   };
   return (
     <div className="min-h-screen flex flex-col sm:flex-row  ">
-      {/* Left Section */}
       <Branding />
 
-      {/* Right Section (Login Form) */}
       <div className="sm:w-[75%]  p-8 flex flex-col">
 
         <div className=" flex items-center justify-center  flex-1">
           <div className="w-full max-w-sm">
-            {/* Login Form -------------------------------------*/}
             <h1>Create password</h1>
 
-            {/* Email/Password Login */}
             <form
               className="flex mt-5 flex-col gap-4"
               onSubmit={handleSubmit(onSubmit)}
             >
 
-              {/* password -------------------------------------------*/}
               <div className="">
                 <label className="block mb-2 text-[15px]">Password</label>
 
@@ -111,7 +106,6 @@ const CreatePassword = () => {
                 </div>
               </div>
 
-              {/* cpassword -------------------------------------------*/}
               <div className="">
                 <label className="block mb-2 text-[15px]">Confirm Password</label>
 
@@ -139,7 +133,6 @@ const CreatePassword = () => {
                 </div>
               </div>
 
-              {/* captcha */}
               <div>
                 <Captcha
                   firstValue={firstValue}
@@ -151,7 +144,7 @@ const CreatePassword = () => {
                     className={cn("appearance-none text-center max-w-20", {
                       "!border-red-500": errors.captcha,
                       "!border-green-500":
-                        !errors.captcha && watch("captcha") == result, // Green border when correct
+                        !errors.captcha && watch("captcha") == result,
                     })}
                     min={0}
                     {...register("captcha", {

@@ -21,7 +21,6 @@ import { toDate } from "date-fns";
 import SelectedPlansDisplay from "../../components/dashboard/Agent/SelectedPlan";
 import SelectedDiscount from "../../components/dashboard/Agent/SelectedDiscount";
 import SelectedAddonsPlans from "../../components/dashboard/Agent/SelectedAddonPlan";
-// Type Definitions
 interface AgentAccount {
   id: string;
   status: string;
@@ -33,31 +32,31 @@ interface AgentAccount {
 }
 
 interface User {
-  name?: string; // Full name (could be a combination of firstName, lastName, etc.)
-  firstName?: string; // First name
-  lastName?: string; // Last name
-  precName?: string; // Prec name (may relate to a designation or title)
-  address?: string; // Address of the user
-  cellPhone?: string; // Cell phone number
-  phoneServiceProvider?: string; // Phone service provider name
-  recoRegNumber?: string; // RECO registration number
-  recoExpiryDate?: Date; // RECO expiry date (mapped from DateTime)
-  sin?: string; // SIN (Social Insurance Number)
-  dob?: Date; // Date of birth (mapped from DateTime)
-  email: string; // Email address (unique field)
-  emergencyContact?: string; // Emergency contact information
-  nationalIdentity?: string; // National identity number
-  hstNo?: string; // HST number
-  precHstNo?: string; // Prec HST number
-  expectedGross?: number; // Expected gross income (floating point value)
-  status?: string; // Status of the user (Enum: pending, approved, rejected)
-  agreementStatus?: string; // Agreement status (Enum: pending, approved, rejected)
-  agreementStep?: string; // Step in the agreement process
-  remarks?: string; // Any remarks
-  special_note?: string; // Special notes or remarks
-  signature?: string; // Digital or file path to the user's signature
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+  precName?: string;
+  address?: string;
+  cellPhone?: string;
+  phoneServiceProvider?: string;
+  recoRegNumber?: string;
+  recoExpiryDate?: Date;
+  sin?: string;
+  dob?: Date;
+  email: string;
+  emergencyContact?: string;
+  nationalIdentity?: string;
+  hstNo?: string;
+  precHstNo?: string;
+  expectedGross?: number;
+  status?: string;
+  agreementStatus?: string;
+  agreementStep?: string;
+  remarks?: string;
+  special_note?: string;
+  signature?: string;
   initial: string;
-  agentAccount?: AgentAccount[]; // An array of `AgentAccount` (assuming this is a related field)
+  agentAccount?: AgentAccount[];
   approvedUser: {
     signature: string;
     createdAt: string;
@@ -70,9 +69,9 @@ interface User {
 
 const getCurrentDate = () => {
   const currentDate = new Date();
-  const day = currentDate.getDate().toString().padStart(2, "0"); // Day (02, 03, ...)
-  const month = currentDate.toLocaleString("default", { month: "long" }); // Month (January, February, ...)
-  const year = currentDate.getFullYear(); // Full year (2024)
+  const day = currentDate.getDate().toString().padStart(2, "0");
+  const month = currentDate.toLocaleString("default", { month: "long" });
+  const year = currentDate.getFullYear();
 
   return {
     day,
@@ -85,15 +84,12 @@ const formatDate = (
   dateString: string | Date,
   format: "full" | "short" | "medium" | "long" = "medium"
 ) => {
-  // Ensure we have a valid date
   const date = new Date(dateString);
 
-  // Check if the date is valid
   if (isNaN(date.getTime())) {
     return "Invalid Date";
   }
 
-  // Options for different formatting styles
   const formatOptions = {
     full: {
       weekday: "long",
@@ -121,18 +117,17 @@ const formatDate = (
     },
   };
 
-  // Format the date based on the selected style
   return new Intl.DateTimeFormat("en-US", formatOptions[format]).format(date);
 };
 
 const AgreementPreview = () => {
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [agent, setAgent] = useState<User | null>(null);
   const [plan, setPlan] = useState<any>(null);
   const [optionalPlans, setOptionalPlans] = useState<any[]>([]);
   const [isStatusLoading, setIsStatusLoading] = useState<boolean>(false);
-  const { uuid } = useParams(); // Destructuring the UUID from the URL
+  const { uuid } = useParams();
   const {
     data: agentDetails,
     isLoading,
@@ -142,7 +137,6 @@ const AgreementPreview = () => {
   const agreementRef = useRef<HTMLDivElement>(null);
   const currentDate = getCurrentDate();
 
-  // Replace the existing selector
   const auth = useSelector((state: RootState) => state.user?.user ?? null);
 
   useEffect(() => {
@@ -155,8 +149,7 @@ const AgreementPreview = () => {
 
   useEffect(() => {
     if (agent) {
-      console.log("agent", agent);
-      setPlan(agent.plan); // Set the plan data after agent is set
+      setPlan(agent.plan);
       const planArray = agent.optionalPlanId
         ? agent.optionalPlanId.split(",").map(Number)
         : [];
@@ -189,7 +182,7 @@ const AgreementPreview = () => {
         setTimeout(() => {
           html2canvas(content, {
             scale: 2,
-            useCORS: true, // Enable CORS for external images
+            useCORS: true,
             logging: true,
             allowTaint: true,
           }).then(async (canvas) => {
@@ -201,7 +194,6 @@ const AgreementPreview = () => {
             const canvasHeight = canvas.height;
             const scaleRatio = pdfWidth / canvasWidth;
 
-            // Detect the positions of <hr> tags
             const hrElements = content.querySelectorAll("hr");
             const hrPositions: number[] = Array.from(hrElements).map((hr) => {
               const rect = hr.getBoundingClientRect();
@@ -209,10 +201,9 @@ const AgreementPreview = () => {
               return (
                 (rect.top - contentRect.top) *
                 (canvas.height / content.scrollHeight)
-              ); // Scale to canvas coordinates
+              );
             });
 
-            // Add an extra point at the end of the canvas
             hrPositions.push(canvasHeight);
 
             let previousPosition = 0;
@@ -225,7 +216,6 @@ const AgreementPreview = () => {
               pageCanvas.width = canvasWidth;
               pageCanvas.height = pageHeight;
 
-              // Draw the portion of the canvas corresponding to the current section
               pageContext?.drawImage(
                 canvas,
                 0,
@@ -243,12 +233,11 @@ const AgreementPreview = () => {
                 pdf.addPage();
               }
 
-              // Set text size
-              pdf.setFontSize(8); // Example: Set text size to 12
-              pdf.text(`Page ${index + 1}`, 10, 10); // Add text at the top of each page
+              pdf.setFontSize(8);
+              pdf.text(`Page ${index + 1}`, 10, 10);
 
               const imgHeight = pageHeight * scaleRatio;
-              pdf.addImage(pageImgData, "PNG", 0, 20, pdfWidth, imgHeight); // Place image below text
+              pdf.addImage(pageImgData, "PNG", 0, 20, pdfWidth, imgHeight);
 
               previousPosition = position;
             });
@@ -276,7 +265,7 @@ const AgreementPreview = () => {
         toast.success(`${response?.message}`);
       }
     } catch (error: any) {
-      console.error(error); // Use console.error for error logging
+      console.error(error);
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
     }
   };
@@ -290,7 +279,7 @@ const AgreementPreview = () => {
   }
 
   if (error) {
-    return <div>Error loading data</div>; // Handle any potential errors
+    return <div>Error loading data</div>;
   }
 
   return (
@@ -305,7 +294,6 @@ const AgreementPreview = () => {
         />
         {isStatusLoading && <LoaderIcon />}
 
-        {/* Go Back Button */}
         <button
           onClick={() => navigate("/dashboard/super-admin/agent-management")}
           className="p-2 bg-[#0b3b38] hover:bg-[#374a6d] text-sm rounded-md text-white"
@@ -313,7 +301,6 @@ const AgreementPreview = () => {
           Go Back
         </button>
       </div>
-      {/* Note/Message */}
       <div className="text-sm text-gray-600 mt-2">
         <p>
           If you have approved this agreement, it has been saved to your
@@ -329,7 +316,6 @@ const AgreementPreview = () => {
 
       <div className="max-w-[850px]" ref={agreementRef}>
         <div className="mx-10 my-5">
-          {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 border border-gray-300">
               <img
@@ -346,7 +332,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Agreement Intro */}
           <div className="mb-4 text-center">
             <p>
               THIS INDEPENDENT CONTRACTOR'S AGREEMENT is made in duplicate for a
@@ -360,7 +345,6 @@ const AgreementPreview = () => {
             </p>
           </div>
 
-          {/* Parties */}
           <div className="space-y-2 mb-4">
             <div className="grid grid-cols-[100px_1fr] gap-2">
               <p className="font-bold">BETWEEN:</p>
@@ -379,7 +363,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Legal Text */}
           <div className="space-y-2 mb-8 text-sm">
             <p>
               In this Agreement, the term "Salesperson" includes a Broker
@@ -453,7 +436,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex justify-between items-center mt-12">
             <p className="text-sm">Page 1 of 7</p>
             <div className="flex gap-4">
@@ -470,7 +452,6 @@ const AgreementPreview = () => {
         <hr />
 
         <div className="mx-10 my-5">
-          {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 border border-gray-300">
               <img
@@ -487,7 +468,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Legal Text */}
           <div className="space-y-6 text-sm">
             <div className="ml-8">
               <p className="mb-4">
@@ -585,7 +565,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex justify-between items-center mt-12">
             <p className="text-sm">Page 2 of 5</p>
             <div className="flex gap-4">
@@ -602,7 +581,6 @@ const AgreementPreview = () => {
         <hr />
 
         <div className="mx-10 my-5">
-          {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 border border-gray-300">
               <img
@@ -721,7 +699,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex justify-between items-center mb-5 mt-12">
             <p className="text-sm">Page 3 of 7</p>
             <div className="flex gap-4">
@@ -738,7 +715,6 @@ const AgreementPreview = () => {
         <hr />
 
         <div className="mx-10 my-5">
-          {/* Header */}
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 border border-gray-300">
               <img
@@ -793,7 +769,6 @@ const AgreementPreview = () => {
                 Brokerage.
               </p>
             </div>
-            {/* ARTICLE THIRTEEN - CORRESPONDENCE */}
             <div>
               <h3 className="font-bold mb-2">
                 ARTICLE THIRTEEN - CORRESPONDENCE
@@ -808,7 +783,6 @@ const AgreementPreview = () => {
               </p>
             </div>
 
-            {/* ARTICLE FOURTEEN - INDEMNITY */}
             <div>
               <h3 className="font-bold mb-2">ARTICLE FOURTEEN - INDEMNITY</h3>
               <p className="ml-8 mb-4">
@@ -823,7 +797,6 @@ const AgreementPreview = () => {
               </p>
             </div>
 
-            {/* ARTICLE FIFTEEN - USE AND DISTRIBUTION OF PERSONAL INFORMATION */}
             <div>
               <h3 className="font-bold mb-2">
                 ARTICLE FIFTEEN - USE AND DISTRIBUTION OF PERSONAL INFORMATION
@@ -842,7 +815,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex justify-between items-center mt-5">
             <p className="text-sm">Page 4 of 7</p>
             <div className="flex gap-4">
@@ -859,7 +831,6 @@ const AgreementPreview = () => {
         <hr />
 
         <div className="mx-10 my-2 pb-5">
-          {/* Header */}
           <div className="flex items-center gap-4 mb-3">
             <div className="w-16 h-16 border border-gray-300">
               <img
@@ -927,7 +898,6 @@ const AgreementPreview = () => {
             </p>
           </div>
 
-          {/* Legal Text */}
           <div className="space-y-3 text-sm">
             <p className="mb-6">
               Any such notice or communication shall be deemed received on the
@@ -954,9 +924,7 @@ const AgreementPreview = () => {
               have duly signed the Agreement as of the date indicated.
             </p>
 
-            {/* Signature Section */}
             <div className="space-y-2 mt-2 pb-5">
-              {/* First Row */}
               <div className="grid grid-cols-[1fr_2fr_1fr] gap-8 items-end">
                 <div className="pt-1">
                   <div className="h-12 flex items-center justify-center">
@@ -984,7 +952,6 @@ const AgreementPreview = () => {
                 </div>
               </div>
 
-              {/* Second Row */}
               <div className="grid grid-cols-[1fr_2fr_1fr] gap-8 items-end">
                 <div className="pt-1">
                   <div className="h-12 flex items-center justify-center">
@@ -1014,7 +981,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex justify-between items-center mt-4">
             <p className="text-sm">Page 5 of 7</p>
             <div className="flex gap-4">
@@ -1065,7 +1031,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex justify-between items-center mb-5 mt-12">
             <p className="text-sm">Page 6 of 7</p>
             <div className="flex gap-4">
@@ -1156,7 +1121,6 @@ const AgreementPreview = () => {
           <div className=" space-y-2">
             <div className="pt-4">
               <div className="flex flex-col items-end">
-                {/* Signature Image */}
                 <div className="w-16 h-12 flex items-end justify-end">
                   <img
                     src={getFileUrl(user?.signature)}
@@ -1164,7 +1128,6 @@ const AgreementPreview = () => {
                     className="object-contain"
                   />
                 </div>
-                {/* Signature Text */}
                 <div className="border-t border-gray-300 text-end text-sm italic">
                   (Signature of Salesperson)
                 </div>
@@ -1172,7 +1135,6 @@ const AgreementPreview = () => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex justify-between items-center mt-12">
             <p className="text-sm">Page 7 of 7</p>
             <div className="flex gap-4">

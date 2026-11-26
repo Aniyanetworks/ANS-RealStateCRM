@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { formatDate, parseISO } from 'date-fns';
-// import TableLoader from '../loader/TableLoader';
 import { Table, Tag } from 'antd';
 import type { TableColumnsType, TableProps } from "antd";
 import * as XLSX from 'xlsx';
@@ -34,8 +33,7 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
-  const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
+  const handleChange: OnChange = (_pagination, filters, sorter) => {
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
@@ -108,22 +106,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
       ellipsis: true,
     },
     
-    /* {
-      title: "Trade Status",
-      dataIndex: "tradeSheet",
-      key: "tradeSheet",
-      render: (tradeSheet) => (
-        <div>
-          <p>{tradeStatus?.charAt(0)?.toUpperCase() + tradeStatus?.slice(1).toLowerCase()}</p>
-        </div>
-      ),
-      filters: [...tradeStatusOptions],
-      filteredValue: filteredInfo.status || null,
-      onFilter: (value, record) => record.tradeStatus.includes(value as string),
-      sorter: (a, b) => a.tradeStatus.length - b.tradeStatus.length,
-      sortOrder: sortedInfo.columnKey === "tradeStatus" ? sortedInfo.order : null,
-      ellipsis: true,
-    }, */
     {
       title: "Created At",
       dataIndex: "createdAt",
@@ -137,7 +119,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
     serial: index + 1,
   }));
 
-  // Function to handle Excel export
   const handleExport = () => {
     const exportData = filteredData.map(item => ({
       tradeSheetTypeId: item.tradeSheetTypeId,
@@ -182,7 +163,7 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
         x += columnWidths[index];
     });
 
-    let currentY = startY + 2 * lineHeight; // Start below headers
+    let currentY = startY + 2 * lineHeight;
     filteredData.forEach((item) => {
         const row = [
             item.tradeSheetTypeId || "...",
@@ -198,7 +179,7 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
 
         x = margin;
         row.forEach((cell, index) => {
-            pdf.text(String(cell), x, currentY); // Convert to string to avoid errors
+            pdf.text(String(cell), x, currentY);
             x += columnWidths[index];
         });
 
@@ -208,7 +189,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
     pdf.save("trade_report.pdf");
 };
 
-  // Calculate status counts
   const statusCounts = filteredData.reduce((acc, item) => {
     const status = item?.status?.toLowerCase();
     if (status) {
@@ -221,7 +201,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
     <div>
       <div className="my-3">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {/* Total Trade Sheets */}
           <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
             <div className="flex flex-col">
               <span className="text-sm text-gray-500 mb-1">Total Trade Sheet</span>
@@ -231,7 +210,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
             </div>
           </div>
 
-          {/* Approved Trade Sheets */}
           <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow">
             <div className="flex flex-col">
               <span className="text-sm text-gray-500 mb-1">Approved</span>
@@ -241,7 +219,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
             </div>
           </div>
 
-          {/* Under Review Trade Sheets */}
           <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
             <div className="flex flex-col">
               <span className="text-sm text-gray-500 mb-1">Under Review</span>
@@ -251,7 +228,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
             </div>
           </div>
 
-          {/* Draft Trade Sheets */}
           <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-gray-500 hover:shadow-md transition-shadow">
             <div className="flex flex-col">
               <span className="text-sm text-gray-500 mb-1">Draft</span>
@@ -261,7 +237,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
             </div>
           </div>
 
-          {/* Rejected Trade Sheets */}
           <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-red-500 hover:shadow-md transition-shadow">
             <div className="flex flex-col">
               <span className="text-sm text-gray-500 mb-1">Rejected</span>
@@ -273,7 +248,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
         </div>
       </div>
 
-      {/* Export Buttons */}
       <div className="flex gap-3 justify-end"> 
         <FaFilePdf
           onClick={handlePdfExport}
@@ -291,7 +265,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
         />
       </div>
 
-      {/* Table */}
       <div id="table-container" ref={tableRef}>
         <Table
           rowKey="id"

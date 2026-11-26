@@ -40,7 +40,6 @@ const CreateAndUpdateBranch = () => {
     }
   }, [branchData, form, isEditMode]);
 
-  // Generate slug from name
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;
     const slug = name

@@ -1,11 +1,9 @@
-// Payroll & Labour Cost (gross pay from recorded hours + deduction estimator) and the Audit & Activity Log.
 import { ReactNode, useMemo, useState } from "react";
 import { useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { useTimeClock } from "../TimeClockContext";
 import logo from "../../../assets/dv-time-clock-logo.svg";
 import { Attendance, csvCell, dateForPeriod, downloadText, money, todayKey } from "../tcUtils";
 
-// ---------- Payroll ----------
 
 function DeductionEstimator() {
   const [v, setV] = useState({ g: "1000", cpp: "5.95", ei: "1.64", tax: "15" });
@@ -134,7 +132,6 @@ export function PayrollSection() {
   );
 }
 
-// ---------- Audit log ----------
 
 type AuditRow = { id: number; actorId: number | null; actorName: string | null; actorRole: string | null; action: string; entity: string; recordId: string | null; oldData: unknown; newData: unknown; details: unknown; createdAt: string };
 

@@ -83,14 +83,12 @@ const [editFormData, setEditFormData] = useState({
   const [filteredInfo, setFilteredInfo] = useState<Record<string, React.Key[] | null>>({});
 const [sortedInfo, setSortedInfo] = useState<Record<string, any>>({});
 
-// Add these functions in your component
 
 const handleTermsAndConditions = (record: any) => {
   setSelectedOrderForTerms(record);
   setIsTermsModalOpen(true);
 };
 
-// Add these functions in your component
 
 const getAgreementContent = () => {
   return `
@@ -274,7 +272,6 @@ const downloadAgreementPDF = async (content: string) => {
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = content;
   
-  // Wait for images to load
   const images = tempDiv.getElementsByTagName('img');
   const imageLoadPromises = Array.from(images).map(
     (img) =>
@@ -291,7 +288,6 @@ const downloadAgreementPDF = async (content: string) => {
   try {
     await Promise.all(imageLoadPromises);
   } catch (error) {
-    console.log('Some images failed to load, continuing with PDF generation...');
   }
 
   const options = {
@@ -329,25 +325,17 @@ const handleCloseTermsModal = () => {
 
 const handleAgreeToTerms = async (signatureData: string, comment?: string, attachment?: string) => {
   try {
-    console.log('Sending agreement data:', {
-      orderId: selectedOrderForTerms.id,
-      signature: signatureData,
-      comment: comment,
-      attachment: attachment,
-      agreedAt: new Date().toISOString()
-    });
 
     const response = await agreeToTerms({
       orderId: selectedOrderForTerms.id,
       signature: signatureData,
-      comment: comment || '', // Ensure comment is sent even if empty
-      attachment: attachment || '', // Ensure attachment is sent even if empty
+      comment: comment || '',
+      attachment: attachment || '',
       agreedAt: new Date().toISOString()
     }).unwrap();
     
     toast.success("Terms & Conditions agreed successfully!");
     setIsTermsModalOpen(false);
-    // Optionally refetch data to update the status
     await refetch();
   } catch (error: any) {
     toast.error(`Error: ${error?.data?.message || "Failed to agree to terms"}`);
@@ -362,7 +350,6 @@ const orderItemStatusOptions = [
 ];
 
 const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter) => {
-  console.log('Various parameters', pagination, filters, sorter);
   setFilteredInfo(filters);
   setSortedInfo(sorter);
 };
@@ -423,8 +410,8 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
   const handleTabChange = (key: string) => {
     const tab = tabs.find((t) => t.id === key);
     if (tab) {
-      setActiveKey(key); // Update the active tab
-      navigate(tab.link); // Update the URL
+      setActiveKey(key);
+      navigate(tab.link);
     }
   };
 
@@ -460,7 +447,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
   } = useForm<DataType>({});
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -468,7 +454,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
       setIsDownloading(true);
       const element = sectionRef.current;
     
-      // Wait for images to load
       const images = element.getElementsByTagName('img');
       const imageLoadPromises = Array.from(images).map(
         (img) =>
@@ -480,32 +465,28 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     
       await Promise.all(imageLoadPromises);
     
-      // Calculate maximum height for an image to fit on a single page
-      const pageHeightInPixels = 1122; // A4 height in pixels at 96 DPI (297mm â‰ˆ 1122px)
-      const marginInPixels = 10; // Margin in pixels
+      const pageHeightInPixels = 1122;
+      const marginInPixels = 10;
     
       Array.from(images).forEach((img) => {
        
         const imgHeight = img.clientHeight;
         if (imgHeight > pageHeightInPixels - marginInPixels) {
-          // Scale the image to fit within the page
           const scaleFactor = (pageHeightInPixels - marginInPixels) / imgHeight;
           img.style.width = `${img.clientWidth * scaleFactor}px`;
           img.style.height = `${imgHeight * scaleFactor}px`;
         }
       });
     
-      // Options for the PDF
       const options = {
         margin: marginInPixels,
         filename: 'invoice.pdf',
         image: { type: 'png', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true }, // Enable CORS for external images
+        html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: 'css' }, 
       };
     
-      // Generate and download the PDF
       html2pdf().from(element).set(options).save();
       setIsDownloading(false);
     };
@@ -525,7 +506,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     </style>
   `;
 
-  // Open a new window
   const newWindow = window.open("", "_blank", "width=1000,height=800,scrollbars=yes");
   
   if (newWindow) {
@@ -545,11 +525,9 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     `);
     newWindow.document.close();
 
-    // Wait for the new window to load content before printing
     newWindow.onload = () => {
       setTimeout(() => {
         newWindow.print();
-        // Don't close immediately to allow user to see print dialog
       }, 1000);
     };
   } else {
@@ -616,15 +594,9 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
     setSelectedUUID("null");
   };
 
-  /* const handleEdit = (record: DataType) => {
-    reset(record);
-    setIsEditMode(true);
-    setSelectedUUID(record.uuid);
-    showModal();
-  }; */
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyListing(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -698,13 +670,13 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -714,7 +686,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
           selectedRowKeys
         );
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -743,7 +714,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
       unit_price: item.unit_price,
       due_date: item.due_date?.split('T')[0] || "",
       pickup_date: item.pickup_date?.split('T')[0] || "",
-      order_item_status: item.order_item_status || "Borrow" // Add this line
+      order_item_status: item.order_item_status || "Borrow"
     }))
   });
   setIsEditModalOpen(true);
@@ -771,7 +742,6 @@ const handleEditFormChange = (field: string, value: any, index?: number) => {
 
 const handleUpdateOrder = async () => {
   try {
-    // Validate required fields
     const hasInvalidQuantity = editFormData.invoiceItems.some(item => !item.quantity || item.quantity < 1);
     if (hasInvalidQuantity) {
       toast.error("All items must have a valid quantity (at least 1)");
@@ -794,7 +764,7 @@ const handleUpdateOrder = async () => {
         pickup_date: item.pickup_date ? `${item.pickup_date}T00:00:00.000Z` : null,
         quantity: item.quantity,
         unit_price: item.unit_price,
-        order_item_status: item.order_item_status // Add this line
+        order_item_status: item.order_item_status
       }))
     };
 
@@ -807,7 +777,7 @@ const handleUpdateOrder = async () => {
       toast.success(response.data.message);
       setIsEditModalOpen(false);
       setEditOrderData(null);
-      await refetch(); // Refresh the data
+      await refetch();
     } else {
       toast.error(response?.error?.data?.message || "Update failed");
     }
@@ -839,64 +809,6 @@ const handleUpdateOrder = async () => {
       render: (agent) => <span>{agent?.phoneNumber || "N/A"}</span>,
     },
     
-    /* {
-      title: "Payment Method",
-      dataIndex: "payment_method",
-      key: "payment_method",
-    },
-    {
-  title: "Payment Status",
-  dataIndex: "status",
-  key: "status",
-  filters: [
-    { text: "Pending", value: "Pending" },
-    { text: "Paid", value: "Paid" },
-    { text: "Due", value: "Due" },
-  ],
-  filteredValue: filteredInfo?.status || null, // Fixed this line
-  onFilter: (value, record) => record.status === value,
-  render: (status, record) => (
-    <Select
-      value={status}
-      onChange={(newStatus) =>
-        handleChangeOrderPaymentStatus(newStatus, record.id)
-      }
-      options={orderItemPaymentStatus}
-      style={{ width: 150 }}
-      disabled={user.userType === "agent"}
-    />
-  ),
-},
-    {
-      title: "Discount",
-      dataIndex: "discount",
-      key: "discount",
-
-      render: (discount) => <span>${formatNumberWithCommasAndDecimals(discount || "0.00")}</span>,
-    },
-    {
-      title: "Tax",
-      dataIndex: "tax",
-      key: "tax",
-
-      render: (tax) => <span>${formatNumberWithCommasAndDecimals(tax || "0.00")}</span>,
-    },
-    {
-      title: "Online Payment Charge",
-      dataIndex: "online_transection_charge",
-      key: "online_transection_charge",
-
-      render: (online_transection_charge) => (
-        <span>${formatNumberWithCommasAndDecimals(online_transection_charge || "0.00")}</span>
-      ),
-    },
-    {
-      title: "Total Amount",
-      dataIndex: "total_amount",
-      key: "total_amount",
-
-      render: (total_amount) => <span>${formatNumberWithCommasAndDecimals(total_amount || "0.00")}</span>,
-    }, */
     {
       title: "Order Issued Date",
       dataIndex: "issued_date",
@@ -985,7 +897,6 @@ const handleUpdateOrder = async () => {
 },
   ];
 
-  //================ orderDetails columns for checkout  table
   const orderDetailsItemColumns = [
     {
       title: "Product Name",
@@ -1007,15 +918,6 @@ const handleUpdateOrder = async () => {
       dataIndex: "quantity",
       key: "quantity",
     },
-    /* {
-      title: "Total Price",
-      dataIndex: "total_price",
-      key: "total_price",
-
-      render: (total_price) => (
-        <span>${formatNumberWithCommasAndDecimals(total_price)}</span>
-      ),
-    }, */
     {
       title: "Status",
       dataIndex: "order_item_status",
@@ -1037,7 +939,6 @@ const handleUpdateOrder = async () => {
 
   const filterProps = filter ? filteredData?.filter((item) => item.status === filter) : filteredData;
 
-  // for serial number in table
   const tableSourceData = filterProps?.map((item: any, index: number) => {
     return {
       ...item,
@@ -1048,7 +949,6 @@ const handleUpdateOrder = async () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <Link
@@ -1064,9 +964,7 @@ const handleUpdateOrder = async () => {
               </Link>
             ))}
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -1096,9 +994,7 @@ const handleUpdateOrder = async () => {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {(user.userType == "superAdmin" || user.userType == "admin") &&
               hasPermissionForSlug("delete-agent-marketplace") && (
@@ -1120,7 +1016,7 @@ const handleUpdateOrder = async () => {
             dataSource={tableSourceData}
             pagination={{ pageSize: 20 }}
             rowKey="uuid"
-            onChange={handleTableChange} // Add this prop
+            onChange={handleTableChange}
           />
         )}
       </div>
@@ -1135,7 +1031,6 @@ const handleUpdateOrder = async () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Property Name */}
             <div className="flex flex-col gap-2">
               <label>
                 Name <span className="text-red-500 ml-1">*</span>
@@ -1152,7 +1047,6 @@ const handleUpdateOrder = async () => {
                 <p className="text-red-500 text-sm">{errors.name.message}</p>
               )}
             </div>
-            {/* Relation */}
             <div className="flex flex-col gap-2">
               <label>Relation</label>
               <input
@@ -1167,7 +1061,6 @@ const handleUpdateOrder = async () => {
                 </p>
               )}
             </div>
-            {/* Email */}
             <div className="flex flex-col gap-2">
               <label>Email</label>
               <input
@@ -1184,7 +1077,6 @@ const handleUpdateOrder = async () => {
         </form>
       </ModalMain>
 
-      {/*==============  order details modal */}
       <ModalMain
         title="Order Details"
         hideFooter={true}
@@ -1201,9 +1093,7 @@ const handleUpdateOrder = async () => {
             rowKey="uuid"
           />
 
-          {/* Total Section */}
           <div className="space-y-3 mt-6 border border-neutral-300/30 p-4 rounded-md">
-            {/* discount */}
             <div className="flex justify-between  ">
               <span className="text-sm text-gray-600">Discount</span>
               <span className="font-medium">
@@ -1214,7 +1104,6 @@ const handleUpdateOrder = async () => {
               </span>
             </div>
 
-            {/* tax */}
 
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">Tax ({taxRate}%)</span>
@@ -1222,7 +1111,6 @@ const handleUpdateOrder = async () => {
                 ${formatNumberWithCommasAndDecimals(details_data.tax)}
               </span>
             </div>
-            {/* online_transection_charge */}
 
             {details_data.payment_method == "Card" && (
               <div className="flex justify-between">
@@ -1236,13 +1124,11 @@ const handleUpdateOrder = async () => {
               </div>
             )}
 
-            {/* sub total */}
             <div className="flex justify-between  ">
               <span className="text-sm text-gray-600">Sub Total</span>
               <span className="font-medium"> ${formatNumberWithCommasAndDecimals(calculateSubTotal())}</span>
             </div>
 
-            {/* total */}
             <div className="flex justify-between items-center  border-t border-gray-100 pt-2">
               <span className="text-[16px] font-medium text-gray-900">
                 Totals
@@ -1254,14 +1140,8 @@ const handleUpdateOrder = async () => {
           </div>
         </div>
 
-        {/* <div className="col-span-2">
-                  <pre className="mt-4 p-2 border rounded bg-gray-100 text-sm">
-                    {JSON.stringify(details_data, null, 2)}
-                  </pre>
-                </div> */}
       </ModalMain>
 
-      {/*  delete confirmation modal ====== */}
       <Modal
         title="Confirm Deletion"
         visible={isModalVisible}
@@ -1284,7 +1164,6 @@ const handleUpdateOrder = async () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -1307,7 +1186,6 @@ const handleUpdateOrder = async () => {
       </Modal>
 
 
-    {/* View Invoice Modal */}
 <ModalMain
   okBtnText="Download"
   printBtnText="Print"
@@ -1318,7 +1196,6 @@ const handleUpdateOrder = async () => {
   isLoading={isDownloading}
   modalClass={"lg:!w-[800px] !z-[10000] mx-auto"}
 >
-  {/* Add this style tag for print hiding */}
   <style>
     {`
       @media print {
@@ -1330,7 +1207,6 @@ const handleUpdateOrder = async () => {
   </style>
 
   <div className="space-y-3 pt-5" ref={sectionRef} id="printSection">
-    {/* Header */}
     <div className="flex flex-col items-center gap-2">
       <img src={logo} alt="" className={`w-[50px]`} />
       <h2 className={`tracking-widest text-base playfair-display-sc-bold text-[#0f766e]`}>
@@ -1342,7 +1218,6 @@ const handleUpdateOrder = async () => {
       <h2 className="font-semibold text-[#0b3b38] text-xl">Borrow Agreement</h2>
     </div>
 
-    {/* Invoice Info */}
     <div className="space-y-4 p-5">
       <div className="flex justify-between items-start">
         <div className="space-y-1 text-sm">
@@ -1372,7 +1247,6 @@ const handleUpdateOrder = async () => {
         </div>
       </div>
 
-      {/* Products Table */}
       <div className="w-full bg-white rounded-lg border">
         <table className="w-full border-collapse">
           <thead>
@@ -1410,7 +1284,6 @@ const handleUpdateOrder = async () => {
         </table>
       </div>
 
-      {/* Comments Section */}
         {details_data?.comment && (
           <div className="mt-4 p-3 bg-gray-50 rounded border">
             <label className="text-sm font-medium text-gray-700 mb-2 block">Comments:</label>
@@ -1418,10 +1291,8 @@ const handleUpdateOrder = async () => {
           </div>
         )}
 
-      {/* Signature Section */}
       <div className="border-t pt-4 mt-6">
         <div className="grid grid-cols-2 gap-6">
-          {/* Signature Display */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">Signature</label>
             <div className="border border-gray-300 rounded p-3 bg-white min-h-[100px]">
@@ -1447,14 +1318,12 @@ const handleUpdateOrder = async () => {
             )}
           </div>
 
-          {/* Agreement Download - Hidden when printing */}
           <div className="space-y-2 no-print-agreement">
             <label className="text-sm font-medium text-gray-700">Borrow Agreement</label>
             <div className="border border-gray-300 rounded p-4 bg-gray-50">
               <div className="text-center space-y-3">
                 <button
                   onClick={() => {
-                    // Trigger the agreement download
                     const agreementContent = getAgreementContent();
                     downloadAgreementPDF(agreementContent);
                   }}
@@ -1469,7 +1338,6 @@ const handleUpdateOrder = async () => {
         </div>        
       </div>
 
-      {/* Simple Total Section - Hidden as per requirement */}
       <div className="space-y-3 mt-6 border border-neutral-300/30 p-4 rounded-md hidden">
         <div className="flex justify-between">
           <span className="text-sm text-gray-600">Discount</span>
@@ -1524,7 +1392,6 @@ const handleUpdateOrder = async () => {
   modalClass={"lg:!w-[600px] !z-[10000]"}
 >
   <div className="space-y-4">
-    {/* Order Information */}
     <div className="grid grid-cols-1 gap-4">
       <div>
         <p className="block text-sm font-medium mb-2">BA ID: {editOrderData?.invoice_number}</p>
@@ -1534,7 +1401,6 @@ const handleUpdateOrder = async () => {
       </div>
     </div>
 
-    {/* Order Items - Focus on Quantity, Pickup Date, Return Due Date, and Status */}
     <div>
       <label className="block text-sm font-medium mb-2">Order Items</label>
       <div className="space-y-3">
@@ -1545,7 +1411,6 @@ const handleUpdateOrder = async () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              {/* Quantity - Required */}
               <div>
                 <label className="block text-xs font-medium mb-1">
                   Quantity <span className="text-red-500">*</span>
@@ -1560,7 +1425,6 @@ const handleUpdateOrder = async () => {
                 />
               </div>
 
-              {/* Pickup Date */}
               <div>
                 <label className="block text-xs font-medium mb-1">Pickup Date</label>
                 <input
@@ -1571,7 +1435,6 @@ const handleUpdateOrder = async () => {
                 />
               </div>
 
-              {/* Return Due Date */}
               <div>
                 <label className="block text-xs font-medium mb-1">Return Due Date</label>
                 <input
@@ -1582,7 +1445,6 @@ const handleUpdateOrder = async () => {
                 />
               </div>
 
-              {/* Status for each item */}
               <div>
                 <label className="block text-xs font-medium mb-1">
                   Status <span className="text-red-500">*</span>

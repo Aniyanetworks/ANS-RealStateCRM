@@ -28,7 +28,6 @@ import {
 } from '../../../../../redux/api/superadmin/branch/Branchmanagementslice';
 import { useAppSelector } from '../../../../../redux/hooks';
 
-// Type definitions
 interface DataType {
   key?: React.Key;
   id?: string;
@@ -79,7 +78,6 @@ const CreateNewAgent: React.FC = () => {
   const [createAgent] = useCreateAgentMutation();
   const [updateAgent] = useUpdateAgentMutation();
   
-  // Fetch active branches
   const { data: activeBranches, isLoading: branchesLoading } =
     useGetActiveBranchListDataQuery("");
 
@@ -126,7 +124,6 @@ const CreateNewAgent: React.FC = () => {
 
       setSpecialNote(agent.special_note || "");
       
-      // Set branchId if exists
       if (agent.branchId) {
         setValue("branchId", agent.branchId);
       }
@@ -175,7 +172,6 @@ const CreateNewAgent: React.FC = () => {
       }
     }      
 
-    // Combine form data with file data
     const submissionData = {
       ...formData,
       optionalPlans: selectedOptionalPlans,
@@ -202,7 +198,6 @@ const CreateNewAgent: React.FC = () => {
           }
         } else if (response?.data?.status == true) {
           toast.success(`${response?.data?.message}`);
-          console.log(response?.data?.data?.agentData?.uuid);
           navigate(
             `/dashboard/super-admin/agent-plan/${response?.data?.data?.agentData?.uuid}`,
             { replace: true }
@@ -223,7 +218,6 @@ const CreateNewAgent: React.FC = () => {
           submissionData.agreementStatus =  "approved";
         } 
 
-        console.log("Submission Data:", submissionData);
 
         const response = (await createAgent(submissionData)) as any;
 

@@ -71,39 +71,14 @@ const couponManagement = () => {
     return inProperties || inRecord;
   });
 
-  // type TabType = {
-  //   id: number;
-  //   name: string;
-  // };
 
-  // const tabs: TabType[] = [
    
-  //   ...(user.userType === "superAdmin" || user.userType === "admin"
-  //     ? [
-  //         {
-  //           id: "3",
-  //           name: "Discount Coupons",
-  //           link: "/dashboard/marketplace/discounts",
-  //         },
-  //       ]
-  //     : []),
-  // ];
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const activeTab =
-  //   tabs.find((tab) => tab.link === location.pathname)?.id || tabs[0].id;
 
-  // const [activeKey, setActiveKey] = useState(activeTab);
 
-  /* const handleTabChange = (key: string) => {
-    const tab = tabs.find((t) => t.id === key);
-    if (tab) {
-      setActiveKey(key); // Update the active tab
-      navigate(tab.link); // Update the URL
-    }
-  }; */
 
   useEffect(() => {
     if (data?.data?.CouponData) {
@@ -122,10 +97,8 @@ const couponManagement = () => {
     watch,
   } = useForm<DataType>({});
 
-  // Watch discount_scope to show/hide product selector
   const discountScope = watch("discount_scope");
 
-  // Reset products when switching from Product Based to Global
   useEffect(() => {
     if (discountScope === "Global") {
       setSelectedProducts([]);
@@ -133,20 +106,15 @@ const couponManagement = () => {
     }
   }, [discountScope, setValue]);
 
-  // Fetch products for selection
   const { data: productsData, isLoading: isProductsLoading } = useGetTradeProductQuery();
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
-  // Debug: Log products data structure
   useEffect(() => {
     if (productsData) {
-      console.log("Products Data:", productsData);
-      console.log("TradeProductsData:", productsData?.data?.TradeProductsData);
     }
   }, [productsData]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -216,7 +184,6 @@ const couponManagement = () => {
     setIsEditMode(true);
     setSelectedUUID(record.uuid);
     if (record.branchId != null) setValue("branchId", record.branchId);
-    // Set selected products if they exist in the record
     if (record.products && Array.isArray(record.products)) {
       setSelectedProducts(record.products);
       setValue("products", record.products);
@@ -228,7 +195,7 @@ const couponManagement = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyListing(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -258,17 +225,14 @@ const couponManagement = () => {
     setValue("userId", uuid);
     const data = getValues();
 
-    // Include products if discount_scope is "Product Based"
     if (data.discount_scope === "Product Based") {
       data.products = selectedProducts;
-      // Validate that at least one product is selected for Product Based discount
       if (!selectedProducts || selectedProducts.length === 0) {
         toast.error("Please select at least one product for Product Based discount");
         setIsUploading(false);
         return;
       }
     } else {
-      // Clear products for Global discount
       data.products = [];
     }
 
@@ -286,7 +250,7 @@ const couponManagement = () => {
         toast.success(response.data.message);
         setIsModalOpen(false);
         resetForm();
-        refetch(); // Refresh the data
+        refetch();
       }
     };
 
@@ -304,13 +268,13 @@ const couponManagement = () => {
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -318,7 +282,6 @@ const couponManagement = () => {
       try {
         const response = await deleteCouponMultiple(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -366,7 +329,6 @@ const couponManagement = () => {
       key: "products",
       render: (products, record) => {
         if (record.discount_scope === "Product Based" && products && Array.isArray(products) && products.length > 0) {
-          // Find product names from productsData
           const allProducts = productsData?.data?.TradeProductsData || [];
           const productNames = products
             .map((productUuid: string) => {
@@ -389,18 +351,6 @@ const couponManagement = () => {
       dataIndex: "status",
       key: "status",
     },
-    /* {
-      title: "Client",
-      dataIndex: "user",
-      key: "user",
-      render: (user) => (
-        <span>
-          {user?.name || "N/A"}
-        </span>
-      ),
-
-      width: 200,
-    }, */
     {
       title: "Actions",
       dataIndex: "uuid",
@@ -453,14 +403,11 @@ const couponManagement = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Title */}
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             Discount Coupons
             <span className="ml-1 text-gray-400 font-normal text-[11px]">({tableData.length})</span>
           </h1>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -490,9 +437,7 @@ const couponManagement = () => {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {(user.userType == "superAdmin" || user.userType == "admin") &&
               hasPermissionForSlug("create-agent-marketplace") && (
@@ -534,7 +479,6 @@ const couponManagement = () => {
       >
         <form className="pb-3">
           <div className="grid grid-cols-1  gap-4">
-            {/* Coupon Code */}
             <div className="flex flex-col">
               <label>
                 Coupon Code <span className="text-red-500 ml-1">*</span>
@@ -553,7 +497,6 @@ const couponManagement = () => {
                 </p>
               )}
             </div>
-            {/* Discount */}
             <div className="flex flex-col">
               <label>Discount</label>
               <input
@@ -587,7 +530,6 @@ const couponManagement = () => {
                 onChange={(e) => {
                   const value = e.target.value;
                   setValue("discount_scope", value);
-                  // Clear products when switching to Global
                   if (value === "Global") {
                     setSelectedProducts([]);
                     setValue("products", []);
@@ -602,7 +544,6 @@ const couponManagement = () => {
               )}
             </div>
             
-            {/* Product Selection - Show only when Product Based is selected */}
             {discountScope === "Product Based" && (
               <div className="flex flex-col">
                 <label>
@@ -648,7 +589,6 @@ const couponManagement = () => {
                 )}
               </div>
             )}
-            {/* Branch (superAdmin: dropdown; others: hidden + display) */}
             {isSuperAdmin ? (
               <div className="flex flex-col gap-2">
                 <label>Branch (If any)</label>
@@ -719,7 +659,6 @@ const couponManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

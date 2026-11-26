@@ -23,7 +23,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
   return (
     <div>
       <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-        {/* Brokerage Name */}
         <div>
           <label className="block mb-1">Brokerage Name</label>
           <input
@@ -43,7 +42,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Last Name */}
         <div>
           <label className="block mb-1">Last Name</label>
           <input
@@ -54,7 +52,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* PREC Name */}
         <div>
           <label className="block mb-1">PREC Name (if any)</label>
           <input
@@ -65,7 +62,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Email */}
         <div>
           <label className="block mb-1">Email</label>
           <input
@@ -76,7 +72,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Address */}
         <div>
           <label className="block mb-1">Address</label>
           <input
@@ -87,7 +82,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Cell Phone */}
         <div>
           <label className="block mb-1">Cell Phone</label>
           <input
@@ -98,7 +92,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* RECO Reg Number */}
         <div>
           <label className="block mb-1">RECO Reg Number</label>
           <input
@@ -109,7 +102,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* RECO Expiry Date */}
         <div>
           <label className="block mb-1">RECO Expiry Date</label>
           <input
@@ -120,7 +112,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Phone Service Provider */}
         <div>
           <label className="block mb-1">TRREB Member ID</label>
           <input
@@ -131,7 +122,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* SIN */}
         <div>
           <label className="block mb-1">SIN</label>
           <input
@@ -142,7 +132,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Date of Birth */}
         <div>
           <label className="block mb-1">Date of Birth</label>
           <input
@@ -153,7 +142,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Emergency Contact */}
         <div>
           <label className="block mb-1">Emergency Name</label>
           <input
@@ -173,7 +161,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* HST Number */}
         <div>
           <label className="block mb-1">HST Number</label>
           <input
@@ -184,7 +171,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* PREC HST Number */}
         <div>
           <label className="block mb-1">PREC HST Number</label>
           <input
@@ -195,7 +181,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Expected Gross */}
         <div>
           <label className="block mb-1">Expected Gross</label>
           <input
@@ -206,7 +191,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Status */}
         <div>
           <label className="block mb-1">Status:</label>
           <select {...register("status", { required: true })} disabled>
@@ -221,7 +205,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           )}
         </div>
 
-        {/* Agreement Status */}
         <div className="flex flex-col">
           <label className="block mb-1">Agreement Status:</label>
           <select
@@ -240,7 +223,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           )}
         </div>
         
-         {/* Agreement Expiry Date */}
          <div>
           <label className="block mb-1">Agreement Expiry Date</label>
           <input
@@ -251,7 +233,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
           />
         </div>
 
-        {/* Agreement */}
         {agentAccount?.agreementStatus !== "approved" && !agentAccount?.agreementFile && (
           <div className="flex flex-col">
             <label className="block mb-1">Agreement</label>
@@ -268,7 +249,6 @@ const AgentDetailsForm: React.FC<AgentDetailsFormProps> = ({
 
      
 
-      {/* Special Note */}
       <div className="my-4">
         <label htmlFor="">Special Note:</label>
         <div

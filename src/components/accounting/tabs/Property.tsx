@@ -9,7 +9,6 @@ const CommissionTab = ({ data }) => {
   const [properties, setProperties] = useState<any>([]);
 
   useEffect(() => {
-    console.log("Received data:", data);
     if (data?.data?.tradeSheetData?.properties) {
       setProperties(data.data.tradeSheetData.properties);
     }
@@ -23,7 +22,6 @@ const CommissionTab = ({ data }) => {
             properties.map((property, index) => (
               <div key={index} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-4  pb-4">
 
-                {/* PROPERTY ADDRESS & MLS */}
                 <div className="flex flex-col text-sm gap-1">
                   <span className="font-semibold">Property Address:</span>
                   <span className="text-gray-700">{capitalizeFirstLetter(property.propertyAddress)}</span>
@@ -34,7 +32,6 @@ const CommissionTab = ({ data }) => {
                   <span className="text-gray-700">{property.mlsNumber}</span>
                 </div>
 
-                {/* LISTING, SALES & SOLD PRICE */}
                 <div className="flex flex-col text-sm gap-1">
                   <span className="font-semibold">Listing Price:</span>
                   <span className="text-gray-700">${formatNumberWithCommasAndDecimals(property.listingPrice)}</span>
@@ -50,7 +47,6 @@ const CommissionTab = ({ data }) => {
                   <span className="text-gray-700">${formatNumberWithCommasAndDecimals(property.soldPrice)}</span>
                 </div>
 
-                {/* DATES */}
                 <div className="flex flex-col text-sm gap-1">
                   <span className="font-semibold">Offer Date:</span>
                   <span className="text-gray-700">{property.offerDate ? formatDateYYYYMMDD(property.offerDate) : "N/A"}</span>
@@ -66,7 +62,6 @@ const CommissionTab = ({ data }) => {
                   <span className="text-gray-700">{property.closingDate ? formatDateYYYYMMDD(property.closingDate) : "N/A"}</span>
                 </div>
 
-                {/* CONDITIONAL STATUS */}
                 <div className="flex flex-col text-sm gap-1">
                   <span className="font-semibold">Conditional:</span>
                   <span className="text-gray-700">{capitalizeFirstLetter(property.conditional)}</span>
@@ -79,7 +74,6 @@ const CommissionTab = ({ data }) => {
                   </div>
                 )}
 
-                {/* DEPOSIT DETAILS */}
                 <div className="flex flex-col text-sm gap-1">
                   <span className="font-semibold">Deposit Amount:</span>
                   <span className="text-gray-700">${formatNumberWithCommasAndDecimals(property.depositAmount)}</span>
@@ -90,7 +84,6 @@ const CommissionTab = ({ data }) => {
                   <span className="text-gray-700">{property.depositDate ? formatDateYYYYMMDD(property.depositDate) : "N/A"}</span>
                 </div>
 
-                {/* POSTAL CODE */}
                 <div className="flex flex-col text-sm gap-1">
                   <span className="font-semibold">Postal Code:</span>
                   <span className="text-gray-700">{property.postalCode}</span>

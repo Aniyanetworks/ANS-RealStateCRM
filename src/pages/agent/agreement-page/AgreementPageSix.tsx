@@ -51,8 +51,6 @@ const AgreementPageSix = () => {
       toast.success("Agreement save successfully!");
       navigate('/agent/agent-agreeement-page-seven', { replace: true });
     }
-    // toast.success("Application save successfully!");
-    // navigate('/agent-information-submit', { replace: true });
 
   }
 
@@ -81,7 +79,6 @@ const AgreementPageSix = () => {
         <p dangerouslySetInnerHTML={{ __html: agent?.special_note }}></p>
       </div>
 
-      {/* Footer */}
       <div className="flex justify-between items-center mt-12">
         <p className="text-sm">Page 6 of 7</p>
         <div className="flex gap-4">

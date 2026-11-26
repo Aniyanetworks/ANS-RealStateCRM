@@ -34,12 +34,10 @@ const Signature = () => {
   const { user } = useSelector((state: any) => state.user);
 
   useEffect(() => {
-    setValue("countryId", 39); //by defult set county canada
+    setValue("countryId", 39);
 
     if (user) {
       reset(user);
-      // setUploadSignatureImage(baseUrl + user.signature);
-      // setUploadInitialImage(baseUrl + user.initial);
       setValue("signature", "");
       setValue("initial", "");
     }
@@ -52,7 +50,6 @@ const Signature = () => {
     }
   }, [user]);
 
-  // Handle file change for signature image upload
   const handleChangeSignatureImage = (
     e: React.ChangeEvent<HTMLInputElement>,
     type: "signature" | "initial"
@@ -77,7 +74,6 @@ const Signature = () => {
     }
   };
 
-  // Clear signature canvas
   const clear = (type: "signature" | "initial") => {
     if (type === "signature" && signatureRef.current) {
       signatureRef.current.clear();
@@ -86,7 +82,6 @@ const Signature = () => {
     }
   };
 
-  // Save signature canvas image
   const save = (type: "signature" | "initial") => {
     let dataUrl = "";
     if (type === "signature" && signatureRef.current) {
@@ -100,7 +95,6 @@ const Signature = () => {
     }
   };
 
-  // Remove signature or initial image
   const handleRemoveImage = (type: "signature" | "initial") => {
     if (type === "signature") {
       setUploadSignatureImage("");
@@ -134,7 +128,6 @@ const Signature = () => {
     <div>
       <div className=" bg-white space-y-5 p-5 rounded-md">
         <div className="grid grid-cols-2 gap-4 w-full p-5">
-          {/* Signature */}
           <div>
             <div className="flex flex-col gap-2 mt-3">
               <label>Signature Draw</label>
@@ -211,7 +204,6 @@ const Signature = () => {
             </div>
           </div>
 
-          {/* Initial Draw */}
           <div>
             <div className="flex flex-col gap-2 mt-3">
               <label>Initial Draw</label>

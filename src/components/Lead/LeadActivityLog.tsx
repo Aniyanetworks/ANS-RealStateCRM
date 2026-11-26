@@ -103,11 +103,9 @@ const LeadActivityLog: React.FC<LeadActivityLogProps> = ({
       oldValue,
       newValue,
       userName,
-      // userType,
       createdAt,
     } = log;
 
-    // Simplified format for status changes and assignments
     if (
       action === "status_changed" ||
       action === "assigned" ||
@@ -141,10 +139,8 @@ const LeadActivityLog: React.FC<LeadActivityLogProps> = ({
                   fontSize: "13px",
                 }}
               >
-                {/* <UserOutlined style={{ fontSize: 11 }} /> */}
                 by {userName}
               </AntText>
-              {/* <Tag style={{ fontSize: "10px" }}>{userType}</Tag> */}
               <AntText type="secondary" style={{ fontSize: 11 }}>
                 {dayjs(createdAt).fromNow()}
               </AntText>
@@ -184,7 +180,6 @@ const LeadActivityLog: React.FC<LeadActivityLogProps> = ({
       );
     }
 
-    // Simplified format for general updates (created, updated, etc.)
     return (
       <Timeline.Item
         key={log.id}

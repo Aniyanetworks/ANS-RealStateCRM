@@ -38,11 +38,9 @@ const EditDiscount = () => {
   const { uuid } = useParams<{ uuid: string }>();
   const navigate = useNavigate();
 
-  // States
   const [discountName, setDiscountName] = useState('');
   const [discountItems, setDiscountItems] = useState<DiscountItem[]>([]);
 
-  // API Hooks
   const { data, isLoading } = useGetSingleDiscountDataQuery(uuid || '');
   const [updateDiscount] = useUpdateDiscountMutation();
 
@@ -50,17 +48,14 @@ const EditDiscount = () => {
     if (data?.status && data.data.singleDiscount) {
       const discount = data.data.singleDiscount;
       setDiscountName(discount.name);
-      // Format the items with special handling for discountItem
       const formattedItems = discount.discountItems.map(item => ({
         ...item,
-        // Ensure discountItem matches exactly with the enum values
         discountItem: item.discountItem || '',
         discountType: item.discountType || '',
         discountMethod: item.discountMethod || '',
         startDate: item.startDate ? new Date(item.startDate).toISOString().split('T')[0] : undefined,
         endDate: item.endDate ? new Date(item.endDate).toISOString().split('T')[0] : undefined,
       }));
-      console.log('Formatted Items:', formattedItems); // For debugging
       setDiscountItems(formattedItems);
     }
   }, [data]);
@@ -114,7 +109,6 @@ const EditDiscount = () => {
       updated[index] = { 
         ...updated[index], 
         [field]: value,
-        // Reset related fields when discount type changes
         ...(field === 'discountType' && {
           duration: value === 'Once' ? undefined : 0,
           startDate: value === 'Date Range' ? '' : undefined,

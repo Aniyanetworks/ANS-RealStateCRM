@@ -13,10 +13,8 @@ import ButtonLoader from "../../../../../components/loader/buttonLoader";
 import SelectPlan from "../../../../../components/dashboard/Agent/SelectPlan";
 import AddonsPlanSelector from "../../../../../components/dashboard/Agent/SelectAddonPlan";
 import SelectDiscount from "../plan-management/SelectDiscount";
-// Add this import
 import uploadIcon from "../../../../../assets/upload.svg";
 
-// Update the DataType interface
 interface DataType {
   firstName: string;
   lastName: string;
@@ -24,7 +22,7 @@ interface DataType {
   planId: number | null;
   optionalPlans: number[];
   discountId: number | null;
-  agreementFile: File | null; // Add this line
+  agreementFile: File | null;
 }
 
 
@@ -49,12 +47,10 @@ const AgentInvitation: React.FC<AgentInvitationProps> = ({
   const [inviteAgent] = useInviteAgentMutation();
   const [isUploading, setIsUploading] = useState(false);
   
-  // Selection states
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null);
   const [selectedOptionalPlans, setSelectedOptionalPlans] = useState<number[]>([]);
   const [selectedDiscountId, setSelectedDiscountId] = useState<number | null>(null);
 
-  // Fetch data from APIs
   const { data: planData } = useGetPlanListDataQuery("");
   const { data: optionalPlanData } = useGetOptionalPlanListDataQuery('');
   const { data: discountData } = useGetDiscountListDataQuery("");
@@ -78,18 +74,15 @@ const [isFileUploading] = useState(false);
   setAgreementFile(null);
 };
 
-// Add this function to handle file upload
 const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (file) {
-    // Validate file type if needed
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
     if (!allowedTypes.includes(file.type)) {
       toast.error('Please upload PDF, JPEG or PNG files only');
       return;
     }
     
-    // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       toast.error('File size should be less than 5MB');
       return;
@@ -124,10 +117,8 @@ const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsUploading(true);
 
     try {
-      // Create FormData for file upload
       const formData = new FormData();
       
-      // Append all form fields
       formData.append("firstName", data.firstName);
       formData.append("lastName", data.lastName);
       formData.append("email", data.email);
@@ -137,18 +128,10 @@ const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         formData.append("optionalPlans", selectedOptionalPlans.join(","));
       }
       
-      // Append agreement file if exists
       if (agreementFile) {
         formData.append("agreementFile", agreementFile);
       }
 
-      console.log("Submitting agent invitation data:", {
-        ...data,
-        planId: selectedPlanId,
-        optionalPlans: selectedOptionalPlans,
-        discountId: selectedDiscountId,
-        agreementFile: agreementFile?.name
-      });
 
       const response = (await inviteAgent(formData)) as any;
 
@@ -174,7 +157,6 @@ const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Personal Information Section */}
       <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 mb-6">
         <div className="flex flex-col gap-2">
           <label>
@@ -260,20 +242,15 @@ const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
               </span>
             )}
           </div>
-          {/* <p className="text-xs text-gray-500">
-            Supported formats: PDF, JPG, PNG (Max 5MB)
-          </p> */}
         </div>
       </div>
 
       
 
-      {/* Plan and Discount Selection Section */}
       <div className="border border-gray-200 rounded-lg p-6 bg-white mb-6">
         <h3 className="text-lg font-semibold mb-4">Plan & Discount Selection</h3>
         
         <div className="grid grid-cols-3 gap-6">
-          {/* Plan Selection */}
           <div className="col-span-1">
             <SelectPlan
   plans={planData?.data?.plans?.slice().sort((a, b) => 
@@ -289,7 +266,6 @@ const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
             )}
           </div>
 
-          {/* Addon Plans Selection */}
           <div className="col-span-1">
             <AddonsPlanSelector
               optionalPlanData={optionalPlanData}
@@ -299,7 +275,6 @@ const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
             />
           </div>
 
-          {/* Discount Selection */}
           <div className="col-span-1">
             <SelectDiscount
               discounts={discountData?.data?.discounts || []}
@@ -310,7 +285,6 @@ const handleAgreementFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         </div>
       </div>
 
-      {/* Submit Button */}
       <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
         <button 
           type="button" 

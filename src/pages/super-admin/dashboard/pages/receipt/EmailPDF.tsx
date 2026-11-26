@@ -57,39 +57,10 @@ const styles = StyleSheet.create({
   },
 });
 
-// const handleDownloads = async () => {
-//     // Generate the PDF blob
-//     const pdfInstance = pdf(<EmailPDF />);
-//     const blob = await pdfInstance.toBlob();
 
-//     // Create a temporary download link
-//     const link = document.createElement("a");
-//     link.href = URL.createObjectURL(blob);
-//     link.download = "ApplicantData.pdf";
 
-//     // Trigger the download
-//     link.click();
 
-//     // Clean up
-//     URL.revokeObjectURL(link.href);
-//   };
 
-// const handleDownload = async () => {
-//     // Generate the PDF Blob
-//     const pdfInstance = pdf(<EmailPDF />);
-//     const blob = await pdfInstance.toBlob();
 
-//     // Create an invisible iframe
-//     const iframe = document.createElement("iframe");
-//     iframe.style.display = "none";
-//     iframe.src = URL.createObjectURL(blob);
-//     document.body.appendChild(iframe);
 
-//     // Trigger the print dialog
-//     iframe.onload = () => {
-//       iframe.contentWindow?.print();
 
-//       // Remove the iframe after printing
-//       iframe.parentNode?.removeChild(iframe);
-//     };
-//   };

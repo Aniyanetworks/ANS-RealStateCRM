@@ -72,17 +72,14 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
     const { data: brokerageData } = useGetBrokerageDataQuery("");
     const { data: agentsData, isLoading: agentsLoading } = useGetAgentListDataQuery("");
 
-    // Initialize search text from localStorage
     useEffect(() => {
         setSearchText(localStorage.getItem("agentReportSearchText") || "");
     }, []);
 
-    // Save search text to localStorage
     useEffect(() => {
         localStorage.setItem("agentReportSearchText", searchText);
     }, [searchText]);
 
-    // Build query params
     const queryParams = useMemo(() => {
         const params: any = {};
         if (selectedBranches.length > 0) params.branchIds = selectedBranches.join(",");
@@ -122,7 +119,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         totalSoldIncome: 0,
     };
 
-    // Helper function to extract all values from an object for search
     const extractValues = (obj: any): string[] => {
         const values: string[] = [];
         if (obj === null || obj === undefined) return values;
@@ -140,11 +136,9 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         return values;
     };
 
-    // Filter data based on search and selected agents
     const filteredData = useMemo(() => {
         let filtered = [...agentData];
 
-        // Agent Type filter (client-side filtering for consistency)
         if (selectedAgentType === 'ourAgent') {
             filtered = filtered.filter((item: any) => {
                 return (item.brokerageId === 24 || item.brokerageId === '24') && item.accountStatus !== 'closed';
@@ -155,7 +149,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
             });
         }
 
-        // Agent filter
         if (selectedAgents.length > 0) {
             filtered = filtered.filter((item: any) => {
                 const agentId = item.id?.toString();
@@ -163,7 +156,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
             });
         }
 
-        // Search filter
         if (searchText) {
             const searchLower = searchText.toLowerCase();
             filtered = filtered.filter((item: any) => {
@@ -175,12 +167,10 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         return filtered;
     }, [agentData, selectedAgentType, selectedAgents, searchText]);
 
-    // Reset pagination when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedBranches, selectedBrokerageIds, selectedAccountStatus, selectedTradeStatus, selectedAdminStatus, selectedAgents, selectedAgentType, createdDateRange, searchText]);
 
-    // Account Status options
     const accountStatusOptions = [
         { label: "Approved", value: "approved" },
         { label: "Pending", value: "pending" },
@@ -190,7 +180,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         { label: "Deactive", value: "deactive" },
     ];
 
-    // Trade Status options
     const tradeStatusOptions = [
         { label: "Closed", value: "closed" },
         { label: "DFT", value: "dft" },
@@ -199,7 +188,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         { label: "Pending", value: "pending" },
     ];
 
-    // Admin Status options
     const adminStatusOptions = [
         { label: "Approved", value: "approved" },
         { label: "Under Review", value: "underReview" },
@@ -207,7 +195,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         { label: "Incomplete", value: "rejected" },
     ];
 
-    // Handle period filter
     const handlePeriodFilter = (period: string) => {
         const now = new Date();
         const startDate = new Date();
@@ -247,7 +234,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         setPeriodFilter(period);
     };
 
-    // Handle custom date range
     const handleCustomDateRange = () => {
         if (createdCustomStart && createdCustomEnd) {
             setCreatedDateRange([createdCustomStart, createdCustomEnd]);
@@ -255,7 +241,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         }
     };
 
-    // Reset filters
     const handleResetFilters = () => {
         setSelectedBranches(branchIds);
         setSelectedBrokerageIds([]);
@@ -273,12 +258,10 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         setShowDropdown(false);
     };
 
-    // Export to PDF
     const handleExportPdf = () => {
         const doc = new jsPDF('landscape');
         const pageWidth = doc.internal.pageSize.getWidth();
 
-        // Add logo
         const logoX = (pageWidth / 2) - 10;
         const logoY = 5;
         const logoWidth = 20;
@@ -333,7 +316,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         doc.save(`Agent_Report_${format(new Date(), "yyyy-MM-dd")}.pdf`);
     };
 
-    // Export to Excel
     const handleExportExcel = () => {
         const worksheet = XLSX.utils.json_to_sheet(
             filteredData.map((item: any, index: number) => ({
@@ -357,7 +339,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
         XLSX.writeFile(workbook, `Agent_Report_${format(new Date(), "yyyy-MM-dd")}.xlsx`);
     };
 
-    // Table columns
     const columns: TableColumnsType<any> = [
         {
             title: 'Agent ID',
@@ -442,7 +423,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
 
     return (
         <div className="pb-32">
-            {/* Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4 my-3">
                 <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500">
                     <div className="flex flex-col">
@@ -528,7 +508,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                 </div>
             </div>
 
-            {/* Filter and Export Section */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
                 <div className="w-full sm:w-auto flex-1 max-w-2xl relative">
                     <div className="flex">
@@ -564,7 +543,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                     </div>
                 </div>
 
-                {/* Export Buttons */}
                 <div className="flex gap-3">
                     <FaFilePdf
                         onClick={handleExportPdf}
@@ -581,7 +559,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                 </div>
             </div>
 
-            {/* Backdrop */}
             {showDropdown && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
@@ -589,7 +566,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                 />
             )}
 
-            {/* Slide-in Filter Panel */}
             <div
                 className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${showDropdown ? 'translate-x-0' : 'translate-x-full'
                     }`}
@@ -617,7 +593,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                 `}</style>
 
                 <div className="flex flex-col h-full">
-                    {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b bg-[#0f766e] text-white">
                         <h3 className="text-lg font-semibold">Filter Options</h3>
                         <button
@@ -628,7 +603,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                         </button>
                     </div>
 
-                    {/* Scrollable Content */}
                     <div
                         className="agent-filter-scroll flex-1 overflow-y-auto overflow-x-hidden p-4"
                         style={{
@@ -637,7 +611,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                         }}
                     >
                         <div className="space-y-4">
-                            {/* Period Filter Buttons */}
                             <div className="flex gap-2 mb-4 flex-wrap">
                                 {['Day', 'Week', 'Month', 'Quarter', 'Year'].map((period) => (
                                     <button
@@ -653,7 +626,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 ))}
                             </div>
 
-                            {/* Predefined Date Ranges */}
                             <div className="space-y-2 mb-4">
                                 {['Last 30 days', 'Last 90 days', 'Last Year', 'All Time'].map((range) => (
                                     <button
@@ -669,7 +641,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 ))}
                             </div>
 
-                            {/* Agent Type Filter */}
                             <div>
                                 <label className="font-semibold mb-2 block">Agent Type</label>
                                 <Select
@@ -685,7 +656,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 />
                             </div>
 
-                            {/* Branch (only for superadmin) */}
                             {isSuperAdmin && (
                                 <div>
                                     <label className="font-semibold mb-2 block">Branch</label>
@@ -709,7 +679,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 </div>
                             )}
 
-                            {/* Brokerage Name */}
                             <div>
                                 <label className="font-semibold mb-2 block">Brokerage Name</label>
                                 <Select
@@ -730,7 +699,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 />
                             </div>
 
-                            {/* Account Status */}
                             <div>
                                 <label className="font-semibold mb-2 block">Account Status</label>
                                 <Select
@@ -744,7 +712,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 />
                             </div>
 
-                            {/* Trade Status */}
                             <div>
                                 <label className="font-semibold mb-2 block">Trade Status</label>
                                 <Select
@@ -758,7 +725,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 />
                             </div>
 
-                            {/* Admin Status */}
                             <div>
                                 <label className="font-semibold mb-2 block">Admin Status</label>
                                 <Select
@@ -772,7 +738,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 />
                             </div>
 
-                            {/* Agent Name */}
                             <div>
                                 <label className="font-semibold mb-2 block">Agent Name</label>
                                 <Select
@@ -805,7 +770,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                                 />
                             </div>
 
-                            {/* Custom Date Range (Created At) */}
                             <div className="border p-2 rounded">
                                 <label className="font-semibold mb-2 block">Custom Range (Created At)</label>
                                 <div className="flex flex-col sm:flex-row gap-2 mt-1">
@@ -826,7 +790,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                         </div>
                     </div>
 
-                    {/* Fixed Footer with Action Buttons */}
                     <div className="flex gap-2 p-4 border-t bg-white">
                         <button
                             className="w-1/2 bg-[#0f766e] text-white p-2 rounded hover:bg-[#0f766e] transition-colors"
@@ -860,7 +823,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                 </div>
             </div>
 
-            {/* Table */}
             <Table
                 rowKey="id"
                 scroll={{ x: "max-content" }}

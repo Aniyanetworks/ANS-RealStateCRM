@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Page1 from "../../components/dashboard/MLSForm/FreeholdSale/Page1";
 import Page2 from "../../components/dashboard/MLSForm/FreeholdSale/Page2";
-// import Page2 from "../../components/dashboard/MLSForm/FreeholdSale/Page2";
 import Page3 from "../../components/dashboard/MLSForm/FreeholdSale/Page3";
 
 const FreeholdSale = () => {

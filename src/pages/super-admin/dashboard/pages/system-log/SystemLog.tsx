@@ -38,7 +38,6 @@ export default function SystemLog() {
     [data]
   );
 
-  // Stats
   const stats = useMemo(() => {
     let errors = 0, warns = 0, infos = 0;
     rawLines.forEach(l => {
@@ -50,7 +49,6 @@ export default function SystemLog() {
     return { total: rawLines.length, errors, warns, infos };
   }, [rawLines]);
 
-  // Filtered + searched lines
   const filteredLines = useMemo(() => {
     let result = rawLines;
     if (levelFilter !== 'all') result = result.filter(l => classifyLine(l) === levelFilter);
@@ -111,17 +109,14 @@ export default function SystemLog() {
 
   return (
     <div style={S.root}>
-      {/* ── Toolbar ── */}
       <div style={S.toolbar}>
         <span style={{ color: '#58a6ff', fontWeight: 'bold', fontSize: 14, marginRight: 4 }}>$ system-log</span>
 
-        {/* Log type */}
         <button onClick={() => setLogType('combined')} style={S.btn(logType === 'combined', '#238636')}>combined</button>
         <button onClick={() => setLogType('error')}    style={S.btn(logType === 'error',    '#da3633')}>error</button>
 
         <div style={{ width: 1, height: 18, background: '#30363d' }} />
 
-        {/* Search */}
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -134,7 +129,6 @@ export default function SystemLog() {
 
         <div style={{ width: 1, height: 18, background: '#30363d' }} />
 
-        {/* Refresh */}
         <button onClick={() => refetch()} style={S.btn(false)}>
           {isFetching ? '⟳ …' : '⟳ refresh'}
         </button>
@@ -144,12 +138,10 @@ export default function SystemLog() {
         </label>
         <div style={{ flex: 1 }} />
 
-        {/* Download */}
         <button onClick={handleDownload} style={S.btn(false)} title="Download log file">
           ⬇ download
         </button>
 
-        {/* Clear */}
         <button
           onClick={handleClear}
           onBlur={() => setConfirmClear(false)}
@@ -160,7 +152,6 @@ export default function SystemLog() {
         </button>
       </div>
 
-      {/* ── Stats bar ── */}
       <div style={S.statsBar}>
         <span style={S.stat('#8b949e')}>📄 {stats.total} lines</span>
         <span style={S.stat(LEVEL_COLORS.info)}>  ● {stats.infos} info</span>
@@ -170,7 +161,6 @@ export default function SystemLog() {
           <span style={S.stat('#58a6ff')}>  → showing {filteredLines.length}</span>
         )}
         <div style={{ flex: 1 }} />
-        {/* Lines selector */}
         <select value={lines} onChange={e => setLines(Number(e.target.value))}
           style={{ background: '#21262d', color: '#8b949e', border: '1px solid #21262d', borderRadius: 4, padding: '1px 4px', fontSize: 11 }}>
           <option value={100}>last 100</option>
@@ -179,7 +169,6 @@ export default function SystemLog() {
           <option value={1000}>last 1000</option>
         </select>
         <div style={{ width: 1, height: 14, background: '#21262d' }} />
-        {/* Level filter pills */}
         {(['all', 'info', 'warn', 'error'] as LevelFilter[]).map(l => (
           <button key={l} onClick={() => setLevelFilter(l)}
             style={{
@@ -191,7 +180,6 @@ export default function SystemLog() {
         ))}
       </div>
 
-      {/* ── Log output ── */}
       <pre style={S.pre}>
         {filteredLines.length === 0 ? (
           <span style={{ color: '#484f58' }}>

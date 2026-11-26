@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { TableColumnsType, TableProps } from "antd";
 
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { Table, Modal, Button, Input, Dropdown, Space } from "antd"; // Import Modal here
+import { Table, Modal, Button, Input, Dropdown, Space } from "antd";
 import {
   FaChevronDown,
   FaEye,
@@ -43,7 +43,7 @@ interface DataType {
   role: any;
   representation: any;
   createdAt: any;
-  uuid: string; // Ensure uuid is included in DataType
+  uuid: string;
 }
 
 type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
@@ -73,7 +73,6 @@ const TradeList = () => {
     useState(false);
   const [archiveMultipleTradeSheets] = useArchiveMultipleTradeSheetsMutation();
 
-  // filter
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
@@ -105,17 +104,14 @@ const TradeList = () => {
   ];
 
   useEffect(() => {
-    console.log("useEffect triggered");
     if (data?.data?.tradeSheetData) {
       const filteredData = data.data.tradeSheetData.filter(
         (item) => item.status === "approved"
       );
-      console.log("Filtered Data:", filteredData);
       setTableData(filteredData);
     }
   }, [data]);
 
-  //Change Item Status
   const [changeTradeAdminStatus] = useChangeTradeAdminStatusMutation();
   const handleChangeStatus = async (newStatus: string, uuid: string) => {
     setChangeStatus(newStatus);
@@ -146,9 +142,6 @@ const TradeList = () => {
     }
   };
 
-  // const handleRejectReasonChange = (e) => {
-  //   setRejectReason(e.target.value);
-  // };
 
   const handleRejectReasonView = (reason) => {
     setRejectReason(reason);
@@ -161,14 +154,10 @@ const TradeList = () => {
   };
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
 
-  // const clearFilters = () => {
-  //   setFilteredInfo({});
-  // };
 
   const confirmDelete = async () => {
     try {
@@ -183,7 +172,7 @@ const TradeList = () => {
 
   const cancelDelete = () => {
     setIsModalVisible(false);
-    setDeleteUuid(null); // Reset deleteUuid
+    setDeleteUuid(null);
 
     setIsRejectModalVisible(false);
     setIsRejectReasonViewModalVisible(false);
@@ -199,7 +188,7 @@ const TradeList = () => {
   const [searchText, setSearchText] = useState("");
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -207,7 +196,6 @@ const TradeList = () => {
       try {
         const response = await archiveMultipleTradeSheets(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -228,12 +216,10 @@ const TradeList = () => {
     setIsOpen(true);
     setUUID(record.uuid);
 
-    // navigate(`/dashboard/accounting/trade-list?trId=${tradeSheetTypeId}`);
   };
 
   const filteredData = tableData?.filter((record) => {
     const searchTerm = searchText?.toLowerCase();
-    // if (!searchTerm) return true;
     const inProperties = record.properties?.some((property) =>
       Object.values(property).some((value) =>
         String(value).toLowerCase().includes(searchTerm)
@@ -277,12 +263,11 @@ const TradeList = () => {
       key: "tradeSheetTypeId",
 
       render: (tradeSheetTypeId, record) => {
-        // Define a color based on the status
         let textColor;
         if (record.status === "rejected") {
           textColor = "red";
         } else if (record.status === "underReview") {
-          textColor = "#f59e0b"; // amber/orange color
+          textColor = "#f59e0b";
         }
 
         return (
@@ -310,10 +295,9 @@ const TradeList = () => {
 
     {
       title: "Property Address",
-      dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
-      key: "tradeSheetTypeId", // Keep key as is
+      dataIndex: "tradeSheetTypeId",
+      key: "tradeSheetTypeId",
       render: (text, record) => {
-        // Check condition and return the correct value
         return record.representation === "seller"
           ? record?.propertyListing?.propertyAddress || "N/A"
           : record?.properties[0]?.propertyAddress || "N/A";
@@ -333,11 +317,10 @@ const TradeList = () => {
           },
         ]
       : []),
-    // { title: "Email", dataIndex: "email", key: "email" },
     {
       title: "Shared Agent",
-      dataIndex: "name", // Keep dataIndex as is, unless you want to map it differently
-      key: "name", // Keep key as is
+      dataIndex: "name",
+      key: "name",
       render: (text, record) => {
         const multipleUserArray = record?.sharedUsers;
         return multipleUserArray?.map((rep: string, index: number) => (
@@ -456,7 +439,6 @@ const TradeList = () => {
           <Dropdown
             menu={{
               items: [
-                // view tradesher
                 {
                   key: "view",
                   label: (
@@ -469,117 +451,11 @@ const TradeList = () => {
                     </button>
                   ),
                 },
-                // ((user.userType === "agent" &&
-                //   (record.status === "draft" ||
-                //     record.status === "rejected")) ||
-                //   user.userType === "superAdmin" ||
-                //   user.userType === "admin") &&
-                //   hasPermissionForSlug("edit-tradesheet") && {
-                //     key: "edit",
-                //     label: (
-                //       <Link
-                //         className="flex items-center gap-2"
-                //         to={`/dashboard/agent/pages/form/trade-sheet/agent-basic-info/${uuid}`}
-                //       >
-                //         <FaRegEdit /> Edit
-                //       </Link>
-                //     ),
-                //   },
-                // //view rejecction cause
-                // record.status === "rejected" && {
-                //   key: "Rejected",
-                //   label: (
-                //     <button
-                //       onClick={() =>
-                //         handleRejectReasonView(record?.rejectReason)
-                //       }
-                //       className="text-[16px] flex gap-2 items-center hover:text-primaryPurple duration-100 "
-                //     >
-                //       <FaComment className="text-red-500" /> Rejected
-                //     </button>
-                //   ),
-                // },
 
-                // // view tradesher
-                // {
-                //   key: "view",
-                //   label: (
-                //     <Link
-                //       className="flex items-center gap-2"
-                //       to={`/dashboard/agent/pages/form/trade-sheet/preview-page/${uuid}`}
-                //     >
-                //       <FaEye /> View
-                //     </Link>
-                //   ),
-                // },
 
-                // //file manager for single representation
 
-                // record.representationType === "single" && {
-                //   key: "fileManager",
-                //   label: (
-                //     <Link
-                //       to={`/dashboard/agent/pages/form/trade-sheet/paperwork-file-manager/${uuid}`}
-                //       className=" flex items-center gap-2" // Added margin left for spacing
-                //     >
-                //       <FaFileAlt /> File Manager
-                //     </Link>
-                //   ),
-                // },
 
-                // // file manager `for multiple representation
-                // record.representationType === "multiple" && {
-                //   key: "fileManager-multiple",
-                //   label: (
-                //     <Link
-                //       to={`/dashboard/agent/pages/form/trade-sheet/paperwork-file-manager-multiple-representation/${uuid}`}
-                //       className=" flex items-center gap-2" // Added margin left for spacing
-                //     >
-                //       <FaFileAlt /> File Manager
-                //     </Link>
-                //   ),
-                // },
-                // //additional document
-                // record.status === "approved" &&
-                //   record.representationType == "single" && {
-                //     key: "additionalDocument",
-                //     label: (
-                //       <Link
-                //         title="Additional Document"
-                //         to={`/dashboard/agent/pages/form/trade-sheet/additional-document/${uuid}`}
-                //         className=" flex items-center gap-2"
-                //       >
-                //         <FaFileUpload /> Additional Document
-                //       </Link>
-                //     ),
-                //   },
-                // {
-                //   key: "share",
-                //   label: (
-                //     <Link
-                //       to={`/dashboard/super-admin/share-trade-sheet-document/${uuid}`}
-                //       className=" flex items-center gap-2"
-                //     >
-                //       <FaShare /> Share Document
-                //     </Link>
-                //   ),
-                // },
 
-                // //delete tradesheet
-                // ((user.userType === "agent" && record.status === "draft") ||
-                //   user.userType === "superAdmin" ||
-                //   user.userType === "admin") &&
-                //   hasPermissionForSlug("delete-tradesheet") && {
-                //     key: "delete",
-                //     label: (
-                //       <button
-                //         onClick={() => handleDelete(uuid)}
-                //         className=" flex items-center gap-2"
-                //       >
-                //         <MdDelete /> Delete
-                //       </button>
-                //     ),
-                //   },
               ],
             }}
           >
@@ -598,7 +474,6 @@ const TradeList = () => {
   ];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -640,7 +515,6 @@ const TradeList = () => {
     ],
   };
 
-  //add index for serial number
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -648,7 +522,6 @@ const TradeList = () => {
     };
   });
 
-  console.log(tableSourceData);
 
   return (
     <div className="pb-16">
@@ -704,7 +577,7 @@ const TradeList = () => {
       >
         <div className="p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-md">
           <div className="flex items-center">
-            <AiFillWarning className="text-2xl mr-2" /> {/* Warning icon */}
+            <AiFillWarning className="text-2xl mr-2" />
             <p className="font-semibold text-sm">
               Are you sure you want to delete this item?
             </p>
@@ -725,7 +598,6 @@ const TradeList = () => {
           </p>
         </div>
       </Modal>
-      {/* Reject Modal */}
       <Modal
         title="Add Reject Reasons"
         visible={isRejectModalVisible}
@@ -738,9 +610,9 @@ const TradeList = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#072f2d", // Custom background color
-              borderColor: "#072f2d", // Custom border color
-              color: "#fff", // Text color to ensure contrast
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
+              color: "#fff",
             }}
           >
             Save
@@ -751,14 +623,13 @@ const TradeList = () => {
         ]}
       >
         <Input.TextArea
-          rows={4} // You can adjust the number of rows
+          rows={4}
           placeholder="Enter reject reason here"
-          value={rejectReason} // Assuming you have a state for the reason
-          onChange={(e) => setRejectReason(e.target.value)} // Assuming you have a setRejectReason function
+          value={rejectReason}
+          onChange={(e) => setRejectReason(e.target.value)}
         />
       </Modal>
 
-      {/* Reject Reasons View Modal */}
       <Modal
         title="Reject Reasons View"
         visible={isRejectReasonViewModalVisible}
@@ -772,7 +643,6 @@ const TradeList = () => {
         <div>{rejectReason}</div>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -793,7 +663,7 @@ const TradeList = () => {
       >
         <div className="p-4 bg-red-50 border-l-4 border-red-400 text-red-700 rounded-md">
           <div className="flex items-center">
-            <AiFillWarning className="text-2xl mr-2" /> {/* Warning icon */}
+            <AiFillWarning className="text-2xl mr-2" />
             <p className="font-semibold text-sm">
               Are you sure you want to delete this item?
             </p>

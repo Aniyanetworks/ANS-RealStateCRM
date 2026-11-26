@@ -1,4 +1,3 @@
-// components/GlobalSearch.tsx
 import { useState, useEffect } from 'react';
 import { SearchOutlined, CloseOutlined, FileOutlined, FolderFilled, UserOutlined } from '@ant-design/icons';
 import { Input, List, Modal, Spin, Empty, Typography } from 'antd';
@@ -13,7 +12,7 @@ interface GlobalSearchProps {
   onNavigate: (node: FileNode) => void;
   onNavigateToFolder: (folderId: number | null, folderName: string, isShared: boolean) => void;
   onViewFile: (node: FileNode) => void;
-  currentUser: any; // Pass the current user object
+  currentUser: any;
 }
 
 const GlobalSearch = ({ 
@@ -32,7 +31,6 @@ const GlobalSearch = ({
     { skip: !debouncedQuery || debouncedQuery.length < 2 }
   );
 
-  // Debounce search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(searchQuery);
@@ -45,25 +43,19 @@ const GlobalSearch = ({
 
   const handleResultClick = (node: FileNode & { parent?: { name: string }, sharedBy?: string }) => {
     if (node.isFolder) {
-      // For folders, navigate directly
       onNavigate(node);
     } else {
-      // For files: determine if it's shared or owned by current user
       const isSharedFile = node.ownerId !== currentUser?.id;
       
       if (node.parentId) {
-        // Navigate to the parent folder first
         onNavigateToFolder(node.parentId, node.parent?.name || 'Folder', isSharedFile);
         
-        // Use a small delay to ensure navigation completes before viewing
         setTimeout(() => {
           onViewFile(node);
         }, 100);
       } else {
-        // File is in root - navigate to root first
         onNavigateToFolder(null, 'Root', isSharedFile);
         
-        // Use a small delay to ensure navigation completes before viewing
         setTimeout(() => {
           onViewFile(node);
         }, 100);

@@ -105,7 +105,6 @@ const PropertyListingNote: React.FC<PropertyListingNoteProps> = ({ propertyListi
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Notes area */}
       <div
         style={{
           flex: 1,
@@ -217,7 +216,6 @@ const PropertyListingNote: React.FC<PropertyListingNoteProps> = ({ propertyListi
         ))}
         <div ref={messagesEndRef} />
       </div>
-      {/* Input area */}
       <div style={{ padding: 22, background: '#fff', borderTop: '1px solid #e5e7eb' }}>
         <ReactQuill
           value={noteText}

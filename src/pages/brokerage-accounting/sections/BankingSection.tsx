@@ -1,5 +1,4 @@
 // @ts-nocheck
-// Banking & Reconciliation: bank accounts, register, reconciliation, journals, chart of accounts.
 import React, { useEffect, useMemo, useState } from "react";
 import { Alert, Card, Checkbox, DatePicker, Form, Input, InputNumber, Modal, Select, Space, Switch, Table, Tabs } from "antd";
 import dayjs from "dayjs";

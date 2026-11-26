@@ -1,6 +1,3 @@
-// ANS Time Clock (rebuild of the dvclock app). Backend: /dv-time-clock/*
-// Same pattern as brokerage accounting: one generic query + one generic mutation; every mutation
-// refreshes the time clock queries (clock-ins, approvals and schedules affect each other).
 import { getEnvUrls } from "../../../utils/constant";
 import { api } from "../apiSlice";
 

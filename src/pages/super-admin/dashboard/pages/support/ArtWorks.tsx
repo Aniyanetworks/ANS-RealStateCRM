@@ -113,7 +113,6 @@ const ArtWorks: React.FC = () => {
 
     const handleCreateUpdateSubmit = async () => {
         const data = getValues();
-        console.log(data);
         try {
             if (editingArtWork) {
                 await updateArtWork({ id: editingArtWork?.id, artwork: data }).unwrap();
@@ -141,9 +140,7 @@ const ArtWorks: React.FC = () => {
 
     const confirmDelete = async () => {
         try {
-            console.log(editingArtWork?.id);
             await deleteArtWork(editingArtWork?.id).unwrap();
-            console.log('ArtWork deleted successfully');
             resetForm();
             setIsDeleteModalVisible(false);
         } catch (error) {
@@ -223,7 +220,6 @@ const ArtWorks: React.FC = () => {
     return (
         <div className="pb-16">
             <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                {/* Single toolbar row */}
                 <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
                     <div className="flex items-center gap-1">
                         {tabs.map((tab) => (
@@ -301,7 +297,6 @@ const ArtWorks: React.FC = () => {
                         </form>
                     </Modal>
 
-                    {/* delete modal */}
                     <Modal
                         title="Delete Support Request"
                         open={isDeleteModalVisible}

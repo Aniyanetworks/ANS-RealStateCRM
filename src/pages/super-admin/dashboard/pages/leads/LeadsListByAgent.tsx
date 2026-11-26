@@ -46,7 +46,6 @@ import {
   useCreateLeadMutation,
   useDeleteLeadMutation,
   useDeleteMultipleLeadsMutation,
-  // useGetLeadsByCampaignQuery,
   useGetLeadsByAgentQuery,
   useUpdateLeadMutation,
   useChangeLeadStatusMutation,
@@ -95,7 +94,6 @@ interface AgentListItem {
   status: string;
 }
 
-// Status options based on campaign type
 const BUYER_TENANT_STATUS_OPTIONS = [
   { value: "New", label: "New" },
   { value: "Attempted Contact", label: "Attempted Contact" },
@@ -128,7 +126,6 @@ const LeadsList = () => {
   const { campaignUuid } = useParams<{ campaignUuid: string }>();
   const [tableData, setTableData] = useState<Lead[]>([]);
   const [campaignData, setCampaignData] = useState<Lead[]>([]);
-  // const { data, isLoading, refetch } = useGetLeadsByCampaignQuery(campaignUuid);
   const { user } = useSelector((state: any) => state.user);
   const { data, isLoading, refetch } = useGetLeadsByAgentQuery(user?.agentAccount?.[0]?.id);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -186,26 +183,24 @@ const LeadsList = () => {
     name: "",
     phone: "",
     email: "",
-    status: "New", // Add this
+    status: "New",
     agentAssigned: null,
     form: "",
     prefLocation: "",
   });
-  setExistingLead(null); // Add this
+  setExistingLead(null);
 };
 
   const handleCancel = () => {
   resetForm();
   setIsModalOpen(false);
   setSelectedUUID(null);
-  setExistingLead(null); // Add this
+  setExistingLead(null);
 };
 
   const showModal = () => setIsModalOpen(true);
 
   const handleEdit = (record: Lead) => {
-  console.log('record', record)
-  // Populate form with lead data
   setValue(
     "leadDate", record.leadDate ? moment.utc(record.leadDate).format("YYYY-MM-DD") : ""
   );
@@ -220,9 +215,9 @@ const LeadsList = () => {
   setValue("agentAssigned", record.agentAssigned || null);
   setValue("form", record.form);
   setValue("prefLocation", record.prefLocation);
-  setValue("status", record.status || "New"); // Add this line
+  setValue("status", record.status || "New");
   setSelectedUUID(record?.uuid);
-  setExistingLead(record); // Add this to store the existing lead for campaign type reference
+  setExistingLead(record);
   showModal();
 };
 
@@ -230,7 +225,7 @@ const LeadsList = () => {
     try {
       const response = await deleteLead(selectedUUID).unwrap();
       toast.success(`${response?.message}`);
-      refetch(); // Refetch leads after deletion
+      refetch();
     } catch (error) {
       toast.error("Delete failed. Something went wrong!");
       console.error("Delete error:", error);
@@ -264,8 +259,8 @@ const LeadsList = () => {
     try {
       const response = await deleteMultipleLeads(selectedRowKeys).unwrap();
       toast.success(`${response?.message}`);
-      refetch(); // Refetch data to update the table
-      setSelectedRowKeys([]); // Clear selected rows
+      refetch();
+      setSelectedRowKeys([]);
     } catch (error) {
       toast.error("Delete failed. Something went wrong!");
       console.error("Delete error:", error);
@@ -318,15 +313,13 @@ const LeadsList = () => {
   const onSubmit = async (data: Lead) => {
     try {
       if (selectedUUID) {
-        // Update lead
         const response = await updateLead({ uuid: selectedUUID, data }).unwrap();
         toast.success(`${response?.message}`);
       } else {
-        // Create lead
         const response = await createLead({ campaignUuid, data }).unwrap();
         toast.success(`${response?.message}`);
       }
-      refetch(); // Refetch data after update/create
+      refetch();
       handleCancel();
     } catch (error: unknown) {
       toast.error("Operation failed. Something went wrong!");
@@ -335,7 +328,6 @@ const LeadsList = () => {
   };
 
   const handleNotesClick = (record: Lead) => {
-    // Flatten the data structure before passing to the modal
     let flatData = record.rows?.[0]?.data || {};
 
     if (Array.isArray(flatData.rows) && flatData.rows[0]?.data) {
@@ -344,7 +336,7 @@ const LeadsList = () => {
 
     setSelectedLeadForNotes({
       ...record,
-      flatData // Add the flattened data to the record
+      flatData
     });
     setIsNotesModalOpen(true);
   };
@@ -501,336 +493,10 @@ const LeadsList = () => {
       },
       sorter: (a, b) => a.email?.localeCompare(b.email || "") || 0,
     },
-    // Show Platform and Form Name columns only if user is superadmin
     ...(user.userType === "superadmin"
       ? [
-        // {
-        //   title: "Platform",
-        //   dataIndex: "platform",
-        //   key: "platform",
-        //   filterDropdown: ({
-        //     setSelectedKeys,
-        //     selectedKeys,
-        //     confirm,
-        //     clearFilters,
-        //   }) => (
-        //     <div style={{ padding: 8 }}>
-        // <Input
-        //   placeholder={`Search platform`}
-        //   value={selectedKeys[0]}
-        //   onChange={(e) =>
-        //     setSelectedKeys(e.target.value ? [e.target.value] : [])
-        //   }
-        //   onPressEnter={() => confirm()}
-        //   style={{ marginBottom: 8, display: "block" }}
-        // />
-        // <Space>
-        //   <Button
-        //     type="primary"
-        //     onClick={() => confirm()}
-        //     icon={<FaRegEdit />}
-        //     size="small"
-        //     style={{ width: 90 }}
-        //   >
-        //     Search
-        //   </Button>
-        //   <Button
-        //     onClick={() => clearFilters && clearFilters()}
-        //     size="small"
-        //     style={{ width: 90 }}
-        //   >
-        //     Reset
-        //   </Button>
-        // </Space>
-        //     </div>
-        //   ),
-        //   onFilter: (value, record) =>
-        //     record.platform?.toLowerCase().includes(value.toLowerCase()),
-        //   sorter: (a, b) => a.platform?.localeCompare(b.platform || "") || 0,
-        // },
-        // {
-        //   title: "Form Name",
-        //   dataIndex: "form",
-        //   key: "form",
-        //   filterDropdown: ({
-        //     setSelectedKeys,
-        //     selectedKeys,
-        //     confirm,
-        //     clearFilters,
-        //   }) => (
-        //     <div style={{ padding: 8 }}>
-        // <Input
-        //   placeholder={`Search form`}
-        //   value={selectedKeys[0]}
-        //   onChange={(e) =>
-        //     setSelectedKeys(e.target.value ? [e.target.value] : [])
-        //   }
-        //   onPressEnter={() => confirm()}
-        //   style={{ marginBottom: 8, display: "block" }}
-        // />
-        // <Space>
-        //   <Button
-        //     type="primary"
-        //     onClick={() => confirm()}
-        //     icon={<FaRegEdit />}
-        //     size="small"
-        //     style={{ width: 90 }}
-        //   >
-        //     Search
-        //   </Button>
-        //   <Button
-        //     onClick={() => clearFilters && clearFilters()}
-        //     size="small"
-        //     style={{ width: 90 }}
-        //   >
-        //     Reset
-        //   </Button>
-        // </Space>
-        //     </div>
-        //   ),
-        //   onFilter: (value, record) =>
-        //     record.form?.toLowerCase().includes(value.toLowerCase()),
-        //   sorter: (a, b) => a.form?.localeCompare(b.form || "") || 0,
-        // },
       ]
       : []),
-    // {
-    //   title: "Preferred Location",
-    //   dataIndex: "prefLocation",
-    //   key: "prefLocation",
-    //   filterDropdown: ({
-    //     setSelectedKeys,
-    //     selectedKeys,
-    //     confirm,
-    //     clearFilters,
-    //   }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={`Search Preferred Location`}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) =>
-    //           setSelectedKeys(e.target.value ? [e.target.value] : [])
-    //         }
-    //         onPressEnter={() => confirm()}
-    //         style={{ marginBottom: 8, display: "block" }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<FaRegEdit />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Search
-    //         </Button>
-    //         <Button
-    //           onClick={() => clearFilters && clearFilters()}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Reset
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const recordValue = String(record.prefContact || "").toLowerCase();
-    //     const filterValue = String(value || "").toLowerCase();
-    //     return recordValue.includes(filterValue);
-    //   },
-    //   sorter: (a, b) => a.prefContact?.localeCompare(b.prefContact || "") || 0,
-    // },
-    // {
-    //   title: "Preferred Contact",
-    //   dataIndex: "prefContact",
-    //   key: "prefContact",
-    //   filterDropdown: ({
-    //     setSelectedKeys,
-    //     selectedKeys,
-    //     confirm,
-    //     clearFilters,
-    //   }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={`Search Preferred Contact`}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) =>
-    //           setSelectedKeys(e.target.value ? [e.target.value] : [])
-    //         }
-    //         onPressEnter={() => confirm()}
-    //         style={{ marginBottom: 8, display: "block" }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<FaRegEdit />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Search
-    //         </Button>
-    //         <Button
-    //           onClick={() => clearFilters && clearFilters()}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Reset
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const recordValue = String(record.prefContact || "").toLowerCase();
-    //     const filterValue = String(value || "").toLowerCase();
-    //     return recordValue.includes(filterValue);
-    //   },
-    //   sorter: (a, b) => a.prefContact?.localeCompare(b.prefContact || "") || 0,
-    // },
-    // {
-    //   title: "Property Type",
-    //   dataIndex: "propertyType",
-    //   key: "propertyType",
-    //   filterDropdown: ({
-    //     setSelectedKeys,
-    //     selectedKeys,
-    //     confirm,
-    //     clearFilters,
-    //   }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={`Search Property Type`}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) =>
-    //           setSelectedKeys(e.target.value ? [e.target.value] : [])
-    //         }
-    //         onPressEnter={() => confirm()}
-    //         style={{ marginBottom: 8, display: "block" }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<FaRegEdit />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Search
-    //         </Button>
-    //         <Button
-    //           onClick={() => clearFilters && clearFilters()}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Reset
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const recordValue = String(record.propertyType || "").toLowerCase();
-    //     const filterValue = String(value || "").toLowerCase();
-    //     return recordValue.includes(filterValue);
-    //   },
-    //   sorter: (a, b) =>
-    //     a.propertyType?.localeCompare(b.propertyType || "") || 0,
-    // },
-    // {
-    //   title: "Budget",
-    //   dataIndex: "budget",
-    //   key: "budget",
-    //   filterDropdown: ({
-    //     setSelectedKeys,
-    //     selectedKeys,
-    //     confirm,
-    //     clearFilters,
-    //   }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={`Search Budget`}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) =>
-    //           setSelectedKeys(e.target.value ? [e.target.value] : [])
-    //         }
-    //         onPressEnter={() => confirm()}
-    //         style={{ marginBottom: 8, display: "block" }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<FaRegEdit />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Search
-    //         </Button>
-    //         <Button
-    //           onClick={() => clearFilters && clearFilters()}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Reset
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const recordValue = String(record.budget || "").toLowerCase();
-    //     const filterValue = String(value || "").toLowerCase();
-    //     return recordValue.includes(filterValue);
-    //   },
-    //   sorter: (a, b) => a.budget?.localeCompare(b.budget || "") || 0,
-    // },
-    // {
-    //   title: "Time Range",
-    //   dataIndex: "timeRange",
-    //   key: "timeRange",
-    //   filterDropdown: ({
-    //     setSelectedKeys,
-    //     selectedKeys,
-    //     confirm,
-    //     clearFilters,
-    //   }) => (
-    //     <div style={{ padding: 8 }}>
-    //       <Input
-    //         placeholder={`Search Time Range`}
-    //         value={selectedKeys[0]}
-    //         onChange={(e) =>
-    //           setSelectedKeys(e.target.value ? [e.target.value] : [])
-    //         }
-    //         onPressEnter={() => confirm()}
-    //         style={{ marginBottom: 8, display: "block" }}
-    //       />
-    //       <Space>
-    //         <Button
-    //           type="primary"
-    //           onClick={() => confirm()}
-    //           icon={<FaRegEdit />}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Search
-    //         </Button>
-    //         <Button
-    //           onClick={() => clearFilters && clearFilters()}
-    //           size="small"
-    //           style={{ width: 90 }}
-    //         >
-    //           Reset
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   ),
-    //   onFilter: (value, record) => {
-    //     const recordValue = String(record.timeRange || "").toLowerCase();
-    //     const filterValue = String(value || "").toLowerCase();
-    //     return recordValue.includes(filterValue);
-    //   },
-    //   sorter: (a, b) => a.timeRange?.localeCompare(b.timeRange || "") || 0,
-    // },
-    // Only show "Agent Assigned" column for superadmin
     ...(user.userType === "superadmin"
       ? [
         {
@@ -921,7 +587,6 @@ const LeadsList = () => {
         },
       ]
       : []),
-    // Show these columns only if user is superadmin
     ...(user.userType === "superadmin"
       ? [
 
@@ -1009,7 +674,6 @@ const LeadsList = () => {
   key: "status",
   width: 200,
   render: (text, record) => {
-    // Determine which status options to show based on campaign type from the lead data
     const statusOptions = record.typeOfCampaign === "Seller" || 
                          record.typeOfCampaign === "Landlord" 
       ? SELLER_LANDLORD_STATUS_OPTIONS 
@@ -1134,7 +798,6 @@ const LeadsList = () => {
       <div className="flex items-center justify-between gap-5 xl:gap-10 mb-5 p-1">
         <div className="flex items-center gap-2">
           <h1 className="hidden xl:block">Leads List for Campaign: {campaignData?.name}</h1>
-          {/* Tab toggle */}
           <div className="flex items-center gap-1 ml-2">
             <button
               onClick={() => setActiveView("list")}
@@ -1199,7 +862,6 @@ const LeadsList = () => {
         />
       )}
 
-      {/* Edit Lead Modal */}
       <Modal
         title={selectedUUID ? "Edit Lead" : "Add Lead"}
         open={isModalOpen}
@@ -1350,7 +1012,6 @@ const LeadsList = () => {
         </form>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Delete"
         open={isDeleteModalVisible}
@@ -1363,7 +1024,6 @@ const LeadsList = () => {
         <p>Are you sure you want to delete this lead?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Delete Selected"
         open={isDeleteMultipleModalVisible}
@@ -1376,7 +1036,6 @@ const LeadsList = () => {
         <p>Are you sure you want to delete the selected leads?</p>
       </Modal>
 
-      {/* Lead Notes Modal */}
       {selectedLeadForNotes && (
         <LeadNotes
           leadId={selectedLeadForNotes.id}

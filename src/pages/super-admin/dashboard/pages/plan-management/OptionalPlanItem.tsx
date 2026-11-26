@@ -1,4 +1,3 @@
-// OptionalPlanItem.tsx
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { OptionalPlan } from './types';
 

@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-/**
- * Compare property listing data with IDX Property data
- */
 export const comparePropertyData = (
   propertyListing: any,
   realtorProperty: any,
@@ -125,9 +122,6 @@ export const comparePropertyData = (
   return differences;
 };
 
-/**
- * Map IDX Property data to property listing format expected by backend
- */
 export const mapRealtorDataToPropertyListing = (realtorProperty: any) => {
   const mappedData: any = {};
 

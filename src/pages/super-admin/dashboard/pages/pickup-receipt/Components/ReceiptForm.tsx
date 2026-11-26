@@ -32,7 +32,6 @@ const ReceiptForm = ({
   return (
     <form className="space-y-3">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-        {/* Date */}
         <div className="flex flex-col gap-2">
           <label>Date</label>
           <input
@@ -48,7 +47,6 @@ const ReceiptForm = ({
           )}
         </div>
 
-        {/* Property Address */}
         <div className="flex flex-col gap-2">
           <label>
             Property Address <span className="text-red-500 ml-1">*</span>
@@ -75,7 +73,6 @@ const ReceiptForm = ({
           )}
         </div>
 
-        {/* Received From */}
         <div className="flex flex-col gap-2">
           <label>
             Pickup By <span className="text-red-500 ml-1">*</span>
@@ -96,7 +93,6 @@ const ReceiptForm = ({
         </div>
 
         <div className="flex flex-col gap-2">
-          {/* Optional: a DFT refunds the whole deposit (Deposit Refund); otherwise the balance is returned. */}
           <label>
             Reason For Payment <span className="text-gray-400 text-xs ml-1">(optional)</span>
           </label>
@@ -115,7 +111,6 @@ const ReceiptForm = ({
           )}
         </div>
 
-        {/* Payment Method */}
         <div className="flex flex-col gap-2">
           <label>
             Payment Method <span className="text-red-500 ml-1">*</span>
@@ -139,7 +134,6 @@ const ReceiptForm = ({
           )}
         </div>
 
-        {/* Representation */}
         <div className="flex flex-col gap-2">
           <div>
             <label>
@@ -174,7 +168,6 @@ const ReceiptForm = ({
           )}
         </div>
 
-        {/* Received by */}
         <div className="flex flex-col gap-2">
           <label>
             Handed By <span className="text-red-500 ml-1">*</span>

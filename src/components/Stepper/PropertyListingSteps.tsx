@@ -8,7 +8,6 @@ interface PropertyListingStepsProps {
 
 const PropertyListingSteps: React.FC<PropertyListingStepsProps> = ({ active, uuid }) => {
     
-    // Define your steps
     const steps = [
         {
             label: "Property Details",
@@ -18,14 +17,6 @@ const PropertyListingSteps: React.FC<PropertyListingStepsProps> = ({ active, uui
             label: "Attachment",
             path: `/dashboard/super-admin/property-listing/paperwork-attachment-upload/${uuid}`,
         },
-        // {
-        //     label: "",
-        //     path: ``,
-        // },
-        // {
-        //     label: "Documents",
-        //     path: `/dashboard/super-admin/agent-file-upload/${uuid}`,
-        // },
     ];
 
     return (

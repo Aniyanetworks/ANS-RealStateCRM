@@ -59,12 +59,10 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
     const isSuperAdmin = user?.roleId == 1;
     const { data: activeBranches, isLoading: branchesLoading } = useGetActiveBranchListDataQuery("");
 
-    // Initialize search text from localStorage
     useEffect(() => {
         setSearchText(localStorage.getItem("expenseReportSearchText") || "");
     }, []);
 
-    // Handle period filter
     const handlePeriodFilter = (period: string) => {
         const now = new Date();
         const startDate = new Date();
@@ -108,7 +106,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
         setCustomEnd(now.toISOString().split('T')[0]);
     };
 
-    // Build query params
     const queryParams = useMemo(() => {
         const params: any = {};
         if (selectedBranches.length > 0) params.branchIds = selectedBranches.join(",");
@@ -135,7 +132,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
         totalExpense: 0,
     };
 
-    // Filter data based on filters
     const filteredData = useMemo(() => {
         let filtered = [...expenseData];
 
@@ -159,7 +155,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
             });
         }
 
-        // Search filter
         if (searchText) {
             const searchTerm = searchText.toLowerCase();
             const extractValues = (obj: any): string[] => {
@@ -187,7 +182,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
         return filtered;
     }, [expenseData, selectedExpenseStatus, selectedRecurrenceType, selectedRecurring, searchText]);
 
-    // Reset to page 1 when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedExpenseStatus, selectedRecurrenceType, selectedRecurring, searchText, selectedBranches, transactionDateRange]);
@@ -229,7 +223,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
         const doc = new jsPDF('landscape');
         const pageWidth = doc.internal.pageSize.getWidth();
 
-        // Add logo
         const logoX = (pageWidth / 2) - 10;
         const logoY = 5;
         const logoWidth = 20;
@@ -253,8 +246,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
             'Category',
             'Branch',
             'Recurring',
-            /* 'Expense Status',
-            'Recurrence Type', */
         ];
 
         const tableRows = filteredData.map((item: any, index: number) => [
@@ -271,8 +262,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
             item.expenseCategory?.name || "N/A",
             item.branch?.name || "N/A",
             item.isRecurring ? "Yes" : "No",
-            /* formatStringCamelCasecapitalize(item.expenseStatus || ""),
-            item.recurrenceType || "-", */
         ]);
 
         doc.autoTable({
@@ -360,7 +349,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
 
     return (
         <div>
-            {/* Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4 my-3">
                 <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500">
                     <div className="flex flex-col">
@@ -412,7 +400,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                 </div>
             </div>
 
-            {/* Filter and Export Section */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
                 <div className="w-full sm:w-auto flex-1 max-w-2xl relative">
                     <div className="flex">
@@ -447,7 +434,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                         </button>
                     </div>
 
-                    {/* Backdrop */}
                     {showDropdown && (
                         <div
                             className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
@@ -455,7 +441,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                         />
                     )}
 
-                    {/* Slide-in Filter Panel */}
                     <div
                         className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${showDropdown ? 'translate-x-0' : 'translate-x-full'
                             }`}
@@ -483,7 +468,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                         `}</style>
 
                         <div className="flex flex-col h-full">
-                            {/* Header */}
                             <div className="flex items-center justify-between p-4 border-b bg-[#0f766e] text-white">
                                 <h3 className="text-lg font-semibold">Filter Options</h3>
                                 <button
@@ -494,7 +478,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                 </button>
                             </div>
 
-                            {/* Scrollable Content */}
                             <div
                                 className="expense-filter-scroll flex-1 overflow-y-auto overflow-x-hidden p-4"
                                 style={{
@@ -503,7 +486,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                 }}
                             >
                                 <div className="space-y-4">
-                                    {/* Period Filter Buttons */}
                                     <div className="flex gap-2 mb-4 flex-wrap">
                                         {['Day', 'Week', 'Month', 'Quarter', 'Year'].map((period) => (
                                             <button
@@ -519,7 +501,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                         ))}
                                     </div>
 
-                                    {/* Predefined Date Ranges */}
                                     <div className="space-y-2 mb-4">
                                         {['Last 30 days', 'Last 90 days', 'Last Year', 'All Time'].map((range) => (
                                             <button
@@ -535,7 +516,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                         ))}
                                     </div>
 
-                                    {/* Expense Status */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Expense Status</label>
                                         <Select
@@ -553,7 +533,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                         />
                                     </div>
 
-                                    {/* Recurrence Type */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Recurrence Type</label>
                                         <Select
@@ -572,7 +551,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                         />
                                     </div>
 
-                                    {/* Recurring */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Recurring</label>
                                         <Select
@@ -589,7 +567,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                         />
                                     </div>
 
-                                    {/* Branch (only for superadmin) */}
                                     {isSuperAdmin && (
                                         <div>
                                             <label className="font-semibold mb-2 block">Branch</label>
@@ -613,7 +590,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                         </div>
                                     )}
 
-                                    {/* Transaction Date Range (Custom Range) */}
                                     <div className="border p-2 rounded">
                                         <label className="font-semibold mb-2 block">Custom Range (Transaction Date)</label>
                                         <div className="flex flex-col sm:flex-row gap-2 mt-1">
@@ -634,7 +610,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                 </div>
                             </div>
 
-                            {/* Fixed Footer with Action Buttons */}
                             <div className="flex gap-2 p-4 border-t bg-white">
                                 <button
                                     className="w-1/2 bg-[#0f766e] text-white p-2 rounded hover:bg-[#0f766e] transition-colors"
@@ -666,7 +641,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                     </div>
                 </div>
 
-                {/* Export Buttons */}
                 <div className="flex gap-3">
                     <FaFilePdf
                         onClick={handleExportPdf}
@@ -683,7 +657,6 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                 </div>
             </div>
 
-            {/* Table */}
             <div>
                 <h2 className="pt-2 font-semibold mb-3">Expense Report</h2>
                 <Table

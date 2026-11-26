@@ -1,4 +1,3 @@
-// components/AgentCreationModal.tsx
 import Modal from 'antd/es/modal';
 import Select from 'react-select';
 

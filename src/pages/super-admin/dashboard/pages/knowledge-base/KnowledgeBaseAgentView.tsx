@@ -21,32 +21,26 @@ interface KnowledgeItem {
 
 const KnowledgeBase: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState("all"); // Show all categories
+  const [selectedType, setSelectedType] = useState("all");
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // RTK Query hook
   const { data, isLoading } = useGetKnowledgeBaseQuery([]);
 
-  // Ensure we always work with an array
   const items: KnowledgeItem[] = useMemo(() => {
     return Array.isArray(data) ? data : data?.data || [];
   }, [data]);
 
-  // Check if there's an active filter
   const hasActiveFilter = useMemo(() => {
     return searchTerm !== "" || selectedType !== "all";
   }, [searchTerm, selectedType]);
 
-  // Filtered data based on search and filter
   const filteredData = useMemo(() => {
     let filtered = items;
 
-    // Filter by selected type
     if (selectedType !== "all") {
       filtered = filtered.filter(item => item.type === selectedType);
     }
 
-    // Filter by search text
     if (searchTerm) {
       const searchTermLower = searchTerm.toLowerCase();
       filtered = filtered.filter((item) => 
@@ -58,7 +52,6 @@ const KnowledgeBase: React.FC = () => {
     return filtered;
   }, [items, searchTerm, selectedType]);
 
-  // Suggestions for autocomplete
   const suggestions = useMemo(() => {
     if (!searchTerm || !showSuggestions) return [];
     
@@ -105,10 +98,8 @@ const KnowledgeBase: React.FC = () => {
   return (
     <div style={{ padding: "0px 20px", maxWidth: "1200px", margin: "0 auto" }}>
       
-      {/* Header Section */}
       <HeaderSection />
 
-      {/* Global Search with Type Cards */}
       <GlobalSearch
         searchTerm={searchTerm}
         onSearchChange={handleSearchChange}
@@ -122,7 +113,6 @@ const KnowledgeBase: React.FC = () => {
         selectedType={selectedType}
       />
 
-      {/* Empty Results State */}
       {showEmptyResults && (
         <Card style={{ textAlign: 'center', padding: '60px 20px' }}>
           <Empty
@@ -141,7 +131,6 @@ const KnowledgeBase: React.FC = () => {
         </Card>
       )}
 
-      {/* Results Table - Show all data when no active filters */}
       {!showEmptyResults && (
         <KnowledgeTable
           data={hasActiveFilter ? filteredData : items}

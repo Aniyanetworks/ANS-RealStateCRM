@@ -5,9 +5,9 @@ interface PixelCrop {
   height: number;
 }
 const setCanvasPreview = (
-  image: HTMLImageElement, // HTMLImageElement
-  canvas: HTMLCanvasElement, // HTMLCanvasElement
-  crop: PixelCrop // PixelCrop
+  image: HTMLImageElement,
+  canvas: HTMLCanvasElement,
+  crop: PixelCrop
 ) => {
   const ctx = canvas.getContext("2d");
   if (!ctx) {
@@ -28,7 +28,6 @@ const setCanvasPreview = (
   const cropX = crop.x * scaleX;
   const cropY = crop.y * scaleY;
 
-  // Move the crop origin to the canvas origin (0,0)
   ctx.translate(-cropX, -cropY);
   ctx.drawImage(
     image,

@@ -16,16 +16,12 @@ const PeopleTab = ({ data }) => {
     if (data?.data?.tradeSheetData) {
       const tradeSheetData = data.data.tradeSheetData;
 
-      // Extract agents
       const agents = tradeSheetData.agentDetails || [];
 
-      // Extract shared users
       const sharedUsers = tradeSheetData.sharedUsers || [];
 
-      // Extract lawyers
       const lawyers = tradeSheetData.lawyerDetails || [];
 
-      // Extract seller and buyer information
       const sellerInfo = tradeSheetData.sellerInformations || [];
       const buyerInfo = tradeSheetData.buyerInformations || [];
 
@@ -39,7 +35,6 @@ const PeopleTab = ({ data }) => {
     }
   }, [data]);
 
-  // Combine all users into a single list
   const allUsers = [
     ...peopleData.agents.map((agent) => ({
       type: "Agent",
@@ -79,14 +74,12 @@ const PeopleTab = ({ data }) => {
         <div className="rounded-md p-4">
           
 
-          {/* User Details Tab */}
           {selectedUser && (
             <div>
               <h3 className="font-semibold text-xl text-gray-900 mb-4">
                 {selectedUser.name} Details
               </h3>
               <div className="p-4 border rounded-lg shadow-sm">
-                {/* Display user details based on type */}
                 {selectedUser.type === "Agent" && (
                   <>
                     <h4 className="font-semibold text-lg text-gray-800 mb-2">Agent Details</h4>
@@ -183,7 +176,6 @@ const PeopleTab = ({ data }) => {
           )}
 
 
-          {/* User Table */}
           <div className="mb-8">
             <h3 className="font-semibold text-xl text-gray-900 mb-4">People</h3>
             <table className="min-w-full divide-y divide-gray-200">

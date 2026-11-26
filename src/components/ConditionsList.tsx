@@ -21,10 +21,6 @@ const ConditionsList: React.FC<ConditionsListProps> = ({
 }) => {
   const [updateConditionStatus, { isLoading: isUpdatingStatus }] = useUpdateConditionStatusMutation();
 
-  // dueDate / conditionMetDate are calendar dates with no meaningful time-of-day.
-  // Converting them to America/Toronto shifts a UTC-midnight date back into the
-  // previous day's evening, displaying one day early. Stay in UTC so the stored
-  // calendar date renders unchanged.
   const formatDate = (isoDate: string | null | undefined): string => {
     if (isoDate) {
       return moment.utc(isoDate).format('MMM DD, YYYY');
@@ -54,8 +50,6 @@ const ConditionsList: React.FC<ConditionsListProps> = ({
       await updateConditionStatus({
         id: conditionId,
         completeStatus: newStatus,
-        // Set today's date when marking met, otherwise the date column renders
-        // an empty input with nothing to show until the user manually picks one.
         conditionMetDate: newStatus === 'yes' ? new Date().toISOString() : null,
       }).unwrap();
 
@@ -104,13 +98,6 @@ const ConditionsList: React.FC<ConditionsListProps> = ({
             key: 'dueDate',
             render: (dueDate: string | null | undefined) => formatDate(dueDate),
           },
-          /* {
-            title: 'Condition Met Date',
-            dataIndex: 'conditionMetDate',
-            key: 'conditionMetDate',
-            render: (conditionMetDate: string | null | undefined, record: Condition) =>
-              record.completeStatus === 'yes' ? formatDate(conditionMetDate) : 'Not met',
-          }, */
           {
   title: 'Condition Met Date',
   dataIndex: 'conditionMetDate',
@@ -122,9 +109,6 @@ const ConditionsList: React.FC<ConditionsListProps> = ({
         value={conditionMetDate ? moment.utc(conditionMetDate).format('YYYY-MM-DD') : ''}
         onChange={(e) => {
           const value = e.target.value;
-          // A native date input fires onChange per segment (day/month/year) while
-          // typing, with an incomplete/empty value in between. Only save once the
-          // value is a complete date, so a mid-edit "" doesn't wipe the saved date.
           if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
             handleDateChange(record.id, value);
           }
@@ -161,11 +145,11 @@ const ConditionsList: React.FC<ConditionsListProps> = ({
   key: 'actions',
   fixed: "right",
   align: "center",
-  width: 200, // Add fixed width for better consistency
+  width: 200,
   render: (_: any, condition: Condition) => (
     <div style={{ 
       display: 'flex', 
-      justifyContent: 'center', // Proper center alignment
+      justifyContent: 'center',
       alignItems: 'center',
       gap: 8 
     }}>

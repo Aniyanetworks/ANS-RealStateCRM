@@ -79,7 +79,6 @@ const AgentDetails: React.FC<AgentDetailsProps> = ({ agentDetails, sharedUsers }
 
   return (
     <div className="mt-4">
-      {/* Main agent details */}
       <div className="rounded-lg border border-gray-200 overflow-hidden">
         <SectionHeader title="Agent Details" />
         <table className="w-full text-xs border-collapse table-fixed">
@@ -102,7 +101,6 @@ const AgentDetails: React.FC<AgentDetailsProps> = ({ agentDetails, sharedUsers }
         </table>
       </div>
 
-      {/* Commercial commission */}
       {showCom && (
         <div className="mt-4 rounded-lg border border-gray-200 overflow-hidden">
           <SectionHeader title="Commercial Commission Structure" />
@@ -156,7 +154,6 @@ const AgentDetails: React.FC<AgentDetailsProps> = ({ agentDetails, sharedUsers }
         </div>
       )}
 
-      {/* Shared agents */}
       {sharedUsers && sharedUsers.length > 0 && (
         <div className="mt-4 rounded-lg border border-gray-200 overflow-hidden">
           <SectionHeader title="Shared Agent Details" />

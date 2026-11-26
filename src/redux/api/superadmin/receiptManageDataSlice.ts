@@ -7,7 +7,6 @@ const receiptManageApi = api.injectEndpoints({
       query: () => ({
         url: `/superadmin/receipt-manage/list`,
         method: "GET",
-        // Never answer from the browser's HTTP cache: after a receipt is updated the list must be fresh.
         cache: "no-store",
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,

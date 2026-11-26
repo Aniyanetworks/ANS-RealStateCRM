@@ -89,7 +89,7 @@ const userManageApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      invalidatesTags: ["getUserListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getUserListDataTag"],
     }),
     deleteMultipleUser: builder.mutation({
       query: (uuids) => ({
@@ -100,7 +100,7 @@ const userManageApi = api.injectEndpoints({
         },
         body: { uuids },
       }),
-      invalidatesTags: ["getUserListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getUserListDataTag"],
     }),
   }),
 });

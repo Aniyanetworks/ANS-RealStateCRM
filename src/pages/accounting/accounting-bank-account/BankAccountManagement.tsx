@@ -10,7 +10,7 @@ import {
   useDeleteAccountingBankAccountMutation,
   useDeleteMultipleAccountingBankAccountsMutation,
   useGetAccountingBankAccountsQuery,
-} from "../../../redux/api/accounting/bankAccountManagementSlice"; // Use the correct API hooks
+} from "../../../redux/api/accounting/bankAccountManagementSlice";
 import { FaEye, FaRegEdit, FaSearch, FaStreetView, FaTimes } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
@@ -35,7 +35,7 @@ interface DataType {
 const BankAccountManagement = () => {
   const { hasPermissionForSlug } = usePermissions();
   const [tableData, setTableData] = useState<DataType[]>([]);
-  const { data, isLoading, refetch } = useGetAccountingBankAccountsQuery(""); // Use the bank account data query
+  const { data, isLoading, refetch } = useGetAccountingBankAccountsQuery("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedUUID, setSelectedUUID] = useState<string | null>(null);
@@ -55,7 +55,7 @@ const BankAccountManagement = () => {
   });
 
   useEffect(() => {
-    setTableData(data?.data?.accounts); // Ensure correct data mapping
+    setTableData(data?.data?.accounts);
   }, [data]);
 
   const {
@@ -69,11 +69,11 @@ const BankAccountManagement = () => {
   } = useForm();
   const showModal = () => setIsModalOpen(true);
 
-  const [createBankAccount] = useCreateAccountingBankAccountMutation(); // Correct mutation
-  const [updateBankAccount] = useUpdateAccountingBankAccountMutation(); // Correct mutation
-  const [deleteBankAccount] = useDeleteAccountingBankAccountMutation(); // Correct mutation
+  const [createBankAccount] = useCreateAccountingBankAccountMutation();
+  const [updateBankAccount] = useUpdateAccountingBankAccountMutation();
+  const [deleteBankAccount] = useDeleteAccountingBankAccountMutation();
   const [deleteMultipleBankAccounts] =
-    useDeleteMultipleAccountingBankAccountsMutation(); // Correct mutation
+    useDeleteMultipleAccountingBankAccountsMutation();
 
   const resetForm = () => {
     reset({
@@ -81,7 +81,7 @@ const BankAccountManagement = () => {
       description: "",
       accountNumber: "",
       bankName: "",
-      status: "active", // Default status
+      status: "active",
     });
   };
 
@@ -174,7 +174,6 @@ const BankAccountManagement = () => {
       try {
         const response = await deleteMultipleBankAccounts(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -279,24 +278,12 @@ const BankAccountManagement = () => {
       dataIndex: "balance",
       key: "balance",
       render: (text, record) => {
-        // Safely access the tradeSheet and its tradeSheetTypeId
         return (
           '$ ' + formatNumberWithCommasAndDecimals(record?.balance)
         ); 
       },
       sorter: (a, b) => a.balance.localeCompare(b.balance),
     },
-    // {
-    //   title: "Account Number",
-    //   dataIndex: "accountNumber",
-    //   key: "accountNumber",
-    // },
-    // {
-    //   title: "Bank Name",
-    //   dataIndex: "bankName",
-    //   key: "bankName",
-    //   sorter: (a, b) => a.bankName.localeCompare(b.bankName),
-    // },
     {
       title: "Status",
       dataIndex: "status",
@@ -335,7 +322,7 @@ const BankAccountManagement = () => {
                 key: "log",
                 label: (
                   <Link
-                    to={`/dashboard/accounting/bank-account-log/${record.uuid || ''}`}  // Dynamic UUID path
+                    to={`/dashboard/accounting/bank-account-log/${record.uuid || ''}`}
                     className="flex items-center gap-2 w-full"
                   >
                     <FaEye />
@@ -356,7 +343,7 @@ const BankAccountManagement = () => {
                   </button>
                 ),
               },
-            ].filter(Boolean), // Filters out any falsey values like `undefined`
+            ].filter(Boolean),
           }}
         >
           <a onClick={(e) => e.preventDefault()}>
@@ -371,7 +358,6 @@ const BankAccountManagement = () => {
     },
   ];
 
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -455,7 +441,6 @@ const BankAccountManagement = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Bank Account Name */}
             <div className="flex flex-col gap-2">
               <label>
                 Account Name <span className="text-red-500 ml-1">*</span>
@@ -482,7 +467,7 @@ const BankAccountManagement = () => {
                 {...register("description")}
                 placeholder="Enter Description"
                 rows="4"
-                className="" // Optional: To prevent resizing of the text area
+                className=""
               />
               {errors.description && (
                 <p className="text-red-500 text-sm">
@@ -491,45 +476,8 @@ const BankAccountManagement = () => {
               )}
             </div>
 
-            {/* Account Number */}
-            {/* <div className="flex flex-col gap-2">
-              <label>
-                Account Number <span className="text-red-500 ml-1">*</span>
-              </label>
-              <input
-                {...register("accountNumber", {
-                  required: "Account number is required",
-                })}
-                type="text"
-                placeholder="Enter Account Number"
-              />
-              {errors.accountNumber && (
-                <p className="text-red-500 text-sm">
-                  {errors.accountNumber.message as string}
-                </p>
-              )}
-            </div> */}
 
-            {/* Bank Name */}
-            {/* <div className="flex flex-col gap-2">
-              <label>
-                Bank Name <span className="text-red-500 ml-1">*</span>
-              </label>
-              <input
-                {...register("bankName", {
-                  required: "Bank name is required",
-                })}
-                type="text"
-                placeholder="Enter Bank Name"
-              />
-              {errors.bankName && (
-                <p className="text-red-500 text-sm">
-                  {errors.bankName.message as string}
-                </p>
-              )}
-            </div> */}
 
-            {/* Status */}
             <div className="flex flex-col gap-2">
               <label>
                 Status <span className="text-red-500 ml-1">*</span>

@@ -25,15 +25,15 @@ interface DataType {
   uuid: string;
 }
 const PermissionManagement = () => {
-  const [uuid, setUuid] = useState(null); // Track selected role UUID
-  const { uuid: getUuid } = useParams(); // Get the uuid from URL params (optional)
+  const [uuid, setUuid] = useState(null);
+  const { uuid: getUuid } = useParams();
 
   useEffect(() => {
     if (getUuid) {
-      setUuid(getUuid); // Set the uuid state if it's available
+      setUuid(getUuid);
     }
-  }, [getUuid]); // Dependency array: triggers when getUuid changes
-  const { uuid: selectedUuid } = useParams(); // Get the uuid from URL params (optional)
+  }, [getUuid]);
+  const { uuid: selectedUuid } = useParams();
   const [permissionData, setPermissionData] = useState([]);
   const { data, isLoading, refetch } = useGetPermissionListQuery(uuid);
   const {
@@ -65,7 +65,6 @@ const PermissionManagement = () => {
   useEffect(() => {
     setRoleListData(getRoleListData?.data?.roles || []);
     setPermissionData(data?.data?.permissions || []);
-    // const permissions = roleData?.data?.role?.permissions || [];
 
     let permissions = "";
 
@@ -75,25 +74,22 @@ const PermissionManagement = () => {
       permissions = roleData?.data?.role?.importRole?.permissions || [];
     }
 
-    // Check if roleWisePermissions is an array
     if (Array.isArray(permissions)) {
       setRoleWisePermissions(permissions);
     } else {
-      // If not an array, set it as an empty array or handle it differently
       setRoleWisePermissions([]);
     }
   }, [data, roleData, roleListData]);
 
   useEffect(() => {
-    // Only proceed if roleWisePermissions is an array
     if (Array.isArray(roleWisePermissions)) {
       const initialSelectedPermissions = {};
       roleWisePermissions.forEach((permission) => {
-        const categoryId = permission.permission.category.id; // Assuming category is part of permission
+        const categoryId = permission.permission.category.id;
         if (!initialSelectedPermissions[categoryId]) {
           initialSelectedPermissions[categoryId] = [];
         }
-        initialSelectedPermissions[categoryId].push(permission.permissionId); // Assuming permissionId is part of permission
+        initialSelectedPermissions[categoryId].push(permission.permissionId);
       });
 
       setSelectedPermissions(initialSelectedPermissions);
@@ -108,7 +104,6 @@ const PermissionManagement = () => {
     setValue,
   } = useForm();
 
-  // Handle selecting/deselecting all permissions in a category
   const handleSelectAll = (categoryId) => {
     const categoryPermissions = permissionData.filter(
       (permission) => permission.category.id === categoryId
@@ -126,7 +121,6 @@ const PermissionManagement = () => {
     }));
   };
 
-  // Handle selecting/deselecting a specific permission
   const handleCheckboxChange = (categoryId, permissionId) => {
     setSelectedPermissions((prevState) => {
       const categoryPermissions = prevState[categoryId] || [];
@@ -144,7 +138,6 @@ const PermissionManagement = () => {
     });
   };
 
-  // Handle global select/deselect all categories
   const handleSelectAllCategories = () => {
     setSelectAllCategories(!selectAllCategories);
     permissionData.forEach((permission) => {
@@ -157,14 +150,12 @@ const PermissionManagement = () => {
     });
   };
 
-  // On form submission, prepare the data
   const onSubmit = async () => {
-    // Flatten selectedPermissions and map the category IDs to an array of permission IDs
     const permissionIds = Object.values(selectedPermissions).flat();
 
     const dataToSubmit = {
       roleId: selectedRoleData?.data?.role?.id,
-      permissions: permissionIds, // Flattened permission IDs
+      permissions: permissionIds,
     };
 
     try {
@@ -192,7 +183,6 @@ const PermissionManagement = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mx-auto">
           <div className="flex flex-col justify-between items-center mb-5 p-3 bg-white shadow-lg rounded-lg">
-            {/* Top Section: Manage Permissions */}
             {selectedRoleData?.data?.role?.isDefault == "no" ? (
               <h2 className="text-xl font-semibold text-gray-800 mb-4">
                 Manage Permissions
@@ -203,7 +193,6 @@ const PermissionManagement = () => {
               </h2>
             )}
 
-            {/* Select Role Section */}
             <div className="flex flex-col md:flex-row justify-between items-center w-full ">
               {selectedRoleData?.data?.role?.isDefault == "no" && (
                 <>
@@ -232,7 +221,6 @@ const PermissionManagement = () => {
                   </div>
                 </>
               )}
-              {/* Bottom Section: Role Display */}
               <div className="flex justify-center items-center mt-auto">
                 <h2 className="text-center font-bold text-white bg-[#0b3b38] p-2 rounded-lg shadow-md ml-0 md:ml-4">
                   Role:{" "}
@@ -242,7 +230,6 @@ const PermissionManagement = () => {
                 </h2>
               </div>
 
-              {/* Save Changes Button */}
               <div className="flex items-center justify-center space-x-4 mt-4 md:mt-0">
                 {selectedRoleData?.data?.role?.isDefault == "no" && (
                   <button
@@ -262,7 +249,6 @@ const PermissionManagement = () => {
             </div>
           </div>
 
-          {/* Select/Deselect All Categories */}
           {selectedRoleData?.data?.role?.isDefault == "no" && (
             <div className="mb-4 flex items-center">
               <input
@@ -277,21 +263,19 @@ const PermissionManagement = () => {
             </div>
           )}
 
-          {/* Render permission categories with checkboxes in a grid layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {permissionData.length > 0 &&
               [
                 ...new Set(
                   permissionData.map((permission) => permission.category.id)
                 ),
-              ] // Extract unique category IDs
+              ]
                 .map((categoryId) => {
                   const categoryPermissions = permissionData.filter(
                     (permission) => permission.category.id === categoryId
                   );
-                  const category = categoryPermissions[0]?.category; // Since category is the same for all permissions in the category
+                  const category = categoryPermissions[0]?.category;
 
-                  // Check if all permissions in the category are selected
                   const isAllSelected = categoryPermissions.every(
                     (permission) =>
                       selectedPermissions[categoryId]?.includes(permission.id)

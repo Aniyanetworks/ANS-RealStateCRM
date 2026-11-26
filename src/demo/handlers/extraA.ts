@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Demo data: Trade Transactions screen (brokerage-accounting/transactions + trade sheet / trust detail)
-// and the Super Admin property-listing / mere-listing tables.
 import { route } from '../route';
 import * as seed from '../seed';
 
@@ -11,7 +9,6 @@ const r2 = (n: number) => Math.round(n * 100) / 100;
 const HST = 0.13;
 const ok = (data: any, extra: any = {}) => ({ status: true, data, ...extra });
 
-// ---------------------------------------------------------------- trade transactions
 const STAGES = ['FINALIZED', 'DRAFT', 'PAID', 'CLOSED', 'FINALIZED', 'DRAFT', 'CLOSED', 'PAID', 'FINALIZED', 'CLOSED', 'DRAFT', 'PAID'] as const;
 const nameOf = (p: any) => [p?.firstName, p?.lastName].filter(Boolean).join(' ');
 
@@ -96,7 +93,6 @@ const detailedTrade = (uuid: string) => {
   };
 };
 
-// ---------------------------------------------------------------- property listings
 const ST_REGULAR = ['listed', 'New', 'Price Change', 'Extended', 'DFT', 'Exclusive', 'listed', 'Sold', 'Terminated', 'Suspended', 'Expired', 'listed', 'New', 'Sold', 'Price Change', 'listed', 'Extended', 'Expired', 'Exclusive', 'listed', 'Sold', 'New', 'Terminated', 'listed'];
 const ST_MERE = ['listed', 'listed', 'sold', 'listed', 'expired', 'listed', 'terminated', 'listed', 'leased', 'listed', 'suspended', 'listed'];
 const ADMIN_STATUS = ['approved', 'approved', 'underReview', 'approved', 'draft', 'approved', 'rejected', 'approved', 'pendingMls', 'approved'];
@@ -147,7 +143,6 @@ const regularListings = Array.from({ length: 24 }, (_, i) => listing(i, 'regular
 const mereListings = Array.from({ length: 12 }, (_, i) => listing(i, 'mere_listing', 100));
 
 export const extraARoutes = [
-  // Trade Transactions list: useAcct("/transactions") -> brokerage-accounting/transactions
   route('GET', 'brokerage-accounting/transactions', () => ok(txRows)),
   route('GET', 'brokerage-accounting/trust/trades/(?<id>\\d+)', ({ params }) => {
     const row = txRows.find((r) => String(r.id) === params.id) || txRows[0];
@@ -166,7 +161,6 @@ export const extraARoutes = [
     status: true, data: { tradeSheetData: detailedTrade(query.uuid) }, message: 'Trade sheet retrieved successfully',
   })),
 
-  // Super Admin property listing / mere listing
   route('GET', 'superadmin/property-listing/list', ({ query }) => {
     const rows = query.listingType === 'mere_listing' ? mereListings : query.listingType === 'regular' ? regularListings : [...regularListings, ...mereListings];
     return { status: true, data: { propertyListingData: rows }, message: 'Property listing retrieved successfully' };

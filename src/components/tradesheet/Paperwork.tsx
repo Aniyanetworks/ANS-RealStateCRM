@@ -23,9 +23,8 @@ import TableLoader from "../loader/TableLoader";
 import ButtonLoader from "../loader/buttonLoader";
 import { usePdfSizeGuard } from "../../hooks/usePdfSizeGuard";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-// type of file
 type FileType = {
   id: number;
   name: string;
@@ -53,7 +52,6 @@ const Paperwork = () => {
   const [fetchLoading, setFetchLoading] = useState<boolean>(false);
   const [missingFiles, setMissingFiles] = useState<object[]>([]);
 
-  // Add these states for confirmation modals
   const [showUploadConfirm, setShowUploadConfirm] = useState<{show: boolean; uploadFileNameId: number | null; file: File | null}>({
     show: false,
     uploadFileNameId: null,
@@ -69,7 +67,6 @@ const Paperwork = () => {
     fileId: null
   });
 
-  // Add this with the other confirmation states
 const [showOtherUploadConfirm, setShowOtherUploadConfirm] = useState<{show: boolean; file: File | null}>({
   show: false,
   file: null
@@ -128,9 +125,9 @@ const [showOtherUploadConfirm, setShowOtherUploadConfirm] = useState<{show: bool
     isLoading: tradeSheetLoading,
     refetch: trdaeSheetRefetch,
   } = useGetUploadFileCategoriesQuery({
-    slug: uploadFileCategory, // Ensure uploadFileCategory is available and valid
+    slug: uploadFileCategory,
     representation:
-      spacificTradeSheetLisData?.data?.tradeSheetData?.representation, // Safely access the representation
+      spacificTradeSheetLisData?.data?.tradeSheetData?.representation,
   });
 
   useEffect(() => {
@@ -142,35 +139,28 @@ const [showOtherUploadConfirm, setShowOtherUploadConfirm] = useState<{show: bool
     const activeDocuments =
       data?.data?.uploadFileCategoryData?.uploadFileNames?.filter(
         (file: FileType) => {
-          // Filter by status
           if (file.status !== "active") {
             return false;
           }
           
-          // Filter by listType if tradesheet has a listType
           if (tradesheetListType) {
             const fileListType = file.listType;
             
-            // If tradesheet is "Both", show all documents
             if (tradesheetListType === "Both") {
               return true;
             }
             
-            // If tradesheet is "Commercial", show documents with "Commercial" or "Both"
             if (tradesheetListType === "Commercial") {
               return fileListType === "Commercial" || fileListType === "Both";
             }
             
-            // If tradesheet is "Residential", show documents with "Residential" or "Both"
             if (tradesheetListType === "Residential") {
               return fileListType === "Residential" || fileListType === "Both";
             }
             
-            // If tradesheet listType doesn't match any known value, show documents with matching listType or "Both"
             return fileListType === tradesheetListType || fileListType === "Both";
           }
           
-          // If no listType on tradesheet, show all active documents
           return true;
         }
       );
@@ -181,7 +171,6 @@ const [showOtherUploadConfirm, setShowOtherUploadConfirm] = useState<{show: bool
           (upload: UploadFileType) => upload.uploadFileNameId === file.id
         );
 
-        // ✅ pick the correct order field based on representation
         let sortOrder = 9999;
         switch (representation) {
           case "seller":
@@ -231,7 +220,6 @@ const [showOtherUploadConfirm, setShowOtherUploadConfirm] = useState<{show: bool
     return;
   }
 
-  // Show confirmation modal instead of immediate upload
   setShowUploadConfirm({
     show: true,
     uploadFileNameId,
@@ -239,7 +227,6 @@ const [showOtherUploadConfirm, setShowOtherUploadConfirm] = useState<{show: bool
   });
 };
 
-// Add this new function to handle confirmed upload
 const handleConfirmedUpload = async () => {
   if (!showUploadConfirm.uploadFileNameId || !showUploadConfirm.file) return;
 
@@ -271,13 +258,11 @@ const handleConfirmedUpload = async () => {
     toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
   }
 
-  // Close confirmation modal
   setShowUploadConfirm({ show: false, uploadFileNameId: null, file: null });
 };
 
 
   const handleRemoveUploadedFile = async (fileId: number, id: number) => {
-  // Show confirmation modal instead of immediate removal
   setShowRemoveConfirm({
     show: true,
     tradeSheetId: fileId,
@@ -285,7 +270,6 @@ const handleConfirmedUpload = async () => {
   });
 };
 
-// Add this new function to handle confirmed removal
 const handleConfirmedRemove = async () => {
   if (!showRemoveConfirm.tradeSheetId || !showRemoveConfirm.fileId) return;
 
@@ -304,7 +288,6 @@ const handleConfirmedRemove = async () => {
     setIsRemoving(null);
   }
 
-  // Close confirmation modal
   setShowRemoveConfirm({ show: false, tradeSheetId: null, fileId: null });
 };
 
@@ -317,11 +300,9 @@ const handleConfirmedRemove = async () => {
     );
   };
 
-  // Handle the loading states for each button
   const handleButtonClick = (action: string) => {
     setBtnLoading(action);
   };
-// upload others documents
 const handleOtherDocumentUpload = async (e) => {
   const rawFile = e.target.files[0];
   if (!rawFile || !otherDocumentName) return;
@@ -334,14 +315,12 @@ const handleOtherDocumentUpload = async (e) => {
     return;
   }
 
-  // Show confirmation modal instead of immediate upload
   setShowOtherUploadConfirm({
     show: true,
     file
   });
 };
 
-// Add this new function to handle confirmed other document upload
 const handleConfirmedOtherUpload = async () => {
   if (!showOtherUploadConfirm.file || !otherDocumentName) return;
 
@@ -367,19 +346,16 @@ const handleConfirmedOtherUpload = async () => {
     setIsUploadingOther(false);
   }
 
-  // Close confirmation modal
   setShowOtherUploadConfirm({ show: false, file: null });
 };
 
   const handleRemoveOtherFile = async (id) => {
-  // Show confirmation modal instead of immediate removal
   setShowOtherRemoveConfirm({
     show: true,
     fileId: id
   });
 };
 
-// Add this new function to handle confirmed other file removal
 const handleConfirmedOtherRemove = async () => {
   if (!showOtherRemoveConfirm.fileId) return;
 
@@ -393,7 +369,6 @@ const handleConfirmedOtherRemove = async () => {
     setIsDeletingOther(null);
   }
 
-  // Close confirmation modal
   setShowOtherRemoveConfirm({ show: false, fileId: null });
 };
 
@@ -495,7 +470,7 @@ const handleConfirmedOtherRemove = async () => {
                           <button
                             onClick={() =>
                               handleRemoveUploadedFile(document.id, file.id)
-                            } // Pass file.id to enable re-uploading
+                            }
                             className="text-white px-3 rounded-md"
                           >
                             <img src={crossIcon} alt="" />
@@ -548,12 +523,6 @@ const handleConfirmedOtherRemove = async () => {
                   ""
                 )}
 
-                {/* {document.paperType !== "singleUpload" &&
-                  document.fileData.length > 1 && (
-                    <button className="text-primary">
-                      <img src={downArrow} alt="" />
-                    </button>
-                  )} */}
               </div>
             </div>
             <div>
@@ -581,7 +550,7 @@ const handleConfirmedOtherRemove = async () => {
                           <button
                             onClick={() =>
                               handleRemoveUploadedFile(document.id, file.id)
-                            } // Pass file.id to enable re-uploading
+                            }
                             className="text-white px-3 rounded-md"
                           >
                             <img src={crossIcon} alt="" />
@@ -596,7 +565,6 @@ const handleConfirmedOtherRemove = async () => {
           </div>
         ))}
 
-        {/* other files  */}
         <div className="flex justify-between items-center px-2">
           <div className="flex items-center gap-3">
             <p className="w-[80px] ">*</p>
@@ -632,7 +600,6 @@ const handleConfirmedOtherRemove = async () => {
           </div>
         </div>
 
-        {/* all files others  */}
         <div>
           {spacificTradeSheetLisData?.data?.tradeSheetData?.paperWorkOtherAttachments?.map(
             (file: any, index: number) => (
@@ -672,7 +639,6 @@ const handleConfirmedOtherRemove = async () => {
             onClick={() => {
               handleButtonClick("save-next");
 
-              // Check if all required files are uploaded
               const missingRequiredFiles =
                 data?.data?.uploadFileCategoryData?.uploadFileNames
                   .filter((file) => file.required === "yes")
@@ -683,17 +649,15 @@ const handleConfirmedOtherRemove = async () => {
                   });
               setMissingFiles(missingRequiredFiles);
 
-              console.log(missingRequiredFiles);
 
               if (missingRequiredFiles.length > 0) {
                 toast.error(
                   `Please fill in all required fields before proceeding.`
                 );
-                setBtnLoading(null); // Reset the loading state if validation fails
-                return; // Stop the navigation if any required file is missing
+                setBtnLoading(null);
+                return;
               }
 
-              // Proceed with navigation if all required files are uploaded
               navigate(
                 `/dashboard/agent/pages/form/trade-sheet/preview-page/${uuid}`
               );
@@ -740,7 +704,6 @@ const handleConfirmedOtherRemove = async () => {
             {btnLoading === "cancel" ? <ButtonLoader /> : "Cancel"}
           </button>
         </div>
-        {/* Upload Confirmation Modal */}
         {showUploadConfirm.show && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-md w-full">
@@ -764,7 +727,6 @@ const handleConfirmedOtherRemove = async () => {
           </div>
         )}
 
-        {/* Remove Confirmation Modal */}
         {showRemoveConfirm.show && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-md w-full">
@@ -788,7 +750,6 @@ const handleConfirmedOtherRemove = async () => {
           </div>
         )}
 
-        {/* Other File Remove Confirmation Modal */}
         {showOtherRemoveConfirm.show && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-md w-full">
@@ -812,7 +773,6 @@ const handleConfirmedOtherRemove = async () => {
           </div>
         )}
 
-        {/* Other Document Upload Confirmation Modal */}
 {showOtherUploadConfirm.show && (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div className="bg-white p-6 rounded-lg max-w-md w-full">

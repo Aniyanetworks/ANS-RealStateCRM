@@ -23,7 +23,6 @@ import TableLoader from "../../../../../components/loader/TableLoader";
 import { useGetDiscountListDataQuery } from "../../../../../redux/api/superadmin/discount-management/discountManagementSlice";
 import SelectDiscount from "../plan-management/SelectDiscount";
 
-// Type definitions
 interface DataType {
   key?: React.Key;
   id?: string;
@@ -104,7 +103,6 @@ const AgentPlan: React.FC = () => {
       agentData.data &&
       agentData?.data?.agentDetails?.agentAccount
     ) {
-      // console.log(agentData?.data?.agentDetails?.agentAccount); // Comment or remove this line
 
       const agent = agentData?.data?.agentDetails?.agentAccount[0];
       const formattedRecoExpiryDate = agent.recoExpiryDate
@@ -120,7 +118,6 @@ const AgentPlan: React.FC = () => {
       const planArray = agent.optionalPlanId
         ? agent.optionalPlanId.split(",").map(Number)
         : [];
-      // Filter the optional plans where the plan id is included in the planArray
       const filteredOptionalPlans =
         planArray && optionalPlanData?.data?.optionalPlans
           ? optionalPlanData?.data?.optionalPlans.filter((plan: any) =>
@@ -130,7 +127,6 @@ const AgentPlan: React.FC = () => {
       setSpecialNote(agent.special_note || "");
       setSelectedPlanId(agent.planId || null);
       setSelectedDiscountId(agent.discountId || null);
-      // setSelectedOptionalPlans(filteredOptionalPlans || []);
       setSelectedOptionalPlans(
         agentData?.data?.agentDetails?.agentAccount?.[0]?.optionalPlanId
           ?.split(",")
@@ -180,7 +176,6 @@ const AgentPlan: React.FC = () => {
       }
     }
 
-    // Combine form data with file data
     const submissionData = {
       ...formData,
       optionalPlans: selectedOptionalPlans,

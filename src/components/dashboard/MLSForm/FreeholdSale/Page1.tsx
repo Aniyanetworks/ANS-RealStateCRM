@@ -50,9 +50,6 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-      LOCATIOn SECTION
-      ---------------------------------------------- */}
       <div>
         <FormSectionHeading className="uppercase">Location</FormSectionHeading>
         <div className="flex justify-between items-center">
@@ -72,12 +69,8 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-       SECTION 2
-      ---------------------------------------------- */}
       <div className="py-2">
         <div className="flex ">
-          {/*---- pin--------- */}
           <div className="border-b-2 border-r-2 border-dashed pb-2 w-64 border-darkBlue">
             <FormSectionHeading className="bg-transparent mt-1 px-0">
               <span className="border-darkBlue text-darkBlue border-2 px-1">
@@ -89,7 +82,6 @@ const Page1 = () => {
             </div>
           </div>
 
-          {/* area----- */}
           <div className="border-t-2 border-r-2 border-dashed pb-2 pl-5 flex-grow border-darkBlue bg-darkBlue/5">
             <FormSectionHeading className="bg-transparent mt-1 px-0">
               <SubSectionHeading title="AREA" />
@@ -100,9 +92,7 @@ const Page1 = () => {
           </div>
         </div>
 
-        {/*  */}
         <div className="border-2 border-t-0 border-dashed pb-1 px-2 flex flex-col gap-1 flex-grow border-darkBlue bg-darkBlue/5">
-          {/* MUNICIPALITY------------ */}
           <div>
             <FormSectionHeading className="bg-transparent mt-1 px-0">
               <SubSectionHeading title="MUNICIPALITY" />
@@ -112,7 +102,6 @@ const Page1 = () => {
             </div>
           </div>
 
-          {/* COMMUNITY------------ */}
           <div>
             <FormSectionHeading className="bg-transparent mt-1 px-0">
               <div className="flex gap-2 ">
@@ -133,7 +122,6 @@ const Page1 = () => {
             </p>
 
             <div className="flex pt-1 gap-5">
-              {/* STREET NUMBER ---------- */}
               <div className="">
                 <FormSectionHeading className="bg-transparent mt-1 px-0">
                   <SubSectionHeading title="STREET NUMBER" />
@@ -143,7 +131,6 @@ const Page1 = () => {
                 </div>
               </div>
 
-              {/* STREET NAME ---------- */}
               <div className="">
                 <FormSectionHeading className="bg-transparent mt-1 px-0">
                   <SubSectionHeading title="STREET NAME" />
@@ -153,7 +140,6 @@ const Page1 = () => {
                 </div>
               </div>
 
-              {/* ABBREV. ---------- */}
               <div className="">
                 <FormSectionHeading className="bg-transparent mt-1 px-0">
                   <SubSectionHeading title="ABBREV." />
@@ -163,7 +149,6 @@ const Page1 = () => {
                 </div>
               </div>
 
-              {/* ----direction */}
 
               <div className="  flex-shrink-0">
                 <FormSectionHeading className="bg-transparent text-darkBlue mt-1 px-0">
@@ -185,7 +170,6 @@ const Page1 = () => {
                   </label>
                 </div>
               </div>
-              {/* APT/UNIT # ---------- */}
               <div className="">
                 <FormSectionHeading className="bg-transparent text-darkBlue mt-1 px-0">
                   <span className="border-2  border-darkBlue px-1">
@@ -196,7 +180,6 @@ const Page1 = () => {
                   <InPutField inputClass="!bg-transparent" />
                 </div>
               </div>
-              {/* POSTAL CODE ---------- */}
               <div className="">
                 <FormSectionHeading className="bg-transparent mt-1 px-0">
                   <SubSectionHeading title="POSTAL CODE" />
@@ -210,12 +193,8 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-       SECTION 3  FRONTING ON
-      ---------------------------------------------- */}
 
       <div className="border-b border-t py-2 border-darkBlue flex gap-32">
-        {/* FRONTING ON------------ */}
         <div>
           <FormSectionHeading className="bg-transparent px-0  ">
             <div className="flex items-center gap-2">
@@ -245,7 +224,6 @@ const Page1 = () => {
           </div>
         </div>
 
-        {/* LEGAL DESCRIPTION (LOT, PLAN, CONCESSION)--------- */}
         <div className="flex-grow">
           <FormSectionHeading className="bg-transparent px-0  ">
             <div className="flex  gap-1 items-center">
@@ -260,11 +238,7 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-       SECTION 4 lot front
-      ---------------------------------------------- */}
       <div className="mt-2  flex gap-10">
-        {/* lot front */}
         <div>
           <FormSectionHeading className="bg-transparent px-0  ">
             <div className="flex  gap-1">
@@ -275,7 +249,6 @@ const Page1 = () => {
           <InPutField />
         </div>
 
-        {/* lot depth*/}
         <div className="w-32">
           <FormSectionHeading className="bg-transparent px-0  ">
             <div className="flex  gap-1">
@@ -286,7 +259,6 @@ const Page1 = () => {
           <InPutField />
         </div>
 
-        {/* LOT SIZE CODE*/}
         <div className="flex-shrink-0 ">
           <FormSectionHeading className="bg-transparent px-0  ">
             <div className="flex  gap-1">
@@ -324,7 +296,6 @@ const Page1 = () => {
           </div>
         </div>
 
-        {/* LOT IRREGULARITIES---------- */}
         <div className="flex-grow flex-shrink-0">
           <FormSectionHeading className="bg-transparent px-0 text-darkBlue  ">
             <div className="flex  gap-1 items-center">
@@ -339,9 +310,6 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-       SECTION 5   ACREAGE
-      ---------------------------------------------- */}
 
       <div className="border-b  mt-1 border-darkBlue">
         <p className="flex gap-2 items-center text-[13px] border-b border-darkBlue">
@@ -469,11 +437,7 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-       SECTION 6   ZONING
-      ---------------------------------------------- */}
       <div className="flex  mt-2 gap-10">
-        {/* zoning ------------ */}
         <div className="w-1/2">
           <FormSectionHeading className="bg-transparent px-0 text-darkBlue  ">
             <div className="flex  gap-1 items-center">
@@ -487,7 +451,6 @@ const Page1 = () => {
           <InPutField />
         </div>
 
-        {/* DIRECTION/MAIN CROSS STREETS */}
         <div className="w-1/2">
           <FormSectionHeading className="bg-transparent px-0  ">
             <div className="flex  gap-1 items-center">
@@ -502,9 +465,6 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-      AMOUNT/DATES SECTION
-      ---------------------------------------------- */}
 
       <div className="mt-10">
         <FormSectionHeading className="flex items-center justify-between">
@@ -517,11 +477,7 @@ const Page1 = () => {
           </div>
         </FormSectionHeading>
 
-        {/* --------------
-        1st row
-          ----------- */}
         <div className="flex  mt-2 border-b border-darkBlue">
-          {/* -----LIST  PRICE---- */}
           <div>
             <FormSectionHeading className="bg-transparent px-0 ">
               <SubSectionHeading title="LIST PRICE" />
@@ -529,7 +485,6 @@ const Page1 = () => {
 
             <InPutField inputClass="!w-36" />
           </div>
-          {/* -----TAXES---- */}
           <div>
             <FormSectionHeading className="bg-transparent px-0 ml-7 ">
               <SubSectionHeading title="TAXES" />
@@ -540,7 +495,6 @@ const Page1 = () => {
               <InPutField boldBorder={true} />
             </div>
           </div>
-          {/* -----TAX  YEAR---- */}
           <div className="ml-5">
             <FormSectionHeading className="bg-transparent px-0 ">
               <SubSectionHeading title="TAX YEAR" />
@@ -549,7 +503,6 @@ const Page1 = () => {
             <InPutField inputClass="!w-28" />
           </div>
 
-          {/* -----ASSESSMENT ---- */}
           <div className="ml-5">
             <FormSectionHeading className="bg-transparent px-0  ">
               <SubSectionHeading
@@ -561,7 +514,6 @@ const Page1 = () => {
             <InPutField inputClass="!w-32 -mb-1 " boldBorder />
           </div>
 
-          {/* -----ASSESSMENT YR ---- */}
           <div className="ml-5">
             <FormSectionHeading className="bg-transparent px-0  ">
               <SubSectionHeading
@@ -572,7 +524,6 @@ const Page1 = () => {
 
             <InPutField inputClass="!w-28 -mb-1" />
           </div>
-          {/* -----CONTRACT COMMERCEMENT ---- */}
           <div className="ml-5 flex-shrink-0">
             <FormSectionHeading className="bg-transparent px-0  ">
               <SubSectionHeading title="CONTRACT COMMERCEMENT" />
@@ -589,11 +540,7 @@ const Page1 = () => {
           </div>
         </div>
 
-        {/* --------------
-        2nd  row
-          ----------- */}
         <div className="mt-2 flex gap-10 border-b border-darkBlue">
-          {/* -----EXPIRY DATE ---- */}
           <div className="w-44 flex-shrink-0">
             <FormSectionHeading className="bg-transparent px-0  ">
               <SubSectionHeading title="EXPIRY DATE" />
@@ -609,7 +556,6 @@ const Page1 = () => {
             </p>
           </div>
 
-          {/* -----POSSESSION DATE ---- */}
           <div className="w-44 flex-shrink-0">
             <FormSectionHeading className="bg-transparent px-0  ">
               <div className="flex  gap-1">
@@ -628,7 +574,6 @@ const Page1 = () => {
             </p>
           </div>
 
-          {/* -----POSSESSION Remarks ---- */}
           <div className=" flex-shrink-0 flex-grow flex ">
             <div className="flex-shrink-0">
               <FormSectionHeading className="bg-transparent px-0  ">
@@ -652,12 +597,8 @@ const Page1 = () => {
           </div>
         </div>
 
-        {/* --------------
-        3rd  row
-          ----------- */}
 
         <div className="mt-2 flex gap-24 ">
-          {/* -----HOLDOVER DAYS ---- */}
           <div className="flex-shrink-0">
             <FormSectionHeading className="bg-transparent px-0 ">
               <SubSectionHeading title="HOLDOVER DAYS" />
@@ -668,7 +609,6 @@ const Page1 = () => {
             </div>
           </div>
 
-          {/* -----SELLER NAME ---- */}
 
           <div className="w-full ">
             <FormSectionHeading className="bg-transparent px-0  ">
@@ -684,9 +624,6 @@ const Page1 = () => {
             />
           </div>
         </div>
-        {/* --------------
-        4th  row
-          ----------- */}
         <div className="mt-2 flex gap-2">
           <FormSectionHeading className="bg-transparent px-0  flex-shrink-0">
             <div className="flex items-center gap-2">
@@ -707,15 +644,11 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* ------------------ ----------------------
-        Exterior section
-       ---------------------------------------------- */}
 
       <div>
         <FormSectionHeading className="uppercase">EXterior</FormSectionHeading>
 
         <div className="grid grid-cols-5 ">
-          {/* 1st col------------ */}
           <div className="pt-2 pr-2 border-r border-darkBlue">
             <div className="border-2 p-1 bg-darkBlue/5  border-darkBlue border-dashed ">
               <FormSectionHeading className="bg-transparent  px-0 mb-2 flex items-center gap-2 ">
@@ -737,7 +670,6 @@ const Page1 = () => {
             </div>
           </div>
 
-          {/* 2nd col------------- */}
           <div className="p-2 border-r border-darkBlue">
             <div className="border-2 p-1 bg-darkBlue/5  border-darkBlue border-dashed ">
               <div className="flex flex-col gap-1.5">
@@ -753,7 +685,6 @@ const Page1 = () => {
                 ))}
               </div>
             </div>
-            {/* link ---------- */}
             <div className="mt-2">
               <FormSectionHeading className="uppercase bg-transparent text-darkBlue p-0">
                 <SubSectionHeading
@@ -804,9 +735,7 @@ const Page1 = () => {
             </div>
           </div>
 
-          {/* 3rd col------------- */}
           <div className="p-2 border-r border-darkBlue">
-            {/* POTL MONTHLY FEES*--------- */}
             <div>
               <FormSectionHeading className="uppercase bg-transparent text-darkBlue p-0">
                 <SubSectionHeading
@@ -822,7 +751,6 @@ const Page1 = () => {
               </p>
             </div>
 
-            {/* ASSIGNMENT---------- */}
             <div className="mt-2 flex gap-1">
               <FormSectionHeading className="uppercase bg-transparent text-darkBlue p-0">
                 <SubSectionHeading
@@ -849,7 +777,6 @@ const Page1 = () => {
               </div>
             </div>
 
-            {/* FRACTAL OWNERSHIP--------- */}
             <div className="mt-2 ">
               <FormSectionHeading className="uppercase bg-transparent text-darkBlue p-0">
                 <SubSectionHeading
@@ -895,7 +822,6 @@ const Page1 = () => {
               </div>
             </div>
           </div>
-          {/* 4th  col------------- */}
           <div className="p-2 border-r border-darkBlue">
             <div className="flex flex-col gap-1.5 ">
               {styleOptions.slice(4).map(({ id, label }) => (
@@ -931,7 +857,6 @@ const Page1 = () => {
               </div>
             </div>
           </div>
-          {/* 5th  col------------- */}
           <div className="p-2">
             <div className="flex flex-col gap-[5px] ">
               {exterior.slice(1).map(({ id, label }) => (
@@ -949,7 +874,6 @@ const Page1 = () => {
         </div>
       </div>
 
-      {/* page footer---seller initials ------------ */}
       <div className="flex justify-end gap-2 mt-8">
         <div className="flex gap-3 items-center">
           <p className="text-[a6px]">SELLER INITIALS</p>

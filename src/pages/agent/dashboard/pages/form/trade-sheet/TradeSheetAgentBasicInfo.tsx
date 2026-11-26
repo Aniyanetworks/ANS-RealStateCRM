@@ -43,7 +43,6 @@ import {
   setTradeSheetRepresentationType,
 } from '../../../../../../redux/slices/userSlice';
 
-// Reusable Text Input Component
 const TextInput = ({
   label,
   register,
@@ -52,7 +51,7 @@ const TextInput = ({
   errors,
   type = "text",
   placeholder = "",
-  readonly = false, // Add readonly prop with default value as false
+  readonly = false,
 }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -67,8 +66,8 @@ const TextInput = ({
         readonly
           ? "bg-gray-100 text-gray-500 cursor-not-allowed"
           : "border-gray-300"
-      }`} // Conditionally change styles based on readonly
-      readOnly={readonly} // Add readonly attribute
+      }`}
+      readOnly={readonly}
     />
 
     {errors[name] && (
@@ -77,7 +76,6 @@ const TextInput = ({
   </div>
 );
 
-// Reusable Select Input Component
 const SelectInput = ({ label, register, required, name, errors, options = [] }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -102,7 +100,7 @@ const SelectInput = ({ label, register, required, name, errors, options = [] }: 
 
 const TradeSheetAgentBasicInfo = () => {
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const { data, isLoading } = useGetSpacificTradeSheetListDataQuery(uuid);
   const { data: agentList } = useGetAgentListDataQuery("");
   const { tradeSheetRepresentationTypeData } = useSelector(
@@ -138,8 +136,6 @@ const TradeSheetAgentBasicInfo = () => {
     item.listingStatus !== "expired" &&
     item.listingStatus !== "suspended";
 
-  // A live trade sheet already using this listing's MLS number. Archived, deleted, DFT (deal fell through) or
-  // Deal Terminated ones no longer hold the listing, so it can be sold again on a new trade sheet.
   const RELEASED_TRADE_STATUSES = ["dft", "dealterminated"];
   const blockingTradeSheet = (item: any) =>
     item.mlsNumber
@@ -152,7 +148,6 @@ const TradeSheetAgentBasicInfo = () => {
         )
       : null;
 
-  // Typed search that matches a listing hidden by a live trade sheet: say why it isn't in the list.
   const [listingSearch, setListingSearch] = useState("");
   const heldListing =
     listingSearch.trim().length >= 3
@@ -174,8 +169,6 @@ const TradeSheetAgentBasicInfo = () => {
         const isMatchingTradeSheet =
           item.id === data?.data?.tradeSheetData?.propertyListingId;
 
-        // Include items that are approved or pending MLS, not in terminated/closed/expired/suspended,
-        // and without a live trade sheet using the same MLS number
         return (
           (isListingUsable(item) && !blockingTradeSheet(item)) ||
           isMatchingTradeSheet
@@ -198,7 +191,6 @@ const TradeSheetAgentBasicInfo = () => {
   };
 
   const handleRepresentationTypeChange = (event: any) => {
-    //  alert(event.target.value)
     setSelectedRepresentation(event.target.value);
 
     if (event.target.value) {
@@ -217,14 +209,8 @@ const TradeSheetAgentBasicInfo = () => {
       }
     }
 
-    // setRepresentation(event.target.value);
-    // setValue("representation", event.target.value);
-    // if (event.target.value) {
-    //   dispatch(setTradeSheetRepresentation(event.target.value));
-    // }
   };
 
-  // Handle loading and error states
   const {
     register,
     handleSubmit,
@@ -244,15 +230,12 @@ const TradeSheetAgentBasicInfo = () => {
   const isSuperAdmin = user?.roleId == 1;
   const isBranchAdmin = user?.roleId == 12;
   
-  // Fetch active branches for super admin
   const { data: activeBranches } = useGetActiveBranchListDataQuery("", {
     skip: !(isSuperAdmin || isBranchAdmin),
   });
 
   const handlePropertyListingChange = (selectedOption: any) => {
-    // console.log("propertyListingId", selectedOption?.value);
     if (selectedOption) {
-      console.log("selectedOption", selectedOption);
       setPropertyListingSelectd(selectedOption?.value);
       setValue("propertyListingId", selectedOption?.value);
       clearErrors("propertyListingId");
@@ -260,19 +243,15 @@ const TradeSheetAgentBasicInfo = () => {
         selectedOption?.sharedUsers &&
         selectedOption?.sharedUsers.length > 0
       ) {
-        const multipleShareAgentValues = selectedOption?.sharedUsers; // Array of user objects (with sharedUserId)
+        const multipleShareAgentValues = selectedOption?.sharedUsers;
 
-        // Use .map to find the corresponding objects in 'multipleRepresentation'
         const selectedShareAgent = multipleShareAgentValues
           .map((value) => {
-            // Find the corresponding object for each value in the original 'agentOptions'
             const matchedAgent = agentOptions.find(
               (item) => item.value === value.email
             );
-            // If no matching item is found, return undefined
             return matchedAgent || undefined;
           })
-          // Filter out items where value matches agentEmail (exclude them)
           .filter((item) => item !== undefined && item.value !== agentEmail);
 
         setSelectedShareAgent(selectedShareAgent);
@@ -328,9 +307,8 @@ const TradeSheetAgentBasicInfo = () => {
         const multipleRepresentationString =
           data?.data?.tradeSheetData?.multipleRepresentation;
         const selectedMultipleRepresentation = multipleRepresentationString
-          .split(",") // Split the string by commas to get the individual values
+          .split(",")
           .map((value) => {
-            // Find the corresponding object for each value in the original array
             return multipleRepresentation.find((item) => item.value === value);
           })
           .filter((item) => item !== undefined);
@@ -340,7 +318,6 @@ const TradeSheetAgentBasicInfo = () => {
       
 
       if(data?.data?.tradeSheetData?.representationType != "designation") {
-        // Only set agent_id if agentOptions are loaded
         if(agentOptions && agentOptions.length > 0) {
           if(data?.data?.tradeSheetData?.representation === "seller" || data?.data?.tradeSheetData?.representation === "landlord") {
             const selectedOption = agentOptions.find(
@@ -401,15 +378,12 @@ const TradeSheetAgentBasicInfo = () => {
         }
       }
       
-      // Set branchId if it exists in the trade sheet data
       if (data?.data?.tradeSheetData?.branchId) {
         setValue("branchId", data?.data?.tradeSheetData?.branchId);
       } else if (!(isSuperAdmin || isBranchAdmin) && user?.branchId) {
-        // If no branchId in trade sheet and user is neither super admin nor branch admin, use their own branch
         setValue("branchId", user.branchId);
       }
     } else {
-      // For new trade sheets, set branchId for non-super / non-branch-admin users
       if (!(isSuperAdmin || isBranchAdmin) && user?.branchId) {
         setValue("branchId", user.branchId);
       }
@@ -428,7 +402,6 @@ const TradeSheetAgentBasicInfo = () => {
     }
   }, [data, user, reset, agentList, setValue]);
 
-  // Pre-select the lead once leadsData is available (runs separately from main useEffect)
   useEffect(() => {
     const leadId = data?.data?.tradeSheetData?.leadId;
     if (!leadId || !leadsData?.data?.leads?.length) return;
@@ -447,12 +420,11 @@ const TradeSheetAgentBasicInfo = () => {
   const [createUpdateAgentBasicInfo] = useCreateUpdateAgentBasicInfoMutation();
 
   const onSubmit = async (data: any) => {
-    setBtnLoading(data.saveBtn); // Set loading state based on the button clicked
+    setBtnLoading(data.saveBtn);
     try {
       const isDraft = data.saveBtn === "save-draft";
       const requestData = isDraft ? { ...data, status: "draft" } : data;
 
-      // Property listing is required for seller, landlord, and multiple representation
       if (!isDraft) {
         const needsPropertyListing =
           data.representationType === "multiple" ||
@@ -482,8 +454,6 @@ const TradeSheetAgentBasicInfo = () => {
         : requestData.multipleRepresentation;
       }
       
-      // Keep the loaded trade's details (property details, linked listing) and point the listing at the one
-      // just selected, so the step header keeps showing the right address after saving.
       const loadedTrade = data?.data?.tradeSheetData || {};
       const selectedListingOption = propertyListingOptions.find(
         (o: any) => String(o.value) === String(processed_tradesheet?.propertyListingId)
@@ -533,7 +503,7 @@ const TradeSheetAgentBasicInfo = () => {
     } catch (error: any) {
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
     } finally {
-      setBtnLoading(""); // Reset loading state in the finally block
+      setBtnLoading("");
     }
   };
 
@@ -612,20 +582,16 @@ const TradeSheetAgentBasicInfo = () => {
 
   return (
     <div>
-      {/* <h2 className="uppercase text-center bg-[#c9c1c13d] py-5">Trade Sheet</h2> */}
       <TradeSheetSteps active={1} uuid={uuid} />
 
-      {/* Form */}
       {isLoading ? (
         <TableLoader />
       ) : (
         <div className="max-w-full mt-8 p-8 border border-gray-300/30 rounded-md  border-2">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-            {/* Agent's Basic Info: */}
             <div className="max-FULL  p-6 bg-[#c9c1c13d] rounded-lg shadow-md"> 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
 
-                {/* Representation */}
                 <div className="flex flex-col gap-2">
                   <label>
                     Representation Type{" "}
@@ -670,7 +636,6 @@ const TradeSheetAgentBasicInfo = () => {
                   )}
                 </div>
 
-                {/* Representation */}
                 {selectedRepresentation == "single" && (
                   <div className="flex flex-col gap-2">
                     <label>
@@ -848,7 +813,6 @@ const TradeSheetAgentBasicInfo = () => {
                 )}
               </div>
 
-              {/* Property Listing Address  */}
               {((representation === "seller" || representation === "landlord") ||
                 selectedRepresentation == "multiple") && (
                 <div className="flex flex-col gap-2 mt-2">
@@ -901,7 +865,6 @@ const TradeSheetAgentBasicInfo = () => {
                 </div>
               )}
 
-              {/* List Type */}
               <div className="flex flex-col gap-2 mt-2">
                 <SelectInput
                   label="List type"
@@ -915,7 +878,6 @@ const TradeSheetAgentBasicInfo = () => {
                   ]}
                 />
 
-                {/* Branch Selection - Super Admin & Branch Admin */}
               {isSuperAdmin || isBranchAdmin ? (
                 <div className="mt-3">
                   <label>Assign to Branch:</label>
@@ -962,24 +924,8 @@ const TradeSheetAgentBasicInfo = () => {
 
               
 
-              {/* Show user's branch (read-only) for branch users */}
-              {/* {!isSuperAdmin && user?.branch && (
-                <div className="mt-3">
-                  <label>Branch:</label>
-                  <input
-                    type="text"
-                    value={user.branch.name}
-                    disabled
-                    className="border rounded p-2 w-full bg-gray-100"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Trade sheet will be assigned to your branch automatically
-                  </p>
-                </div>
-              )} */}
             </div>
 
-            {/* Lead Source */}
             <div className="mt-4 p-4 border border-gray-200 rounded-lg flex flex-col gap-3">
               <label className="font-medium">Lead Source <span className="text-gray-400 text-sm font-normal">(Optional)</span></label>
               <div className="flex items-center gap-6">
@@ -1031,7 +977,6 @@ const TradeSheetAgentBasicInfo = () => {
             </div>
 
             <div className="flex justify-between my-15 mx-5">
-              {/* Save and Next Button */}
 
               <button
                 type="submit"
@@ -1041,7 +986,6 @@ const TradeSheetAgentBasicInfo = () => {
                 {btnLoading == "save-next" ? <ButtonLoader /> : "Save and Next"}
               </button>
 
-              {/* Save and Exit Button */}
 
               <button
                 type="submit"
@@ -1052,7 +996,6 @@ const TradeSheetAgentBasicInfo = () => {
                 {btnLoading == "save-exit" ? <ButtonLoader /> : "Save and Exit"}
               </button>
 
-              {/* Save as Draft Button */}
               <button
                 type="submit"
                 onClick={() => setValue("saveBtn", "save-draft")}
@@ -1074,7 +1017,6 @@ const TradeSheetAgentBasicInfo = () => {
                 {btnLoading === "reset" ? <ButtonLoader /> : "Rest Form"}
               </button>
 
-              {/* Cancel Button */}
               <button
                 onClick={cancelSubmit}
                 type="button"

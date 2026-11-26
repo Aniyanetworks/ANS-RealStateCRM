@@ -12,9 +12,9 @@ export const isTokenValid = (): boolean => {
 
   try {
     const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
-    const currentTime = Date.now() / 1000; // Convert to seconds
+    const currentTime = Date.now() / 1000;
 
-    return decoded.exp > currentTime; // True if token is still valid
+    return decoded.exp > currentTime;
   } catch (error) {
     return false;
   }

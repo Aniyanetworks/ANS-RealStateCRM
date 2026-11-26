@@ -3,8 +3,6 @@
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 import {
   useDeleteOtherAttachmentMutation,
-  // useDeletePaperWorkFileAttachmentMutation,
-  // useGetSpacificTradeSheetListDataQuery,
   useUploadOtherDocumentMutation,
 } from "../../redux/api/agent/trade-sheet/tradeSheetSlice";
 import { useGetUploadFileCategoriesQuery } from "../../redux/api/common/dynamicUploadFileSlice";
@@ -21,9 +19,8 @@ import TableLoader from "../loader/TableLoader";
 import ButtonLoader from "../loader/buttonLoader";
 import { usePdfSizeGuard } from "../../hooks/usePdfSizeGuard";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-// type of file
 type FileType = {
   id: number;
   name: string;
@@ -58,12 +55,10 @@ const PaperworkPropertyListing = () => {
   const [uploadPaperWorkFileAttachment] =
     useUploadPaperWorkFileAttachmentPropertyMutation();
 
-  // const [uploadOtherDocument] = useUploadOtherDocumentMutation();
   const [uploadOtherDocument] = useUploadPaperWorkOtherFileAttachmentPropertyMutation();
 
   const [deletePaperWorkFileAttachmentProperty] =
     useDeletePaperWorkFileAttachmentPropertyMutation();
-  // const [deleteOtherAttachment] = useDeleteOtherAttachmentMutation();
   const [deleteOtherAttachment] = useDeletePaperWorkOtherFileAttachmentPropertyMutation();
 
   const {
@@ -87,7 +82,7 @@ const PaperworkPropertyListing = () => {
     isLoading: tradeSheetLoading,
     refetch: trdaeSheetRefetch,
   } = useGetUploadFileCategoriesQuery({
-    slug: uploadFileCategory, // Ensure uploadFileCategory is available and valid
+    slug: uploadFileCategory,
     representation:'seller'
   });
 
@@ -99,35 +94,28 @@ const PaperworkPropertyListing = () => {
       const activeDocuments =
         data?.data?.uploadFileCategoryData?.uploadFileNames?.filter(
           (file: FileType) => {
-            // Filter by status and showOnPropertyListing
             if (file.status !== "active" || file.showOnPropertyListing !== "Yes") {
               return false;
             }
             
-            // Filter by listType if property listing has a listType
             if (propertyListingListType) {
               const fileListType = file.listType;
               
-              // If property listing is "Both", show all documents
               if (propertyListingListType === "Both") {
                 return true;
               }
               
-              // If property listing is "Commercial", show documents with "Commercial" or "Both"
               if (propertyListingListType === "Commercial") {
                 return fileListType === "Commercial" || fileListType === "Both";
               }
               
-              // If property listing is "Residential", show documents with "Residential" or "Both"
               if (propertyListingListType === "Residential") {
                 return fileListType === "Residential" || fileListType === "Both";
               }
               
-              // If property listing listType doesn't match any known value, show documents with matching listType or "Both"
               return fileListType === propertyListingListType || fileListType === "Both";
             }
             
-            // If no listType on property listing, show all active documents
             return true;
           }
         );
@@ -188,7 +176,6 @@ const PaperworkPropertyListing = () => {
         setIsUploading(null);
       }
     } catch (error: any) {
-      // setIsUploading(null);
       setIsUploading(null);
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
     }
@@ -224,7 +211,6 @@ const PaperworkPropertyListing = () => {
     );
   };
 
-  // Handle the loading states for each button
   const handleButtonClick = async(action: string) => {
     setBtnLoading(action);
 
@@ -261,7 +247,6 @@ const PaperworkPropertyListing = () => {
 
   };
 
-  // upload others documents
   const handleOtherDocumentUpload = async (e) => {
     const rawFile = e.target.files[0];
     if (!rawFile) return;
@@ -297,10 +282,8 @@ const PaperworkPropertyListing = () => {
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
       setIsUploadingOther(false);
     }
-    // setIsUploading(false);
   };
 
-  // delete other file
   const handleRemoveOtherFile = async (id) => {
     setIsDeletingOther(id);
     try {
@@ -388,7 +371,7 @@ const PaperworkPropertyListing = () => {
                           <button
                             onClick={() =>
                               handleRemoveUploadedFile(document.id, file.id)
-                            } // Pass file.id to enable re-uploading
+                            }
                             className="text-white px-3 rounded-md"
                           >
                             <img src={crossIcon} alt="" />
@@ -440,12 +423,6 @@ const PaperworkPropertyListing = () => {
                   ""
                 )}
 
-                {/* {document.paperType !== "singleUpload" &&
-                  document.fileData.length > 1 && (
-                    <button className="text-primary">
-                      <img src={downArrow} alt="" />
-                    </button>
-                  )} */}
               </div>
             </div>
             <div>
@@ -473,7 +450,7 @@ const PaperworkPropertyListing = () => {
                           <button
                             onClick={() =>
                               handleRemoveUploadedFile(document.id, file.id)
-                            } // Pass file.id to enable re-uploading
+                            }
                             className="text-white px-3 rounded-md"
                           >
                             <img src={crossIcon} alt="" />
@@ -488,7 +465,6 @@ const PaperworkPropertyListing = () => {
           </div>
         ))}
 
-        {/* other files  */}
         <div className="flex justify-between items-center px-2">
           <div className="flex items-center gap-3">
             <p className="w-[80px] ">*</p>
@@ -524,7 +500,6 @@ const PaperworkPropertyListing = () => {
           </div>
         </div>
 
-        {/* all files others  */}
         <div>
           {spacificPropertyListingData?.data?.propertyListingData?.propertyListingOtherAttachment?.map(
             (file: any, index: number) => (
@@ -564,7 +539,6 @@ const PaperworkPropertyListing = () => {
             onClick={() => {
               handleButtonClick("save-next");
 
-              // Check if all propertyListingRequired files are uploaded
               const missingRequiredFiles =
                 data?.data?.uploadFileCategoryData?.uploadFileNames
                   .filter((file) => file.propertyListingRequired === "Yes")
@@ -575,17 +549,15 @@ const PaperworkPropertyListing = () => {
                   });
               setMissingFiles(missingRequiredFiles);
 
-              console.log(missingRequiredFiles);
 
               if (missingRequiredFiles.length > 0) {
                 toast.error(
                   `Please fill in all required fields before proceeding.`
                 );
-                setBtnLoading(null); // Reset the loading state if validation fails
-                return; // Stop the navigation if any required file is missing
+                setBtnLoading(null);
+                return;
               }
 
-              // Proceed with navigation if all required files are uploaded
               navigate(
                 `/dashboard/super-admin/property-listing`
               );

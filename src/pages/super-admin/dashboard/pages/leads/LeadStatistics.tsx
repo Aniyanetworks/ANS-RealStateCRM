@@ -68,7 +68,6 @@ const LeadStatistics = () => {
 
   return (
     <div className="p-3">
-      {/* Filters */}
       <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-b border-gray-100">
         <span className="text-xs text-gray-500 font-medium">Status:</span>
         <Select
@@ -93,7 +92,6 @@ const LeadStatistics = () => {
         </span>
       </div>
 
-      {/* Leaderboard */}
       {isLoading ? (
         <div className="flex justify-center py-10 text-gray-400 text-xs">Loading…</div>
       ) : statistics.length === 0 ? (
@@ -114,7 +112,6 @@ const LeadStatistics = () => {
                 className="bg-white rounded-md flex overflow-hidden"
                 style={{ border: "1px solid #f0ede8", borderLeft: `3px solid ${rs.border}` }}
               >
-                {/* Rank badge */}
                 <div
                   className="flex items-center justify-center flex-shrink-0 w-9"
                   style={{ backgroundColor: rs.badge }}
@@ -128,9 +125,7 @@ const LeadStatistics = () => {
                   )}
                 </div>
 
-                {/* Main content */}
                 <div className="flex-1 min-w-0 px-3 py-2">
-                  {/* Name row */}
                   <div className="flex items-center gap-1.5 mb-1.5">
                     <div
                       className="w-5 h-5 rounded-full flex items-center justify-center text-white flex-shrink-0"
@@ -143,7 +138,6 @@ const LeadStatistics = () => {
                     </span>
                   </div>
 
-                  {/* Bar */}
                   <div className="bg-gray-100 rounded-full mb-1.5" style={{ height: 4, maxWidth: "70%" }}>
                     <div
                       className="rounded-full transition-all duration-700"
@@ -151,7 +145,6 @@ const LeadStatistics = () => {
                     />
                   </div>
 
-                  {/* Status tags */}
                   {statusKeys.length > 0 && (
                     <div className="flex flex-wrap gap-1">
                       {statusKeys.map((s) => (
@@ -167,7 +160,6 @@ const LeadStatistics = () => {
                   )}
                 </div>
 
-                {/* Count */}
                 <div
                   className="flex flex-col items-center justify-center flex-shrink-0 px-3"
                   style={{ borderLeft: "1px solid #f0ede8", minWidth: 56 }}

@@ -2,7 +2,6 @@
 // eslint-disable @typescript-eslint/no-explicit-any
 import React, { useState } from 'react';
 import { formatDate, parseISO } from 'date-fns';
-// import TableLoader from '../loader/TableLoader';
 import { Table, Tag } from 'antd';
 import type { TableColumnsType, TableProps } from "antd";
 import * as XLSX from 'xlsx';
@@ -10,7 +9,6 @@ import { FaFileExcel, FaFilePdf  } from "react-icons/fa";
 import jsPDF from 'jspdf';
 import logo1 from "/logo.svg";
 import { useRef } from "react";
-// import getStatusBadge from '../Utils/StatusBadge';
 
 
 
@@ -42,7 +40,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
@@ -127,7 +124,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
 
   
 
-  // Function to handle Excel export
   const handleExport = () => {
     const exportData = filteredData.map(item => ({
       name: item.clientUser.name,
@@ -174,7 +170,7 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
         x += columnWidths[index];
     });
 
-    let currentY = startY + 2 * lineHeight; // Start below headers
+    let currentY = startY + 2 * lineHeight;
     filteredData.forEach((item) => {
         const row = [
             item.clientUser.name || "...",
@@ -192,7 +188,7 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
 
         x = margin;
         row.forEach((cell, index) => {
-            pdf.text(String(cell), x, currentY); // Convert to string to avoid errors
+            pdf.text(String(cell), x, currentY);
             x += columnWidths[index];
         });
 
@@ -202,7 +198,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
     pdf.save("client_report.pdf");
 };
 
-  // Calculate client type counts
   const clientTypeCounts = filteredData.reduce((acc, item) => {
     const type = item?.clientUser?.clientType;
     if (type) {
@@ -213,9 +208,7 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
 
   return (
     <div>
-      {/* Client Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 my-3">
-        {/* Total Clients */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Clients</span>
@@ -225,7 +218,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Sellers */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-indigo-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Sellers</span>
@@ -235,7 +227,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Buyers */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-orange-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Buyers</span>
@@ -245,7 +236,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Tenants */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Tenants</span>
@@ -255,7 +245,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
           </div>
         </div>
 
-        {/* Landlords */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Landlords</span>
@@ -266,7 +255,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
         </div>
       </div>
 
-      {/* Export Buttons */}
       <div className="flex gap-3 justify-end"> 
         <FaFilePdf
           onClick={handlePdfExport}
@@ -284,7 +272,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
         />
       </div>
 
-      {/* Table */}
       <div id="table-container" ref={tableRef}>
         <Table
           rowKey="id"

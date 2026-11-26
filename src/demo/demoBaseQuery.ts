@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Browser-side stand-in for the Express API. Every RTK Query call is answered here
-// (from Supabase or static demo data) so the app needs no backend server.
 import type { BaseQueryFn, FetchArgs } from '@reduxjs/toolkit/query';
 import { demoRoutes, Handler } from './routes';
 

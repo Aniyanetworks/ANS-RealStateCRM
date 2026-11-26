@@ -63,7 +63,6 @@ const ActiveAgreementPreviewPopup = ({ agentAccount }) => {
 
   return (
     <div className="flex h-[calc(100vh-7rem)]">
-      {/* Right side - Document Preview */}
       <div className="flex-1 bg-white rounded-r-lg shadow-sm p-4">
         <div className="flex justify-between items-center mb-4 border-b pb-4">
           <h3 className="font-medium flex items-center gap-2">

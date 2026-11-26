@@ -33,7 +33,6 @@ type SharePermission = "view" | "download" | "delete" | "share";
 
 type UserOption = { label: string; value: number };
 
-// const { Dragger } = Upload;
 
 const FileManager = () => {
   const { hasPermissionForSlug } = usePermissions();
@@ -65,12 +64,10 @@ const FileManager = () => {
   const [shareSingleNodeWithMultipleUsers, { isLoading: sharingSingle }] = useShareSingleNodeWithMultipleUsersMutation();
   const [shareMultipleNodes, { isLoading: sharingMultiple }] = useShareMultipleNodesMutation();
   const [getDownloadUrl] = useGetDownloadUrlMutation();
-  // Rename state
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
   const [renameTargetNode, setRenameTargetNode] = useState<{ id: number; name: string; isFolder: boolean } | null>(null);
   const [newName, setNewName] = useState("");
 
-  // Add the rename mutation
   const [renameNode, { isLoading: renaming }] = useRenameNodeMutation();
 
   const openRenameModal = (node: { id: number; name: string; isFolder: boolean }) => {
@@ -79,10 +76,8 @@ const FileManager = () => {
   setIsRenameModalOpen(true);
 };
 
-// In your FileManager component, replace the renderToolbar function with:
 const renderToolbar = () => (
   <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", marginBottom: 12 }}>
-    {/* Your existing filters */}
     <select
       value={typeFilter}
       onChange={(e) => setTypeFilter(e.target.value as "all" | "folders" | "files")}
@@ -113,17 +108,7 @@ const renderToolbar = () => (
       {sortOrder === "asc" ? <SortAscendingOutlined /> : <SortDescendingOutlined />} {sortOrder === "asc" ? "Asc" : "Desc"}
     </button>
     
-    {/* Search input for local filtering */}
-    {/* <input
-      type="text"
-      placeholder="Filter current folder..."
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      className="global-search"
-      style={{ width: 200 }}
-    /> */}
     
-    {/* Global search button */}
     <button
       className="primary-btn-ghost"
       onClick={() => setIsSearchOpen(true)}
@@ -151,7 +136,6 @@ const renderToolbar = () => (
   </div>
 );
 
-// Add keyboard shortcut for search
 useEffect(() => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -170,20 +154,16 @@ useEffect(() => {
 
 const handleSearchNavigate = (node: FileNode & { parent?: any }) => {
   if (node.isFolder) {
-    // Navigate to the folder
     if (node.ownerId === user?.id) {
-      // It's my folder
       setShowShared(false);
       setParentIdStack([null, node.id]);
       setIdToName(prev => ({ ...prev, [node.id]: node.name }));
     } else {
-      // It's a shared folder
       setShowShared(true);
       setParentIdStack([null, node.id]);
       setSharedFolderHierarchy([{ id: node.id, name: node.name }]);
     }
   } else {
-    // For files, show preview or download
     if (node.mimeType?.startsWith('image/') || node.mimeType === 'application/pdf') {
       handleView(node);
     } else {
@@ -192,34 +172,29 @@ const handleSearchNavigate = (node: FileNode & { parent?: any }) => {
   }
 };
 
-// In your FileManager component, update the navigation functions
 const handleNavigateToFolder = (folderId: number | null, folderName: string, isShared: boolean) => {
   if (isShared) {
-    // Navigate to shared folder
     setShowShared(true);
     if (folderId) {
       setParentIdStack([null, folderId]);
       setSharedFolderHierarchy([{ id: folderId, name: folderName }]);
     } else {
-      // Navigate to shared root
       setParentIdStack([null]);
       setSharedFolderHierarchy([]);
     }
   } else {
-    // Navigate to my files folder
     setShowShared(false);
     if (folderId) {
       setParentIdStack([null, folderId]);
       setIdToName(prev => ({ ...prev, [folderId]: folderName }));
     } else {
-      // Navigate to my files root
       setParentIdStack([null]);
     }
   }
 };
 
 const handleViewFile = (node: FileNode) => {
-  handleView(node); // Your existing handleView function
+  handleView(node);
 };
 
 const handleRenameConfirm = async () => {
@@ -248,12 +223,10 @@ const handleRenameConfirm = async () => {
 
   const usingSharedRoot = showShared && parentIdStack.length === 1;
   
-  // Get nodes based on current view mode
   const nodes: FileNode[] = useMemo(() => {
     if (usingSharedRoot) {
       return sharedData?.data ?? [];
     } else if (showShared && currentParentId !== null) {
-      // We're inside a shared folder, use the children data
       return sharedChildrenData?.data ?? [];
     }
     return data?.data ?? [];
@@ -291,18 +264,14 @@ const [pendingSingleDeleteId, setPendingSingleDeleteId] = useState<number | null
   const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
 
 
-  // Cache folder id -> name so breadcrumb can always show names
   const [idToName, setIdToName] = useState<Record<number, string>>({});
 
-  // Keep track of shared folder hierarchy for breadcrumbs
   const [sharedFolderHierarchy, setSharedFolderHierarchy] = useState<Array<{id: number, name: string}>>([]);
 
   useEffect(() => {
-  // Clear selection when switching views
   setSelectedItems(new Set());
 }, [showShared]);
 
-  // Keep the cache updated with any folders visible in the current view
   useEffect(() => {
     if (!nodes || nodes.length === 0) return;
     setIdToName((prev) => {
@@ -318,19 +287,16 @@ const [pendingSingleDeleteId, setPendingSingleDeleteId] = useState<number | null
     });
   }, [nodes]);
 
-  // Modern UI controls
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "folders" | "files">("all");
   const [sortField, setSortField] = useState<"name" | "size" | "type">("name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  // Preview state
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [previewNode, setPreviewNode] = useState<FileNode | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  // Drag and drop state
   const [isDragOver, setIsDragOver] = useState(false);
 
   const { data: usersResp } = useGetUserListDataQuery("");
@@ -341,7 +307,6 @@ const [pendingSingleDeleteId, setPendingSingleDeleteId] = useState<number | null
     }))
     .filter((opt: UserOption) => Boolean(opt.value));
 
-  // Drag and drop handlers
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(true);
@@ -364,7 +329,6 @@ const [pendingSingleDeleteId, setPendingSingleDeleteId] = useState<number | null
   const files = Array.from(e.dataTransfer.files);
   if (files.length === 0) return;
 
-  // Filter files by allowed types (now includes images)
   const allowedExtensions = [
     'doc', 'docx', 'pdf', 'xls', 'xlsx', 'ppt', 'pptx',
     'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'
@@ -392,15 +356,12 @@ const [pendingSingleDeleteId, setPendingSingleDeleteId] = useState<number | null
   }
 };
 
-  // Upload handler for drag and drop
   const uploadProps: UploadProps = {
   name: 'files',
   multiple: true,
   showUploadList: false,
-  // Add accept property to restrict file types (now includes images)
   accept: '.doc,.docx,.pdf,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.bmp,.webp,.svg',
   beforeUpload: (file) => {
-    // Validate file type
     const allowedTypes = [
       'application/pdf',
       'application/msword',
@@ -428,10 +389,10 @@ const [pendingSingleDeleteId, setPendingSingleDeleteId] = useState<number | null
     
     if (!isAllowed) {
       message.error(`${file.name} is not a supported file type. Only documents (DOC, PDF, Excel, PPT) and images are allowed.`);
-      return Upload.LIST_IGNORE; // Prevent upload
+      return Upload.LIST_IGNORE;
     }
     
-    return true; // Allow upload
+    return true;
   },
   customRequest: async ({ file, onSuccess, onError }) => {
     try {
@@ -527,7 +488,6 @@ const [pendingSingleDeleteId, setPendingSingleDeleteId] = useState<number | null
     return;
   }
   
-  // Show confirmation modal instead of directly deleting
   setPendingDeleteItems(new Set(selectedItems));
   setIsDeleteMultipleModalVisible(true);
 };
@@ -554,23 +514,17 @@ const cancelDelete = () => {
     if (!node.isFolder) return;
     
     if (showShared) {
-      // For shared folders, update hierarchy and navigate
       setIdToName((prev) => ({ ...prev, [node.id]: node.name }));
       
-      // Update shared folder hierarchy
       const currentIndex = sharedFolderHierarchy.findIndex(f => f.id === node.id);
       if (currentIndex >= 0) {
-        // If folder already exists in hierarchy, truncate to that point
         setSharedFolderHierarchy(prev => prev.slice(0, currentIndex + 1));
       } else {
-        // Add new folder to hierarchy
         setSharedFolderHierarchy(prev => [...prev, { id: node.id, name: node.name }]);
       }
       
-      // Update parent stack for navigation
       setParentIdStack((prev) => [...prev, node.id]);
     } else {
-      // For own folders, use the regular listNodes query
       setIdToName((prev) => ({ ...prev, [node.id]: node.name }));
       setParentIdStack((prev) => [...prev, node.id]);
     }
@@ -585,13 +539,10 @@ const cancelDelete = () => {
 
   const goToBreadcrumb = (index: number) => {
     if (showShared) {
-      // For shared files, handle breadcrumb navigation
       if (index === 0) {
-        // Root level
         setParentIdStack([null]);
         setSharedFolderHierarchy([]);
       } else {
-        // Navigate to specific folder in hierarchy
         const folderId = sharedFolderHierarchy[index - 1]?.id;
         if (folderId) {
           setParentIdStack([null, folderId]);
@@ -599,7 +550,6 @@ const cancelDelete = () => {
         }
       }
     } else {
-      // For my files, use regular navigation
       setParentIdStack((prev) => prev.slice(0, index + 1));
     }
   };
@@ -620,7 +570,6 @@ const cancelDelete = () => {
     setIsShareModalOpen(true);
   };
 
-  // Update the bulk share handler
   const openBulkShareModal = () => {
     if (selectedItems.size === 0) {
       toast.error("Please select items to share");
@@ -679,7 +628,7 @@ const cancelDelete = () => {
 
   const getFolderOptions = () => {
   const folderOptions = (allFolders?.data || [])
-    .filter(folder => folder.id !== moveTargetParentNode?.id) // Exclude current folder
+    .filter(folder => folder.id !== moveTargetParentNode?.id)
     .map(folder => ({
       label: `📁 ${folder.name}`,
       value: folder.id,
@@ -712,7 +661,6 @@ const handleShareConfirm = async () => {
   }
 };
 
-  // Update the bulk share handler
 const handleBulkShareConfirm = async () => {
   if (selectedItems.size === 0 || bulkShareUsers.length === 0) {
     toast.error("Please select items and at least one user to share with");
@@ -927,7 +875,6 @@ const handleBulkShareConfirm = async () => {
     },
   ];
 
-  // Derived filtered and sorted data
   const filteredNodes = nodes
     .filter(n => {
       if (typeFilter === "folders" && !n.isFolder) return false;
@@ -956,7 +903,6 @@ const handleBulkShareConfirm = async () => {
       return 0;
     });
 
-  // Build breadcrumb items for shared files
   const getSharedBreadcrumbItems = () => {
     const items = [
       {
@@ -968,7 +914,6 @@ const handleBulkShareConfirm = async () => {
       }
     ];
 
-    // Add shared folder hierarchy to breadcrumb
     sharedFolderHierarchy.forEach((folder, index) => {
       items.push({
         title: (
@@ -1082,7 +1027,6 @@ const handleBulkShareConfirm = async () => {
         )}
       </Space>
     }>
-      {/* Drag and Drop Area */}
       {!showShared && hasPermissionForSlug("file-manager-items-upload") && (
         <div
           onDragOver={handleDragOver}
@@ -1170,7 +1114,6 @@ const handleBulkShareConfirm = async () => {
         )}
       </div>
 
-      {/* Modern toolbar: search, filter, sort, view toggle */}
       <div style={{
         display: "flex",
         gap: 8,
@@ -1188,7 +1131,7 @@ const handleBulkShareConfirm = async () => {
   onNavigate={handleSearchNavigate}
   onNavigateToFolder={handleNavigateToFolder}
   onViewFile={handleViewFile}
-  currentUser={user} // Pass the current user object
+  currentUser={user}
 />
 
       </div>
@@ -1348,7 +1291,6 @@ const handleBulkShareConfirm = async () => {
       )}
     </Card>
 
-    {/* Bulk Move Modal */}
     <Modal
       title={`Move ${selectedItems.size} items`}
       open={isBulkMoveModalOpen}
@@ -1407,7 +1349,7 @@ const handleBulkShareConfirm = async () => {
       onChange={(values) => {
         const users = values.map(val => ({
           userId: Number(val),
-          permissions: ["view"] // Default permission
+          permissions: ["view"]
         }));
         setBulkShareUsers(users);
       }}
@@ -1470,7 +1412,6 @@ const handleBulkShareConfirm = async () => {
   </Space>
 </Modal>
 
-    {/* Single Move Modal */}
     <Modal
       title={`Move: ${moveTargetNode?.name || "Item"}`}
       open={isMoveModalOpen}
@@ -1495,7 +1436,6 @@ const handleBulkShareConfirm = async () => {
       </Space>
     </Modal>
 
-    {/* Single Share Modal */}
     <Modal
       title={`Share: ${shareTargetNode?.name || "Item"}`}
       open={isShareModalOpen}
@@ -1608,8 +1548,6 @@ const handleBulkShareConfirm = async () => {
                           />
                           {permission === "view" && <EyeOutlined style={{ fontSize: "18px", color: "#1890ff" }} />}
                           {permission === "download" && <DownloadOutlined style={{ fontSize: "18px", color: "#52c41a" }} />}
-                          {/* {permission === "delete" && <DeleteOutlined style={{ fontSize: "18px", color: "#ff4d4f" }} />}
-                          {permission === "share" && <ShareAltOutlined style={{ fontSize: "18px", color: "#722ed1" }} />} */}
                         </label>
                       ))}
                     </div>
@@ -1628,7 +1566,6 @@ const handleBulkShareConfirm = async () => {
       </Space>
     </Modal>
 
-    {/* Create Folder Modal */}
     <Modal
       title="Create folder"
       open={isCreateModalOpen}
@@ -1646,7 +1583,6 @@ const handleBulkShareConfirm = async () => {
       />
     </Modal>
 
-    {/* File Preview Modal */}
     <Modal
       title={previewNode?.name || "Preview"}
       open={isPreviewOpen}
@@ -1697,7 +1633,6 @@ const handleBulkShareConfirm = async () => {
       )}
     </Modal>
 
-    {/* Bulk Delete Confirmation Modal */}
 <Modal
   title="Confirm Deletion"
   open={isDeleteMultipleModalVisible}
@@ -1720,7 +1655,6 @@ const handleBulkShareConfirm = async () => {
 </Modal>
 
 
-      {/* Single Delete Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteSingleModalVisible}
@@ -1742,7 +1676,6 @@ const handleBulkShareConfirm = async () => {
         Are you sure you want to delete this item?
       </Modal>
 
-      {/* Rename Modal */}
 <Modal
   title={`Rename ${renameTargetNode?.isFolder ? 'Folder' : 'File'}`}
   open={isRenameModalOpen}

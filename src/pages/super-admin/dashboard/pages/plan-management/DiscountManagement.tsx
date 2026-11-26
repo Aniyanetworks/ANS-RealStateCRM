@@ -51,12 +51,10 @@ const DiscountManagement = () => {
   const { hasPermissionForSlug } = usePermissions();
   const navigate = useNavigate();
   
-  // States
   const [discounts, setDiscounts] = useState<Discount[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [discountToDelete, setDiscountToDelete] = useState<string | null>(null);
 
-  // API Hooks
   const { data, isLoading } = useGetDiscountListDataQuery('');
   const [deleteDiscount] = useDeleteSingleDiscountMutation();
 
@@ -66,7 +64,6 @@ const DiscountManagement = () => {
     }
   }, [data]);
 
-  // Handlers
   const showDeleteConfirm = (id: string) => {
     setDiscountToDelete(id);
     setIsModalVisible(true);
@@ -107,7 +104,6 @@ const DiscountManagement = () => {
         </div>
         
         <div className="flex justify-between items-center">
-          {/* {hasPermissionForSlug("create-discounts") && ( */}
             <Link
               to="/dashboard/super-admin/discount-management/create-custom"
               className="text-[16px] hover:text-primaryPurple duration-100"
@@ -117,7 +113,6 @@ const DiscountManagement = () => {
                 Create Discount
               </button>
             </Link>
-          {/* )} */}
         </div>
       </div>
 
@@ -133,23 +128,18 @@ const DiscountManagement = () => {
                     {index + 1}. {discount.name}
                   </h3>
                   <div className="space-x-4 flex items-center">
-                    {/* {hasPermissionForSlug("edit-discounts") && ( */}
                       <Link to={`/dashboard/super-admin/discount-management/edit/${discount.uuid}`}>
                         <FaEdit className="text-blue-600 hover:text-blue-700 cursor-pointer" />
                       </Link>
-                    {/* )} */}
-                    {/* {hasPermissionForSlug("delete-discounts") && ( */}
                       <FaTrash
                         className="text-red-600 hover:text-red-700 cursor-pointer"
                         onClick={() => showDeleteConfirm(discount.id)}
                       />
-                    {/* )} */}
                   </div>
                 </div>
 
                 <ul className="list-disc pl-5 space-y-2">
                   {discount.discountItems.map((item, itemIndex) => {
-                    // Helper function to get duration text with proper plural form
                     const getDurationText = (duration: number, type: string) => {
                       const durationTypes = {
                         'Weekly': duration === 1 ? 'Week Discount ' : 'Weeks Discount ',
@@ -201,7 +191,6 @@ const DiscountManagement = () => {
         )}
       </div>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Delete"
         open={isModalVisible}

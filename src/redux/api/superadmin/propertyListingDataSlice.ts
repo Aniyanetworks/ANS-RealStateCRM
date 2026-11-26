@@ -102,7 +102,6 @@ const propertyListingApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      // providesTags: ["getPropertyListingListDataTag"], // optional tagging
     }),
 
 
@@ -149,7 +148,6 @@ const propertyListingApi = api.injectEndpoints({
         const queryParams = new URLSearchParams();
         if (uuid) queryParams.append("uuid", uuid);
 
-        // Sending the rejectReason along with status and uuid in the request body as a JSON object
         return {
           url: `/superadmin/property-listing/change-property-listing-status?${queryParams.toString()}`,
           method: "POST",
@@ -167,7 +165,6 @@ const propertyListingApi = api.injectEndpoints({
         const queryParams = new URLSearchParams();
         if (uuid) queryParams.append("uuid", uuid);
 
-        // Sending the rejectReason along with status and uuid in the request body as a JSON object
         return {
           url: `/superadmin/property-listing/change-listing-status?${queryParams.toString()}`,
           method: "POST",
@@ -217,7 +214,7 @@ const propertyListingApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      invalidatesTags: ["getPropertyListingTag", "getSpacificTradeSheetListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getPropertyListingTag", "getSpacificTradeSheetListDataTag"],
     }),
 
 
@@ -258,7 +255,7 @@ const propertyListingApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      invalidatesTags: ["getPropertyListingTag", "getSpacificTradeSheetListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getPropertyListingTag", "getSpacificTradeSheetListDataTag"],
     }),
 
     changePropertyListingAttachmentStatus: builder.mutation({
@@ -266,7 +263,6 @@ const propertyListingApi = api.injectEndpoints({
         const queryParams = new URLSearchParams();
         if (id) queryParams.append("id", id);
 
-        // Sending the rejectReason along with status and uuid in the request body as a JSON object
         return {
           url: `/superadmin/property-listing/change-property-listing-attachment-status?${queryParams.toString()}`,
           method: "POST",
@@ -322,7 +318,6 @@ const propertyListingApi = api.injectEndpoints({
       ],
     }),
 
-    // --- Property Listing Note Endpoints ---
     getPropertyListingNote: builder.query({
       query: ({ propertyListingId }) => {
         if (!propertyListingId) throw new Error("propertyListingId is required");

@@ -3,7 +3,6 @@ import { route } from '../route';
 
 const ok = (message: string, data: any, extra: any = {}) => ({ status: true, message, data, ...extra });
 
-// ---- Condition types (data.ConditionType: {id, condition}) ----
 const conditionNames = [
   'Financing', 'Home Inspection', "Sale of Buyer's Property", 'Insurance', 'Lawyer Review',
   'Status Certificate Review', 'Satisfactory Appraisal', 'Environmental Assessment', 'Survey Review',
@@ -15,7 +14,6 @@ let conditions = conditionNames.map((condition, i) => ({
 }));
 let nextCondId = conditions.length + 1;
 
-// ---- Users ----
 const users = [
   { id: 2, name: 'Ava Morgan', email: 'ava.morgan@ans.demo' },
   { id: 3, name: 'Olivia Hart', email: 'olivia.hart@ans.demo' },
@@ -29,7 +27,6 @@ const iso = (daysAgo: number, h: number, m: number) => {
   return d.toISOString();
 };
 
-// ---- File activity (trade documents) ----
 const faRows: [number, string, string, string, string | null][] = [
   [0, 'Agreement of Purchase and Sale.pdf', 'upload', 'success', null],
   [0, 'Form 801 - Offer Summary.pdf', 'upload', 'success', null],
@@ -64,7 +61,6 @@ const fileActivity = faRows.map((r, i) => {
   };
 });
 
-// ---- File manager activity ----
 const fmRows: [number, string, string, string, string | null, string | null, string | null][] = [
   [0, 'Listings 2026', 'create_folder', 'success', null, null, 'files/Listings 2026'],
   [0, '14 Maple Grove Cres - Disclosure.pdf', 'upload_file', 'success', 'files/Listings 2026/14 Maple Grove Cres - Disclosure.pdf', null, null],
@@ -95,7 +91,6 @@ const fileManager = fmRows.map((r, i) => {
 });
 const count = (rows: any[], ...ops: string[]) => rows.filter((r) => ops.includes(r.operation)).length;
 
-// ---- System logs (plain text lines: "[ts] level: message") ----
 const logLines = (type: string) => {
   const lines: string[] = [];
   const base = Date.UTC(2026, 10, 26, 15, 30, 0);

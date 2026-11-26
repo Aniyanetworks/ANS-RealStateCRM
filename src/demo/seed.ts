@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// In-memory demo dataset shaped like the original API responses.
 const NAMES = ['Olivia Hart', 'Marcus Bell', 'Priya Nair', 'Daniel Cruz', 'Sofia Lang', 'Ethan Park', 'Amara Khan', 'Lucas Reid'];
 const CITIES = ['Toronto', 'Mississauga', 'Brampton', 'Oakville', 'Markham'];
 const STREETS = ['Maple Ave', 'Lakeshore Blvd', 'King St', 'Oak Lane', 'Bayview Dr', 'Queen St W'];
@@ -52,7 +51,7 @@ const tradeSheet = (i: number) => {
     },
     buyerInformations: [{ firstName: bf, lastName: bl }],
     sharedUsers: i % 3 === 0 ? [{ name: NAMES[(i + 2) % NAMES.length], representationType: seller ? 'seller' : 'buyer' }] : [],
-    agentDetails: [],
+    agentDetails: [{ buyerCommissionType: 'percentage', sellerCommissionType: 'percentage', buyerCommission: 2 + (i % 3) * 0.25, sellerCommission: 2 + ((i + 1) % 3) * 0.25 }],
     lawyerDetails: [],
   };
 };

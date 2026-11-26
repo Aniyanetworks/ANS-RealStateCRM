@@ -72,13 +72,10 @@ const BuyerCommissionInvoice = ({ uuid }) => {
   };
 
   const totalSellingCommissionCalculation = () => {
-    // Get the selling commission
     const sellingCommission = sellingCommissionCalculation();
 
-    // Get the GST on the commission
-    const gst = gstCalculation(13, sellingCommission); // Use the selling commission here
+    const gst = gstCalculation(13, sellingCommission);
 
-    // Return the total commission including GST
     return sellingCommission + gst;
   };
 
@@ -90,12 +87,11 @@ const BuyerCommissionInvoice = ({ uuid }) => {
     setIsEmailSend(true);
 
     try {
-      // Wait for the PDF to be generated first
       await new Promise((resolve, reject) => {
         const input = sectionRef.current;
         html2canvas(input, {
           scale: 2,
-          useCORS: true, // Enable CORS for external images
+          useCORS: true,
           logging: true,
           allowTaint: true,
         })
@@ -105,7 +101,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
 
             const pdfWidth = pdf.internal.pageSize.getWidth();
 
-            // Fit image to page width and maintain aspect ratio
             const canvasWidth = canvas.width;
             const canvasHeight = canvas.height;
             const ratio = canvasHeight / canvasWidth;
@@ -122,16 +117,14 @@ const BuyerCommissionInvoice = ({ uuid }) => {
               }
             );
 
-            // Set the generated PDF File to "attachments" form field using setValue
             setValue("attachments", pdfFile);
-            resolve(); // Resolve the promise after PDF is generated
+            resolve();
           })
           .catch((error) => {
-            reject(error); // Reject the promise if there's an error generating the PDF
+            reject(error);
           });
       });
 
-      // Get form values from React Hook Form after the PDF generation is complete
       const data = getValues();
       const formDataEmail = new FormData();
       formDataEmail.append(
@@ -150,20 +143,17 @@ const BuyerCommissionInvoice = ({ uuid }) => {
         tradeSheetData?.propertyListingId
       );
 
-      // Split recipients and append them to formData as an array of emails
       const recipientsArray = data.recipients
         .split(",")
-        .map((email) => email.trim()); // Ensure emails are trimmed
-      formDataEmail.append("recipients", recipientsArray); // Append recipients as a JSON string
+        .map((email) => email.trim());
+      formDataEmail.append("recipients", recipientsArray);
 
       for (const key in data) {
         if (data.hasOwnProperty(key) && key !== "recipients") {
-          // Skip recipients field here as we've already handled it
           formDataEmail.append(key, data[key]);
         }
       }
 
-      // Send the email with the generated PDF as an attachment
       const response = await sendBuyerCommissionInvoice({
         data: formDataEmail,
       }).unwrap();
@@ -171,7 +161,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
       toast.success(`${response?.message}`);
       resetForm();
     } catch (error) {
-      console.log("Error:", error); // Log the error for debugging
       toast.error(`Error: ${error?.message || "Something went wrong"}`);
     } finally {
       setIsEmailSend(false);
@@ -215,11 +204,9 @@ const BuyerCommissionInvoice = ({ uuid }) => {
     }
   };
 
-  // Enhanced image loader with CORS handling
   const loadAndConvertImages = async (element: HTMLElement): Promise<void> => {
     const images = element.getElementsByTagName("img");
     const promises = Array.from(images).map((img) => {
-      // Skip data URLs and local images
       if (
         img.src.startsWith("data:") ||
         img.src.startsWith(window.location.origin)
@@ -250,7 +237,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
           console.error("Failed to load image:", img.src);
           resolve();
         };
-        // Add cache busting parameter
         proxyImg.src = img.src.includes("?")
           ? `${img.src}&t=${new Date().getTime()}`
           : `${img.src}?t=${new Date().getTime()}`;
@@ -331,7 +317,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md border border-gray-200">
-      {/* Tabs */}
       <div className="mt-6 border-b flex mb-2">
         <button
           className={`px-4 py-2 ${
@@ -369,7 +354,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
           </div>
           <div ref={sectionRef} className="bg-[#0f766e] h-[1030px] ">
             <div className="ml-16 pl-10 py-10 border-[#0b3331] border-y-8 h-full  bg-white ">
-              {/* Header */}
               <div className="flex gap-10 items-start  pb-4">
                 <div className="flex gap-3 w-[50%] items-end">
                   <img
@@ -394,7 +378,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </div>
               </div>
 
-              {/* Invoice Info */}
               <div className="mt-4 text-sm">
                 <p>Date: {moment().format("MMMM DD, YYYY")}</p>
                 <p>
@@ -412,7 +395,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </p>
               </div>
 
-              {/* Statement of Account */}
               <div className="mt-4">
                 <h3 className="text-lg font-bold underline">
                   STATEMENT OF ACCOUNT
@@ -448,7 +430,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </p>
               </div>
 
-              {/* Financial Details */}
               <div className="mt-4">
                 <div className="border-b border-gray-600 pb-2">
                   <p className=" grid grid-cols-2 gap-5">
@@ -494,7 +475,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </h3>
               </div>
 
-              {/* Payment Instructions */}
               <div className="mt-4">
                 <p>
                   Please make cheque payable to{" "}
@@ -506,7 +486,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </p>
               </div>
 
-              {/* EFT Details */}
               <div className="mt-4">
                 <h3 className="text-lg font-bold underline">
                   Electronic Fund Transfer (EFT) Details:
@@ -525,7 +504,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </p>
               </div>
 
-              {/* Buyer's Solicitor */}
               <div className="mt-4">
                 <h3 className="text-lg font-bold underline">
                   Buyer's Solicitor:
@@ -560,7 +538,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </p>
               </div>
 
-              {/* Footer */}
               <div className="mt-5 text-sm text-gray-700">
                 <p>
                   Thank you and feel free to reach out to us anytime if you have
@@ -581,7 +558,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
             <div>
               <h5 className="mb-2 text-center font-bold">Send Email</h5>
 
-              {/* Recipients Input */}
               <div className="mb-4">
                 <label className="font-bold">Recipients Email:</label>
                 <input
@@ -599,7 +575,6 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 )}
               </div>
 
-              {/* Subject Input (Text Area) */}
               <div className="mb-4">
                 <label className="font-bold">Email Subject:</label>
                 <input
@@ -616,15 +591,8 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 )}
               </div>
 
-              {/* Data Input (Text Area) */}
               <div className="mb-4">
                 <label className="font-bold">Email Body:</label>
-                {/* <textarea
-                  rows={5}
-                  className="w-full p-2 border rounded"
-                  placeholder="Email Body/Content"
-                  {...register("data", { required: "Email body is required" })}
-                /> */}
                 <ReactQuill
                   value={getValues("data")}
                   onChange={handleChange}
@@ -645,11 +613,10 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                   <span className="text-red-500">{errors.data.message}</span>
                 )}
               </div>
-              {/* Submit Button */}
               <div>
                 <button
                   className="bg-[#0f766e] text-white p-2 rounded-md flex gap-2 items-center"
-                  onClick={onSubmitEmail} // Hook form submit
+                  onClick={onSubmitEmail}
                   disabled={isEmailSend}
                 >
                   {isEmailSend && <ButtonLoader />}

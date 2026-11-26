@@ -33,7 +33,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
   const [knowledgeDocuments, setKnowledgeDocuments] = useState<any[]>([]);
   const [fetchLoading, setFetchLoading] = useState<boolean>(false);
 
-  // Group documents by type
   useEffect(() => {
     if (!loading && data) {
       setFetchLoading(true);
@@ -50,7 +49,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
         return acc;
       }, {});
 
-      // Convert to array format similar to your original structure
       const documents = Object.keys(documentsByType).map(type => ({
         id: type,
         name: type.charAt(0).toUpperCase() + type.slice(1) + "s",
@@ -83,17 +81,15 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
     { value: "rejected", label: "Rejected" },
   ];
 
-  // Add this function to determine content type
   const getContentType = (item: KnowledgeItem) => {
     if (item.type === "document") {
-      return "file"; // PDF or other files
+      return "file";
     } else if (item.type === "tutorial" || item.type === "training") {
-      return "youtube"; // YouTube URLs
+      return "youtube";
     }
-    return "file"; // default
+    return "file";
   };
 
-  // Function to extract YouTube video ID from URL
   const getYouTubeVideoId = (url: string) => {
     if (!url) return null;
     
@@ -102,13 +98,12 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
     return (match && match[7].length === 11) ? match[7] : null;
   };
 
-  // Function to get embed URL for YouTube
   const getYouTubeEmbedUrl = (url: string) => {
     const videoId = getYouTubeVideoId(url);
     if (videoId) {
       return `https://www.youtube.com/embed/${videoId}`;
     }
-    return url; // Fallback to original URL if not a valid YouTube URL
+    return url;
   };
 
   const getStatusColor = (status) => {
@@ -135,7 +130,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
   };
 
   useEffect(() => {
-  // Clear PDF view when knowledgeDocuments changes (data loaded or changed)
   setPdfToView({});
   setError(null);
   setFileLoading(false);
@@ -225,7 +219,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
   const handleDownload = async () => {
     const fileUrl = pdfToView.url;
 
-    // Don't try to download YouTube videos
     if (getContentType(pdfToView) === "youtube") {
       window.open(pdfToView.url, '_blank');
       return;
@@ -254,7 +247,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
   const sliceSize = Math.floor((sidebarWidth - 300) / 15) + (sidebarWidth > 310 ? 35 : 28);
 
   const getCategory = (cat_name: string) => {
-    // alert(cat_name)
   let new_cat: string;
 
   switch (cat_name) {
@@ -268,14 +260,13 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
       new_cat = "Training and Appointments";
       break;
     default:
-      new_cat = cat_name; // fallback if no match
+      new_cat = cat_name;
   }
 
   return new_cat;
 };
 
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (loadingTimeout) {
@@ -296,7 +287,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
     <div className="relative">
       <div>
         <div className="flex h-[calc(100vh-7rem)]">
-          {/* Sidebar */}
           <div
             style={{ width: `${sidebarWidth}px` }}
             className={`absolute lg:relative rounded-l-lg bg-white h-[calc(100vh-7rem)] overflow-y-auto overflow-x-hidden py-5 ${
@@ -331,7 +321,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
               </svg>
             </button>
 
-            {/* Knowledge Documents List */}
             {knowledgeDocuments?.map((category: any, index: number) => (
               <div key={index} className="">
                 <div>                  
@@ -446,13 +435,11 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
             ))}
           </div>
 
-          {/* Resizer */}
           <div
             className="w-[4px] bg-gray-200 cursor-ew-resize"
             onMouseDown={handleMouseDown}
           ></div>
 
-          {/* Main Content Area */}
           <div className="w-full bg-white rounded-r-lg shadow-md p-4">
             <div className="flex justify-between pb-4 items-center border-b mb-2">
               <h3 className="font-medium flex items-center gap-2 text-[#0b3b38]">
@@ -482,7 +469,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
                   </div>
                 )}
 
-                {/* Content Viewer */}
                 {!fileLoading && pdfToView.url && (
                   getContentType(pdfToView) === "youtube" ? (
                     <div className="w-full h-full flex flex-col items-center justify-center p-4">
@@ -544,7 +530,6 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
         </div>
       </div>
 
-      {/* Reject Reason Modals */}
       <Modal
         title="Add Reject Reasons"
         visible={isRejectModalVisible}

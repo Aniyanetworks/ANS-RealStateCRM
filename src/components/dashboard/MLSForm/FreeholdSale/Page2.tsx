@@ -248,7 +248,6 @@ const Page2 = () => {
           </div>
         </div>
         <div className="border-r px-2 pt-3 border-darkBlue">
-          {/* sewers  */}
           <div>
             <div className="flex  gap-1">
               <div>
@@ -282,7 +281,6 @@ const Page2 = () => {
             </div>
           </div>
 
-          {/* retirement community  */}
           <div>
             <SubSectionHeading
               title="RETIREMENT COMMUNITY"
@@ -300,7 +298,6 @@ const Page2 = () => {
             </div>
           </div>
 
-          {/* physically handicapped equipped */}
           <div>
             <SubSectionHeading
               title="PHYSICALLY HANDICAPPED EQUIPPED"
@@ -318,7 +315,6 @@ const Page2 = () => {
             </div>
           </div>
 
-          {/* special designation  */}
           <div>
             <div className="">
               <div>
@@ -363,7 +359,6 @@ const Page2 = () => {
             </div>
           </div>
 
-          {/* approximate age  */}
           <div>
             <SubSectionHeading
               title="APPROXIMATE AGE"
@@ -406,7 +401,6 @@ const Page2 = () => {
             </div>
           </div>
 
-          {/* approx square footage  */}
           <div>
             <SubSectionHeading
               title="APPROX SQUARE FOOTAGE

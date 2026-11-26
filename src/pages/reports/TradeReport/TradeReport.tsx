@@ -27,7 +27,7 @@ export default function TradeReport() {
   const [customStart, setCustomStart] = useState("");
   const [customEnd, setCustomEnd] = useState("");
   const [searchText, setSearchText] = useState("");
-  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]); // State for search suggestions
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
   const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
 
   const { data } = useGetTradeReportDataQuery();
@@ -35,7 +35,6 @@ export default function TradeReport() {
   const { user } = useSelector((state: any) => state.user);
   const isSuperAdmin = user?.roleId == 1;
 
-  // Function to set predefined date ranges
   const handlePeriodFilter = (period: string) => {
     const now = new Date();
     const startDate = new Date();
@@ -86,7 +85,6 @@ export default function TradeReport() {
     }
   };
 
-  // Handle branch filter change
   const handleBranchFilter = (selectedBranchIds: string[]) => {
     setSelectedBranches(selectedBranchIds);
   };
@@ -107,12 +105,10 @@ export default function TradeReport() {
     });
   };
 
-  // Memoized logic for filtering data
   const filteredData = useMemo(() => {
     if (!data?.data?.tradeData) return [];
     let reportData = data.data.tradeData;
 
-    // Filter by Date Range
     if (dateRange) {
       const [startStr, endStr] = dateRange;
       if (!startStr || !endStr) return [];
@@ -124,7 +120,6 @@ export default function TradeReport() {
       });
     }
 
-    // Filter by Branches
     if (selectedBranches.length > 0) {
       reportData = reportData.filter((item) =>
         selectedBranches.includes(item?.tradeSheet?.branchId?.toString()) ||
@@ -133,7 +128,6 @@ export default function TradeReport() {
       );
     }
 
-    // Search Filter
     if (searchText) {
       reportData = reportData.filter((item) => searchInObject(item, searchText));
     }
@@ -142,12 +136,10 @@ export default function TradeReport() {
   }, [data, dateRange, selectedBranches, searchText]);
 
 
-  // Function to handle search input changes
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
 
-    // Generate search suggestions based on the input
     if (value.trim() === "") {
       setSearchSuggestions([]);
     } else {
@@ -169,15 +161,14 @@ export default function TradeReport() {
         ])
         .flat()
         .filter((field) => field?.toLowerCase().includes(value.toLowerCase()))
-        .slice(0, 5); // Limit to 5 suggestions
+        .slice(0, 5);
       setSearchSuggestions(suggestions as string[]);
     }
   };
 
-  // Function to handle suggestion selection
   const handleSuggestionClick = (suggestion: string) => {
     setSearchText(suggestion);
-    setSearchSuggestions([]); // Clear suggestions
+    setSearchSuggestions([]);
   };
 
   const searchFilterToolbar = (

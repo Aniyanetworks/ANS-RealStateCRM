@@ -8,7 +8,6 @@ const NewAgent = () => {
 
   const recentAgents = data?.data?.agents?.slice(0, 4) || [];
 
-  // Don't render anything if no agents and not loading
   if (!isLoading && recentAgents.length === 0) {
     return null;
   }

@@ -7,19 +7,16 @@ type pdfdataProps = {
   data?: any;
 };
 const Table1: React.FC<pdfdataProps> = ({ table1Data, data }) => {
-  console.log(data);
 
   const getTable1Data = (startString: string) => {
     const startIndex = data.findIndex((obj: { Text: string }) =>
       obj?.Text?.startsWith(startString)
     );
 
-    console.log(startIndex);
 
     if (startIndex !== -1) {
       const value = data[startIndex + 1]?.Text;
       if (!value.includes(":")) {
-        console.log(value);
         return value;
       }
     }
@@ -66,7 +63,6 @@ const Table1: React.FC<pdfdataProps> = ({ table1Data, data }) => {
   const roof = getTable1Data("Roof:");
   const foundation = getTable1Data("Foundation:");
 
-  console.log(kitchen);
 
   return (
     <div className="py-3 border-b grid grid-cols-3 divide-x-2">

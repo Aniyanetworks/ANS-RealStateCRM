@@ -1,6 +1,4 @@
 // @ts-nocheck
-// Accounting audit log: every posting, approval, void and settings change in brokerage accounting
-// (and, optionally, time clock activity).
 import React, { useState } from "react";
 import { Segmented } from "antd";
 import dayjs from "dayjs";

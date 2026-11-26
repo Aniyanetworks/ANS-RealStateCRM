@@ -8,11 +8,9 @@ const CommissionTab = ({ data }) => {
   const [activeUser, setActiveUser] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("Received data:", data);
     if (data?.data?.tradeSheetData?.activityLog) {
       setActivityLog(data.data.tradeSheetData.activityLog);
 
-      // Group activity log by userName
       const grouped = data.data.tradeSheetData.activityLog.reduce((acc, log) => {
         if (!acc[log.userName]) {
           acc[log.userName] = [];
@@ -23,7 +21,6 @@ const CommissionTab = ({ data }) => {
 
       setGroupedActivityLog(grouped);
 
-      // Set the first user as active by default
       const firstUser = Object.keys(grouped)[0];
       setActiveUser(firstUser);
     }
@@ -33,7 +30,6 @@ const CommissionTab = ({ data }) => {
     <div className="relative h-full w-full p-3 z-[999] bg-white shadow-lg py-5 pl-5 transform translate-x-0 transition-transform duration-300">
       <div className="overflow-auto h-[70vh]">
         <div className="rounded-md p-4 shadow-md">
-          {/* User Tabs */}
           <div className="flex space-x-4 border-b mb-4">
             {Object.keys(groupedActivityLog).map((userName, index) => (
               <button
@@ -50,7 +46,6 @@ const CommissionTab = ({ data }) => {
             ))}
           </div>
 
-          {/* Activity Log Section */}
           <div>
             <h3 className="font-semibold text-xl text-gray-900 mb-4">Activity Log</h3>
             {activeUser && groupedActivityLog[activeUser]?.length > 0 ? (

@@ -129,53 +129,43 @@ const BranchList = () => {
   const [createUpdateBranch, { isLoading: isSaving }] =
     useCreateUpdateBranchMutation();
 
-  // Phone and Postal Code formatting states
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [postalCode, setPostalCode] = useState<string>("");
 
-  // Create Modal States
   const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
 
-  // Edit Modal States
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [editBranchUuid, setEditBranchUuid] = useState<string | undefined>(
     undefined
   );
 
-  // View Modal States
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [viewBranchUuid, setViewBranchUuid] = useState<string | undefined>(
     undefined
   );
 
-  // Fetch data for edit modal
   const { data: editBranchData, isLoading: isFetchingEditBranch } =
     useGetSpecificBranchDataQuery(editBranchUuid, {
       skip: !editBranchUuid,
     });
 
-  // Fetch data for view modal
   const { data: viewBranchData, isLoading: isFetchingViewBranch } =
     useGetSpecificBranchDataQuery(viewBranchUuid, {
       skip: !viewBranchUuid,
     });
 
-  // Location state management
-  const selectedCountry = 39; // Canada by default
+  const selectedCountry = 39;
   const selectedStateCreate = Form.useWatch("stateId", form);
   const selectedStateEdit = editBranchData?.data?.branchData?.stateId;
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
     skip: !selectedCountry,
   });
 
-  // Fetch cities for create modal
   const { data: citiesCreate = [] } = useGetCitiesQuery(selectedStateCreate, {
     skip: !selectedStateCreate || !isCreateModalVisible,
   });
 
-  // Fetch cities for edit modal
   const { data: citiesEdit = [] } = useGetCitiesQuery(selectedStateEdit, {
     skip: !selectedStateEdit || !isEditModalVisible,
   });
@@ -186,7 +176,6 @@ const BranchList = () => {
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
   const [searchText, setSearchText] = useState("");
 
-  // Filter logic with search
   const filteredData = tableData?.filter((record) => {
     const searchTerm = searchText?.toLowerCase();
     const inRecord = Object.values(record).some((value) =>
@@ -201,7 +190,6 @@ const BranchList = () => {
     }
   }, [data]);
 
-  // Load branch data into form for edit
   useEffect(() => {
     if (editBranchData?.data?.branchData && isEditModalVisible) {
       const branch = editBranchData.data.branchData;
@@ -234,27 +222,23 @@ const BranchList = () => {
     setSortedInfo(sorter as Sorts);
   };
 
-  // Handle phone number formatting
   const handleChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = formatPhoneNumber(e.target.value);
     setPhoneNumber(value);
     form.setFieldValue("phone", value);
   };
 
-  // Handle postal code formatting
   const handleChangePostalCode = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = formatPostalCode(e.target.value);
     setPostalCode(value);
     form.setFieldValue("postalCode", value);
   };
 
-  // ========== CREATE MODAL HANDLERS ==========
   const handleCreateClick = () => {
     form.resetFields();
-    // Set default values
     form.setFieldsValue({
       status: "active",
-      countryId: 39, // Default to Canada
+      countryId: 39,
     });
     setPhoneNumber("");
     setPostalCode("");
@@ -270,7 +254,6 @@ const BranchList = () => {
 
   const handleCreateSubmit = async (values: any) => {
     try {
-      // Generate slug from name automatically
       const slug = values.name
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -307,7 +290,6 @@ const BranchList = () => {
     }
   };
 
-  // ========== EDIT MODAL HANDLERS ==========
   const handleEditClick = (uuid: string) => {
     setEditBranchUuid(uuid);
     setIsEditModalVisible(true);
@@ -354,7 +336,6 @@ const BranchList = () => {
     }
   };
 
-  // ========== VIEW MODAL HANDLERS ==========
   const handleViewClick = (uuid: string) => {
     setViewBranchUuid(uuid);
     setIsViewModalVisible(true);
@@ -365,7 +346,6 @@ const BranchList = () => {
     setViewBranchUuid(undefined);
   };
 
-  // Switch from View to Edit
   const handleSwitchToEdit = () => {
     const uuid = viewBranchUuid;
     handleViewModalClose();
@@ -387,7 +367,6 @@ const BranchList = () => {
       return;
     }
 
-    // Check if any selected branch is default
     const selectedBranches = tableData.filter((branch) =>
       selectedRowKeys.includes(branch.uuid)
     );
@@ -672,7 +651,6 @@ const BranchList = () => {
     }
   };
 
-  // Serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -726,7 +704,6 @@ const BranchList = () => {
         </div>
       </div>
 
-      {/* ========== CREATE MODAL ========== */}
       <Modal
         title="Create New Branch"
         open={isCreateModalVisible}
@@ -848,7 +825,6 @@ const BranchList = () => {
         </Form>
       </Modal>
 
-      {/* ========== EDIT MODAL ========== */}
       <Modal
         title="Edit Branch"
         open={isEditModalVisible}
@@ -985,7 +961,6 @@ const BranchList = () => {
         )}
       </Modal>
 
-      {/* ========== VIEW MODAL ========== */}
       <Modal
         title="Branch Details"
         open={isViewModalVisible}
@@ -997,7 +972,6 @@ const BranchList = () => {
           hasPermissionForSlug("edit-branch") && (
             <Button
               key="edit"
-              // type="primary"
               onClick={handleSwitchToEdit}
               size="large"
               className="primary-btn"
@@ -1135,7 +1109,6 @@ const BranchList = () => {
         )}
       </Modal>
 
-      {/* ========== DELETE CONFIRMATION MODAL ========== */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteModalVisible}
@@ -1158,7 +1131,6 @@ const BranchList = () => {
         <p>Are you sure you want to delete this branch?</p>
       </Modal>
 
-      {/* ========== DELETE MULTIPLE CONFIRMATION MODAL ========== */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

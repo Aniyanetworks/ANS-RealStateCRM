@@ -16,7 +16,6 @@ import Select from "react-select";
 import ButtonLoader from "../../../../../../components/loader/buttonLoader";
 import {
   useGetCitiesQuery,
-  // useGetCountriesQuery,
   useGetStatesQuery,
 } from "../../../../../../redux/api/common/countryStateCitySlice";
 import { useAppSelector } from "../../../../../../redux/hooks";
@@ -26,7 +25,6 @@ import { useGetLawyerFirmDataQuery, useCreateLawyerFirmDataMutation, useValidate
 import { Tooltip, Tabs, Modal } from "antd";
 import { useForm as useReactHookForm } from "react-hook-form";
 
-// Reusable Text Input Component
 const TextInput = ({
   label,
   register,
@@ -35,7 +33,7 @@ const TextInput = ({
   errors,
   type = "text",
   placeholder = "",
-  disabled = false, // <-- add this default
+  disabled = false,
 }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -46,7 +44,7 @@ const TextInput = ({
       type={type}
       placeholder={placeholder}
       className="border border-gray-300 p-2 rounded"
-      disabled={disabled} // <-- pass disabled prop
+      disabled={disabled}
     />
     {errors[name] && (
       <p className="text-red-500 text-sm">{`${label} is required`}</p>
@@ -54,7 +52,7 @@ const TextInput = ({
   </div>
 );
 const TradeSheetLawyerDetails = () => {
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const navigate = useNavigate();
   const { data, isLoading } = useGetSpacificTradeSheetListDataQuery(uuid);
   const [btnLoading, setBtnLoading] = useState("");
@@ -81,31 +79,25 @@ const TradeSheetLawyerDetails = () => {
   const selectedState = watch("sellerStateProvince");
   const selectedCity = watch("sellerCity");
 
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [] } = useGetCitiesQuery(selectedState, {
-    skip: !selectedState, // Skip if no state is selected
+    skip: !selectedState,
   });
 
   const selectedBuyerCountry = watch("buyerCountryId");
   const selectedBuyerState = watch("buyerStateProvince");
   const selectedBuyerCity = watch("buyerCity");
 
-  // Fetch states based on selected buyer country
   const { data: buyerStates = [] } = useGetStatesQuery(selectedBuyerCountry, {
-    skip: !selectedBuyerCountry, // Skip if no country is selected
+    skip: !selectedBuyerCountry,
   });
 
-  // Fetch cities based on selected buyer state
   const { data: buyerCities = [] } = useGetCitiesQuery(selectedBuyerState, {
-    skip: !selectedBuyerState, // Skip if no state is selected
+    skip: !selectedBuyerState,
   });
 
   const [isLawyerModalOpen, setIsLawyerModalOpen] = useState(false);
@@ -129,19 +121,15 @@ const TradeSheetLawyerDetails = () => {
   });
   const [lawyerFormErrors, setLawyerFormErrors] = useState<any>({});
 
-  // 1. Add state for seller and buyer selected law firm
   const [sellerLawFirmId, setSellerLawFirmId] = useState<string>("");
   const [buyerLawFirmId, setBuyerLawFirmId] = useState<string>("");
 
-  // --- Law Firm Modal State and Logic ---
-  // Add state for two-step modal (validation and full form)
   const [isValidationModalOpen, setIsValidationModalOpen] = useState(false);
   const [isFullFormModalOpen, setIsFullFormModalOpen] = useState(false);
   const [isEnableContinueBtn, setIsEnableContinueBtn] = useState(false);
   const [lawFirmModalType, setLawFirmModalType] = useState<'seller' | 'buyer' | null>(null);
   const [newLawFirmLoading, setNewLawFirmLoading] = useState(false);
 
-  // Step 1: Phone number validation form
   const {
     register: registerFirmPhone,
     handleSubmit: handleSubmitFirmPhone,
@@ -152,7 +140,6 @@ const TradeSheetLawyerDetails = () => {
     defaultValues: { phoneNumber: '' },
   });
 
-  // Step 2: Full law firm form
   const {
     register: registerFirm,
     handleSubmit: handleSubmitFirm,
@@ -172,15 +159,13 @@ const TradeSheetLawyerDetails = () => {
       phoneNumber: '',
       faxNumber: '',
       billingEmailAddress: '',
-      countryId: '39', // Always set to Canada
+      countryId: '39',
     },
   });
 
-  // Add this: fetch cities for the modal form
   const selectedFirmState = watchFirm('stateId');
   const { data: firmCities = [], isFetching: isFirmCitiesFetching } = useGetCitiesQuery(selectedFirmState, { skip: !selectedFirmState });
 
-  // Show loader if fetching OR if province changed and no city data yet
   const showCityLoader =
     !!selectedFirmState &&
     (isFirmCitiesFetching ||
@@ -257,11 +242,9 @@ const TradeSheetLawyerDetails = () => {
         setIsFullFormModalOpen(false);
         setLawFirmModalType(null);
         await refetchLawyerFirms();
-        // Set the new firm as selected
         if (lawFirmModalType === 'seller') setSellerLawFirmId(res.data.lawyerFirm.id.toString());
         if (lawFirmModalType === 'buyer') setBuyerLawFirmId(res.data.lawyerFirm.id.toString());
       } else {
-        // If the response does not have the expected data, show an error
         console.error('Unexpected response from server:', res);
         toast.error('Unexpected response from server. Law firm may not have been created.');
       }
@@ -277,7 +260,6 @@ const TradeSheetLawyerDetails = () => {
     }
   };
 
-  // 3. Filter lawyers by selected law firm
   const sellerLawyerOptions = sellerLawFirmId
     ? (lawyerData?.data?.lawyerData?.filter((lawyer: any) => String(lawyer.firm?.id) === sellerLawFirmId)
         .map((lawyer: any) => ({ value: lawyer.name, id: lawyer.id, label: lawyer.name })) || [])
@@ -292,7 +274,6 @@ const TradeSheetLawyerDetails = () => {
     if (lawyerDetails) {
       setSellerLawyerId(lawyerDetails?.sellerLawyerId);
       setBuyerLawyerId(lawyerDetails?.buyerLawyerId);
-      // Set Law Firm IDs based on loaded lawyer details
       setSellerLawFirmId(lawyerDetails?.sellerLawyer?.firm?.id ? String(lawyerDetails?.sellerLawyer?.firm?.id) : "");
       setBuyerLawFirmId(lawyerDetails?.buyerLawyer?.firm?.id ? String(lawyerDetails?.buyerLawyer?.firm?.id) : "");
       reset({
@@ -337,12 +318,8 @@ const TradeSheetLawyerDetails = () => {
   const [createUpdateLawyerDetails] = useCreateUpdateLawyerDetailsMutation();
 
   const onSubmit = async (data: any) => {
-    setBtnLoading(data.saveBtn); // Set loading state based on the button clicked
+    setBtnLoading(data.saveBtn);
     try {
-      // sellerLawFirmId/buyerLawFirmId are plain local state (used to filter the
-      // lawyer dropdown by firm) and were never part of the registered form —
-      // the backend needs them to actually link the lawyer to its firm (firmId),
-      // otherwise the firm/address only ever gets saved as disconnected text.
       const dataWithFirmIds = {
         ...data,
         sellerLawFirmId: sellerLawFirmId || undefined,
@@ -353,16 +330,13 @@ const TradeSheetLawyerDetails = () => {
           ? { ...dataWithFirmIds, status: "draft" }
           : dataWithFirmIds;
 
-      // Make the API call
       const response = await createUpdateLawyerDetails({
         data: requestData,
         uuid,
       }).unwrap();
 
-      // Show success message
       toast.success(`${response?.message}`);
 
-      // Determine the navigation path based on the button clicked
       let navigatePath = "";
       switch (data.saveBtn) {
         case "save-next":
@@ -387,14 +361,13 @@ const TradeSheetLawyerDetails = () => {
           break;
       }
 
-      // Navigate to the determined path
       if (navigatePath) {
         navigate(navigatePath, { replace: true });
       }
     } catch (error: any) {
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
     } finally {
-      setBtnLoading(""); // Reset loading state in the finally block
+      setBtnLoading("");
     }
   };
 
@@ -441,7 +414,6 @@ const TradeSheetLawyerDetails = () => {
         setValue(`${type}Email`, selectedLawyer?.email);
       }
     } else {
-      // Clear all associated values when the selection is cleared
       setValue(`${type}FirstName`, "");
       setValue(`${type}LastName`, "");
       setValue(`${type}LawyerAddress`, "");
@@ -495,7 +467,6 @@ const TradeSheetLawyerDetails = () => {
     if (!newLawyer.firstName) errors.firstName = 'First name is required';
     if (!newLawyer.lastName) errors.lastName = 'Last name is required';
     if (!newLawyer.firmId) errors.firmId = 'Lawyer firm is required';
-    // if (!newLawyer.email) errors.email = 'Email is required';
     return errors;
   };
   const handleLawyerFormSubmit = async (e: any) => {
@@ -552,10 +523,8 @@ const TradeSheetLawyerDetails = () => {
 
   return (
     <div>
-      {/* <h2 className="uppercase text-center bg-[#c9c1c13d] py-5">Trade Sheet</h2> */}
       <TradeSheetSteps active={6} uuid={uuid} />
 
-      {/* Form */}
 
       {isLoading ? (
         <TableLoader />
@@ -567,7 +536,6 @@ const TradeSheetLawyerDetails = () => {
               <h4 className="font-semibold my-3">{firstAgent}'s Lawyer</h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                {/* Seller's Law Firm */}
                 <div className="flex flex-col gap-2 mb-4">
                   <label htmlFor="">Select Law Firm</label>
                   <div className="flex items-center gap-2 w-full">
@@ -575,7 +543,7 @@ const TradeSheetLawyerDetails = () => {
                       value={sellerLawFirmId}
                       onChange={e => {
                         setSellerLawFirmId(e.target.value);
-                        setSellerLawyerId(""); // reset lawyer selection
+                        setSellerLawyerId("");
                       }}
                       className="border p-2 rounded w-full"
                     >
@@ -594,7 +562,6 @@ const TradeSheetLawyerDetails = () => {
                     </button>
                   </div>
                 </div>
-                {/* Seller's Lawyer */}
                 {sellerLawFirmId && sellerLawFirmId !== '' && sellerLawFirmId !== null &&
                 <div className="flex flex-col gap-2 mb-4">
                   <label htmlFor="">Select Lawyer</label>
@@ -633,12 +600,9 @@ const TradeSheetLawyerDetails = () => {
                   </div>
                 </div>
                 }
-                {/* <div className="flex flex-col gap-2 mb-4">
-                </div> */}
                 <TextInput
                   label="First Name"
                   register={register}
-                  // required
                   disabled={true}
                   name="sellerFirstName"
                   errors={errors}
@@ -665,14 +629,11 @@ const TradeSheetLawyerDetails = () => {
                   errors={errors}
                 />
 
-                {/* State Select */}
                 <div className="flex flex-col gap-2">
                   <label>Province</label>
                   <select
                     {...register("sellerStateProvince", {
-                      // required: "State is required",
                     })}
-                    // disabled={!watch("sellerCountryId")}
                     disabled={true}
                   >
                     <option value="">Select Province</option>
@@ -693,14 +654,11 @@ const TradeSheetLawyerDetails = () => {
                   )}
                 </div>
 
-                {/* City Select */}
                 <div className="flex flex-col gap-2">
                   <label>City</label>
                   <select
                     {...register("sellerCity", {
-                      // required: "City is required",
                     })}
-                    // disabled={!watch("sellerStateProvince")}
                     disabled={true}
                   >
                     <option value="">Select City</option>
@@ -709,7 +667,6 @@ const TradeSheetLawyerDetails = () => {
                         selected={city?.id === getValues('sellerCity')}
                         key={city.id}
                         value={city.id}
-                      // selected={city.id == selectedCity}
                       >
                         {city.name}
                       </option>
@@ -721,17 +678,9 @@ const TradeSheetLawyerDetails = () => {
                     </p>
                   )}
                 </div>
-                {/* <TextInput
-                  label="Postal Code"
-                  register={register}
-                  // required
-                  name="sellerPostalZipCode"
-                  errors={errors}
-                /> */}
                 <div className="flex flex-col gap-2">
                   <label>
                     Postal Code
-                    {/* {required && <span className="text-red-500 ml-1">*</span>} */}
                   </label>
 
                   <input
@@ -755,7 +704,6 @@ const TradeSheetLawyerDetails = () => {
                 <div className="flex flex-col gap-2">
                   <label>
                     Phone Number
-                    {/* {required && <span className="text-red-500 ml-1">*</span>} */}
                   </label>
 
                   <input
@@ -776,25 +724,9 @@ const TradeSheetLawyerDetails = () => {
                     <p className="text-red-500 text-sm">{`Seller PhoneNumber is required`}</p>
                   )}
                 </div>
-                {/* <TextInput
-                  label="Phone Number"
-                  register={register}
-                  // required
-                  name="sellerPhoneNumber"
-                  errors={errors}
-                  placeholder="(000) 000-0000"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    // Use setValue to update the form state with formatted value
-                    setValue(
-                      "sellerPhoneNumber",
-                      formatPhoneNumber(e.target.value)
-                    );
-                  }}
-                /> */}
                 <div className="flex flex-col gap-2">
                   <label>
                     Fax Number
-                    {/* {required && <span className="text-red-500 ml-1">*</span>} */}
                   </label>
 
                   <input
@@ -819,19 +751,16 @@ const TradeSheetLawyerDetails = () => {
                   label="Email"
                   disabled={true}
                   register={register}
-                  // required
                   name="sellerEmail"
                   errors={errors}
                   placeholder="example@example.com"
                 />
               </div>
 
-              {/* Buyer's Lawyer */}
               <div>
                 <h4 className="font-semibold my-3">{secondAgent}'s Lawyer</h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-                  {/* Buyer's Law Firm */}
                   <div className="flex flex-col gap-2 mb-4">
                     <label htmlFor="">Select Law Firm</label>
                     <div className="flex items-center gap-2 w-full">
@@ -858,7 +787,6 @@ const TradeSheetLawyerDetails = () => {
                       </button>
                     </div>
                   </div>
-                  {/* Buyer's Lawyer */}
                   {buyerLawFirmId && buyerLawFirmId !== '' && buyerLawFirmId !== null &&
                   <div className="flex flex-col gap-2 mb-4">
                     <label htmlFor="">Select Lawyer </label>
@@ -926,14 +854,11 @@ const TradeSheetLawyerDetails = () => {
                     errors={errors}
                   />
 
-                  {/* Buyer State Select */}
                   <div className="flex flex-col gap-2">
                     <label>Province</label>
                     <select
                       {...register("buyerStateProvince", {
-                        // required: "State is required",
                       })}
-                      // disabled={!watch("buyerCountryId")}
                       disabled={true}
                       onChange={(e) => {
                         setValue("buyerStateProvince", e.target.value);
@@ -958,14 +883,11 @@ const TradeSheetLawyerDetails = () => {
                     )}
                   </div>
 
-                  {/* Buyer City Select */}
                   <div className="flex flex-col gap-2">
                     <label>City</label>
                     <select
                       {...register("buyerCity", {
-                        // required: "City is required",
                       })}
-                      // disabled={!watch("buyerStateProvince")}
                       disabled={true}
                     >
                       <option value="">Select City</option>
@@ -985,25 +907,9 @@ const TradeSheetLawyerDetails = () => {
                       </p>
                     )}
                   </div>
-                  {/* <TextInput
-                    label="Postal Code"
-                    register={register}
-                    // required
-                    name="buyerPostalZipCode"
-                    errors={errors}
-                  />
-                  <TextInput
-                    label="Phone Number"
-                    register={register}
-                    // required
-                    name="buyerPhoneNumber"
-                    errors={errors}
-                    placeholder="(000) 000-0000"
-                  /> */}
                   <div className="flex flex-col gap-2">
                     <label>
                       Postal Code
-                      {/* {required && <span className="text-red-500 ml-1">*</span>} */}
                     </label>
 
                     <input
@@ -1027,7 +933,6 @@ const TradeSheetLawyerDetails = () => {
                   <div className="flex flex-col gap-2">
                     <label>
                       Phone Number
-                      {/* {required && <span className="text-red-500 ml-1">*</span>} */}
                     </label>
 
                     <input
@@ -1048,17 +953,9 @@ const TradeSheetLawyerDetails = () => {
                       <p className="text-red-500 text-sm">{`Buyer Phone Number is required`}</p>
                     )}
                   </div>
-                  {/* <TextInput
-                    label="Fax Number"
-                    register={register}
-                    name="buyerFaxNumber"
-                    errors={errors}
-                    placeholder="(000) 000-0000"
-                  /> */}
                   <div className="flex flex-col gap-2">
                     <label>
                       Fax Number
-                      {/* {required && <span className="text-red-500 ml-1">*</span>} */}
                     </label>
 
                     <input
@@ -1083,7 +980,6 @@ const TradeSheetLawyerDetails = () => {
                     label="Email"
                     disabled={true}
                     register={register}
-                    // required
                     name="buyerEmail"
                     errors={errors}
                     placeholder="example@example.com"
@@ -1093,7 +989,6 @@ const TradeSheetLawyerDetails = () => {
             </div>
 
             <div className="flex justify-between my-15 mx-5">
-              {/* Save and Next Button */}
               <button
                 type="submit"
                 onClick={() => {
@@ -1149,7 +1044,6 @@ const TradeSheetLawyerDetails = () => {
                 {btnLoading === "reset" ? <ButtonLoader /> : "Rest Form"}
               </button>
 
-              {/* Cancel Button */}
               <button
                 onClick={cancelSubmit}
                 type="button"
@@ -1162,7 +1056,6 @@ const TradeSheetLawyerDetails = () => {
         </div>
       )}
 
-      {/* Lawyer Creation Modal */}
       {isLawyerModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 relative">
@@ -1175,7 +1068,6 @@ const TradeSheetLawyerDetails = () => {
             <h2 className="text-xl font-bold mb-4">Create Lawyer Data</h2>
             <form onSubmit={handleLawyerFormSubmit} className="space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-                {/* First Name */}
                 <div className="flex flex-col gap-2">
                   <label>
                     First Name <span className="text-red-500 ml-1">*</span>
@@ -1192,7 +1084,6 @@ const TradeSheetLawyerDetails = () => {
                     <p className="text-red-500 text-sm">{lawyerFormErrors.firstName}</p>
                   )}
                 </div>
-                {/* Last Name */}
                 <div className="flex flex-col gap-2">
                   <label>
                     Last Name <span className="text-red-500 ml-1">*</span>
@@ -1209,7 +1100,6 @@ const TradeSheetLawyerDetails = () => {
                     <p className="text-red-500 text-sm">{lawyerFormErrors.lastName}</p>
                   )}
                 </div>
-                {/* Lawyer Firm */}
                 <div className="flex flex-col gap-2">
                   <label>
                     Lawyer Firm <span className="text-red-500 ml-1">*</span>
@@ -1229,7 +1119,6 @@ const TradeSheetLawyerDetails = () => {
                     <p className="text-red-500 text-sm">{lawyerFormErrors.firmId}</p>
                   )}
                 </div>
-                {/* Email */}
                 <div className="flex flex-col gap-2">
                   <label>
                     Email 
@@ -1246,7 +1135,6 @@ const TradeSheetLawyerDetails = () => {
                     <p className="text-red-500 text-sm">{lawyerFormErrors.email}</p>
                   )}
                 </div>
-                {/* Phone Number */}
                 <div className="flex flex-col gap-2">
                   <label>
                     Phone Number 
@@ -1276,8 +1164,6 @@ const TradeSheetLawyerDetails = () => {
         </div>
       )}
 
-      {/* Law Firm Creation Modal (react-hook-form version) */}
-      {/* Validation Modal (Step 1) */}
       {isValidationModalOpen && (
         <Modal
           open={isValidationModalOpen}
@@ -1319,7 +1205,6 @@ const TradeSheetLawyerDetails = () => {
           </form>
         </Modal>
       )}
-      {/* Full Form Modal (Step 2) */}
       {isFullFormModalOpen && (
         <Modal
           open={isFullFormModalOpen}
@@ -1337,31 +1222,26 @@ const TradeSheetLawyerDetails = () => {
         >
           <form className="space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-              {/* Firm Name */}
               <div className="flex flex-col gap-2">
                 <label>Firm Name <span className="text-red-500 ml-1">*</span></label>
                 <input {...registerFirm('firmName', { required: 'Firm name is required' })} type="text" className="border p-2 rounded w-full" />
                 {errorsFirm.firmName && <p className="text-red-500 text-sm">{errorsFirm.firmName.message}</p>}
               </div>
-              {/* Address */}
               <div className="flex flex-col gap-2">
                 <label>Address <span className="text-red-500 ml-1">*</span></label>
                 <input {...registerFirm('address', { required: 'Address is required' })} type="text" className="border p-2 rounded w-full" />
                 {errorsFirm.address && <p className="text-red-500 text-sm">{errorsFirm.address.message}</p>}
               </div>
-              {/* Street Address */}
               <div className="flex flex-col gap-2">
                 <label>Street Address</label>
                 <input {...registerFirm('streetAddress')} type="text" className="border p-2 rounded w-full" />
                 {errorsFirm.streetAddress && <p className="text-red-500 text-sm">{errorsFirm.streetAddress.message}</p>}
               </div>
               
-              {/* Province */}
               <div className="flex flex-col gap-2">
                 <label>Province <span className="text-red-500 ml-1">*</span></label>
                 <select {...registerFirm('stateId', { required: 'Province is required' })} className="border p-2 rounded w-full" onChange={e => {
-                  registerFirm('stateId').onChange(e); // update form
-                  // Optionally reset city if needed
+                  registerFirm('stateId').onChange(e);
                   setValueFirm('cityId', '');
                 }}>
                   <option value="">Select Province</option>
@@ -1371,7 +1251,6 @@ const TradeSheetLawyerDetails = () => {
                 </select>
                 {errorsFirm.stateId && <p className="text-red-500 text-sm">{errorsFirm.stateId.message}</p>}
               </div>
-              {/* City */}
               <div className="flex flex-col gap-2">
                 <label>City <span className="text-red-500 ml-1">*</span></label>
                 <Controller
@@ -1427,13 +1306,11 @@ const TradeSheetLawyerDetails = () => {
                 />
                 {errorsFirm.cityId && <p className="text-red-500 text-sm">{errorsFirm.cityId.message}</p>}
               </div>
-              {/* Postal Code */}
               <div className="flex flex-col gap-2">
                 <label>Postal Code <span className="text-red-500 ml-1">*</span></label>
                 <input {...registerFirm('postalZipCode')} type="text" className="border p-2 rounded w-full" onChange={handlePostalZipCodeChange} />
                 {errorsFirm.postalZipCode && <p className="text-red-500 text-sm">{errorsFirm.postalZipCode.message}</p>}
               </div>
-              {/* Phone Number */}
               <div className="flex flex-col gap-2">
                 <label>Phone Number <span className="text-red-500 ml-1">*</span></label>
                 <input
@@ -1446,26 +1323,22 @@ const TradeSheetLawyerDetails = () => {
                 />
                 {errorsFirm.phoneNumber && <p className="text-red-500 text-sm">{errorsFirm.phoneNumber.message}</p>}
               </div>
-              {/* Fax Number */}
               <div className="flex flex-col gap-2">
                 <label>Fax Number</label>
                 <input {...registerFirm('faxNumber')} type="text" className="border p-2 rounded w-full" onChange={handleFaxNumberChange} />
                 {errorsFirm.faxNumber && <p className="text-red-500 text-sm">{errorsFirm.faxNumber.message}</p>}
               </div>
-              {/* Billing Email Address */}
               <div className="flex flex-col gap-2">
                 <label>Billing Email Address</label>
                 <input {...registerFirm('billingEmailAddress')} type="email" className="border p-2 rounded w-full" />
                 {errorsFirm.billingEmailAddress && <p className="text-red-500 text-sm">{errorsFirm.billingEmailAddress.message}</p>}
               </div>
-              {/* Country ID (hidden) */}
               <input type="hidden" {...registerFirm('countryId')} value="39" />
             </div>
           </form>
         </Modal>
       )}
 
-      {/* Lawyer Firm Modal */}
       {firmModalOpen && selectedFirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative">

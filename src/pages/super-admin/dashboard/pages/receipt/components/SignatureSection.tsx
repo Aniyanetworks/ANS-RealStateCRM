@@ -43,7 +43,6 @@ const SignatureSection = ({
 
   return (
     <>
-      {/* Signature Draw */}
       <div className="flex flex-col gap-2">
         <label>Signature Draw</label>
         <div className="border border-gray-400 rounded p-2 w-full max-w-[300px] h-[40vh] sm:h-[200px]">
@@ -78,7 +77,6 @@ const SignatureSection = ({
         </div>
       </div>
 
-      {/* Signature Upload */}
       <div>
         <p className="mb-2">Signature Upload</p>
         <label className="flex justify-center items-center py-2 border border-dashed border-gray-400 rounded-md gap-2 hover:border-blue-500 cursor-pointer w-[300px]">

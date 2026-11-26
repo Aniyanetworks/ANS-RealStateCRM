@@ -132,7 +132,6 @@ const PlanManagement = () => {
     reset({ optionalPlanName: '', amount: 0 });
   };
 
-  // Functions for Plan Deletion
   const showConfirmDeletePlan = (planId: string) => {
     setPlanToDelete(planId);
     setIsModalVisible(true);
@@ -159,7 +158,6 @@ const PlanManagement = () => {
     }
   };
 
-  // Functions for Addon Plans Deletion
   const showConfirmOptionalDeletePlan = (planUUID: string) => {
     setOptionalPlanToDelete(planUUID);
     setIsModalVisible(true);
@@ -168,7 +166,6 @@ const PlanManagement = () => {
   const confirmDeleteOptionalPlan = async () => {
     if (optionalPlanToDelete) {
       const response = await deleteSingleOptionalPlan(optionalPlanToDelete);
-      console.log(response.data.status);
       if (response.data.status) {
         toast.success('Addon Plans Deleted Successfully!');
         setOptionalPlans(prevPlans => prevPlans.filter(plan => plan.uuid !== optionalPlanToDelete));
@@ -182,9 +179,7 @@ const PlanManagement = () => {
   return (
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        {/* Toolbar */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             <button
               type="button"
@@ -212,11 +207,8 @@ const PlanManagement = () => {
               Discount
             </button>
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {activeTab === "plan" && (
               <>
@@ -354,7 +346,6 @@ const PlanManagement = () => {
       </div>
       </div>
 
-      {/* Confirmation Modal for Deletion */}
       <Modal
         title="Confirm Deletion"
         open={isModalVisible}
@@ -380,7 +371,6 @@ const PlanManagement = () => {
         <p className="text-sm">Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Modal for Addon Plans Creation / Edit */}
       <Modal
         title={selectedOptionalPlan ? "Edit Addon Plans" : "Create Addon Plans"}
         open={isOptionalPlanModalVisible}

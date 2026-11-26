@@ -9,7 +9,6 @@ import { useGetOrderQuery } from "../../redux/api/superadmin/invoice/orderDataSl
 import { useGetExpenseListQuery } from "../../redux/api/superadmin/expenses/expenseSlice";
 import { format } from "date-fns";
 
-// Type definitions
 interface Agent {
   id: number;
   name: string;

@@ -82,7 +82,6 @@ const ClockInOut = () => {
   const requiredLat = statusData?.data?.latitude != null ? Number(statusData.data.latitude) : null;
   const requiredLon = statusData?.data?.longitude != null ? Number(statusData.data.longitude) : null;
 
-  // Haversine distance in meters (must match backend logic)
   const calculateDistanceMeters = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371e3;
     const φ1 = (lat1 * Math.PI) / 180;
@@ -112,8 +111,6 @@ const ClockInOut = () => {
     (requiredLat == null || isWithinRange)
   );
 
-  // Resolve clock-in settings for the currently selected branch (from branch list data).
-  // This avoids relying on the async status API refetch when a super admin switches branches.
   const selectedBranchClockSettings = (() => {
     if (selectedBranchIdForClock == null) return null;
     const branch = branchList?.find((b: any) => (b.id ?? b.branchId) === selectedBranchIdForClock);
@@ -128,10 +125,6 @@ const ClockInOut = () => {
   const modalAllowedDistance = selectedBranchClockSettings?.allowedDistance != null
     ? Number(selectedBranchClockSettings.allowedDistance)
     : allowedDistance;
-  // Coords are meaningful when:
-  //  • non-super-admin (status API uses their own branch)
-  //  • super admin with branch list settings loaded for the selected branch
-  //  • super admin who selected a branch AND the status API returned coords for it
   const hasBranchCoords =
     !isSuperAdmin ||
     selectedBranchClockSettings != null ||
@@ -146,7 +139,6 @@ const ClockInOut = () => {
     ? modalDistanceToRequired <= (modalAllowedDistance ?? 100)
     : (requiredLat == null || !hasBranchCoords);
 
-  // User filter: show only users with role name 'Branch Admin' or 'Super Admin'
   const allowedRoleNames = ["Branch Admin", "Super Admin"];
   const filteredUserList = userListData?.data?.userData?.filter((userItem: any) => {
     const roleName =
@@ -158,15 +150,13 @@ const ClockInOut = () => {
     return true;
   }) || [];
 
-  // Reverse geocode coordinates to get address
   const reverseGeocode = async (latitude: number, longitude: number): Promise<string | null> => {
     try {
-      // Using OpenStreetMap Nominatim API (free, no API key required)
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
         {
           headers: {
-            'User-Agent': 'ANS RealStateCRM-App' // Required by Nominatim
+            'User-Agent': 'ANS RealStateCRM-App'
           }
         }
       );
@@ -179,7 +169,6 @@ const ClockInOut = () => {
       
       if (data && data.address) {
         const addr = data.address;
-        // Build a readable address string
         const addressParts = [];
         
         if (addr.road || addr.street) {
@@ -213,7 +202,6 @@ const ClockInOut = () => {
     }
   };
 
-  // Get user's current location using watchPosition to wait for an accurate fix
   const getCurrentLocation = () => {
     setIsGettingLocation(true);
     setLocationError(null);
@@ -224,11 +212,8 @@ const ClockInOut = () => {
       return;
     }
 
-    // Accept immediately when accuracy ≤ this value (meters)
     const GOOD_ACCURACY_M = 100;
-    // Discard readings worse than this (likely IP/WiFi cold-start noise)
     const MAX_ACCURACY_M = 500;
-    // Fallback timeout: use the best reading we have after this long
     const COLLECT_MS = 12000;
 
     let watchId: number | null = null;
@@ -253,7 +238,6 @@ const ClockInOut = () => {
       setIsGettingLocation(false);
     };
 
-    // After COLLECT_MS, use the best reading collected so far
     const fallbackTimer = setTimeout(() => {
       if (finished) return;
       if (bestPosition) {
@@ -272,15 +256,12 @@ const ClockInOut = () => {
         if (finished) return;
         const acc = pos.coords.accuracy;
 
-        // Throw away wildly inaccurate readings (IP-only or cold-start noise)
         if (acc > MAX_ACCURACY_M) return;
 
-        // Keep the most accurate reading seen so far
         if (!bestPosition || acc < bestPosition.coords.accuracy) {
           bestPosition = pos;
         }
 
-        // Accept immediately once accurate enough
         if (acc <= GOOD_ACCURACY_M) {
           clearTimeout(fallbackTimer);
           applyPosition(pos);
@@ -291,7 +272,6 @@ const ClockInOut = () => {
         clearTimeout(fallbackTimer);
         if (watchId !== null) navigator.geolocation.clearWatch(watchId);
 
-        // Fall back to best reading if we collected any
         if (bestPosition) {
           applyPosition(bestPosition);
           return;
@@ -320,24 +300,21 @@ const ClockInOut = () => {
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 0, // Never use a cached position — always request a fresh fix
+        maximumAge: 0,
       }
     );
   };
 
-  // Get location on component mount
   useEffect(() => {
     getCurrentLocation();
   }, []);
 
-  // Default clock-in/out branch to user's branch when available
   useEffect(() => {
     if (user?.branchId != null && selectedBranchIdForClock == null) {
       setSelectedBranchIdForClock(user.branchId);
     }
   }, [user?.branchId, selectedBranchIdForClock]);
 
-  // Calculate and update clocked-in duration
   useEffect(() => {
     if (isClockedIn && statusData?.data?.lastRecord?.createdAt) {
       const updateDuration = () => {
@@ -359,7 +336,7 @@ const ClockInOut = () => {
       };
 
       updateDuration();
-      const interval = setInterval(updateDuration, 1000); // Update every second
+      const interval = setInterval(updateDuration, 1000);
 
       return () => clearInterval(interval);
     } else {
@@ -533,7 +510,6 @@ const ClockInOut = () => {
         )}
       </div>
 
-      {/* Status Card */}
       <Card className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -621,7 +597,6 @@ const ClockInOut = () => {
           </div>
         </div>
 
-        {/* Location Status */}
         {locationError && (
           <Alert
             message="Location Error"
@@ -740,7 +715,6 @@ const ClockInOut = () => {
         ]}
       />
 
-      {/* Clock In Modal */}
       <Modal
         title="Clock In"
         open={isClockInModalVisible}
@@ -896,7 +870,6 @@ const ClockInOut = () => {
         </Form>
       </Modal>
 
-      {/* Clock Out Modal */}
       <Modal
         title="Clock Out"
         open={isClockOutModalVisible}

@@ -25,7 +25,6 @@ const EmailForm = ({
       <div>
         <h5 className="mb-2 text-center font-bold">Send Email</h5>
 
-        {/* Recipients Input */}
         <div className="mb-4">
           <label className="font-bold">Recipients Email:</label>
           <input
@@ -43,7 +42,6 @@ const EmailForm = ({
           )}
         </div>
 
-        {/* Subject Input (Text Area) */}
         <div className="mb-4">
           <label className="font-bold">Email Subject:</label>
           <input
@@ -60,7 +58,6 @@ const EmailForm = ({
           )}
         </div>
 
-        {/* Data Input (Text Area) */}
         <div className="mb-4">
           <label className="font-bold">Email Body:</label>
           <ReactQuill
@@ -83,7 +80,6 @@ const EmailForm = ({
             <span className="text-red-500">{errors?.data?.message}</span>
           )}
         </div>
-        {/* Submit Button */}
         <div>
           <button
             className="bg-[#0f766e] text-white p-2 rounded-md flex gap-2 items-center"

@@ -8,7 +8,7 @@ interface Plan {
 
 interface AddonsPlanSelectorProps {
   optionalPlanData: { data: { optionalPlans: Plan[] } };
-  optionalPlans: number[]; // Selected plan ids
+  optionalPlans: number[];
   register: any;
   handleOptionalPlanChange: (id: number) => void;
 }
@@ -30,7 +30,6 @@ const AddonsPlanSelector: React.FC<AddonsPlanSelectorProps> = ({
                 {++index}. {plan?.name} - ${plan?.amount}
               </p>
               <div className="space-x-2 flex justify-between items-center">
-                {/* Checkbox for optional plans */}
                 <input
                   {...register("optionalPlanId", { required: false })}
                   type="checkbox"

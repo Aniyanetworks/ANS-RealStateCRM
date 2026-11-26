@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Demo data for finance areas: expenses, bank accounts, cheque postings, reports, brokerage accounting.
-// Shapes mirror the Express controllers in Agenthub-api (Prisma Decimals are serialised as strings).
 import { route } from '../route';
 import * as seed from '../seed';
 
@@ -18,11 +16,10 @@ const CLIENTS = ['Grace Thompson', 'Noah Fraser', 'Isabelle Roy', 'Arjun Mehta',
 const TRADE_STATUS = ['closed', 'closed', 'soldConditional', 'closed', 'pending', 'closed', 'dft', 'closed', 'closed', 'pending', 'closed', 'soldConditional', 'closed', 'closed'];
 const REP = ['seller', 'buyer', 'seller', 'tenant', 'buyer', 'seller', 'landlord', 'buyer', 'seller', 'buyer', 'tenant', 'seller', 'buyer', 'seller'];
 
-// ---------------------------------------------------------------- trade sheets / transactions
 const trades = mk(14, (i) => {
   const price = 520000 + ((i * 83000) % 900000) - ((i * 83000) % 5000);
   const created = 12 + i * 21;
-  const commission = r2(price * 0.025); // total commission, ex-HST
+  const commission = r2(price * 0.025);
   const agentBase = r2(commission * 0.8);
   const netBase = r2(commission - agentBase);
   const agentTax = r2(agentBase * HST);
@@ -107,7 +104,6 @@ const trades = mk(14, (i) => {
 });
 const tradeData = trades.map((t) => t.txn);
 
-// ---------------------------------------------------------------- expenses
 const CATEGORY_NAMES = ['Office Rent', 'Marketing & Advertising', 'Software Subscriptions', 'Insurance (E&O)', 'Utilities', 'Professional Fees', 'Training & Education', 'Travel & Vehicle'];
 const expenseCategories = CATEGORY_NAMES.map((name, i) => ({
   id: i + 1, uuid: `exp-cat-${i + 1}`, slug: name.toLowerCase().replace(/[^a-z]+/g, '-'), name,
@@ -136,7 +132,6 @@ const expenses = EXPENSE_ITEMS.map(([name, cat, amount, rec], i) => {
   };
 });
 
-// ---------------------------------------------------------------- bank accounts (trade accounting)
 const bankAccounts = [
   ['Operating Account - RBC', 'Debit', 184230.55, 'yes'], ['Commission Trust Account', 'Credit', 96420.1, 'no'],
   ['Real Estate Trust Account', 'Credit', 215000, 'no'], ['TD Business Savings', 'Debit', 52310.25, 'no'],
@@ -147,7 +142,6 @@ const bankAccounts = [
   isDefault: def, status: i === 4 ? 'inactive' : 'active', createdAt: day(400 - i * 5), updatedAt: day(30 + i),
 }));
 
-// ---------------------------------------------------------------- cheque postings
 const chequePostings = trades.slice(0, 12).map((t, i) => ({
   id: i + 1, slug: `cheque-${i + 1}`, uuid: `chq-demo-${i + 1}`, transactionId: `CHQ-${50100 + i}`, tradeSheetId: t.sheet.id,
   bankAccountId: 1, tradeTransactionId: t.txn.id, brokerageId: null, description: null,
@@ -157,7 +151,6 @@ const chequePostings = trades.slice(0, 12).map((t, i) => ({
   tradeTransaction: t.txn,
 }));
 
-// ---------------------------------------------------------------- agent commission (acknowledgement / history)
 const tradeAgentCommission = trades.slice(0, 10).map((t, i) => {
   const gross = r2(t.agentBase * (1 + HST));
   const ded = r2(150 + (i % 4) * 75);
@@ -175,7 +168,6 @@ const tradeAgentCommission = trades.slice(0, 10).map((t, i) => {
 });
 const sumBy = (rows: any[], status: string, key: string) => r2(rows.filter((r) => r.status === status).reduce((n, r) => n + Number(r[key]), 0));
 
-// ---------------------------------------------------------------- marketplace orders (HST report input)
 const orderData = mk(8, (i) => {
   const total = 120 + i * 85;
   const tax = r2(total * HST / (1 + HST));
@@ -188,7 +180,6 @@ const orderData = mk(8, (i) => {
   };
 });
 
-// ---------------------------------------------------------------- brokerage accounting (bodv)
 const BA_BANKS = [
   { id: 1, name: 'Operating Account - RBC', accountCategory: 'OPERATING', openingBalance: 150000, bookBalance: 184230.55, status: 'active' },
   { id: 2, name: 'Real Estate Trust Account', accountCategory: 'REAL_ESTATE_TRUST', openingBalance: 0, bookBalance: 215000, status: 'active' },
@@ -266,11 +257,9 @@ const ok = (data: any, extra: any = {}) => ({ status: true, data, ...extra });
 const BA = 'brokerage-accounting';
 
 export const financeRoutes = [
-  // ---------- expenses / categories
   route('GET', 'superadmin/expense-category/get', () => ({ status: true, data: { categories: expenseCategories }, message: 'Expense categories retrieved successfully' })),
   route('GET', 'superadmin/expense/get', () => ({ status: true, data: { expenses }, message: 'Expenses retrieved successfully' })),
 
-  // ---------- trade accounting
   route('GET', 'accounting/bank-accounts-management/get', () => ({ status: true, data: { accounts: bankAccounts }, message: 'Accounting bank accounts retrieved successfully' })),
   route('GET', 'accounting/trade-accounting/transactions/get-all-cheque-postings', () => ({ status: true, data: { chequePostings }, message: 'Cheque Postings retrieved successfully' })),
   route('GET', 'accounting/trade-accounting/transfer-commission-agent/acknowledgement-list', () => ({ status: true, data: { tradeAgentCommission }, message: 'Acknowledgement retrieved successfully' })),
@@ -287,7 +276,6 @@ export const financeRoutes = [
     message: 'Acknowledgement retrieved successfully',
   })),
 
-  // ---------- reports
   route('GET', 'superadmin/agent-reports/list', () => ({ status: true, data: { userData: seed.agents }, message: 'Agents report retrieved successfully.' })),
   route('GET', 'superadmin/trade-reports/list', () => ({ status: true, data: { tradeData }, message: 'Agents report retrieved successfully.' })),
   route('GET', 'superadmin/balance-sheet-reports/balance-sheet', () => ({ status: true, data: { tradeData }, message: 'Agents report retrieved successfully.' })),
@@ -307,10 +295,8 @@ export const financeRoutes = [
     };
     return { status: true, data: { tradesheets: list, summary }, message: 'Tradesheet report retrieved successfully.' };
   }),
-  // HST reports read marketplace orders alongside trades and expenses
   route('GET', 'superadmin/order-management/list', () => ({ status: true, data: { OrderData: orderData }, message: 'Orders retrieved successfully' })),
 
-  // ---------- brokerage accounting
   route('GET', `${BA}/transactions`, () => ok(baTrustTx)),
   route('GET', `${BA}/settings`, () => ok({ companyName: 'ANS RealStateCRM Inc.', hstNumber: '123456789 RT0001', province: 'ON', hstRate: 13, fiscalYearStart: '01-01', configured: true })),
   route('GET', `${BA}/admin-dashboard`, () => ok({

@@ -14,13 +14,11 @@ const baseQueryWithAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQuery
   api,
   extraOptions
 ) => {
-  // Demo build: never hit a real server; answer from the browser-side adapter.
   const result: any = await demoBaseQuery(args as any, api as any, extraOptions as any);
   void rawBaseQuery;
 
-  // If any API call returns 401, the user's account was deactivated — force logout
   if (result.error?.status === 401) {
-    api.dispatch(clearUser()); // also clears localStorage via the reducer
+    api.dispatch(clearUser());
     window.location.href = "/login";
   }
 
@@ -31,7 +29,6 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithAuth,
   tagTypes: [
-    //===Please put your tag last of the array item====
     "getTradeSheetListDataTag",
     "getArchiveTradeSheetListDataTag",
     "getSpacificTradeSheetListDataTag",

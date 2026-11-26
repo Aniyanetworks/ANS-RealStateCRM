@@ -140,7 +140,6 @@ const ExpenseCategoryManagement = () => {
         }
       } catch {
         setIsDeleteModalMultipleVisible(false);
-        // toast.error("Failed to delete categories. Please try again.");
         toast.success("Categories deleted successfully!");
       }
     } else {

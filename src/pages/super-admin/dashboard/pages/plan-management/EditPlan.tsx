@@ -28,7 +28,7 @@ const EditPlan = () => {
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
 
-    const { data, isLoading, isError } = useGetSinglePlanDataQuery(uuid || ''); // Fetch plan data by ID
+    const { data, isLoading, isError } = useGetSinglePlanDataQuery(uuid || '');
     const [updatePlan] = useUpdatePlanMutation();
 
     useEffect(() => {
@@ -65,7 +65,6 @@ const EditPlan = () => {
         setPlanItems(prevPlanItems => {
             const updatedItems = prevPlanItems.map((item, index) => {
                 if (index === itemIndex) {
-                    // Ensure planSubItems is always an array
                     const updatedItem = { ...item };
                     updatedItem.planSubItems = updatedItem.planSubItems ? [...updatedItem.planSubItems, { name: '', value: 0 }] : [{ name: '', value: 0 }];
                     return updatedItem;
@@ -79,10 +78,8 @@ const EditPlan = () => {
 
     const handleRemoveSubItem = (itemIndex: number, subItemIndex: number) => {
         setPlanItems(prevPlanItems => {
-            // Make a shallow copy of the plan items
             const updatedPlanItems = [...prevPlanItems];
     
-            // Ensure that planSubItems is always an array
             const updatedItem = { ...updatedPlanItems[itemIndex] };
             updatedItem.planSubItems = Array.isArray(updatedItem.planSubItems)
                 ? updatedItem.planSubItems.filter((_, i) => i !== subItemIndex) 
@@ -97,15 +94,14 @@ const EditPlan = () => {
 
     const handleSubItemChange = <K extends keyof PlanSubItem>(itemIndex: number, subItemIndex: number, field: K, value: PlanSubItem[K]) => {
         setPlanItems(prevPlanItems => {
-            const updatedItems = [...prevPlanItems]; // Create a new array
+            const updatedItems = [...prevPlanItems];
             const updatedSubItems = updatedItems[itemIndex].planSubItems.map((subItem, idx) =>
                 idx === subItemIndex
                     ? { ...subItem, [field]: value }
                     : subItem
             );
-            // Create a new item with the updated planSubItems
             updatedItems[itemIndex] = { ...updatedItems[itemIndex], planSubItems: updatedSubItems };
-            return updatedItems; // Return the updated array
+            return updatedItems;
         });
     };
 
@@ -202,7 +198,6 @@ const EditPlan = () => {
                                 </select>
                             </div>
 
-                            {/* Value or Commission fields */}
                             {item.itemType !== 'Commission' && (
                                 <div className="mb-4">
                                     <label htmlFor={`itemValue-${index}`} className="block text-sm font-medium text-gray-700">Value:</label>
@@ -245,7 +240,6 @@ const EditPlan = () => {
                                 </div>
                             )}
 
-                            {/* Sub Items */}
                             <h5 className="text-md font-semibold mb-2">Sub Items</h5>
                             {item.planSubItems?.map((subItem, subItemIndex) => (
                                 <div key={subItemIndex} className="mb-4 p-4 border border-gray-300 rounded-md">

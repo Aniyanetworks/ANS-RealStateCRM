@@ -127,17 +127,17 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
 
   const getBranchColor = (branchId: any) => {
     const palette = [
-      "#2563eb", // blue
-      "#16a34a", // green
-      "#f97316", // orange
-      "#a855f7", // purple
-      "#dc2626", // red
-      "#0891b2", // cyan
-      "#db2777", // pink
-      "#65a30d", // lime
+      "#2563eb",
+      "#16a34a",
+      "#f97316",
+      "#a855f7",
+      "#dc2626",
+      "#0891b2",
+      "#db2777",
+      "#65a30d",
     ];
     const id = Number(branchId);
-    if (!Number.isFinite(id)) return "#6b7280"; // gray
+    if (!Number.isFinite(id)) return "#6b7280";
     const idx = Math.abs(id) % palette.length;
     return palette[idx];
   };
@@ -189,7 +189,6 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
     a?.email ||
     "Unnamed user";
 
-  // API returns one shift per slot with assignees[]; build grouped view for calendar
   const monthShiftsByDateGrouped = useMemo(() => {
     const byDate: Record<
       string,
@@ -343,7 +342,6 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
     return Object.values(byUser);
   }, [shiftList, scheduleWeekStart]);
 
-  // By Week: one shift = one slot with assignees (from API)
   const shiftDataByDayGrouped = useMemo(() => {
     const start = scheduleWeekStart.startOf("day");
     const byDay: Record<
@@ -560,7 +558,7 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
     if (!canManageSchedules) return;
 
     const activeUuid = event?.active?.id ? String(event.active.id) : null;
-    const overId = event?.over?.id ? String(event.over.id) : null; // dateStr
+    const overId = event?.over?.id ? String(event.over.id) : null;
     if (!activeUuid || !overId) return;
 
     const targetDate = overId;
@@ -832,7 +830,7 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
     if (!canManageSchedules) return;
     setShiftEditingRecord({ fromCalendar: true, uuid: null, date: dateStr });
     shiftForm.setFieldsValue({
-      userId: undefined, // optional until user selects
+      userId: undefined,
       branchId: routineBranchId ?? user?.branchId ?? undefined,
       date: dateStr ? dayjs(dateStr) : undefined,
       startTime: defaultShiftStartTime,
@@ -1057,7 +1055,7 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
         } else {
           const monthStart = scheduleMonthStart.startOf("month");
           const monthEnd = scheduleMonthStart.endOf("month");
-          const startOffset = (monthStart.day() + 6) % 7; // Monday=0
+          const startOffset = (monthStart.day() + 6) % 7;
           const gridStart = monthStart.subtract(startOffset, "day");
           for (let i = 0; i < 42; i++) {
             const dateObj = gridStart.add(i, "day");
@@ -1844,7 +1842,6 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
         )}
       </Card>
 
-      {/* Modals */}
       <Modal
         title="Confirm Deletion"
         open={isRoutineDeleteMultipleModalVisible}

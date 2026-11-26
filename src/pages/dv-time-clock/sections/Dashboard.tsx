@@ -1,11 +1,9 @@
-// Dashboards (management and employee) with live shift timers and the notifications panel.
 import { useEffect, useState } from "react";
 import { useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { branchName, useTimeClock } from "../TimeClockContext";
 import { useClockActions } from "../useClockActions";
 import { Attendance, fmtDuration, periodBounds, rowHours, todayKey } from "../tcUtils";
 
-/** Elapsed time since `start`, refreshed every second. */
 export function LiveTimer({ start }: { start: string }) {
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
@@ -15,7 +13,6 @@ export function LiveTimer({ start }: { start: string }) {
   return <>{fmtDuration(now - new Date(start).getTime())}</>;
 }
 
-/** Notifications panel shown under both dashboards. */
 export function DashboardAlerts() {
   const { me, isEmployeeView, go } = useTimeClock();
   const { data } = useTcGetQuery({ path: "/counts", params: { userId: me.userId, asEmployee: isEmployeeView ? 1 : undefined } }, { pollingInterval: 30000 });
@@ -44,7 +41,6 @@ export function DashboardAlerts() {
   );
 }
 
-/** Dashboard stat card that opens its section (mouse or keyboard). */
 function StatLink({ label, value, onOpen }: { label: string; value: number | string; onOpen: () => void }) {
   return (
     <div
@@ -65,8 +61,6 @@ function StatLink({ label, value, onOpen }: { label: string; value: number | str
 
 export function ManagerDashboard() {
   const { me, members, branches, go } = useTimeClock();
-  // Totals come from /counts (same request as the Notifications panel) and only open clock-ins are loaded,
-  // instead of downloading the whole clock history, every shift and every request on each refresh.
   const countsQ = useTcGetQuery({ path: "/counts", params: { userId: me.userId, asEmployee: undefined } }, { pollingInterval: 30000 });
   const openQ = useTcGetQuery({ path: "/attendance", params: { open: 1 } }, { pollingInterval: 30000 });
   const c = (countsQ.data || {}) as { attendanceRecords?: number; openShifts?: number; pendingShiftRequests?: number };

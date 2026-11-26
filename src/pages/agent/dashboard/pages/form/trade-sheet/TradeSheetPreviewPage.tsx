@@ -33,11 +33,9 @@ const DataDisplay = ({ label, value }: { label: string; value: any }) => (
 const TradeSheetPreviewPage = () => {
   const { user } = useAppSelector((state: any) => state.user);
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const { data, isLoading } = useGetSpacificTradeSheetListDataQuery(uuid);
-  // State to track whether the section is expanded or collapsed
   const [isExpanded, setIsExpanded] = useState(false);
-  // Toggle the expanded/collapsed state
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   const agentBasicInfoData = data?.data?.tradeSheetData || {};
@@ -115,16 +113,11 @@ const TradeSheetPreviewPage = () => {
     }
   };
 
-  console.log(propertieDetailsData);
 
   return (
     <div>
-      {/* <h2 className="uppercase text-center bg-[#c9c1c13d] py-5">
-        {data?.data?.tradeSheetData?.tradeSheetTypeId || "N/A"}-{propertieDetailsData?.propertyAddress|| "N/A"}
-      </h2> */}
       <TradeSheetSteps active={9} uuid={uuid} />
 
-      {/* Preview Section */}
 
       {isLoading ? (
         <TableLoader />
@@ -163,7 +156,6 @@ const TradeSheetPreviewPage = () => {
                 <div className="space-y-4">
                   <h5 className="text-base font-bold text-gray-800 border-b-4 border-gray-500 pb-2 mb-4 tracking-wide flex justify-between items-center">
                     <span>Activity Log:</span>
-                    {/* Button to toggle expand/collapse with icons */}
                     <button
                       className="text-blue-500 hover:text-blue-700 flex items-center"
                       onClick={toggleExpand}
@@ -176,12 +168,11 @@ const TradeSheetPreviewPage = () => {
                     </button>
                   </h5>
 
-                  {/* Conditionally render activity logs based on expansion state */}
                   {isExpanded && (
                     <div className="max-h-[400px] overflow-y-auto space-y-3">
                       {data?.data?.tradeSheetData?.activityLog
-                      ?.slice() // create a shallow copy
-                      .sort((a, b) => b.id - a.id) // sort by id descending
+                      ?.slice()
+                      .sort((a, b) => b.id - a.id)
                       .map((log, index) => {
                         return (
                         <div
@@ -272,7 +263,6 @@ const TradeSheetPreviewPage = () => {
                 </div>
               </div>
             )}
-            {/* Action Buttons */}
             <div className="flex justify-between my-5 mx-5">
               <button
                 type="button"

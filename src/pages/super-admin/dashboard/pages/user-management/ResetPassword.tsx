@@ -24,7 +24,7 @@ const ResetPassword = () => {
   const { email } = useParams<{ email: string }>();
   const [code, setCode] = useState("");
   const [textType, setTextType] = useState(false);
-  const [step, setStep] = useState(1); // 1: Send Code, 2: Enter Code, 3: Change Password
+  const [step, setStep] = useState(1);
 
   const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm<PasswordFormInputs>();
   const [sendCode, { isLoading: sendCodeLoading }] = useSendCodeMutation();

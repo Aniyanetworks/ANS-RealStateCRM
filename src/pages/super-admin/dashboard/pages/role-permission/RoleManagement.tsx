@@ -178,7 +178,7 @@ const RoleManagement = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -186,7 +186,6 @@ const RoleManagement = () => {
       try {
         const response = await deleteMultipleRoles(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -239,7 +238,6 @@ const RoleManagement = () => {
           setIsUploading(false);
         }
       } catch (error) {
-        // toast.error("Update failed. Something went wrong!");
         console.error("Update error:", error);
         setIsUploading(false);
       }
@@ -285,22 +283,14 @@ const RoleManagement = () => {
                       >{name || "N/A"}</Link>
       ),
     },
-    // {
-    //   title: "User Type",
-    //   dataIndex: "userType",
-    //   key: "userType",
-    //   sorter: (a, b) => a.userType.localeCompare(b.userType),
-    // },
     {
       title: "Import From",
       dataIndex: "importRoleName",
       key: "importRoleName",
       render: (text, record) => {
-        // Check if it's a default system role and display the appropriate message
         if (record?.isDefault === "yes") {
           return "This is a default system role and is not eligible for modification.";
         }
-        // Otherwise, format and display the import role name
         return `${formatStringCamelCasecapitalize(
           record?.importRoleName || "N/A"
         )}`;
@@ -339,7 +329,7 @@ const RoleManagement = () => {
                     ),
                   },
                 ]
-                : []), // Empty array if condition is false,
+                : []),
 
                 hasPermissionForSlug("edit-role-permission") && {
                     key: "permission",
@@ -353,22 +343,6 @@ const RoleManagement = () => {
                     ),
                 },
 
-             /*  ...(recoard?.isDefault === "no"
-                ? [
-                  hasPermissionForSlug("edit-role-permission") && {
-                    key: "permission",
-                    label: (
-                      <Link
-                        className="flex items-center gap-2"
-                        to={`/dashboard/super-admin/role-permission/permission-management/${uuid}`}
-                      >
-                        <FaEye /> Permission
-                      </Link>
-                    ),
-                  },
-                ]
-                : []),  */
-              // Conditionally add the delete button if recoard?.isDefault is 'no'
               ...(recoard?.isDefault === "no"
                 ? [
                   hasPermissionForSlug("delete-role-permission") && {
@@ -385,7 +359,7 @@ const RoleManagement = () => {
                     ),
                   },
                 ]
-                : []), // Empty array if condition is false
+                : []),
             ],
           }}
         >
@@ -404,7 +378,6 @@ const RoleManagement = () => {
   const showModal = () => setIsModalOpen(true);
   const showModal2 = () => setIsModal2Open(true);
 
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -478,7 +451,6 @@ const RoleManagement = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Lawyer Name */}
             <div className="flex flex-col gap-2">
               <label>
                 Role Name <span className="text-red-500 ml-1">*</span>
@@ -498,26 +470,6 @@ const RoleManagement = () => {
               )}
             </div>
 
-            {/* <div className="flex flex-col gap-2">
-              <label>
-                User Type <span className="text-red-500 ml-1">*</span>
-              </label>
-              <select
-                {...register("userType", { required: "User type is required" })}
-              >
-                <option value="">Select User Type</option>
-                <option value="superAdmin">Super Admin</option>
-                <option value="admin">Admin</option>
-                <option value="agent">Agent</option>
-                <option value="accountant">Accountant</option>
-                <option value="client">Client</option>
-              </select>
-              {errors.userType && (
-                <p className="text-red-500 text-sm">
-                  {errors.userType.message as string}
-                </p>
-              )}
-            </div> */}
 
             <div className="flex flex-col gap-2">
               <label>Import Role</label>
@@ -581,7 +533,6 @@ const RoleManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

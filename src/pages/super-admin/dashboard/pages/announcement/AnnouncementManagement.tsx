@@ -76,20 +76,16 @@ const AnnouncementManagement: React.FC = () => {
   const [selectedLogKeys, setSelectedLogKeys] = useState<React.Key[]>([]);
   const [deleteNotificationLogsMultiple] = useDeleteNotificationLogsMultipleMutation();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [searchText, setSearchText] = useState(""); // Moved search state here
+  const [searchText, setSearchText] = useState("");
 
-  // Fetch announcements
   const { data, isLoading, refetch } = useGetAnnouncementsListQuery("");
   const announcements = data?.data?.announcements || [];
 
-  // Fetch notification logs
   const { data: logsData, isLoading: logsLoading } = useGetNotificationLogListQuery("");
   const notificationLogs = logsData?.data?.logs || [];
 
-  // Fetch agent list
   const { data: agentList } = useGetAgentListDataQuery("");
 
-  // Filter data based on active tab and search text
   const filteredData = activeTab === "announcements" 
     ? announcements?.filter((record: any) => {
         const searchTerm = searchText?.toLowerCase();
@@ -106,7 +102,6 @@ const AnnouncementManagement: React.FC = () => {
         return inRecord;
       });
 
-  // Prepare agent options for selection
   const agentOptions = agentList?.data?.userData
     ?.filter((agent: any) =>
       (agent?.brokerageId === 24 || agent?.brokerageId === "24") &&
@@ -124,7 +119,6 @@ const AnnouncementManagement: React.FC = () => {
       label: `${agent.firstName} ${agent.lastName}`,
     })) || [];
 
-  // Mutations
   const [createAnnouncement] = useCreateAnnouncementMutation();
   const [updateAnnouncement] = useUpdateAnnouncementMutation();
   const [sendAnnouncementNotifications] = useSendAnnouncementNotificationsMutation();
@@ -140,7 +134,6 @@ const AnnouncementManagement: React.FC = () => {
   }
 };
 
-// Update the actual delete function
 const handleDeleteLogsConfirm = async () => {
   try {
     const response = await deleteNotificationLogsMultiple(selectedLogKeys);
@@ -153,7 +146,6 @@ const handleDeleteLogsConfirm = async () => {
       toast.error("Failed to delete notification logs. Please try again.");
     }
   } catch (error) {
-    console.log(error);
     toast.error("Failed to delete notification logs. Please try again.");
   } finally {
     setIsDeleteLogsModalVisible(false);
@@ -189,34 +181,29 @@ const logRowSelection: TableRowSelection<any> = {
 };
 
 
-  // Handle create
   const handleCreate = () => {
     setSelectedAnnouncement(null);
     setIsModalOpen(true);
   };
 
-  // Handle create instant notification
   const handleCreateInstantNotification = () => {
     setSelectedAnnouncement(null);
     setIsNotificationModalOpen(true);
   };
 
-  // Handle edit
   const handleEdit = (announcement: Announcement) => {
     setSelectedAnnouncement(announcement);
     setIsModalOpen(true);
   };
 
-  // Handle delete click, show confirmation modal
   const handleDeleteClick = (uuid: string) => {
     setAnnouncementToDelete(uuid);
-    setIsDeleteModalVisible(true); // Show delete confirmation modal
+    setIsDeleteModalVisible(true);
   };
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
-  // Confirm deletion
   const handleDeleteConfirm = async () => {
     if (announcementToDelete) {
       try {
@@ -224,12 +211,9 @@ const logRowSelection: TableRowSelection<any> = {
         await deleteAnnouncement(announcementToDelete);
 
         setIsDeleteModalVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
       } catch (error) {
-        console.log(error);
         setIsDeleteModalVisible(false);
-        // toast.error("Failed to delete announcement. Please try again.");
       }
     }
   };
@@ -238,7 +222,6 @@ const logRowSelection: TableRowSelection<any> = {
       try {
         const response = await deleteMultipleAnnouncement(selectedRowKeys);
 
-        // Ensure the refetch waits for the data to be refreshed
 
         if (response.data.status == true) {
           toast.success("Announcement deleted successfully!");
@@ -251,22 +234,18 @@ const logRowSelection: TableRowSelection<any> = {
         }
       } catch (error) {
         setIsDeleteModalMultipleVisible(false);
-        console.log(error);
-        // toast.error("Failed to delete announcement. Please try again.");
       }
     } else {
       toast.error("Please Select Items.");
     }
   };
 
-  // Cancel deletion
   const handleDeleteCancel = () => {
     setIsDeleteModalVisible(false);
     setIsDeleteModalMultipleVisible(false);
-    setAnnouncementToDelete(null); // Clear selected announcement for deletion
+    setAnnouncementToDelete(null);
   };
 
-  // Handle modal close (create/update announcement)
   const handleModalClose = async (data?: Announcement) => {
     setIsModalOpen(false);
     if (data) {
@@ -286,12 +265,10 @@ const logRowSelection: TableRowSelection<any> = {
     }
   };
 
-  // Handle notification modal close for instant notifications
   const handleNotificationModalClose = async (data?: any) => {
     setIsNotificationModalOpen(false);
     if (data) {
       try {
-        // For instant notifications, send the complete data including custom emails and phones
         const notificationData = {
           title: data.title || "Instant Notification",
           description: data.description || "",
@@ -303,13 +280,12 @@ const logRowSelection: TableRowSelection<any> = {
           targetType: data.targetType || "all",
           selectedBranches: data.selectedBranches || [],
           recipientScope: data.recipientScope || "all_users",
-          customEmails: data.customEmails || [], // ADD THIS
-          customPhones: data.customPhones || [], // ADD THIS
+          customEmails: data.customEmails || [],
+          customPhones: data.customPhones || [],
           status: "publish" as const,
           date: new Date().toISOString(),
         };
         
-        console.log('Sending notification data:', notificationData); // Debug log
         
         await sendAnnouncementNotifications({ 
           data: notificationData,
@@ -324,7 +300,6 @@ const logRowSelection: TableRowSelection<any> = {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -390,7 +365,7 @@ const logRowSelection: TableRowSelection<any> = {
       render: (description, record) => {
         const safeDescription = description || "";
         const isExpanded = expandedDescriptions.has(record.uuid!);
-        const maxLength = 50; // Adjust this value to change the initial text length
+        const maxLength = 50;
 
         const toggleExpand = (uuid: string) => {
           const newExpanded = new Set(expandedDescriptions);
@@ -494,7 +469,6 @@ const logRowSelection: TableRowSelection<any> = {
     },
   ];
 
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -506,7 +480,6 @@ const logRowSelection: TableRowSelection<any> = {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <button
@@ -521,9 +494,7 @@ const logRowSelection: TableRowSelection<any> = {
               </button>
             ))}
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style={{ fontSize: 10, left: 8 }} />
             <input
@@ -539,9 +510,7 @@ const logRowSelection: TableRowSelection<any> = {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <button onClick={handleCreateInstantNotification} className="primary-btn">Create Announcement</button>
             {hasPermissionForSlug("create-announcements") && (
@@ -560,7 +529,6 @@ const logRowSelection: TableRowSelection<any> = {
           </div>
         </div>
 
-      {/* Tab Content */}
       <div>
         {activeTab === "announcements" ? (
           <>
@@ -586,7 +554,6 @@ const logRowSelection: TableRowSelection<any> = {
         )}
       </div>
 
-      {/* Modals */}
       {isModalOpen && (
         <AnnouncementModal
           announcement={selectedAnnouncement}
@@ -604,7 +571,6 @@ const logRowSelection: TableRowSelection<any> = {
         />
       )}
 
-      {/* Delete Confirmation Modals */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteModalVisible}
@@ -650,7 +616,6 @@ const logRowSelection: TableRowSelection<any> = {
       >
         Are you sure you want to delete selected announcements?
       </Modal>
-      {/* Add this modal for logs deletion confirmation */}
 <Modal
   title="Confirm Deletion"
   open={isDeleteLogsModalVisible}

@@ -16,7 +16,6 @@ import type { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetAllLeadsQuery } from '../../../../../redux/api/superadmin/leadManagementSlice';
-// import { EyeOutlined, FolderOpenOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
 interface Lead {
     id: number;
@@ -62,24 +61,18 @@ const LeadsManagementPage: React.FC = () => {
         pageSize: 20,
     });
 
-    // Use RTK Query hook to fetch leads - pass undefined as argument
     const { data, error, isLoading, refetch } = useGetAllLeadsQuery(undefined);
-    console.log(data, "data");
-    // Extract leads from response or default to empty array
     const leads: Lead[] = data?.data?.leads || [];
 
-    // Handle search
     const handleSearch = (value: string) => {
         setSearchText(value);
     };
 
-    // Reset all filters
     const handleResetFilters = () => {
         setSearchText('');
         setStatusFilter('all');
     };
 
-    // Filter leads based on search text and status
     const filteredLeads = leads.filter(lead => {
         const matchesSearch =
             !searchText ||
@@ -99,7 +92,6 @@ const LeadsManagementPage: React.FC = () => {
 
 
 
-    // Define table columns
     const columns: ColumnsType<Lead> = [
         {
             title: 'Name',
@@ -137,7 +129,6 @@ const LeadsManagementPage: React.FC = () => {
             key: 'status',
             render: (status: string) => {
                 let color = 'default';
-                // Color mapping for different statuses
                 if (status === 'New') color = 'blue';
                 if (status === 'No Response') color = 'orange';
                 if (status === 'Responded') color = 'green';
@@ -185,7 +176,6 @@ const LeadsManagementPage: React.FC = () => {
 
     const navigateToCampaignLeads = (campaignUuid: string | undefined, leadName: string = '') => {
         if (campaignUuid) {
-            // Create URL with search query parameter
             const params = new URLSearchParams();
             if (leadName) {
                 params.set('search', leadName);
@@ -205,7 +195,6 @@ const LeadsManagementPage: React.FC = () => {
             },
         };
     };
-    // Handle pagination change
     const handlePaginationChange = (page: number, pageSize?: number) => {
         const newPageSize = pageSize || pagination.pageSize;
         setPagination({
@@ -217,17 +206,13 @@ const LeadsManagementPage: React.FC = () => {
     return (
         <div className="pb-16">
             <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                {/* Toolbar */}
                 <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-                    {/* Title */}
                     <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
                         All Leads
                         <span className="ml-1 text-gray-400 font-normal text-[11px]">({filteredLeads.length})</span>
                         {isLoading && <Spin size="small" className="ml-2" />}
                     </h1>
-                    {/* Spacer */}
                     <div className="flex-1" />
-                    {/* Search */}
                     <div className="relative flex-shrink-0" style={{ width: 170 }}>
                         <FaSearch className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style={{ fontSize: 10, left: 8 }} />
                         <input
@@ -243,9 +228,7 @@ const LeadsManagementPage: React.FC = () => {
                             </button>
                         )}
                     </div>
-                    {/* Divider */}
                     <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-                    {/* Actions */}
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                         <button onClick={refetch} className="primary-btn flex items-center gap-1">
                             <ReloadOutlined /> Refresh
@@ -253,7 +236,6 @@ const LeadsManagementPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Table */}
                 {error ? (
                     <div className="text-center py-10">
                         <p className="text-red-500">Failed to load leads. Please try again.</p>

@@ -1,5 +1,3 @@
-// ANS Time Clock — React rebuild of the dvclock app inside ANS RealStateCRM (separate from Clock In/Out).
-// Layout and styling follow the original: hero, section navigation, panels; management and employee consoles.
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTcGetQuery } from "../../redux/api/common/dvTimeClockSlice";
 import { Me, TimeClockContext, TimeClockCtx, canFor, useTcAction } from "./TimeClockContext";
@@ -22,7 +20,6 @@ const EN: [string, string][] = [
   ["dashboard", "Dashboard"], ["clock", "Clock In / Out"], ["schedule", "My Schedule"], ["attendanceReport", "My Attendance Report"], ["requests", "My Requests"],
   ["messages", "Messages"], ["availability", "Availability"], ["appointments", "Appointments Calendar"], ["profile", "My Profile"], ["account", "Calendar Settings"],
 ];
-// Sections a management account needs a permission for (as in the original).
 const REQUIRED: Record<string, string> = {
   clock: "clock.use", attendance: "attendance.view", scheduling: "shifts.view", employees: "employees.view", branches: "branches.manage",
   requests: "approvals.manage", availability: "availability.manage", payroll: "payroll.view", access: "management.manage",
@@ -48,7 +45,7 @@ export default function DvTimeClock() {
     if (!me) return;
     const allowed = (isEmployeeView ? EN : MN).map((x) => x[0]).concat(["openshifts", "tasks", "access"]);
     let saved = "dashboard";
-    try { saved = sessionStorage.getItem(sectionKey) || "dashboard"; } catch { /* storage unavailable */ }
+    try { saved = sessionStorage.getItem(sectionKey) || "dashboard"; } catch { }
     setSection(allowed.includes(saved) ? saved : "dashboard");
   }, [me?.userId, isEmployeeView]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -58,7 +55,6 @@ export default function DvTimeClock() {
   );
   const counts = (countsQ.data || { unreadMessages: 0, newResponses: 0, pendingRequests: 0 }) as Counts;
 
-  // toast + modal (same look as the original)
   const [toastText, setToastText] = useState<string | null>(null);
   const toastTimer = useRef<number>();
   const toast = useCallback((msg: string) => {
@@ -76,7 +72,7 @@ export default function DvTimeClock() {
       x = "dashboard";
     }
     setSection(x);
-    try { sessionStorage.setItem(sectionKey, x); } catch { /* storage unavailable */ }
+    try { sessionStorage.setItem(sectionKey, x); } catch { }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [me, isEmployeeView, sectionKey, toast]);
 
@@ -124,7 +120,6 @@ export default function DvTimeClock() {
     );
   }
 
-  // Navigation (the original's final buildNav): employees get Open Shifts + Shift Tasks (Availability lives in My Requests).
   let items = (isEmployeeView ? EN : MN).slice();
   if (isEmployeeView) {
     items = items.filter((x) => x[0] !== "availability");
@@ -200,7 +195,6 @@ export default function DvTimeClock() {
           </div>
           <div id="content">{sectionView()}</div>
         </main>
-        {/* Rendered at <body> level (own .dvtc scope) so the app sidebar/header can never cover it */}
         {modal && createPortal(
           <div className="dvtc" style={{ height: 0, background: "transparent" }}>
           <div className="modal" style={{ zIndex: 3000 }} onMouseDown={(e) => e.target === e.currentTarget && closeModal()}>

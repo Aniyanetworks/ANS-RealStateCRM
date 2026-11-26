@@ -14,7 +14,6 @@ const Page3 = () => {
         </p>
       </FormSectionHeading>
 
-      {/* -------- is cottage/rural ------------- */}
       <div className="flex  border-y  items-center !border-darkBlue  mt-1 justify-between ">
         <p className="font-semibold text-[13px] uppercase">
           is cottage /rural/waterfront - mls{" "}
@@ -48,9 +47,6 @@ const Page3 = () => {
         </div>
       </div>
 
-      {/* --------------------
-        REMARKS FOR CLIENTS
-        --------------------------------- */}
       <div className="mt-3 flex flex-col ">
         <FormSectionHeading className="bg-transparent p-0 text-darkBlue">
           <div className="flex items-center gap-3">
@@ -83,9 +79,6 @@ const Page3 = () => {
         ></textarea>
       </div>
 
-      {/* --------------------
-        extras
-        --------------------------------- */}
       <div className="mt-3 flex flex-col ">
         <FormSectionHeading className="bg-transparent p-0 text-darkBlue">
           <div className="flex items-center gap-3">
@@ -110,9 +103,6 @@ const Page3 = () => {
           maxLength={240}
         ></textarea>
       </div>
-      {/* --------------------
-        INCLUSIONS
-        --------------------------------- */}
       <div className="mt-3 flex flex-col gap-2">
         <FormSectionHeading className="bg-transparent p-0 text-darkBlue">
           <div className="flex items-center gap-3">
@@ -131,9 +121,6 @@ const Page3 = () => {
         ></textarea>
       </div>
 
-      {/* --------------------
-        EXCLUSIONS
-        --------------------------------- */}
       <div className="mt-3 flex flex-col gap-2">
         <FormSectionHeading className="bg-transparent p-0 text-darkBlue">
           <div className="flex items-center gap-3">
@@ -152,9 +139,6 @@ const Page3 = () => {
         ></textarea>
       </div>
 
-      {/* --------------------
-        RENTAL ITEMS
-        --------------------------------- */}
       <div className="mt-3 flex flex-col gap-2">
         <FormSectionHeading className="bg-transparent p-0 text-darkBlue">
           <div className="flex items-center gap-3">
@@ -173,9 +157,6 @@ const Page3 = () => {
         ></textarea>
       </div>
 
-      {/* --------------------
-        REMARKS FOR BROKERAGE
-        --------------------------------- */}
       <div className="mt-3 flex flex-col ">
         <FormSectionHeading className="bg-transparent p-0 text-darkBlue">
           <div className="flex items-center gap-2">
@@ -205,18 +186,11 @@ const Page3 = () => {
         ></textarea>
       </div>
 
-      {/* ============
-        other
-      ==============*/}
       <div className="mt-5">
         <FormSectionHeading className="uppercase">OTHER</FormSectionHeading>
-        {/* -------------
-        section 1
-        ---------------- */}
         <div className="flex gap-5 mt-2">
           <div className=" w-[56%]">
             <div className="border-2 border-dashed  !border-darkBlue bg-darkBlue/5 p-2">
-              {/* LISTING BROKERAGE----- */}
               <div>
                 <FormSectionHeading className="bg-transparent  px-0">
                   <SubSectionHeading title="LISTING BROKERAGE" />
@@ -224,7 +198,6 @@ const Page3 = () => {
                 <InPutField inputClass="bg-transparent" />
               </div>
 
-              {/* BROKER 1/ SALESPERSON 1----- */}
               <div className="mt-2">
                 <FormSectionHeading className="bg-transparent mt-1 px-0">
                   <SubSectionHeading title="  BROKER 1/ SALESPERSON 1" />
@@ -234,7 +207,6 @@ const Page3 = () => {
                 </div>
               </div>
             </div>
-            {/* BROKER 2/ SALESPERSON 2----- */}
             <div className="mt-2">
               <FormSectionHeading className="bg-transparent  px-0">
                 <SubSectionHeading title="BROKER 2/ SALESPERSON 2" />
@@ -245,9 +217,7 @@ const Page3 = () => {
             </div>
           </div>
 
-          {/* right side */}
           <div className="flex-grow">
-            {/* L.B. PHONE----- */}
             <div className="flex items-center gap-5 w-full  ">
               <FormSectionHeading className="bg-transparent flex-shrink-0  px-0 !m-0">
                 <SubSectionHeading
@@ -259,7 +229,6 @@ const Page3 = () => {
                 <InPutField inputClass="bg-transparent " />
               </div>
             </div>
-            {/* L.B. FAX NO.----- */}
             <div className="flex items-center gap-5 w-full mt-3 ">
               <FormSectionHeading className="bg-transparent flex-shrink-0  px-0 !m-0">
                 <SubSectionHeading
@@ -271,7 +240,6 @@ const Page3 = () => {
                 <InPutField inputClass="bg-transparent " />
               </div>
             </div>
-            {/*   BROKER 1/ SALESPERSON 1 PHONE----- */}
             <div className=" gap-5 w-full mt-3 ">
               <FormSectionHeading className="bg-transparent flex-shrink-0  px-0 !m-0">
                 <SubSectionHeading
@@ -283,7 +251,6 @@ const Page3 = () => {
                 <InPutField inputClass="bg-transparent " />
               </div>
             </div>
-            {/*   BROKER 2/ SALESPERSON 2 PHONE----- */}
             <div className=" gap-5 w-full mt-3.5 ">
               <FormSectionHeading className="bg-transparent flex-shrink-0  px-0 !m-0">
                 <span className="border-2  !border-darkBlue text-darkBlue px-1 ">
@@ -297,7 +264,6 @@ const Page3 = () => {
           </div>
         </div>
 
-        {/*  COMMISSION TO CO-OPERATIANG BROKERAGE----- */}
         <div className="mt-2">
           <FormSectionHeading className="bg-transparent mt-1 px-0">
             <SubSectionHeading
@@ -309,11 +275,7 @@ const Page3 = () => {
             <InPutField inputClass="bg-transparent" />
           </div>
         </div>
-        {/* --------------- 
-        spis section
-        --------------*/}
         <div className="mt-2 flex gap-10">
-          {/* spis ----------- */}
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
               <SubSectionHeading title=" SPIS" className="!text-[12px]" />
@@ -337,7 +299,6 @@ const Page3 = () => {
             </div>
           </div>
 
-          {/* ENERGY CERTIFICATION----------- */}
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
               <span className="border-2 bg-transparent text-darkBlue !border-darkBlue px-1">
@@ -371,7 +332,6 @@ const Page3 = () => {
             </div>
           </div>
 
-          {/*  CERTIFICATION LEVEL----------- */}
           <div className="w-96">
             <FormSectionHeading className="bg-transparent  px-0">
               <div className="flex items-center gap-2">
@@ -387,11 +347,7 @@ const Page3 = () => {
             <InPutField />
           </div>
         </div>
-        {/* --------------- 
-        GREEN PROPERTY INFORMATION STATEMENT
-        --------------*/}
         <div className="mt-3 flex gap-10">
-          {/* GREEN PROPERTY INFORMATION STATEMENT----------- */}
 
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
@@ -426,7 +382,6 @@ const Page3 = () => {
             </div>
           </div>
 
-          {/* DISTRIBUTE TO INTERNET----------- */}
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
               <SubSectionHeading
@@ -460,7 +415,6 @@ const Page3 = () => {
               </label>
             </div>
           </div>
-          {/* DISPLAY ADDRESS ON INTERNET----------- */}
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
               <SubSectionHeading
@@ -494,7 +448,6 @@ const Page3 = () => {
               </label>
             </div>
           </div>
-          {/* ENERGY CERTIFICATION----------- */}
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
               <SubSectionHeading
@@ -529,11 +482,7 @@ const Page3 = () => {
             </div>
           </div>
         </div>
-        {/* --------------- 
-        PERMISSION TO CONTRACT LG TO ADVERTISE section
-        --------------*/}
         <div className="mt-3 flex gap-10">
-          {/*  PERMISSION TO CONTRACT LG TO ADVERTISE ----------- */}
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
               <SubSectionHeading
@@ -568,7 +517,6 @@ const Page3 = () => {
             </div>
           </div>
 
-          {/*   OPEN HOUSE DATE----------- */}
           <div>
             <FormSectionHeading className="bg-transparent  px-0">
               <span className="border-2 bg-transparent text-darkBlue !border-darkBlue px-1">
@@ -584,7 +532,6 @@ const Page3 = () => {
             </div>
           </div>
 
-          {/*  FROM----------- */}
           <div className="">
             <FormSectionHeading className="bg-transparent  px-0">
               <div className="flex items-center gap-2">
@@ -596,7 +543,6 @@ const Page3 = () => {
 
             <InPutField />
           </div>
-          {/*  TO----------- */}
           <div className="">
             <FormSectionHeading className="bg-transparent  px-0">
               <div className="flex items-center gap-2">
@@ -609,7 +555,6 @@ const Page3 = () => {
             <InPutField />
           </div>
         </div>
-        {/*  OPEN HOUSE NOTES----------- */}
         <div className="mt-3">
           <FormSectionHeading className="bg-transparent  px-0">
             <div className="flex items-center gap-2">
@@ -623,7 +568,6 @@ const Page3 = () => {
             <InPutField />
           </div>
         </div>
-        {/*  APPOINTMENTS----------- */}
         <div className="mt-3">
           <FormSectionHeading className="bg-transparent  px-0">
             <div className="flex items-center gap-2">
@@ -637,12 +581,8 @@ const Page3 = () => {
             <InPutField />
           </div>
         </div>
-        {/* -------------
-        OCCUPANCY/CONTACT AFTER EXPIRED
-        -----------*/}
         <div className="mt-3 flex items-center gap-16">
           <div className="flex items-center gap-5">
-            {/* OCCUPANCY ----------- */}
             <FormSectionHeading className="bg-transparent flex gap-2 items-center px-0">
               <SubSectionHeading title="OCCUPANCY" className="!text-[12px]" />
               <span className="text-[13px] text-darkBlue">(check 1)</span>
@@ -691,7 +631,6 @@ const Page3 = () => {
             </div>
           </div>
           <div className="flex items-center gap-5">
-            {/* CONTACT AFTER EXPIRED ----------- */}
             <FormSectionHeading className="bg-transparent px-0">
               <SubSectionHeading
                 title="CONTACT AFTER EXPIRED"
@@ -726,7 +665,6 @@ const Page3 = () => {
           </div>
         </div>
 
-        {/* --------------  VIRTUAL TOUR URL */}
         <div className="mt-3 flex gap-5">
           <FormSectionHeading className="bg-transparent flex-shrink-0  px-0">
             <div className="flex items-center gap-2 text-darkBlue">
@@ -742,7 +680,6 @@ const Page3 = () => {
             className="!border-b !p-0 !!border-darkBlue !rounded-none !border-0"
           />
         </div>
-        {/* Photo options ----------- */}
         <div className="mt-3 border-b pb-1 !border-darkBlue">
           <FormSectionHeading className="bg-transparent px-0">
             <SubSectionHeading title="PHOTO OPTIONS" className="!text-[12px]" />
@@ -773,9 +710,6 @@ const Page3 = () => {
           </div>
         </div>
 
-        {/* ---------------
-        signature
-        ------------*/}
         <div className="mt-3 flex ">
           <p className="w-1/3 text-[14px] leading-5 ">
             SELLER HEREBY ACKNOWLEDGES HAVING RECIEVED A COPY OF PART 2 OF 2 OF
@@ -784,7 +718,6 @@ const Page3 = () => {
           <div className="flex gap-5 items-center w-2/3">
             <div className=" flex-grow ">
               <div className="flex flex-grow">
-                {/* signature-------- */}
                 <div className="flex flex-grow">
                   <label htmlFor="" className="  !mb-0 ">
                     <p className="!text-[13px] -mb-3"> SIGNATURE</p>
@@ -795,7 +728,6 @@ const Page3 = () => {
                   />
                 </div>
 
-                {/* date -------- */}
                 <div className="flex !w-56 flex-shrink-0">
                   <label htmlFor="" className="  !mb-0 ">
                     <p className="-mb-3 !text-[13px]">Date</p>
@@ -811,7 +743,6 @@ const Page3 = () => {
                 </div>
               </div>
               <div className="flex flex-grow mt-3">
-                {/* signature-------- */}
                 <div className="flex flex-grow">
                   <label htmlFor="" className="  !mb-0 ">
                     <p className="-mb-3 !text-[13px]"> SIGNATURE</p>
@@ -822,7 +753,6 @@ const Page3 = () => {
                   />
                 </div>
 
-                {/* date -------- */}
                 <div className="flex !w-56 flex-shrink-0">
                   <label htmlFor="" className="  !mb-0 ">
                     <p className=" !text-[13px] -mb-3">Date</p>

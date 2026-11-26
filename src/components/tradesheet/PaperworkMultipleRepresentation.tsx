@@ -7,7 +7,7 @@ import TableLoader from "../loader/TableLoader";
 import { Tabs } from "antd";
 import DynamicPaperwork from "./DynamicPaperwork";
 import { formatStringCamelCasecapitalize } from "../../utils/stringUtils";
-import { useAppSelector } from "../../redux/hooks"; // Adjust import path as needed
+import { useAppSelector } from "../../redux/hooks";
 
 const PaperworkMultipleRepresentation = () => {
   const { uuid } = useParams<{ uuid?: string }>();
@@ -15,10 +15,8 @@ const PaperworkMultipleRepresentation = () => {
   const [multipleRepresentation, setMultipleRepresentation] = useState<string[]>([]);
   const [representation, setRepresentation] = useState<string | null>(null);
   
-  // Get user from Redux store
   const { user } = useAppSelector((state) => state.user);
 
-  // Fetch data using a query hook
   const { data: spacificTradeSheetLisData, isLoading } =
     useGetSpacificTradeSheetListDataQuery(uuid);
 
@@ -27,7 +25,6 @@ const PaperworkMultipleRepresentation = () => {
       const multipleRepresentationArray =
         spacificTradeSheetLisData.data.tradeSheetData.multipleRepresentation.split(",");
       
-      // Filter representations based on agent's role
       const agentRepresentations = filterAgentRepresentations(
         multipleRepresentationArray, 
         user, 
@@ -37,11 +34,9 @@ const PaperworkMultipleRepresentation = () => {
       setMultipleRepresentation(agentRepresentations);
       setRepresentation(agentRepresentations[0] || null);
     }
-  }, [spacificTradeSheetLisData, user]); // Added user as dependency
+  }, [spacificTradeSheetLisData, user]);
 
-  // Function to filter representations for the current agent
   const filterAgentRepresentations = (representations, user, record) => {
-    // If user is not an agent, return all representations
     if (user?.userType !== "agent") {
       return representations;
     }
@@ -51,7 +46,6 @@ const PaperworkMultipleRepresentation = () => {
 
     const agentRepresentations = [];
 
-    // Check if agent is seller/landlord agent
     if (record.seller_landlord_agent_id && 
         currentAgentId == record.seller_landlord_agent_id) {
       if (representations.includes("seller")) {
@@ -62,7 +56,6 @@ const PaperworkMultipleRepresentation = () => {
       }
     }
 
-    // Check if agent is buyer/tenant agent
     if (record.buyer_tenant_agent_id && 
         currentAgentId == record.buyer_tenant_agent_id) {
       if (representations.includes("buyer")) {
@@ -80,12 +73,10 @@ const PaperworkMultipleRepresentation = () => {
     return <TableLoader />;
   }
 
-  // Don't show anything if no representations for the agent
   if (user?.userType === "agent" && multipleRepresentation.length === 0) {
     return <div>No representations found for your account.</div>;
   }
 
-  // For non-agents, show all representations
   const displayRepresentations = user?.userType === "agent" 
     ? multipleRepresentation 
     : (spacificTradeSheetLisData?.data?.tradeSheetData?.multipleRepresentation?.split(",") || []);

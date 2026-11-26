@@ -11,7 +11,6 @@ import TableLoader from "../../../../../components/loader/TableLoader";
 import ModalMain from "../../../../../components/ui/Modal";
 import { Controller, useForm } from "react-hook-form";
 
-// import momentTimezone from "moment-timezone";
 import moment from "moment-timezone";
 
 import {
@@ -26,9 +25,6 @@ import { BsPeople, BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { usePermissions } from "../../../../../utils/permissionUtils";
 
-// "Our Agents" = agents under our own brokerage (ANS RealStateCRM Inc.,
-// brokerageId 24) who aren't terminated — same rule as the Agent List page's
-// "Our Agents" tab. Co-op/other-brokerage agents are excluded.
 const OUR_BROKERAGE_ID = 24;
 
 type TableRowSelection<T extends object = object> =
@@ -53,7 +49,6 @@ interface CalendarEvent {
 }
 
 const CalendarEventManagement = () => {
-  // States
   const { hasPermissionForSlug } = usePermissions();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -67,7 +62,6 @@ const CalendarEventManagement = () => {
   const [loading, setLoading] = useState(false);
   const [viewMode, setViewMode] = useState<"table" | "calendar">("table");
 
-  // RTK Query hooks
   const { data, isLoading, refetch } = useGetCalendarEventsQuery("");
   const [createCalendarEvent] = useCreateCalendarEventMutation();
   const [updateCalendarEvent] = useUpdateCalendarEventMutation();
@@ -124,7 +118,6 @@ const CalendarEventManagement = () => {
     return inRecord;
   });
 
-  // Group events by their Toronto-local start date for the calendar view
   const eventsByDate = useMemo(() => {
     const map: Record<string, CalendarEvent[]> = {};
     (filteredData || []).forEach((record) => {
@@ -228,7 +221,6 @@ const CalendarEventManagement = () => {
     );
   };
 
-  // Form handlers
   const showModal = () => setIsModalOpen(true);
 
   const handleCancel = () => {
@@ -253,7 +245,6 @@ const CalendarEventManagement = () => {
     setSelectedEventId("");
   };
 
-  // Clicking a blank (event-less) date in the calendar view opens the create modal prefilled with that date
   const handleDateSelect = (date: any) => {
     const dateKey = date.format("YYYY-MM-DD");
     if (eventsByDate[dateKey]?.length) return;
@@ -271,7 +262,6 @@ const CalendarEventManagement = () => {
     showModal();
   };
 
-  console.log(data);
 
   const onSubmit = async () => {
     const data = getValues();
@@ -319,15 +309,15 @@ const CalendarEventManagement = () => {
       ...record,
       start: record.start
         ? moment
-          .utc(record.start) // Parse as UTC
-          .tz("America/Toronto") // Convert to Toronto timezone
+          .utc(record.start)
+          .tz("America/Toronto")
           .format("YYYY-MM-DDTHH:mm")
         : "",
       end: record.end
         ? moment
           .utc(record.end)
           .tz("America/Toronto")
-          .format("YYYY-MM-DDTHH:mm") // Handle UTC end date
+          .format("YYYY-MM-DDTHH:mm")
         : "",
       viewerUserIds: (record.viewers || []).map((v) => v.viewer?.id).filter(Boolean),
     };
@@ -357,7 +347,6 @@ const CalendarEventManagement = () => {
     setSelectedEventId("");
   };
 
-  // Add row selection configuration
   const rowSelection: TableRowSelection<CalendarEvent> = {
     selectedRowKeys,
     onChange: (newSelectedRowKeys: React.Key[]) => {
@@ -365,7 +354,6 @@ const CalendarEventManagement = () => {
     },
   };
 
-  // Add multiple delete handler
   const handleMultipleDelete = () => {
     if (selectedRowKeys.length === 0) {
       toast.error("Please select items to delete");
@@ -374,9 +362,7 @@ const CalendarEventManagement = () => {
     setIsDeleteModalMultipleVisible(true);
   };
 
-  // Add confirm multiple delete function
   const confirmMultipleDelete = async () => {
-    console.log(selectedRowKeys);
     try {
       const response = await deleteMultipleCalendarEvents(
         selectedRowKeys
@@ -394,7 +380,6 @@ const CalendarEventManagement = () => {
     setIsDeleteModalMultipleVisible(false);
   };
 
-  // Table configuration
   const columns: TableColumnsType<CalendarEvent> = [
     {
       title: "Title",
@@ -561,10 +546,6 @@ const CalendarEventManagement = () => {
     }
   );
 
-  // =====================
-  // const torontoDate = momentTimezone()
-  //   .tz("America/Toronto")
-  //   .format("YYYY-MM-DDTHH:mm");
 
   return (
     <div className="pb-16">
@@ -653,7 +634,6 @@ const CalendarEventManagement = () => {
         )}
       </div>
 
-      {/* Create/Edit Modal */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}
@@ -676,7 +656,6 @@ const CalendarEventManagement = () => {
         }
       >
         <form className="space-y-4">
-          {/* Title - Full Width */}
           <div className="flex flex-col gap-2">
             <label>
               Title <span className="text-red-500">*</span>
@@ -691,7 +670,6 @@ const CalendarEventManagement = () => {
             )}
           </div>
 
-          {/* Start and End DateTime Row */}
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
               <label>
@@ -722,7 +700,6 @@ const CalendarEventManagement = () => {
             </div>
           </div>
 
-          {/* Location and Status Row */}
 
           <div className="flex flex-col gap-2">
             <label>
@@ -738,7 +715,6 @@ const CalendarEventManagement = () => {
             )}
           </div>
 
-          {/* Description - Full Width */}
           <div className="flex flex-col gap-2">
             <label>
               Description <span className="text-red-500">*</span>
@@ -757,7 +733,6 @@ const CalendarEventManagement = () => {
             )}
           </div>
 
-          {/* Share with Agents - Full Width */}
           <div className="flex flex-col gap-2">
             <label>Share with Agents</label>
             <Controller
@@ -781,7 +756,6 @@ const CalendarEventManagement = () => {
         </form>
       </ModalMain>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isModalVisible}
@@ -798,7 +772,6 @@ const CalendarEventManagement = () => {
         <p>Are you sure you want to delete this event?</p>
       </Modal>
 
-      {/* Add Multiple Delete Confirmation Modal */}
       <Modal
         title="Confirm Multiple Deletion"
         open={isDeleteModalMultipleVisible}

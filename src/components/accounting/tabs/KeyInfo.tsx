@@ -17,10 +17,8 @@ const CommissionTab = ({ data }) => {
         <div className=" relative h-full w-[100%] p-3 z-[999]  bg-white shadow-lg py-5 pl-5 relative transform translate-x-0 transition-transform duration-300">
           <div className="overflow-auto h-[70vh]">
 
-              {/* Tradesheet Section */}
               <div className="rounded-md p-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* Tradesheet Info */}
                   <div className="flex flex-col text-sm gap-1">
                     <span className="font-semibold">Tradesheet:</span>
                     <span className="text-gray-700">
@@ -49,7 +47,6 @@ const CommissionTab = ({ data }) => {
                     </span>
                   </div>
 
-                  {/* Prices based on representation */}
                   {tradesheetData?.representation === "buyer" ? (
                     <div className="flex flex-col text-sm gap-1">
                       <span className="font-semibold">Sold Price:</span>

@@ -106,7 +106,6 @@ export const supportApi = api.injectEndpoints({
       }),
     }),
 
-    // comment
     getSupportComments: builder.query({
       query: ({ supportRequestId }: { supportRequestId?: string }) => {
         if (!supportRequestId) throw new Error("supportRequestId is required");

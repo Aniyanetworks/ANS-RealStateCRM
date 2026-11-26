@@ -65,7 +65,6 @@ import {
   formatNumberWithCommasAndDecimals,
 } from '../../utils/formatNumberWithCommasAndDecimals';
 
-// Define TypeScript interfaces
 interface Property {
   soldPrice?: string;
   salesPrice?: string;
@@ -130,7 +129,6 @@ interface AgentReportDataResponse {
   };
 }
 
-// Define detailed breakdown types
 interface CommissionDetail {
   commission: number;
   createdAt: string;
@@ -163,7 +161,6 @@ interface ListingDetail {
   state?: string;
 }
 
-// Define TopStats type
 interface TopStats {
   name: string;
   totalCommission: number;
@@ -177,7 +174,6 @@ interface TopStats {
   agentId?: number;
 }
 
-// Function to calculate top statistics
 const calculateTopStats = (data?: AgentReportDataResponse) => {
   if (!data?.data?.userData || !Array.isArray(data.data.userData)) {
     return {
@@ -208,8 +204,6 @@ const calculateTopStats = (data?: AgentReportDataResponse) => {
     };
   }
 
-  // Agents excluded from the dashboard's Top Commission / Unit Seller / Seller /
-  // Listing Agent leaderboard cards (internal/test accounts, not real agent activity).
   const DASHBOARD_TOP_STATS_EXCLUDED_USER_IDS = ["UID00003"];
 
   const agents = data.data.userData.filter(
@@ -219,7 +213,6 @@ const calculateTopStats = (data?: AgentReportDataResponse) => {
   const stats: TopStats[] = agents.map((agent) => {
     const tradeCommissions = agent.tradeAgentCommission || [];
 
-    // Collect commission details
     const commissionDetails: CommissionDetail[] = tradeCommissions.map(
       (trade) => ({
         commission: parseFloat(trade.agentCommissionTotal || "0"),
@@ -234,7 +227,6 @@ const calculateTopStats = (data?: AgentReportDataResponse) => {
       0
     );
 
-    // Backend already filtered: units/sales (approved + closed + date filtered by closingDate)
     const unitsSalesTradeSheets = agent?.user?.unitsSalesTradeSheets || [];
     const fallbackTradeSheets = [
       ...(agent?.user?.userInTradeSheetSharedUser
@@ -248,15 +240,12 @@ const calculateTopStats = (data?: AgentReportDataResponse) => {
         ? unitsSalesTradeSheets
         : fallbackTradeSheets;
 
-    // Backend already filtered these (approved + closed + date by closingDate)
     const totalUnits = allTradeSheets.length;
 
-    // Collect tradesheet details - Calculate soldPrice, salesPrice, listingPrice separately
     const tradeSheetDetails: TradeSheetDetail[] = allTradeSheets.map(
       (trade) => {
         const properties = Array.isArray(trade?.properties) ? trade.properties : [];
 
-        // Calculate total soldPrice from all properties
         const soldPrice = properties.reduce(
           (sum, property) => sum + parseFloat(property.soldPrice || "0"),
           0
@@ -282,19 +271,17 @@ const calculateTopStats = (data?: AgentReportDataResponse) => {
           salesPrice,
           soldPrice,
           listingPrice,
-          totalPrice: soldPrice, // Total sales value is based on soldPrice only
+          totalPrice: soldPrice,
           properties,
         };
       }
     );
 
-    // Total sales is now sum of all soldPrice from all properties
     const totalSales = tradeSheetDetails.reduce(
       (sum, trade) => sum + trade.soldPrice,
       0
     );
 
-    // PROPERTY LISTINGS CALCULATION (Based on contractDate)
     const propertyListings = agent?.user?.propertyListings || [];
     const listingDetails: ListingDetail[] = propertyListings.map((listing) => ({
       id: listing.id,
@@ -381,7 +368,6 @@ const computeDashboardStats = (data?: AgentReportDataResponse) => {
 
 const { RangePicker } = DatePicker;
 
-// Custom loading icon
 const loadingIcon = (
   <LoadingOutlined style={{ fontSize: 48, color: "#0f766e" }} spin />
 );
@@ -399,14 +385,12 @@ const Home = () => {
     newAgentsData?.data?.agents &&
     newAgentsData.data.agents.length > 0;
 
-  // State to track the selected month
   const [selectedMonth, setSelectedMonth] = useState<string>("previous");
   const [dateRange, setDateRange] = useState<
     [Dayjs | null, Dayjs | null] | null
   >(null);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
-  // Build query parameters based on selected filter
   const buildQueryParams = () => {
     if (
       selectedMonth === "custom" &&
@@ -423,12 +407,10 @@ const Home = () => {
     return selectedMonth;
   };
 
-  // Pass filterMonth or custom date range to API
   const { data, isLoading, isFetching } = useGetTopAgentReportDataQuery(
     buildQueryParams()
   );
 
-  // Calculate stats with safety check
   const statsData = React.useMemo(() => {
     if (!data || isLoading || isFetching) {
       return { topCommissions: [], topUnitSellers: [], topSellerTotals: [], topListingAgents: [] };
@@ -450,8 +432,6 @@ const Home = () => {
     return { ourAgents, otherAgents, approved, terminate };
   }, [allAgents]);
 
-  // Manual "featured" top-agent entries — admin-curated, shown alongside the
-  // auto-calculated cards below, always visible regardless of the date filter.
   const { data: manualTopAgentData } = useGetManualTopAgentListQuery(undefined);
   const manualTopAgents: any[] = manualTopAgentData?.data?.manualTopAgentData ?? [];
   const [createManualTopAgent, { isLoading: isCreatingManualTopAgent }] = useCreateManualTopAgentMutation();
@@ -462,7 +442,6 @@ const Home = () => {
   const [manualEntryCategory, setManualEntryCategory] = useState<string>('units');
   const [manualEntryAgentId, setManualEntryAgentId] = useState<string | undefined>(undefined);
   const [manualEntryValue, setManualEntryValue] = useState('');
-  // uuid of the manual entry being edited (null = adding a new one)
   const [editingManualUuid, setEditingManualUuid] = useState<string | null>(null);
 
   const resetManualEntryForm = () => {
@@ -514,8 +493,6 @@ const Home = () => {
     }
   };
 
-  // Agent Birthdays card has its own filter (same options as the dashboard
-  // filter above) so changing it doesn't affect the Top Report cards.
   const [bdayFilter, setBdayFilter] = useState<string>("current");
   const [bdayRange, setBdayRange] = useState<[Dayjs | null, Dayjs | null] | null>(null);
   const [showBdayPicker, setShowBdayPicker] = useState<boolean>(false);
@@ -536,13 +513,6 @@ const Home = () => {
     }
   };
 
-  // Agent birthdays within the selected filter, in date order. Birth date comes
-  // from AgentAccount.dob (set via the Agent submit details form), falling
-  // back to User.dateOfBirth for any agent only carrying the older field.
-  // It's a date-only value stored at UTC midnight, so month/day are read via
-  // the UTC getters to avoid a local-timezone off-by-one on the displayed date.
-  // "All Time" lists every agent by their next upcoming birthday; the other
-  // filters list each birthday that falls inside the chosen date range.
   const upcomingBirthdays = React.useMemo(() => {
     const now = dayjs();
     const todayUTC = Date.UTC(now.year(), now.month(), now.date());
@@ -636,8 +606,6 @@ const Home = () => {
 
   const allProperties: any[] = propertyData?.data?.propertyListingData ?? [];
 
-  // Derive a concrete date range from the active filter so we can apply it client-side
-  // to tradeSheetList and allProperties (those queries don't accept date params).
   const filterDateRange = React.useMemo((): { start: Dayjs; end: Dayjs } | null => {
     const now = dayjs();
     if (selectedMonth === 'current') return { start: now.startOf('month'), end: now.endOf('month') };
@@ -645,7 +613,7 @@ const Home = () => {
     if (selectedMonth === 'lastYear') return { start: now.startOf('year'), end: now.endOf('year') };
     if (selectedMonth === 'custom' && dateRange?.[0] && dateRange?.[1])
       return { start: dateRange[0].startOf('day'), end: dateRange[1].endOf('day') };
-    return null; // All Time — no filter
+    return null;
   }, [selectedMonth, dateRange]);
 
   const inRange = (dateStr: string | undefined): boolean => {
@@ -655,7 +623,6 @@ const Home = () => {
     return !d.isBefore(filterDateRange.start) && !d.isAfter(filterDateRange.end);
   };
 
-  // Trade sheets filtered by createdAt (or closingDate when available)
   const filteredTradeSheets: any[] = React.useMemo(() =>
     tradeSheetList.filter((ts: any) => {
       const dateStr = ts.properties?.[0]?.closingDate ?? ts.closingDate ?? ts.createdAt;
@@ -664,13 +631,11 @@ const Home = () => {
     [tradeSheetList, filterDateRange] // eslint-disable-line
   );
 
-  // Properties filtered by contractDate or createdAt
   const filteredProperties: any[] = React.useMemo(() =>
     allProperties.filter((p: any) => inRange(p.contractDate ?? p.createdAt)),
     [allProperties, filterDateRange] // eslint-disable-line
   );
 
-  // Charts always show all-time data — not affected by the date filter
   const statusCounts = React.useMemo(() => {
     const counts: Record<string, number> = {};
     tradeSheetList.forEach((ts: any) => {
@@ -683,14 +648,12 @@ const Home = () => {
   const propertyStatusCounts = React.useMemo(() => {
     const counts: Record<string, number> = {};
     allProperties.forEach((p: any) => {
-      // Normalize to lowercase so "Expired" and "expired" merge into one bucket
       const s = (p.listingStatus ?? 'unknown').toLowerCase();
       counts[s] = (counts[s] ?? 0) + 1;
     });
     return counts;
   }, [allProperties]);
 
-  // Total sales from filtered trade sheets (soldPrice across all properties)
   const totalSalesFromSheets = React.useMemo(() =>
     filteredTradeSheets.reduce((sum: number, ts: any) => {
       const props = Array.isArray(ts.properties) ? ts.properties : [];
@@ -699,8 +662,6 @@ const Home = () => {
     [filteredTradeSheets]
   );
 
-  // Total commissions from filtered trade sheets — same formula as Send Invoice's
-  // sellingCommissionCalculation(): commission rate% × sale price, or fixed amount.
   const totalCommissionsFromSheets = React.useMemo(() => {
     let total = 0;
     filteredTradeSheets.forEach((ts: any) => {
@@ -715,7 +676,6 @@ const Home = () => {
         const price = isSellerOrLandlord || isMultiple
           ? parseFloat(ts.properties?.[0]?.salesPrice ?? '0') || 0
           : parseFloat(ts.properties?.[0]?.soldPrice ?? '0') || 0;
-        // Invoice swaps field names: buyer side reads sellerCommission fields
         const commissionType: string = isBuyerSide
           ? (agentDetail.sellerCommissionType ?? 'percentage')
           : (agentDetail.buyerCommissionType ?? 'percentage');
@@ -733,7 +693,6 @@ const Home = () => {
     return total;
   }, [filteredTradeSheets]);
 
-  // Handle date range change
   const handleDateRangeChange = (
     dates: [Dayjs | null, Dayjs | null] | null
   ) => {
@@ -748,7 +707,6 @@ const Home = () => {
     }
   };
 
-  // Handle preset filter click
   const handlePresetFilterClick = (
     filter: "current" | "previous" | "lastYear" | "All Time"
   ) => {
@@ -770,7 +728,6 @@ const Home = () => {
               Welcome to ANS RealStateCRM
             </h1>
 
-            {/* Filter Tags and Calendar Icon */}
             <div className="flex flex-wrap gap-2 items-center">
               <Tag
                 onClick={() => handlePresetFilterClick("All Time")}
@@ -809,7 +766,6 @@ const Home = () => {
                 Previous Month
               </Tag>
 
-              {/* Calendar Icon */}
               <div
                 onClick={handleCalendarIconClick}
                 className={`cursor-pointer px-1 py-0 rounded transition-all ${showDatePicker || selectedMonth === "custom"
@@ -821,7 +777,6 @@ const Home = () => {
                 <CalendarOutlined style={{ fontSize: "16px" }} />
               </div>
 
-              {/* Date Range Picker */}
               {showDatePicker && (
                 <RangePicker
                   value={dateRange}
@@ -840,7 +795,6 @@ const Home = () => {
                 />
               )}
 
-              {/* Add Manual Entry sits on the filter row (right side), so the cards don't need an extra row */}
               {user?.userType === 'superAdmin' && (
                 <Button
                   size="small"
@@ -854,7 +808,6 @@ const Home = () => {
               )}
             </div>
 
-            {/* Display selected date range */}
             {selectedMonth === "custom" &&
               dateRange &&
               dateRange[0] &&
@@ -866,7 +819,6 @@ const Home = () => {
                 </div>
               )}
 
-            {/* Loading Overlay */}
             {(isLoading || isFetching) && (
               <div className="relative">
                 <div
@@ -883,7 +835,6 @@ const Home = () => {
               </div>
             )}
 
-            {/* Stats Cards — all tied top agents per category, plus any admin-curated manual entries */}
             {(() => {
               const CATEGORY_META: Record<string, { title: string; badgeIcon: React.ReactNode; badgeColor: string }> = {
                 commission: { title: "Top Commission Earner", badgeIcon: <TrophyOutlined />, badgeColor: '#D4AF37' },
@@ -892,8 +843,6 @@ const Home = () => {
                 listings: { title: "Top Listing Agent", badgeIcon: <HomeOutlined />, badgeColor: '#0f766e' },
               };
 
-              // A bare number typed in a manual entry is shown like the computed cards
-              // ("1250000" -> "$1,250,000.00" for money, "2" -> "2 Units"); anything else is shown as typed.
               const formatManualValue = (category: string, raw: any) => {
                 const text = String(raw ?? '').trim();
                 const num = Number(text.replace(/[$,\s]/g, ''));
@@ -924,8 +873,6 @@ const Home = () => {
                     };
                   });
 
-              // An agent with a manual entry in a category replaces their own computed card there
-              // (no "Anwarul Azim 1 Units" next to the manual "Anwarul Azim 2 Units").
               const manualNames = (category: string) =>
                 new Set(
                   manualTopAgents
@@ -938,9 +885,6 @@ const Home = () => {
                 return (a: any) => !names.has(String(a?.name || '').trim().toLowerCase());
               };
 
-              // Manual entries are inserted right after the computed entries for the
-              // same category, so they sit side by side with their category's other
-              // cards instead of being visually set apart as a separate group.
               const cards = [
                 ...topCommissions.filter(notOverridden('commission')).map((a) => ({
                   key: `commission-${a.name}`,
@@ -1082,10 +1026,8 @@ const Home = () => {
               </div>
             </Modal>
 
-            {/* ── Dashboard Overview ─────────────────────────────── */}
             <div className="mt-4 space-y-5">
 
-              {/* KPI Summary Cards — privileged admins only */}
               {isPrivilegedAdmin && (
                 <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 xl:grid-cols-5">
                   {(isLoading || isFetching || agentListLoading) ? (
@@ -1114,7 +1056,6 @@ const Home = () => {
                 </div>
               )}
 
-              {/* Row 1: Agent bar chart + Tradesheet donut + Property donut */}
               <div className={`grid gap-5 ${isSuperAdmin ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'}`}>
                 {isSuperAdmin && (
                   agentListLoading ? (
@@ -1173,7 +1114,6 @@ const Home = () => {
                 ) : null}
               </div>
 
-              {/* Announcements + Upcoming Events + Agent Birthdays */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
                   <div className="flex items-center gap-3 px-6 py-4 shrink-0" style={{ borderBottom: '2px solid #F5EFE8' }}>
@@ -1308,12 +1248,9 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Row 2 + 3: Recent Closed Tradesheets & Recent Properties side by side */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
-                {/* Recent Closed Tradesheets */}
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden">
-                  {/* Header */}
                   <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#fffbeb' }}>
@@ -1331,7 +1268,6 @@ const Home = () => {
                     )}
                   </div>
 
-                  {/* Column headers */}
                   {!archiveLoading && recentClosed.length > 0 && (
                     <div className="grid grid-cols-12 px-6 py-2 bg-gray-50 border-b border-gray-100">
                       <span className="col-span-1 text-[10px] font-semibold text-gray-400 uppercase tracking-wide">#</span>
@@ -1371,7 +1307,6 @@ const Home = () => {
                             key={i}
                             className="grid grid-cols-12 items-center px-6 py-3.5 border-b border-gray-50 hover:bg-[#FDFAF7] transition-colors"
                           >
-                            {/* Index */}
                             <div className="col-span-1">
                               <span
                                 className="w-6 h-6 rounded-full text-white text-[10px] font-bold flex items-center justify-center"
@@ -1380,11 +1315,9 @@ const Home = () => {
                                 {i + 1}
                               </span>
                             </div>
-                            {/* Ref */}
                             <div className="col-span-4 min-w-0">
                               <p className="text-[12px] font-semibold text-gray-800 truncate">{ts.tradeSheetTypeId || `TS-${i + 1}`}</p>
                             </div>
-                            {/* Property */}
                             <div className="col-span-4 min-w-0">
                               {address ? (
                                 <p className="text-[11px] text-gray-500 truncate">{address}</p>
@@ -1392,7 +1325,6 @@ const Home = () => {
                                 <span className="text-[11px] text-gray-300">—</span>
                               )}
                             </div>
-                            {/* Status badge */}
                             <div className="col-span-2 flex justify-center">
                               <span
                                 className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full whitespace-nowrap"
@@ -1401,7 +1333,6 @@ const Home = () => {
                                 Closed
                               </span>
                             </div>
-                            {/* Date */}
                             <div className="col-span-1 text-right">
                               <p className="text-[10px] text-gray-400 whitespace-nowrap">{dateStr}</p>
                             </div>
@@ -1412,7 +1343,6 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Recent Properties */}
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden">
                   <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
@@ -1431,7 +1361,6 @@ const Home = () => {
                     )}
                   </div>
 
-                  {/* Column headers */}
                   {!propertyLoading && recentProperties.length > 0 && (
                     <div className="grid grid-cols-12 px-6 py-2 bg-gray-50 border-b border-gray-100">
                       <span className="col-span-1 text-[10px] font-semibold text-gray-400 uppercase tracking-wide">#</span>
@@ -1508,12 +1437,11 @@ const Home = () => {
                   </div>
                 </div>
 
-              </div>{/* end side-by-side grid */}
+              </div>
 
             </div>
           </div>
 
-          {/* Conditionally render New Agent section */}
           {hasNewAgents && (
             <div>
               <h1>New Agent</h1>
@@ -1526,7 +1454,6 @@ const Home = () => {
   );
 };
 
-// Reusable component for Stat Cards
 interface BreakdownData {
   type: "commission" | "units" | "sales" | "listings";
   details: CommissionDetail[] | TradeSheetDetail[] | ListingDetail[];
@@ -1744,7 +1671,6 @@ const StatCard: React.FC<StatCardProps> = ({
                   </div>
                 )}
 
-                {/* Show property details with individual prices */}
                 {detail.properties && detail.properties.length > 0 ? (
                   <div className="space-y-2 mb-2">
                     {detail.properties.map((property, propIndex) => (
@@ -1797,7 +1723,6 @@ const StatCard: React.FC<StatCardProps> = ({
                   </div>
                 )}
 
-                {/* Show total sold price for this trade sheet */}
                 <div className="pt-2 border-t mt-2">
                   <div className="flex justify-between items-center">
                     <span className="text-xs text-gray-500">
@@ -1809,7 +1734,6 @@ const StatCard: React.FC<StatCardProps> = ({
                   </div>
                 </div>
 
-                {/* Show closed date */}
                 {detail.closingDate && (
                   <div className="text-xs text-gray-600 mt-2">
                     <span className="text-gray-500">Closed On:</span>{" "}
@@ -1992,8 +1916,6 @@ const StatCard: React.FC<StatCardProps> = ({
   return cardContent;
 };
 
-// ── Agent Category Bar Chart ─────────────────────────────────
-// Warm stepped palette — darkest to lightest
 const BRAND_PALETTE = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#EFE0D0'];
 
 const AGENT_BARS = [
@@ -2021,7 +1943,6 @@ const AgentCategoryChart: React.FC<{ counts: Record<string, number> }> = ({ coun
         </span>
       </div>
 
-      {/* Bar columns */}
       <div className="flex items-end gap-4" style={{ height: CHART_H }}>
         {AGENT_BARS.map(({ key, label }, i) => {
           const count = counts[key] ?? 0;
@@ -2038,7 +1959,6 @@ const AgentCategoryChart: React.FC<{ counts: Record<string, number> }> = ({ coun
         })}
       </div>
 
-      {/* Labels row */}
       <div className="flex gap-4 mt-2">
         {AGENT_BARS.map(({ key, label }) => (
           <div key={key} className="flex-1 text-center">
@@ -2050,7 +1970,6 @@ const AgentCategoryChart: React.FC<{ counts: Record<string, number> }> = ({ coun
   );
 };
 
-// ── Tradesheet Status Donut Chart ────────────────────────────
 const TS_STATUS_DEFS = [
   { key: 'closed', label: 'Closed' },
   { key: 'approved', label: 'Approved' },
@@ -2063,7 +1982,7 @@ const TS_COLORS = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#C17E
 
 const TradeStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: number }> = ({ statusCounts, total }) => {
   const R = 40;
-  const CIRC = 2 * Math.PI * R; // ≈ 251.33
+  const CIRC = 2 * Math.PI * R;
 
   if (total === 0) {
     return <div className="text-center text-[12px] text-gray-400 py-6">No tradesheet data</div>;
@@ -2080,7 +1999,6 @@ const TradeStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: 
 
   return (
     <div className="flex items-center gap-5">
-      {/* Donut SVG */}
       <div className="relative shrink-0" style={{ width: 130, height: 130 }}>
         <svg viewBox="0 0 100 100" width="130" height="130" style={{ transform: 'rotate(-90deg)' }}>
           <circle cx="50" cy="50" r={R} fill="none" stroke="#f3f4f6" strokeWidth="14" />
@@ -2104,7 +2022,6 @@ const TradeStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: 
         </div>
       </div>
 
-      {/* Legend */}
       <div className="flex-1 space-y-2">
         {TS_STATUS_DEFS.map(({ key, label }, i) => {
           const count = statusCounts[key] ?? 0;
@@ -2128,7 +2045,6 @@ const TradeStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: 
   );
 };
 
-// ── Shared donut loading skeleton ────────────────────────────
 const DonutSkeleton: React.FC = () => (
   <div className="bg-white rounded-2xl shadow-md p-5">
     <Skeleton active title={{ width: '40%' }} paragraph={false} />
@@ -2146,7 +2062,6 @@ const DonutSkeleton: React.FC = () => (
   </div>
 );
 
-// ── Property Status Donut Chart ───────────────────────────────
 const PROP_COLORS = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#C17E6E', '#E8C4A0', '#D4956A'];
 
 const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: number }> = ({ statusCounts, total }) => {
@@ -2157,7 +2072,6 @@ const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; tota
     return <div className="text-center text-[12px] text-gray-400 py-6">No property data</div>;
   }
 
-  // Sort statuses by count descending, assign colors
   const entries = Object.entries(statusCounts)
     .filter(([, count]) => count > 0)
     .sort((a, b) => b[1] - a[1]);
@@ -2172,7 +2086,6 @@ const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; tota
 
   return (
     <div className="flex items-center gap-5">
-      {/* Donut SVG */}
       <div className="relative shrink-0" style={{ width: 130, height: 130 }}>
         <svg viewBox="0 0 100 100" width="130" height="130" style={{ transform: 'rotate(-90deg)' }}>
           <circle cx="50" cy="50" r={R} fill="none" stroke="#f3f4f6" strokeWidth="14" />
@@ -2196,7 +2109,6 @@ const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; tota
         </div>
       </div>
 
-      {/* Legend */}
       <div className="flex-1 space-y-2 overflow-hidden">
         {segments.map((seg) => {
           const pct = Math.round((seg.count / total) * 100);
@@ -2218,7 +2130,6 @@ const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; tota
   );
 };
 
-// ── KPI Summary Card ─────────────────────────────────────────
 const KPI_ACCENTS = [
   { accent: '#134e4a', bg: '#F2EAE4', light: '#FAF5F1' },
   { accent: '#0f766e', bg: '#F5EDE1', light: '#FDF8F3' },
@@ -2241,10 +2152,8 @@ const KpiCard: React.FC<KpiCardProps> = ({ icon, label, value, index = 0 }) => {
       className="rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 cursor-default"
       style={{ background: 'white' }}
     >
-      {/* Top gradient accent bar */}
       <div style={{ height: 3, background: `linear-gradient(90deg, ${accent} 0%, ${bg} 100%)` }} />
       <div className="p-5">
-        {/* Icon + decorative dot */}
         <div className="flex items-center justify-between mb-4">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -2257,14 +2166,12 @@ const KpiCard: React.FC<KpiCardProps> = ({ icon, label, value, index = 0 }) => {
             <div className="w-1.5 h-1.5 rounded-full" style={{ background: accent, opacity: 0.4 }} />
           </div>
         </div>
-        {/* Value */}
         <div
           className="text-[24px] font-extrabold leading-tight truncate mb-1"
           style={{ color: '#1A1A2E' }}
         >
           {value}
         </div>
-        {/* Label */}
         <div
           className="text-[10px] font-bold uppercase tracking-widest"
           style={{ color: accent }}

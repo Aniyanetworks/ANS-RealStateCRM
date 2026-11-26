@@ -153,7 +153,6 @@ const SupportRequestList: React.FC = () => {
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
-  // get auth user
   const authUser = useSelector((state: RootState) => state.user.user as User);
   const { hasPermissionForSlug } = usePermissions();
 
@@ -261,7 +260,6 @@ const SupportRequestList: React.FC = () => {
   });
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
@@ -369,7 +367,6 @@ const SupportRequestList: React.FC = () => {
         setDeleteRequestUuid(null);
         setIsDeleteModalVisible(false);
       } catch (err) {
-        console.log(err);
         message.error("Failed to delete support request");
       }
     }
@@ -454,7 +451,7 @@ const SupportRequestList: React.FC = () => {
     multiple: true,
     beforeUpload: (file) => {
       setNewFiles((prevFiles) => [...prevFiles, file]);
-      return false; // Prevent automatic upload
+      return false;
     },
     onRemove: (file) => {
       handleRemoveFile(file as unknown as File);
@@ -466,11 +463,6 @@ const SupportRequestList: React.FC = () => {
     })),
   };
 
-  /*  const handleAssign = (record: SupportRequest) => {
-    setEditingRequest(record);
-    setSelectedMember(record?.assignments?.[0]?.teamMemberId?.toString() || null);
-    setIsAssignModalVisible(true);
-  }; */
   const handleSuportDetails = (record: any) => {
     setSingleData(record);
     setSupportId(record.id);
@@ -497,7 +489,6 @@ const SupportRequestList: React.FC = () => {
         supportRequestId: supportId,
         teamMemberId: e,
       }).unwrap();
-      console.log(response);
       if (response.status) {
         toast.success("Support request assigned successfully");
         refetchSuport();
@@ -730,15 +721,6 @@ const SupportRequestList: React.FC = () => {
             <Dropdown
               menu={{
                 items: [
-                  /* { 
-                  key: "assign", 
-                  label: (
-                    <div className="flex items-center gap-2 p-2" onClick={() => handleAssign(record)}>
-                      <FaUser />
-                      Assign
-                    </div>
-                  ),
-                }, */
                   hasPermissionForSlug("support-request-edit") && {
                     key: "edit",
                     label: (
@@ -792,9 +774,7 @@ const SupportRequestList: React.FC = () => {
   return (
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        {/* Single toolbar row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <Link
@@ -810,9 +790,7 @@ const SupportRequestList: React.FC = () => {
               </Link>
             ))}
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style={{ fontSize: 10, left: 8 }} />
             <input
@@ -828,9 +806,7 @@ const SupportRequestList: React.FC = () => {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           {hasPermissionForSlug("support-request-create") && (
             <button className="primary-btn flex-shrink-0" onClick={handleOpenModal}>Add Request</button>
           )}
@@ -1075,7 +1051,6 @@ const SupportRequestList: React.FC = () => {
         </select>
       </Modal>
 
-      {/* support details  modal */}
       <Modal
         title="Suport Details"
         open={supportId ? true : false}
@@ -1201,7 +1176,7 @@ const SupportRequestList: React.FC = () => {
                             singleData.files.map((file) => (
                               <a
                                 key={file.id}
-                                href={`${file.filePath}`} // Linking to the file path
+                                href={`${file.filePath}`}
                                 className="text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-black transition duration-200 text-[12px]"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -1328,7 +1303,7 @@ const SupportRequestList: React.FC = () => {
                 singleData.files.map((file) => (
                   <a
                     key={file.id}
-                    href={`${file.filePath}`} // Linking to the file path
+                    href={`${file.filePath}`}
                     className=" text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-black transition duration-200 text-[12px]"
                     target="_blank"
                     rel="noopener noreferrer"

@@ -69,12 +69,10 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
     const { user } = useSelector((state: any) => state.user);
     const isSuperAdmin = user?.roleId == 1;
 
-    // Initialize search text from localStorage
     useEffect(() => {
         setSearchText(localStorage.getItem("tradesheetReportSearchText") || "");
     }, []);
 
-    // Handle period filter
     const handlePeriodFilter = (period: string) => {
         const now = new Date();
         const startDate = new Date();
@@ -118,7 +116,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
         setCreatedCustomEnd(now.toISOString().split('T')[0]);
     };
 
-    // Build query params
     const queryParams = useMemo(() => {
         const params: any = {};
         if (selectedBranches.length > 0) params.branchIds = selectedBranches.join(",");
@@ -151,7 +148,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
         totalDepositAmount: 0,
     };
 
-    // Filter data based on filters
     const filteredData = useMemo(() => {
         let filtered = [...tradesheetData];
 
@@ -184,7 +180,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
             });
         }
 
-        // Search filter
         if (searchText) {
             const searchTerm = searchText.toLowerCase();
             const extractValues = (obj: any): string[] => {
@@ -204,12 +199,10 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                 return [];
             };
             filtered = filtered.filter((item: any) => {
-                // Explicitly check tradeSheetTypeId
                 const tradeSheetTypeIdMatch = item.tradeSheetTypeId
                     ? String(item.tradeSheetTypeId).toLowerCase().includes(searchTerm)
                     : false;
 
-                // Search through all other values
                 const allValues = extractValues(item);
                 const otherValuesMatch = allValues.some((value) => value.includes(searchTerm));
 
@@ -220,7 +213,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
         return filtered;
     }, [tradesheetData, selectedTradeStatus, selectedAdminStatus, selectedRepresentation, selectedAgents, searchText]);
 
-    // Reset to page 1 when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedTradeStatus, selectedAdminStatus, selectedRepresentation, selectedAgents, searchText, selectedBranches, createdDateRange, closingDateRange]);
@@ -267,7 +259,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
         const doc = new jsPDF('landscape');
         const pageWidth = doc.internal.pageSize.getWidth();
 
-        // Add logo
         const logoX = (pageWidth / 2) - 10;
         const logoY = 5;
         const logoWidth = 20;
@@ -357,15 +348,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
             title: "Agent Name",
             key: "agentName",
             render: (_: any, record: any) => {
-                // const sellerAgent = record?.seller_landlord_agent?.user?.name ||
-                //     `${record?.seller_landlord_agent?.user?.firstName || ''} ${record?.seller_landlord_agent?.user?.lastName || ''}`.trim() || "N/A";
-                // const buyerAgent = record?.buyer_tenant_agent?.user?.name ||
-                //     `${record?.buyer_tenant_agent?.user?.firstName || ''} ${record?.buyer_tenant_agent?.user?.lastName || ''}`.trim() || "";
 
-                // // Show both if different, otherwise show one
-                // if (buyerAgent && buyerAgent !== sellerAgent && buyerAgent !== "N/A" && buyerAgent !== "") {
-                //     return `${sellerAgent}, ${buyerAgent}`;
-                // }
                 return record.name || "N/A";
             },
             width: 200,
@@ -439,12 +422,10 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
 
     return (
         <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-            {/* Single header row */}
             <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100">
                 <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Dynamic Reports</h1>
                 <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
-                {/* Stat pills */}
                 <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #3b82f6", background: "#eff6ff" }}>
                     <span className="text-xs text-gray-500 whitespace-nowrap">Total:</span>
                     <span className="text-xs font-semibold text-blue-600 whitespace-nowrap">{summary.total}</span>
@@ -472,7 +453,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
 
                 <div className="flex-1" />
 
-                {/* Search */}
                 <div className="relative flex-shrink-0" style={{ width: 170 }}>
                     <input
                         type="text"
@@ -525,7 +505,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                 )}
             </div>
 
-            {/* Backdrop */}
             {showDropdown && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
@@ -533,7 +512,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                 />
             )}
 
-            {/* Slide-in Filter Panel */}
             <div
                 className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${showDropdown ? 'translate-x-0' : 'translate-x-full'
                     }`}
@@ -561,7 +539,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                         `}</style>
 
                 <div className="flex flex-col h-full">
-                    {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b bg-[#0f766e] text-white">
                         <h3 className="text-lg font-semibold">Filter Options</h3>
                         <button
@@ -572,7 +549,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                         </button>
                     </div>
 
-                    {/* Scrollable Content */}
                     <div
                         className="tradesheet-filter-scroll flex-1 overflow-y-auto overflow-x-hidden p-4"
                         style={{
@@ -581,7 +557,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                         }}
                     >
                         <div className="space-y-4">
-                            {/* Period Filter Buttons */}
                             <div className="flex gap-2 mb-4 flex-wrap">
                                 {['Day', 'Week', 'Month', 'Quarter', 'Year'].map((period) => (
                                     <button
@@ -597,7 +572,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                 ))}
                             </div>
 
-                            {/* Predefined Date Ranges */}
                             <div className="space-y-2 mb-4">
                                 {['Last 30 days', 'Last 90 days', 'Last Year', 'All Time'].map((range) => (
                                     <button
@@ -612,7 +586,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                     </button>
                                 ))}
                             </div>
-                            {/* Trade Status */}
                             <div>
                                 <label className="font-semibold mb-2 block">Trade Status</label>
                                 <Select
@@ -632,7 +605,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                 />
                             </div>
 
-                            {/* Admin Status */}
                             <div>
                                 <label className="font-semibold mb-2 block">Admin Status</label>
                                 <Select
@@ -651,7 +623,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                 />
                             </div>
 
-                            {/* Representation */}
                             <div>
                                 <label className="font-semibold mb-2 block">Representation</label>
                                 <Select
@@ -670,7 +641,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                 />
                             </div>
 
-                            {/* Branch (only for superadmin) */}
                             {isSuperAdmin && (
                                 <div>
                                     <label className="font-semibold mb-2 block">Branch</label>
@@ -689,7 +659,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                 </div>
                             )}
 
-                            {/* Closing Date Range */}
                             <div>
                                 <label className="font-semibold mb-2 block">Closing Date Range</label>
                                 <div className="flex flex-col sm:flex-row gap-2">
@@ -708,7 +677,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                 </div>
                             </div>
 
-                            {/* Created Date Range (Custom Range) */}
                             <div className="border p-2 rounded">
                                 <label className="font-semibold mb-2 block">Custom Range (Created At)</label>
                                 <div className="flex flex-col sm:flex-row gap-2 mt-1">
@@ -727,7 +695,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                 </div>
                             </div>
 
-                            {/* Agent Name */}
                             <div>
                                 <label className="font-semibold mb-2 block">Agent Name</label>
                                 <Select
@@ -736,8 +703,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                     value={selectedAgents}
                                     onChange={setSelectedAgents}
                                     options={(agentsData?.data?.userData || agentsData?.data?.agentData || []).map((agent: any) => {
-                                        // AgentAccount has id, and user relation with name/firstName/lastName
-                                        const agentId = agent.id; // AgentAccount id (this is what seller_landlord_agent_id references)
+                                        const agentId = agent.id;
                                         const userName = agent.user?.name ||
                                             `${agent.user?.firstName || ''} ${agent.user?.lastName || ''}`.trim() ||
                                             agent.name ||
@@ -750,7 +716,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                                             value: agentId?.toString(),
                                             label: userName,
                                         };
-                                    }).filter((option: any) => option.value)} // Filter out any invalid options
+                                    }).filter((option: any) => option.value)}
                                     className="w-full"
                                     allowClear
                                     showSearch
@@ -763,7 +729,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                         </div>
                     </div>
 
-                    {/* Fixed Footer with Action Buttons */}
                     <div className="flex gap-2 p-4 border-t bg-white">
                         <button
                             className="w-1/2 bg-[#0f766e] text-white p-2 rounded hover:bg-[#0f766e] transition-colors"
@@ -798,7 +763,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                 </div>
             </div>
 
-            {/* Table */}
             <div>
                 <Table
                     rowKey="uuid"

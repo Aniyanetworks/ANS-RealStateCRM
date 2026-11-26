@@ -42,14 +42,11 @@ const ConditionPopup: React.FC<ConditionPopupProps> = ({
   const conditionTypes = data?.data?.ConditionType || [];
 
   useEffect(() => {
-    // ✅ wait until modal is open AND condition types are loaded
     if (!isOpen || isConditionTypeLoading) return;
 
     if (conditionData) {
       const formatDateForInput = (dateString: string | null | undefined): string => {
         if (!dateString) return '';
-        // dueDate is a calendar date with no meaningful time-of-day; converting
-        // to America/Toronto shifts a UTC-midnight date back a day. Stay in UTC.
         const parsed = moment.utc(dateString);
         if (!parsed.isValid()) return '';
         return parsed.format('YYYY-MM-DD');
@@ -57,7 +54,6 @@ const ConditionPopup: React.FC<ConditionPopupProps> = ({
 
       const formattedDueDate = formatDateForInput(conditionData.dueDate);
 
-      // check if condition type exists in predefined list
       const isPredefined = conditionTypes.some(
         (ct: { condition: string }) => ct.condition === conditionData.conditionType
       );

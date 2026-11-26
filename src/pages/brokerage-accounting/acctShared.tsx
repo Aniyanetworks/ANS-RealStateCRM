@@ -1,5 +1,4 @@
 // @ts-nocheck
-// Shared helpers & pickers for Brokerage Accounting screens (merged from ANS Accounting).
 import React, { useState } from "react";
 import { Select, Table, Tag, Space, Modal, Input } from "antd";
 import dayjs from "dayjs";
@@ -23,7 +22,6 @@ const STATUS_COLORS: Record<string, string> = {
 };
 export const StatusTag = ({ status }: { status?: string }) => <Tag color={STATUS_COLORS[status || ""] || "default"}>{String(status || "—").replace(/_/g, " ")}</Tag>;
 
-// Show each distinct load error once (the page banner already covers "not set up" 503s).
 const shownErrors = new Map<string, number>();
 function reportLoadError(error: any) {
   if (!error || error.status === 503 || error.status === 401) return;
@@ -34,7 +32,6 @@ function reportLoadError(error: any) {
   toast.error(msg);
 }
 
-/** Data hook: returns the `data` payload of a GET. Load errors are surfaced as a toast. */
 export function useAcct(path: string | null, params?: any, opts: any = {}) {
   const q = useAcctGetQuery({ path: path || "", params }, { skip: !path || opts.skip, refetchOnMountOrArgChange: true });
   React.useEffect(() => {
@@ -43,7 +40,6 @@ export function useAcct(path: string | null, params?: any, opts: any = {}) {
   return { ...q, rows: q.data?.data };
 }
 
-/** Mutation helper with toast messages and an optional confirm-on-warning retry. */
 export function useAcctAction() {
   const [mutate, state] = useAcctMutateMutation();
   const run = async (path: string, body?: any, { method = "POST", success, silent = false }: any = {}) => {
@@ -59,7 +55,6 @@ export function useAcctAction() {
   return { run, loading: state.isLoading };
 }
 
-/** Ask for a reason, then run (used for voids). */
 export function confirmWithReason(title: string, onOk: (reason: string) => any) {
   let reason = "";
   Modal.confirm({
@@ -77,7 +72,6 @@ export function confirmWithReason(title: string, onOk: (reason: string) => any) 
   });
 }
 
-// ---------- Export ----------
 
 const cellText = (col: any, row: any) => {
   const v = col.exportValue ? col.exportValue(row) : col.dataIndex ? row[col.dataIndex] : "";
@@ -119,7 +113,6 @@ export function exportPdf(title: string, columns: any[], rows: any[], subtitle?:
   doc.save(`${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.pdf`);
 }
 
-/** antd Table with CSV / PDF export. Columns may define exportValue(row) for formatted output. */
 export const AcctTable = ({ title, columns, rows, loading, rowKey = "id", extra, pagination = { pageSize: 25 }, subtitle, ...rest }: any) => (
   <div>
     <div className="flex flex-wrap justify-between items-center gap-2 mb-2">
@@ -151,7 +144,6 @@ export const Stat = ({ label, value, sub }: any) => (
   </div>
 );
 
-// ---------- Pickers ----------
 
 export const BankSelect = ({ category, value, onChange, placeholder = "Select bank account", ...rest }: any) => {
   const { rows } = useAcct("/bank-accounts");
@@ -193,7 +185,6 @@ export const EmployeeSelect = ({ value, onChange, ...rest }: any) => {
 export const tradeLabel = (t: any) =>
   [t?.tradeSheetTypeId || `Trade #${t?.id}`, t?.properties?.[0]?.propertyAddress, t?.name || [t?.firstName, t?.lastName].filter(Boolean).join(" ")].filter(Boolean).join(" · ");
 
-/** Searchable trade sheet picker (by trade number, client or address). */
 export const TradeSelect = ({ value, onChange, ...rest }: any) => {
   const [q, setQ] = useState("");
   const { rows, isFetching } = useAcct("/trust/trades", { q });

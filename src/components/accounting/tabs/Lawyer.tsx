@@ -18,7 +18,6 @@ const LawyerDetailsTab = ({ data }) => {
           {lawyerDetails.length > 0 ? (
             lawyerDetails.map((lawyerDetail, index) => (
               <div key={index} className="mb-6 pb-6">
-                {/* Seller Lawyer Details */}
                 {lawyerDetail.sellerLawyer ? (
                   <div className="mb-4">
                     <h3 className="font-semibold text-xl text-gray-900 mb-2">
@@ -111,7 +110,6 @@ const LawyerDetailsTab = ({ data }) => {
                   <p>No Seller Lawyer details available.</p>
                 )}
 
-                {/* Buyer Lawyer Details */}
                 {lawyerDetail.buyerLawyer ? (
                   <div>
                     <h3 className="font-semibold text-xl text-gray-900 mb-2">

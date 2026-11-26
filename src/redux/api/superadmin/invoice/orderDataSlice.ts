@@ -46,7 +46,6 @@ const productDataApi = api.injectEndpoints({
       invalidatesTags: ["getOrderTag"],
     }),
 
-    // Add this mutation to your productDataApi
 updateOrder: builder.mutation({
   query: ({ uuid, data }: { uuid: string; data: any }) => {
     return {
@@ -112,7 +111,6 @@ updateOrder: builder.mutation({
       invalidatesTags: [ "getOrderTag","getTradeProductTag"],
   }),
 
-  // Add this to your orderDataSlice
   agreeToTerms: builder.mutation({
     query: (data) => ({
       url: `/superadmin/order-management/agree-terms`,

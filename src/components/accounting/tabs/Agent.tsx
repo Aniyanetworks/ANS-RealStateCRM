@@ -7,7 +7,6 @@ const AgentTab = ({ data }) => {
   const [agentDetails, setAgentDetails] = useState<any>([]);
 
   useEffect(() => {
-    console.log("Received data:", data);
     if (data?.data?.tradeSheetData?.agentDetails) {
       setAgentDetails(data.data.tradeSheetData.agentDetails);
     }
@@ -20,7 +19,6 @@ const AgentTab = ({ data }) => {
           {agentDetails.length > 0 ? (
             agentDetails.map((agent, index) => (
               <div key={index} className="mb-6 pb-6">
-                {/* Seller Section */}
                 <div className="mb-4">
                   <h3 className="font-semibold text-xl text-gray-900 mb-2">Seller Agent</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -47,7 +45,6 @@ const AgentTab = ({ data }) => {
                   </div>
                 </div>
 
-                {/* Buyer Section */}
                 <div>
                   <h3 className="font-semibold text-xl text-gray-900 mb-2">Buyer Agent</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

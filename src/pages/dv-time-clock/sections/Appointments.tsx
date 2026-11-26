@@ -1,4 +1,3 @@
-// Appointments Calendar: month view of appointments, office events, unavailable-time blocks and holidays.
 import { useState } from "react";
 import { useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { useTcAction, useTimeClock } from "../TimeClockContext";

@@ -1,7 +1,3 @@
-// Trade Transactions → transaction editor: bodv's eight-tab transaction screen on ANS RealStateCRM's trade sheet.
-// Data comes from the existing trade sheet (get-spacific-trade-sheet), finalize uses the existing
-// trade-accounting endpoint, status changes use the existing admin status endpoint, and trust movements
-// use Brokerage Accounting's trust ledger. Trade details themselves stay owned by the trade sheet form.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactNode, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
@@ -20,7 +16,6 @@ export const TABS = ["Key Info", "People", "Outside Brokers", "Trust", "Commissi
 const ADMIN_STATUSES = [["approved", "Approved"], ["underReview", "Under Review"], ["draft", "Draft"], ["rejected", "Rejected"], ["closed", "Closed"]];
 
 const nm = (a: any) => [a?.firstName, a?.lastName].filter(Boolean).join(" ").trim();
-/** Sellers saved on the listing (PropertyListing.sellersInfo: JSON text or object, { sellersInfo: [...] }). */
 export function listingSellers(listing: any): any[] {
   let v = listing?.sellersInfo;
   try {
@@ -65,7 +60,6 @@ const SourceNote = () => (
   </div>
 );
 
-// ---------- tabs ----------
 
 function KeyInfo({ t }: { t: any }) {
   const p = t.properties?.[0] || {};
@@ -137,7 +131,6 @@ function People({ t }: { t: any }) {
   const d = t.agentDetails?.[0] || {};
   const lease = t.listType === "Lease" || t.representation === "landlord" || t.representation === "tenant";
   const sellerRole = lease ? "Landlord" : "Seller", buyerRole = lease ? "Tenant" : "Buyer";
-  // Sellers on the trade sheet; for our own listing they may only be saved on the listing.
   const sellers = (t.sellerInformations || []).length ? t.sellerInformations : listingSellers(t.propertyListing);
   const clients = [
     ...sellers.map((s: any) => ({ role: sellerRole, name: nm(s), email: s.email || "", phone: s.phone || s.phoneNumber || "", source: (t.sellerInformations || []).length ? "Trade sheet" : "Listing" })),
@@ -313,7 +306,7 @@ function Commission({ t, onChanged }: { t: any; onChanged: () => void }) {
   const navigate = useNavigate();
   const [createTradeTransaction, { isLoading }] = useCreateTradeTransactionMutation();
   const c = useMemo(() => calcCommission(t), [t]);
-  const [step, setStep] = useState(0); // 1 funds received? 2 A/R summary 3 post cash receipt?
+  const [step, setStep] = useState(0);
   const saved = t.tradeTransaction?.[0];
   const d = t.agentDetails?.[0] || {};
   const fundsHold = Number(t.fundsHold || 0);
@@ -557,7 +550,6 @@ function FilesAudit({ t }: { t: any }) {
   );
 }
 
-// ---------- editor ----------
 
 export default function TransactionEditor({ uuid, initialTab = 0, onClose, onChanged }: { uuid: string; initialTab?: number; onClose: () => void; onChanged: () => void }) {
   const { data, isLoading, isError, refetch } = useGetSpacificTradeSheetListDataQuery(uuid);
@@ -567,8 +559,6 @@ export default function TransactionEditor({ uuid, initialTab = 0, onClose, onCha
     refetch();
     onChanged();
   };
-  // Rendered at <body> level (with its own .dvac scope for the bodv styles) so the app sidebar/header,
-  // which sit above the page content, can never cover the transaction window.
   return createPortal(
     <div className="dvac" style={{ height: 0, background: "transparent", overflow: "visible" }}>
     <div className="overlay" style={{ zIndex: 3000 }} onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
@@ -580,15 +570,12 @@ export default function TransactionEditor({ uuid, initialTab = 0, onClose, onCha
             <button type="button" className="iconbtn" onClick={onClose} aria-label="Close"><LuX /></button>
           </div>
         </div>
-        {/* bodv layout: .tx-editor is a fixed flex column (overflow hidden !important); the tabs stay on top
-            and the body below them is the scroll area, with the footer pinned to its bottom. */}
         <div className="tx-editor">
           <div className="tx-tabs">
             {TABS.map((name, i) => (
               <button key={name} type="button" className={i === tab ? "active" : ""} onClick={() => setTab(i)}>{name}</button>
             ))}
           </div>
-          {/* key={tab}: each tab opens scrolled to the top */}
           <div
             key={tab}
             className="tx-body"

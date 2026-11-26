@@ -30,12 +30,10 @@ import {
 
 const { RangePicker } = DatePicker;
 
-// Custom loading icon
 const loadingIcon = (
   <LoadingOutlined style={{ fontSize: 48, color: "#0f766e" }} spin />
 );
 
-// Define TypeScript interfaces (same as Home.tsx)
 interface Property {
   soldPrice?: string;
   salesPrice?: string;
@@ -145,7 +143,6 @@ interface TopStats {
   agentId?: number;
 }
 
-// Function to calculate top statistics (same as Home.tsx)
 const calculateTopStats = (data?: AgentReportDataResponse): TopStats[] => {
   if (!data?.data?.userData || !Array.isArray(data.data.userData)) {
     return [];
@@ -156,7 +153,6 @@ const calculateTopStats = (data?: AgentReportDataResponse): TopStats[] => {
   const stats: TopStats[] = agents.map((agent) => {
     const tradeCommissions = agent.tradeAgentCommission || [];
 
-    // Collect commission details
     const commissionDetails: CommissionDetail[] = tradeCommissions.map(
       (trade) => ({
         commission: parseFloat(trade.agentCommissionTotal || "0"),
@@ -171,7 +167,6 @@ const calculateTopStats = (data?: AgentReportDataResponse): TopStats[] => {
       0
     );
 
-    // Backend already filtered: units/sales (approved + closed + date filtered by closingDate)
     const unitsSalesTradeSheets = agent?.user?.unitsSalesTradeSheets || [];
     const fallbackTradeSheets = [
       ...(agent?.user?.userInTradeSheetSharedUser
@@ -185,10 +180,8 @@ const calculateTopStats = (data?: AgentReportDataResponse): TopStats[] => {
         ? unitsSalesTradeSheets
         : fallbackTradeSheets;
 
-    // Backend already filtered these (approved + closed + date by closingDate)
     const totalUnits = allTradeSheets.length;
 
-    // Collect tradesheet details
     const tradeSheetDetails: TradeSheetDetail[] = allTradeSheets.map(
       (trade) => {
         const properties = Array.isArray(trade?.properties) ? trade.properties : [];
@@ -229,7 +222,6 @@ const calculateTopStats = (data?: AgentReportDataResponse): TopStats[] => {
       0
     );
 
-    // PROPERTY LISTINGS CALCULATION
     const propertyListings = agent?.user?.propertyListings || [];
     const listingDetails: ListingDetail[] = propertyListings.map((listing) => ({
       id: listing.id,
@@ -271,7 +263,6 @@ const TopReport = () => {
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("units");
 
-  // Build query parameters based on selected filter
   const buildQueryParams = () => {
     if (
       selectedMonth === "custom" &&
@@ -288,12 +279,10 @@ const TopReport = () => {
     return selectedMonth;
   };
 
-  // Pass filterMonth or custom date range to API
   const { data, isLoading, isFetching } = useGetTopAgentReportDataQuery(
     buildQueryParams()
   );
 
-  // Calculate stats with safety check
   const statsData = React.useMemo(() => {
     if (!data || isLoading || isFetching) {
       return [];
@@ -301,7 +290,6 @@ const TopReport = () => {
     return calculateTopStats(data);
   }, [data, isLoading, isFetching]);
 
-  // Handle date range change
   const handleDateRangeChange = (
     dates: [Dayjs | null, Dayjs | null] | null
   ) => {
@@ -316,7 +304,6 @@ const TopReport = () => {
     }
   };
 
-  // Handle preset filter click
   const handlePresetFilterClick = (
     filter: "current" | "previous" | "lastYear" | "All Time"
   ) => {
@@ -339,7 +326,6 @@ const TopReport = () => {
     });
   };
 
-  // Render breakdown content for popover (same as Home.tsx)
   const renderBreakdownContent = (breakdownData: {
     type: "units" | "sales" | "listings";
     details: TradeSheetDetail[] | ListingDetail[];
@@ -562,7 +548,6 @@ const TopReport = () => {
     return null;
   };
 
-  // Sort and prepare data for tables
   const topUnitSellers = useMemo(() => {
     return [...statsData]
       .filter((stat) => stat.totalUnits > 0)
@@ -593,7 +578,6 @@ const TopReport = () => {
       }));
   }, [statsData]);
 
-  // Table columns for Top Unit Seller
   const unitSellerColumns = [
     {
       title: "Agent Name",
@@ -627,7 +611,6 @@ const TopReport = () => {
     },
   ];
 
-  // Table columns for Top Seller
   const topSellerColumns = [
     {
       title: "Agent Name",
@@ -663,7 +646,6 @@ const TopReport = () => {
     },
   ];
 
-  // Table columns for Top Listing Agent
   const topListingAgentColumns = [
     {
       title: "Agent Name",
@@ -697,7 +679,6 @@ const TopReport = () => {
     },
   ];
 
-  // Add hover popover to name column
   const unitSellerColumnsWithHover = unitSellerColumns.map((col) => {
     if (col.key === "name") {
       return {
@@ -845,7 +826,6 @@ const TopReport = () => {
         <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100 flex-wrap">
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Top Report</h1>
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Filter pills */}
           <div className="flex items-center gap-1 flex-shrink-0">
             {[
               { key: "All Time", label: "All Time" },
@@ -894,7 +874,6 @@ const TopReport = () => {
             )}
           </div>
           <div className="flex-1" />
-          {/* Tab pills */}
           <div className="flex items-center gap-1 flex-shrink-0">
             {[
               { key: "units", label: "Top Unit Seller" },
@@ -916,7 +895,6 @@ const TopReport = () => {
           </div>
         </div>
 
-        {/* Loading */}
         {(isLoading || isFetching) && (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -926,7 +904,6 @@ const TopReport = () => {
           </div>
         )}
 
-        {/* Tab content */}
         {!isLoading && !isFetching && (
           <>
             {activeTab === "units" && (

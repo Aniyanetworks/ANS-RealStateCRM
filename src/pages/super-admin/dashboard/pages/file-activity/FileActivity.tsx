@@ -70,29 +70,23 @@ const FileActivity: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOperation, setSelectedOperation] = useState<string | null>(null);
 
-  // Get Trade Documents Syslog
   const {
     data: fileActivityData,
     isLoading,
     refetch,
   } = useGetFileActivityLogsQuery({
-    page: 1, // Always fetch all data for frontend pagination
-    search: "", // No backend search, we'll handle it in frontend
+    page: 1,
+    search: "",
   });
 
-  // Optional: Expose a refetch button in the UI
-  // Example usage:
-  // <button onClick={() => refetch()}>Refresh</button>
 
   const fileActivityResponse = fileActivityData as FileActivityResponse;
   const allLogs = useMemo(() => fileActivityResponse?.data || [], [fileActivityResponse?.data]);
   const summary = fileActivityResponse?.summary;
 
-  // Filter data based on search text and selected operation
   const filteredData = useMemo(() => {
     let filtered = allLogs;
 
-    // Filter by search text
     if (searchText.trim()) {
       const searchLower = searchText.toLowerCase();
       filtered = filtered.filter((log) => {
@@ -109,7 +103,6 @@ const FileActivity: React.FC = () => {
       });
     }
 
-    // Filter by selected operation
     if (selectedOperation) {
       filtered = filtered.filter((log) => log.operation === selectedOperation);
     }
@@ -117,14 +110,12 @@ const FileActivity: React.FC = () => {
     return filtered;
   }, [allLogs, searchText, selectedOperation]);
 
-  // Calculate pagination for filtered data
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * 20;
     const endIndex = startIndex + 20;
     return filteredData.slice(startIndex, endIndex);
   }, [filteredData, currentPage]);
 
-  // Use API summary data, but update total logs based on filtered data
   const filteredSummary = useMemo(() => {
     if (!summary) return null;
     
@@ -147,16 +138,13 @@ const FileActivity: React.FC = () => {
       }
     }
     
-    // Refetch data on every page load
     refetch();
   }, [refetch]);
 
-  // Reset to first page when search or operation filter changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchText, selectedOperation]);
 
-  // Ensure current page doesn't exceed maximum when data changes
   useEffect(() => {
     const maxPage = Math.ceil(filteredData.length / 10);
     if (currentPage > maxPage && maxPage > 0) {
@@ -165,7 +153,6 @@ const FileActivity: React.FC = () => {
   }, [filteredData.length, currentPage]);
 
   const handleChange = (pagination: TablePaginationConfig) => {
-    console.log(pagination);
     localStorage.setItem("fileActivityCurentPage", pagination?.current?.toString() || "1");
     setCurrentPage(pagination?.current || 1);
   };

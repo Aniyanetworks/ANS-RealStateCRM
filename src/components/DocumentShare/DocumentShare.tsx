@@ -18,18 +18,16 @@ const DocumentShare: React.FC<DocumentShareProps> = ({ isOpen, onClose, onShare 
     if (!isOpen) return null;
 
     const handleShare = () => {
-        // Reset validation message
         setValidationMessage("");
 
-        // Check if passphrase is required and empty
         if (isPassphraseEnabled && !passphrase) {
             setValidationMessage("Passphrase is required.");
-            return; // Prevent sharing if validation fails
+            return;
         }
 
         onShare(expiration, passphrase);
-        setPassphrase(""); // Clear passphrase
-        setExpiration("12 Hours"); // Reset expiration to default
+        setPassphrase("");
+        setExpiration("12 Hours");
         onClose();
     };
 
@@ -57,7 +55,7 @@ const DocumentShare: React.FC<DocumentShareProps> = ({ isOpen, onClose, onShare 
                         <button 
                             onClick={() => {
                                 setPassphraseEnabled(true);
-                                setPassphrase(""); // Clear passphrase if toggled on
+                                setPassphrase("");
                             }} 
                             className={`border px-4 py-2 rounded-md ${isPassphraseEnabled ? 'bg-green-500 text-white' : 'bg-gray-200 text-black'}`}
                         >
@@ -66,7 +64,7 @@ const DocumentShare: React.FC<DocumentShareProps> = ({ isOpen, onClose, onShare 
                         <button 
                             onClick={() => {
                                 setPassphraseEnabled(false);
-                                setPassphrase(""); // Clear passphrase if toggled off
+                                setPassphrase("");
                             }} 
                             className={`border px-4 py-2 rounded-md ${!isPassphraseEnabled ? 'bg-red-500 text-white' : 'bg-gray-200 text-black'}`}
                         >

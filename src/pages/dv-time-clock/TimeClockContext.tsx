@@ -1,5 +1,3 @@
-// Shared state for the ANS Time Clock screens: who is signed in, who we are acting as (impersonation),
-// permissions (same rules as the original app), navigation, modal and toast.
 import { createContext, ReactNode, useCallback, useContext } from "react";
 import { useTcMutateMutation } from "../../redux/api/common/dvTimeClockSlice";
 import type { Branch, Member, Settings } from "./tcUtils";
@@ -7,8 +5,8 @@ import type { Branch, Member, Settings } from "./tcUtils";
 export type Me = Member & { isManager: boolean; permissionGroups?: [string, string][] };
 
 export type TimeClockCtx = {
-  realMe: Me; // the ANS RealStateCRM user who is signed in
-  me: Me; // the account being viewed (realMe, or the impersonated employee/manager)
+  realMe: Me;
+  me: Me;
   acting: "employee" | "management" | null;
   isEmployeeView: boolean;
   section: string;
@@ -33,7 +31,6 @@ export function useTimeClock() {
 
 const OPT_IN = ["messages.delete", "messages.view_all", "employee.impersonate", "payroll.view_salary", "requests.edit", "requests.delete"];
 
-/** The original app's can(): Superadmin everything; explicit permissions win; sensitive ones are opt-in. */
 export function canFor(me: Pick<Me, "role" | "permissions"> | null, permission: string) {
   if (!me) return false;
   if (me.role === "superadmin") return true;
@@ -48,7 +45,6 @@ export function useCan() {
   return useCallback((p: string) => canFor(me, p), [me]);
 }
 
-/** Call the time clock API; returns the response data or throws an Error with the API message. */
 export function useTcAction() {
   const [mutate] = useTcMutateMutation();
   return useCallback(

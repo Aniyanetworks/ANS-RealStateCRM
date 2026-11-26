@@ -84,17 +84,15 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
     const { data: activeBranches, isLoading: branchesLoading } = useGetActiveBranchListDataQuery("");
     const { data: agentsData } = useGetAgentListDataQuery("");
     const { data: brokerageData } = useGetBrokerageDataQuery("");
-    const selectedCountry = 39; // Canada by default
+    const selectedCountry = 39;
     const { data: states = [] } = useGetStatesQuery(selectedCountry, {
         skip: !selectedCountry,
     });
 
-    // Initialize search text from localStorage
     useEffect(() => {
         setSearchText(localStorage.getItem("branchReportSearchText") || "");
     }, []);
 
-    // Build query params
     const queryParams = useMemo(() => {
         const params: any = {};
         if (selectedBranches.length > 0) params.branchIds = selectedBranches.join(",");
@@ -145,11 +143,9 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
         totalExpense: 0,
     };
 
-    // Filter data based on search
     const filteredData = useMemo(() => {
         let filtered = [...branchData];
 
-        // Search filter
         if (searchText) {
             const searchTerm = searchText.toLowerCase();
             filtered = filtered.filter((item: any) => {
@@ -167,7 +163,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
         return filtered;
     }, [branchData, searchText]);
 
-    // Reset to page 1 when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [
@@ -223,7 +218,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
         const doc = new jsPDF('landscape');
         const pageWidth = doc.internal.pageSize.getWidth();
 
-        // Add logo
         const logoX = (pageWidth / 2) - 10;
         const logoY = 5;
         const logoWidth = 20;
@@ -354,19 +348,15 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
         },
     ];
 
-    // Get unique locations from branches
-    // Get unique locations from branches (using state/city IDs)
     const uniqueLocations = useMemo(() => {
         const locationMap = new Map<string, { value: string; label: string }>();
         activeBranches?.data?.branchData?.forEach((branch: any) => {
-            // Add state as location option
             if (branch.stateId && branch.state?.name) {
                 locationMap.set(`state_${branch.stateId}`, {
                     value: branch.stateId.toString(),
                     label: branch.state.name,
                 });
             }
-            // Add city as location option (with state name if available)
             if (branch.cityId && branch.city?.name) {
                 const stateName = branch.state?.name || '';
                 const label = stateName ? `${branch.city.name}, ${stateName}` : branch.city.name;
@@ -381,7 +371,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
 
     return (
         <div>
-            {/* Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 my-3">
                 <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500">
                     <div className="flex flex-col">
@@ -457,7 +446,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                 </div>
             </div>
 
-            {/* Filter and Export Section */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
                 <div className="w-full sm:w-auto flex-1 max-w-2xl relative">
                     <div className="flex">
@@ -492,7 +480,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                         </button>
                     </div>
 
-                    {/* Backdrop */}
                     {showDropdown && (
                         <div
                             className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
@@ -500,7 +487,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                         />
                     )}
 
-                    {/* Slide-in Filter Panel */}
                     <div
                         className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${showDropdown ? 'translate-x-0' : 'translate-x-full'
                             }`}
@@ -528,7 +514,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                         `}</style>
 
                         <div className="flex flex-col h-full">
-                            {/* Header */}
                             <div className="flex items-center justify-between p-4 border-b bg-[#0f766e] text-white">
                                 <h3 className="text-lg font-semibold">Filter Options</h3>
                                 <button
@@ -539,7 +524,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                 </button>
                             </div>
 
-                            {/* Scrollable Content */}
                             <div
                                 className="branch-filter-scroll flex-1 overflow-y-auto overflow-x-hidden p-4"
                                 style={{
@@ -548,7 +532,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                 }}
                             >
                                 <div className="space-y-4">
-                                    {/* Branch */}
                                     {isSuperAdmin && (
                                         <div>
                                             <label className="font-semibold mb-2 block">Branch</label>
@@ -572,7 +555,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         </div>
                                     )}
 
-                                    {/* Branch Status */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Branch Status</label>
                                         <Select
@@ -589,7 +571,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Branch Location */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Branch Location</label>
                                         <Select
@@ -604,7 +585,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Agent Status */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Agent Status</label>
                                         <Select
@@ -625,7 +605,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Brokerage Name */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Brokerage Name</label>
                                         <Select
@@ -643,7 +622,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Trade Status */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Trade Status</label>
                                         <Select
@@ -663,7 +641,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Admin Status */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Admin Status</label>
                                         <Select
@@ -682,7 +659,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Trade Representation */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Trade Representation</label>
                                         <Select
@@ -701,7 +677,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Expense Status */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Expense Status</label>
                                         <Select
@@ -719,7 +694,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Expense Recurring */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Expense Recurring</label>
                                         <Select
@@ -736,7 +710,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Expense Recurrence Type */}
                                     <div>
                                         <label className="font-semibold mb-2 block">Expense Recurrence Type</label>
                                         <Select
@@ -755,7 +728,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         />
                                     </div>
 
-                                    {/* Trade Closing Date Range */}
                                     <div className="border p-2 rounded">
                                         <label className="font-semibold mb-2 block">Trade Closing Date Range</label>
                                         <div className="flex flex-col sm:flex-row gap-2 mt-1">
@@ -774,7 +746,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         </div>
                                     </div>
 
-                                    {/* Trade Created Date Range */}
                                     <div className="border p-2 rounded">
                                         <label className="font-semibold mb-2 block">Trade Created Date Range</label>
                                         <div className="flex flex-col sm:flex-row gap-2 mt-1">
@@ -793,7 +764,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                         </div>
                                     </div>
 
-                                    {/* Branch Created Date Range */}
                                     <div className="border p-2 rounded">
                                         <label className="font-semibold mb-2 block">Custom Range (Branch Created At)</label>
                                         <div className="flex flex-col sm:flex-row gap-2 mt-1">
@@ -814,7 +784,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                                 </div>
                             </div>
 
-                            {/* Fixed Footer with Action Buttons */}
                             <div className="flex gap-2 p-4 border-t bg-white">
                                 <button
                                     className="w-1/2 bg-[#0f766e] text-white p-2 rounded hover:bg-[#0f766e] transition-colors"
@@ -860,7 +829,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                     </div>
                 </div>
 
-                {/* Export Buttons */}
                 <div className="flex gap-3">
                     <FaFilePdf
                         onClick={handleExportPdf}
@@ -877,7 +845,6 @@ export default function BranchReport({ branchIds }: BranchReportProps) {
                 </div>
             </div>
 
-            {/* Table */}
             <div>
                 <h2 className="pt-2 font-semibold mb-3">Branch Report</h2>
                 <Table

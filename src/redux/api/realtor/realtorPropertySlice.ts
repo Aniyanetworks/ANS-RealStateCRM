@@ -13,12 +13,9 @@ const realtorPropertyApi = api.injectEndpoints({
         },
       }),
       transformResponse: (response: any) => {
-        // Transform the response to match our expected format
-        // If backend already returns { data: [...] }, use it directly
         if (response?.data && Array.isArray(response.data)) {
           return response;
         }
-        // If backend returns OData format { value: [...] }, transform it
         return {
           data: response.value || response.data || [],
         };

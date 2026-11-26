@@ -20,7 +20,6 @@ import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import {
   useGetCitiesQuery,
-  // useGetCountriesQuery,
   useGetStatesQuery,
 } from "../../../../../redux/api/common/countryStateCitySlice";
 import TableLoader from "../../../../../components/loader/TableLoader";
@@ -64,7 +63,6 @@ interface DataType {
   };
 }
 
-// Custom Brokerage Details Modal (brokarage-style)
 const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch  }) => {
   const [selectedTab, setSelectedTab] = useState('details');
   const [selectedAgent, setSelectedAgent] = useState(null);
@@ -74,13 +72,11 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
   const [selectedTradeData, setSelectedTradeData] = useState(null);
   const { user } = useAppSelector((state) => state.user);
   
-  // Agent edit/delete states
   const [isDeleteAgentModalOpen, setIsDeleteAgentModalOpen] = useState(false);
   const [agentToDelete, setAgentToDelete] = useState(null);
 
   const [deleteSingleAgent, { isLoading: isDeletingAgent }] = useDeleteSingleAgentMutation();
 
-  // Handle delete agent
   const handleDeleteAgent = (agent) => {
     setAgentToDelete(agent);
     setIsDeleteAgentModalOpen(true);
@@ -95,7 +91,6 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
       setIsDeleteAgentModalOpen(false);
       setAgentToDelete(null);
       toast.success('Agent deleted successfully!');
-      // Trigger refetch to update the data
       if (onRefetch) {
         await onRefetch();
       }
@@ -144,7 +139,6 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
               </div>
             )}
           </div>
-          {/* Tab content rendering logic */}
           {selectedTab === 'details' && (
             <table className="min-w-full border ">
               <thead>
@@ -169,9 +163,7 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
           )}
           {selectedTab === 'agents' && (
             <div className="flex gap-6 w-full" style={{ minHeight: 400 }}>
-              {/* Sidebar */}
               <div className="w-2/5 border-r pr-1">
-                {/* Search Input */}
 
                 <div className="max-h-[400px] overflow-y-auto">
                   <ul className="divide-y divide-gray-200">
@@ -223,7 +215,6 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
                   </ul>
                 </div>
               </div>
-              {/* Main Area */}
               <div className="w-3/5">
                 {selectedAgent ? (
                   <table className="min-w-full border text-[11px]">
@@ -258,7 +249,6 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
                     </tr>
                   </thead>
                   <tbody>
-                    {/* Combine buyer and seller agent details and remove duplicates */}
                     {[...(brokerage.buyerAgentDetails || []), ...(brokerage.sellerAgentDetails || [])]
                       .filter((detail, index, self) => 
                         index === self.findIndex(d => d.tradeSheet?.id === detail.tradeSheet?.id)
@@ -314,7 +304,6 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
                   </tbody>
                 </table>
 
-                 {/* Tradesheet Preview page */}
                         <Modal
                           title="Tradesheet Preview page"
                           open={isModalPreviewTradeSheetVisible}
@@ -336,7 +325,6 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
               </div>
             )}
 
-          {/* Delete Agent Confirmation Modal */}
           <Modal
             title="Confirm Delete Agent"
             open={isDeleteAgentModalOpen}
@@ -396,12 +384,10 @@ const BrokerageData = () => {
 
 
 
-  // Agent creation modal state
   const [isCreateAgentModalOpen, setIsCreateAgentModalOpen] = useState(false);
   const createAgentForm = useForm();
   const [createAgent, { isLoading: isCreatingAgent }] = useCreateAgentMutation();
 
-  // Brokerage options for the select
   const brokerageOptions =
     data?.data?.brokerageData?.map((brokerage) => ({
       value: brokerage?.id,
@@ -416,30 +402,13 @@ const BrokerageData = () => {
         createAgentForm.reset();
         setCellPhone("");
         toast.success('Agent created successfully!');
-        // Add new agent to selectedBrokerage.agentData
         await refetch();
-       /*  if (selectedBrokerage) {
-          const newAgent = response.data.agentData;
-          setSelectedBrokerage({
-            ...selectedBrokerage,
-            agentData: [...(selectedBrokerage.agentData || []), newAgent]
-          });
-          // Update the main tableData list
-          setTableData(prev =>
-            prev.map(b =>
-              b.id === selectedBrokerage.id
-                ? { ...b, agentData: [...(b.agentData || []), newAgent] }
-                : b
-            )
-          );
-        } */
       }
     } catch (error) {
       toast.error(error?.data?.message || 'Failed to create agent or refetch data');
     }
   };
 
-  // Handler to open Add Agent modal and set brokerageId
   const handleAddAgent = () => {
     setIsCreateAgentModalOpen(true);
     createAgentForm.setValue('brokerageId', selectedBrokerage?.id);
@@ -448,7 +417,6 @@ const BrokerageData = () => {
   useEffect(() => {
   if (data?.data?.brokerageData) {
     setTableData(data.data.brokerageData);
-    // Update selectedBrokerage with fresh data when refetch happens
     if (selectedBrokerage) {
       const updatedBrokerage = data.data.brokerageData.find(
         (b: any) => b.id === selectedBrokerage.id
@@ -467,12 +435,10 @@ const BrokerageData = () => {
     const searchTerm = searchText?.toLowerCase();
     const brokerageNameTerm = brokerageNameFilter?.toLowerCase();
 
-    // Filter by brokerage name if filter is set
     if (brokerageNameTerm && !record.brokerageName?.toLowerCase().includes(brokerageNameTerm)) {
       return false;
     }
 
-    // If no general search term, only apply brokerage name filter
     if (!searchTerm) {
       return true;
     }
@@ -502,7 +468,7 @@ const BrokerageData = () => {
     handleSubmit,
     watch,
     setValue,
-  } = useForm<DataType>({ defaultValues: { countryId: "39" } }); // Specify DataType for better type safety
+  } = useForm<DataType>({ defaultValues: { countryId: "39" } });
 
   const [validateBrokerageData] = useValidateBrokerageDataMutation();
   const [createBrokerageData] = useCreateBrokerageDataMutation();
@@ -579,7 +545,7 @@ const BrokerageData = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
 
     try {
       const response = await deleteBrokerageData(selectedUUID).unwrap();
@@ -605,7 +571,6 @@ const BrokerageData = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -651,17 +616,13 @@ const BrokerageData = () => {
   const selectedState = watch("stateId");
   const selectedCity = watch("cityId");
 
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [] } = useGetCitiesQuery(selectedState, {
-    skip: !selectedState, // Skip if no state is selected
+    skip: !selectedState,
   });
 
   const onSubmit = async () => {
@@ -734,7 +695,7 @@ const BrokerageData = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -742,7 +703,6 @@ const BrokerageData = () => {
       try {
         const response = await deleteMultipleBrokerageData(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -759,7 +719,6 @@ const BrokerageData = () => {
     }
   };
 
-  // Replace the calculateUniqueTradeSheets function
 function calculateUniqueTradeSheets(record) {
   const buyerTradeSheets = record.buyerAgentDetails?.map(item => item.tradeSheet?.id) || [];
   const sellerTradeSheets = record.sellerAgentDetails?.map(item => item.tradeSheet?.id) || [];
@@ -902,7 +861,6 @@ function calculateUniqueTradeSheets(record) {
   };
 
   const showModal = () => setIsModalOpen(true);
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -912,7 +870,6 @@ function calculateUniqueTradeSheets(record) {
   return (
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        {/* Toolbar row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
           <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Brokerage List</h1>
           <div className="flex-1" />
@@ -992,7 +949,6 @@ function calculateUniqueTradeSheets(record) {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Phone Number */}
             <div className="flex flex-col gap-2">
               <label>
                 Phone Number<span className="text-red-500 ml-1">*</span>
@@ -1013,7 +969,6 @@ function calculateUniqueTradeSheets(record) {
               )}
             </div>
 
-            {/* Address */}
             <div className="flex flex-col gap-2">
               <label>
                 Address<span className="text-red-500 ml-1">*</span>
@@ -1059,7 +1014,6 @@ function calculateUniqueTradeSheets(record) {
         ]}
       >
         <form className="space-y-3">
-          {/* Brokerage Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
               <label>
@@ -1080,7 +1034,6 @@ function calculateUniqueTradeSheets(record) {
               )}
             </div>
 
-            {/* Address */}
             <div className="flex flex-col gap-2">
               <label>
                 Address<span className="text-red-500 ml-1">*</span>
@@ -1098,7 +1051,6 @@ function calculateUniqueTradeSheets(record) {
               )}
             </div>
 
-            {/* Street Address */}
             <div className="flex flex-col gap-2">
               <label>Street Address</label>
               <input
@@ -1166,7 +1118,6 @@ function calculateUniqueTradeSheets(record) {
               )}
             </div>
 
-            {/* Postal/Zip Code */}
             <div className="flex flex-col gap-2">
               <label>
                 Postal Code<span className="text-red-500 ml-1">*</span>
@@ -1188,7 +1139,6 @@ function calculateUniqueTradeSheets(record) {
               )}
             </div>
 
-            {/* Phone Number */}
             <div className="flex flex-col gap-2">
               <label>
                 Phone Number<span className="text-red-500 ml-1">*</span>
@@ -1209,7 +1159,6 @@ function calculateUniqueTradeSheets(record) {
               )}
             </div>
 
-            {/* Fax Number */}
             <div className="flex flex-col gap-2">
               <label>Fax Number</label>
               <input
@@ -1274,7 +1223,6 @@ function calculateUniqueTradeSheets(record) {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -1296,7 +1244,6 @@ function calculateUniqueTradeSheets(record) {
         Are you sure you want to delete selected items?
       </Modal>
 
-      {/* Create New Agent Modal */}
       <Modal
         open={isCreateAgentModalOpen}
         onCancel={() => {
@@ -1356,7 +1303,7 @@ function calculateUniqueTradeSheets(record) {
             />
           </div>
             <input
-              {...createAgentForm.register("cellPhone"/* , { required: true } */)}
+              {...createAgentForm.register("cellPhone")}
               placeholder="Cell Phone"
               className="border p-2 rounded"
               value={cellPhone}

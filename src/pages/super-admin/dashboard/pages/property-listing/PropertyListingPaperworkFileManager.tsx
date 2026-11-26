@@ -23,13 +23,12 @@ import ButtonLoader from "../../../../../components/loader/buttonLoader";
 import { formatStringCamelCasecapitalize } from "../../../../../utils/stringUtils";
 import { usePdfSizeGuard } from "../../../../../hooks/usePdfSizeGuard";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true }) => {
   const { user } = useAppSelector((state: any) => state.user);
   const [sidebarWidth, setSidebarWidth] = useState<number>(310);
   const [isResizing, setIsResizing] = useState<boolean>(false);
-  // const { uuid } = useParams<{ uuid?: string }>();
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const { guardFile, modal: pdfSizeReductionModal } = usePdfSizeGuard(MAX_FILE_SIZE);
 
@@ -56,7 +55,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
       ? "listing-paperwork"
       : "co-op-paperwork";
   const { data } = useGetUploadFileCategoriesQuery({
-    slug: uploadFileCategory, // Ensure uploadFileCategory is available and valid
+    slug: uploadFileCategory,
     representation: "seller",
   });
 
@@ -64,11 +63,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
   const [pdfBlobUrl, setPdfBlobUrl] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  // Direct S3 links can 404/CORS-fail in the browser (private bucket, and some
-  // keys — e.g. containing "(" ")" from uploaded filenames — don't round-trip
-  // cleanly through a raw <img>/<iframe> src). Fetch the PDF through the
-  // backend proxy (same approach already used for Tradesheet PDFs) and view
-  // it as a blob URL instead of linking to S3 directly.
   useEffect(() => {
     const filePath = (pdfToView as any)?.filePath;
     if (!filePath || filePath.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
@@ -188,7 +182,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
         id: id,
       }).unwrap();
 
-      console.log("response?.data?.receiptData?.", response?.data);
 
       setPdfToView(response?.data?.newFileAttachment);
       setPdfToView((prevState) => ({
@@ -213,10 +206,9 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
     useChangePropertyListingOtherAttachmentStatusMutation();
 
   const handleStatusChange = (value, id) => {
-    setSelectedStatus(value); // Update the local state
+    setSelectedStatus(value);
     setChangeFileId(id);
 
-    console.log("selectedStatus", value);
 
     if (value == "rejected") {
       setIsRejectModalVisible(true);
@@ -232,9 +224,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
     };
 
     try {
-      // "Other Document" uploads live in a separate table (propertyListingOtherAttachment)
-      // with their own ids, so they need their own status-change endpoint — the
-      // regular one 404s when given an "other document" id.
       const mutate = pdfToView?.isOtherDocument
         ? changePropertyListingOtherAttachmentStatus
         : changePropertyListingAttachmentStatus;
@@ -276,10 +265,8 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
       setSelectedStatus(pdfToView?.status);
     }
 
-    // Add event listener on component mount
     window.addEventListener("resize", handleResize);
 
-    // Remove event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -291,8 +278,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
 
   const handleMouseMove = (e) => {
     if (isResizing) {
-      // Calculate the new width in pixels
-      const newWidth = Math.max(300, Math.min(e.clientX, 500)); // Min 200px, Max 500px
+      const newWidth = Math.max(300, Math.min(e.clientX, 500));
       setSidebarWidth(newWidth);
     }
   };
@@ -302,7 +288,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
   };
 
   const handleViewClick = (file: object, isOtherDocument: boolean = false) => {
-    console.log(file);
     setPdfToView({ ...file, isOtherDocument });
     setLoading(true);
     setError(null);
@@ -323,9 +308,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
     const isImage = pdfToView?.filePath?.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/i);
 
     try {
-      // Non-PDF files (images) and PDFs already fetched via the proxy use what's
-      // already on hand; only fetch directly for images, since S3 links for
-      // those haven't shown the same loading failures PDFs did.
       const blobUrl = isImage
         ? URL.createObjectURL(await (await fetch(getFileUrl(pdfToView.filePath))).blob())
         : pdfBlobUrl;
@@ -345,7 +327,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
       toast.error("Failed to download file");
     }
   };
-  // Calculate slice size dynamically based on sidebar width
   const sliceSize = Math.floor((sidebarWidth - 300) / 15) + 20;
 
   return (
@@ -357,7 +338,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
       )}
       <div>
         <div className="flex h-[calc(100vh-7rem)]">
-          {/* Resizer */}
 
           <div
             style={{ width: `${sidebarWidth}px` }}
@@ -399,36 +379,29 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
             {data?.data?.uploadFileCategoryData?.uploadFileNames
               .filter(
                 (file: FileType) => {
-                  // Filter by status and showOnPropertyListing
                   if (file.status !== "active" || file.showOnPropertyListing !== "Yes") {
                     return false;
                   }
                   
-                  // Filter by listType if property listing has a listType
                   const propertyListingListType = spacificPropertyListingData?.data?.propertyListingData?.listType;
                   if (propertyListingListType) {
                     const fileListType = file.listType;
                     
-                    // If property listing is "Both", show all documents
                     if (propertyListingListType === "Both") {
                       return true;
                     }
                     
-                    // If property listing is "Commercial", show documents with "Commercial" or "Both"
                     if (propertyListingListType === "Commercial") {
                       return fileListType === "Commercial" || fileListType === "Both";
                     }
                     
-                    // If property listing is "Residential", show documents with "Residential" or "Both"
                     if (propertyListingListType === "Residential") {
                       return fileListType === "Residential" || fileListType === "Both";
                     }
                     
-                    // If property listing listType doesn't match any known value, show documents with matching listType or "Both"
                     return fileListType === propertyListingListType || fileListType === "Both";
                   }
                   
-                  // If no listType on property listing, show all active documents
                   return true;
                 }
               )
@@ -495,17 +468,17 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                                         ? "red"
                                         : uploadFile.status === "underReview"
                                         ? "#f59e0b"
-                                        : "green", // Apply color based on status
+                                        : "green",
                                   }}
                                   className={
                                     uploadFile.status === "rejected" ||
                                     uploadFile.status === "pending"
                                       ? ""
                                       : ""
-                                  } // Apply blinking class if status is 'rejected' or 'underReview'
+                                  }
                                 >
                                   {file.name.length > 20
-                                    ? file.name.slice(0, 18) + "..." // Truncate filename if it's too long
+                                    ? file.name.slice(0, 18) + "..."
                                     : file.name}
                                 </p>
                               </div>
@@ -614,14 +587,14 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                                               : uploadFile.status ===
                                                 "underReview"
                                               ? "#f59e0b"
-                                              : "green", // Apply color based on status
+                                              : "green",
                                         }}
                                         className={
                                           uploadFile.status === "rejected" ||
                                           uploadFile.status === "pending"
                                             ? ""
                                             : ""
-                                        } // Apply blinking class if status is 'rejected' or 'underReview'
+                                        }
                                         onClick={() =>
                                           handleViewClick(uploadFile)
                                         }
@@ -650,7 +623,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                   <ul
                     key={i}
                     onClick={() => [
-                      setCategoryId("someId"), // Use the appropriate category ID if needed
+                      setCategoryId("someId"),
                       handleViewClick(uploadFile, true),
                     ]}
                     className={`flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${
@@ -682,7 +655,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                         () =>
                           setCategoryId(
                             categoryId === "someId" ? null : "someId"
-                          ) // Use the appropriate category ID if needed
+                          )
                       }
                       className="flex cursor-pointer justify-between items-center"
                     >
@@ -759,26 +732,19 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                   : "Paperwork"}
                 {!pdfToView?.uploadFileName?.name
                   ? pdfToView?.filePath
-                      ?.split(/[/\\]/) // Split by both forward slashes (/) and backslashes (\)
+                      ?.split(/[/\\]/)
                       .pop()
                   : ""}{" "}
               </h3>
               <div className="flex items-center">
                 {selectedStatus &&
-                  /* pdfToView?.uploadFileName?.name && */
                   user?.userType === "superAdmin" && (
                     <div>
-                      {/* <label
-                        htmlFor="status-select"
-                        className="block mb-2 text-sm block font-medium text-gray-700 ml-3"
-                      >
-                        {selectedStatus ? "Change Status" : "Change Status"}:{" "}
-                      </label> */}
                       <Select
-                        id="status-select" // Added id for accessibility
+                        id="status-select"
                         value={selectedStatus}
                         onChange={
-                          (value) => handleStatusChange(value, pdfToView?.id) // Ensure this updates the selected status
+                          (value) => handleStatusChange(value, pdfToView?.id)
                         }
                         style={{
                           width: 120,
@@ -803,17 +769,10 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                     Download
                   </button>
                 )}
-                {/* <Link
-                  to="/dashboard/super-admin/property-listing"
-                  className="primary-btn mx-3 w-[100px]"
-                >
-                  Go Back
-                </Link> */}
               </div>
             </div>
 
             <div className="flex justify-between items-center mb-2">
-              {/* React Select dropdown for status */}
               <div>
                 {pdfToView.status === "rejected" &&
                   pdfToView?.uploadFileName?.name && (
@@ -824,11 +783,9 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                       className=" flex  border-gray-300 hover:border-red rounded-lg p-2 hover:bg-red-500 hover:text-white transition duration-200  "
                     >
                       <FaComment className="text-red-500 mr-2" />{" "}
-                      {/* Reject Reason icon with red color */}
                       <span className="text-sm font-medium">
                         View Reject Reason
                       </span>{" "}
-                      {/* Text next to the icon */}
                     </button>
                   )}
               </div>
@@ -845,7 +802,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                           onChange={(event) =>
                             handlePaperWorkFileResubmit(event, pdfToView?.id)
                           }
-                          accept="application/pdf" // Restrict to PDF file types
+                          accept="application/pdf"
                         />
                         {isUploading == "paperWorkFile" && <ButtonLoader />}
                         <span>Upload files</span>
@@ -884,14 +841,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                   title="PDF Preview"
                   onLoad={() => setLoading(false)}
                   onError={() => setError("Failed to load PDF")}
-                 /*  style={{
-                    width: "100%", // Full width for PDF view
-                    // Full viewport height for PDF view
-                    border: "none", // Remove border to make it seamless
-                    overflow: "hidden", // Prevent iframe internal scrolling
-                    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-                    borderRadius: "8px", // Rounded corners for a polished look
-                  }} */
                 />}
 
                 
@@ -910,7 +859,6 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
         </div>
       </div>
 
-      {/* Reject Reasons */}
       <Modal
         title="Add Reject Reasons"
         visible={isRejectModalVisible}
@@ -923,9 +871,9 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
             onClick={() => changeStatusApi(selectedStatus, changeFileId)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#072f2d", // Custom background color
-              borderColor: "#072f2d", // Custom border color
-              color: "#fff", // Text color to ensure contrast
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
+              color: "#fff",
             }}
           >
             Save
@@ -936,14 +884,13 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
         ]}
       >
         <Input.TextArea
-          rows={4} // You can adjust the number of rows
+          rows={4}
           placeholder="Enter reject reason here"
-          value={rejectReason} // Assuming you have a state for the reason
-          onChange={(e) => setRejectReason(e.target.value)} // Assuming you have a setRejectReason function
+          value={rejectReason}
+          onChange={(e) => setRejectReason(e.target.value)}
         />
       </Modal>
 
-      {/* Reject Reasons View Modal */}
       <Modal
         title="Reject Reasons View"
         visible={isRejectReasonViewModalVisible}

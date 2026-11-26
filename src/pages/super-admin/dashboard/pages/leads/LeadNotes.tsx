@@ -28,7 +28,6 @@ import {
 import { useGetValidationLogSummaryQuery } from "../../../../../redux/api/superadmin/leadManagementSlice";
 import { baseUrl } from "../../../../../utils/constant";
 
-// Add styles for tabs
 const styles = `
   .lead-notes-tabs .ant-tabs-nav-wrap {
     padding: 0 24px;
@@ -166,8 +165,6 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
   leadData,
   refetchLeads,
 }) => {
-  console.log("Lead Data-------------", leadData);
-  console.log("Lead Id-------------", leadId);
 
   const [noteText, setNoteText] = useState("");
   const [selectedNoteUuid, setSelectedNoteUuid] = useState<string | null>(null);
@@ -181,7 +178,6 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
   const [createUpdateNote] = useCreateUpdateLeadNoteMutation();
   const [deleteNote] = useDeleteLeadNoteMutation();
 
-  // Fetch validation log summary
   const {
     data: summaryData,
     isLoading: isSummaryLoading,
@@ -308,7 +304,6 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
         </div>
       );
 
-    // Extract all fields from leadData
     const basicFields = {
       name: { label: "Name" },
       email: { label: "Email" },
@@ -327,16 +322,13 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
       },
     };
 
-    // Safely extract form fields from leadData.rows[0].data
     let formFields = {};
     if (leadData.rows && leadData.rows[0] && leadData.rows[0].data) {
-      // Handle nested rows structure
       let rowData = leadData.rows[0].data;
       if (Array.isArray(rowData.rows) && rowData.rows[0]?.data) {
         rowData = rowData.rows[0].data;
       }
 
-      // Convert object values to strings
       formFields = Object.fromEntries(
         Object.entries(rowData).map(([key, value]) => {
           if (typeof value === "object" && value !== null) {
@@ -353,7 +345,6 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
 
     return (
       <div className="min-w-6xl mx-auto p-4">
-        {/* Basic Information Section */}
         <div className="mb-6">
           <h3 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1">
             BASIC INFORMATION
@@ -385,7 +376,6 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
           </table>
         </div>
 
-        {/* Form Responses Section */}
         <div className="mb-6">
           <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
             FORM RESPONSES
@@ -420,7 +410,6 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
   const renderNotes = () => {
     return (
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        {/* Messages area */}
         <div
           style={{
             flex: 1,
@@ -557,7 +546,6 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
           ))}
           <div ref={messagesEndRef} />
         </div>
-        {/* Input area */}
         <div
           style={{
             padding: 22,

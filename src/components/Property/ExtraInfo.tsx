@@ -28,8 +28,8 @@ const ExtraInfo: React.FC<ExtraInfoProps> = ({ extraInfo }) => {
           id=""
           placeholder="e.g. This lovely detached house is just a gem nestled "
           onInput={(e: any) => {
-            e.target.style.height = "auto"; // Reset height
-            e.target.style.height = `${e.target.scrollHeight}px`; // Set height to scrollHeight
+            e.target.style.height = "auto";
+            e.target.style.height = `${e.target.scrollHeight}px`;
           }}
           style={{ minHeight: "20px" }}
         ></textarea>
@@ -47,8 +47,8 @@ const ExtraInfo: React.FC<ExtraInfoProps> = ({ extraInfo }) => {
           id=""
           placeholder="e.g. This lovely detached house is just a gem nestled "
           onInput={(e: any) => {
-            e.target.style.height = "auto"; // Reset height
-            e.target.style.height = `${e.target.scrollHeight}px`; // Set height to scrollHeight
+            e.target.style.height = "auto";
+            e.target.style.height = `${e.target.scrollHeight}px`;
           }}
           style={{ minHeight: "20px" }}
         ></textarea>
@@ -66,8 +66,8 @@ const ExtraInfo: React.FC<ExtraInfoProps> = ({ extraInfo }) => {
           id=""
           placeholder="e.g. This lovely detached house is just a gem nestled "
           onInput={(e: any) => {
-            e.target.style.height = "auto"; // Reset height
-            e.target.style.height = `${e.target.scrollHeight}px`; // Set height to scrollHeight
+            e.target.style.height = "auto";
+            e.target.style.height = `${e.target.scrollHeight}px`;
           }}
           style={{ minHeight: "20px" }}
         ></textarea>
@@ -85,8 +85,8 @@ const ExtraInfo: React.FC<ExtraInfoProps> = ({ extraInfo }) => {
           id=""
           placeholder="e.g. This lovely detached house is just a gem nestled "
           onInput={(e: any) => {
-            e.target.style.height = "auto"; // Reset height
-            e.target.style.height = `${e.target.scrollHeight}px`; // Set height to scrollHeight
+            e.target.style.height = "auto";
+            e.target.style.height = `${e.target.scrollHeight}px`;
           }}
           style={{ minHeight: "20px" }}
         ></textarea>
@@ -136,8 +136,8 @@ const ExtraInfo: React.FC<ExtraInfoProps> = ({ extraInfo }) => {
           id=""
           placeholder="e.g. Easy Showings with LB. Offers Anytime.  "
           onInput={(e: any) => {
-            e.target.style.height = "auto"; // Reset height
-            e.target.style.height = `${e.target.scrollHeight}px`; // Set height to scrollHeight
+            e.target.style.height = "auto";
+            e.target.style.height = `${e.target.scrollHeight}px`;
           }}
           style={{ minHeight: "20px" }}
         ></textarea>

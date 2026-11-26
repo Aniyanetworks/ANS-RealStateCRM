@@ -76,7 +76,6 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 12, overflow: 'hidden', border: '1px solid #e5e7eb', background: '#fff' }}>
 
-      {/* ── Messages ── */}
       <div style={{ height: 300, overflowY: 'auto', background: '#fff', padding: '16px 20px 8px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', justifyContent: 'flex-end', gap: 2 }}>
 
@@ -93,7 +92,6 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
               const nextNote = notes[idx + 1];
               const isLastInGroup = !nextNote || nextNote.createdBy !== note.createdBy;
 
-              // For own messages use the live Redux user profile picture; fallback to note owner pic
               const picSource = isMine
                 ? (user?.profilePicture || note.owner?.profilePicture)
                 : note.owner?.profilePicture;
@@ -124,12 +122,10 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                   {avatarEl}
 
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: isMine ? 'flex-end' : 'flex-start', maxWidth: '70%', gap: 1 }}>
-                    {/* Sender name — first in group only */}
                     {!isMine && idx > 0 && notes[idx - 1].createdBy === note.createdBy ? null : (
                       !isMine && <span style={{ fontSize: 10, fontWeight: 600, color: '#0f766e', paddingLeft: 4, marginBottom: 1 }}>{note.owner?.name || 'Unknown'}</span>
                     )}
 
-                    {/* Bubble */}
                     <div
                       style={{ display: 'flex', flexDirection: isMine ? 'row-reverse' : 'row', alignItems: 'center', gap: 8 }}
                       className="note-bubble-wrap"
@@ -151,7 +147,6 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                         dangerouslySetInnerHTML={{ __html: note.note }}
                       />
 
-                      {/* Hover actions — inline sibling, no gap to lose hover over */}
                       <div
                         className="bubble-actions"
                         style={{
@@ -183,7 +178,6 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                       </div>
                     </div>
 
-                    {/* Timestamp — last in group only */}
                     {isLastInGroup && (
                       <span style={{ fontSize: 10, color: '#9ca3af', padding: '0 4px', marginTop: 1 }}>
                         {moment(note.createdAt).format('DD MMM, hh:mm A')}
@@ -199,7 +193,6 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
         </div>
       </div>
 
-      {/* ── Edit banner ── */}
       {isEditMode && (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 16px', background: '#fef9c3', borderTop: '1px solid #fde68a', fontSize: 11, color: '#92400e' }}>
           <span>✏️ Editing message</span>
@@ -207,10 +200,8 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
         </div>
       )}
 
-      {/* ── Divider ── */}
       <div style={{ height: 1, background: '#f3f4f6' }} />
 
-      {/* ── Composer ── */}
       <div style={{ background: '#fafafa', padding: '10px 14px 12px' }}>
         <ReactQuill
           value={noteText}
@@ -238,7 +229,6 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
         </div>
       </div>
 
-      {/* Inline style for hover actions */}
       <style>{`
         .note-bubble-wrap:hover .bubble-actions { opacity: 1 !important; pointer-events: auto !important; }
       `}</style>

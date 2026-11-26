@@ -225,7 +225,6 @@ const CreateCustomPlan = () => {
                   </select>
                 </div>
 
-                {/* Show Value field only if itemType is not "Commission" */}
                 {item.itemType !== "Commission" && (
                   <div className="w-full">
                     <input
@@ -247,7 +246,6 @@ const CreateCustomPlan = () => {
                 )}
               </div>
 
-              {/* Show Commission fields only if itemType is "Commission" */}
               {item.itemType === "Commission" && (
                 <div className="mb-4">
                   <h5 className="text-md font-semibold text-gray-700 mb-2">
@@ -302,7 +300,6 @@ const CreateCustomPlan = () => {
               )}
 
               <div className="px-8 pb-5">
-                {/* Sub Items */}
                 <div className="border bg-gray-50 rounded-xl border-gray-100 shadow-md">
                   <h5 className="text-md font-semibold bg-[#EEE] rounded-t-xl py-2 px-4">
                     Sub Item

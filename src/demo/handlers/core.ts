@@ -21,7 +21,6 @@ const cities: Record<number, { id: number; name: string }> = {
 const ts = (d: number) => new Date(Date.UTC(2026, 0, 5 + d, 14, 30, 0)).toISOString();
 const dt = (d: number) => ts(d).slice(0, 19).replace('T', ' ');
 
-// ---------- Branches ----------
 const branchSeed: [string, number, number, string, string, string, string, number, number][] = [
   ['Toronto Downtown', 1, 1, 'toronto@ans.demo', '416-555-0101', '100 King St W', 'M5X 1A9', 43.6487, -79.3817],
   ['Mississauga Central', 1, 2, 'mississauga@ans.demo', '905-555-0102', '55 City Centre Dr', 'L5B 1M2', 43.5933, -79.6417],
@@ -62,7 +61,6 @@ const branches = branchSeed.map((b, i) => {
   };
 });
 
-// ---------- Roles ----------
 const roleSeed: [string, string, string | null][] = [
   ['Super Admin', 'yes', null], ['Branch Admin', 'yes', null], ['Accountant', 'no', 'Branch Admin'],
   ['Office Manager', 'no', 'Branch Admin'], ['Agent', 'yes', null], ['Compliance Officer', 'no', 'Agent'],
@@ -74,7 +72,6 @@ const roles = roleSeed.map((r, i) => ({
 })).reverse();
 const roleById = (id: number) => roles.find((r) => r.id === id)!;
 
-// ---------- Users ----------
 const people: [string, string, string, number, number, string][] = [
   ['Ava', 'Morgan', 'superAdmin', 1, 1, 'admin@ans.demo'],
   ['Liam', 'Chen', 'admin', 2, 1, 'liam.chen@ans.demo'],
@@ -113,7 +110,6 @@ const users = people.map((p, i) => {
 });
 branches.forEach((b) => { b._count.users = users.filter((u) => u.branchId === b.id).length; });
 
-// ---------- Clients ----------
 const clientNames = [
   ['Daniel', 'Roberts'], ['Priya', 'Sharma'], ['Marc', 'Lavoie'], ['Hannah', 'Kim'],
   ['Omar', 'Hassan'], ['Grace', 'Thompson'], ['Victor', 'Petrov'], ['Aisha', 'Khan'],
@@ -134,7 +130,6 @@ const clients = clientNames.map((c, i) => {
   };
 });
 
-// ---------- Brokerages ----------
 const stateOf = (id: number) => states.find((s) => s.id === id)!;
 const brokerageSeed: [string, string, number, number, string, string][] = [
   ['ANS RealStateCRM Realty Inc., Brokerage', '100 King St W', 1, 1, 'M5X 1A9', '416-555-0201'],
@@ -156,7 +151,6 @@ const brokerageData = brokerageSeed.map((b, i) => ({
   buyerAgentDetails: [] as any[], sellerAgentDetails: [] as any[],
 }));
 
-// ---------- Lawyer firms ----------
 const firmSeed: [string, string, number, number, string, string][] = [
   ['Hartwell & Associates LLP', '120 Adelaide St W', 1, 1, 'M5H 1T1', '416-555-0301'],
   ['Brampton Legal Group', '20 Main St N', 1, 6, 'L6V 1N8', '905-555-0302'],
@@ -177,7 +171,6 @@ const lawyerFirm = firmSeed.map((b, i) => ({
   ],
 }));
 
-// ---------- Receipts ----------
 const addrs = [
   '45 Lakeshore Rd E, Mississauga, Ontario L5G 1E3', '12 Maple Ave, Toronto, Ontario M4C 1A1', '88 Rideau St Unit 1204, Ottawa, Ontario K1N 5X8',
   '301 Dundas St W, Toronto, Ontario M5T 1G5', '17 Bramalea Rd, Brampton, Ontario L6T 2W4', '640 King St W, Hamilton, Ontario L8P 1C1',
@@ -206,7 +199,6 @@ const pickupReceiptData = addrs.map((a, i) => ({
   signature: null, createdAt: ts(i * 3), updatedAt: ts(i * 3),
 })).reverse();
 
-// ---------- Plans ----------
 const mkItem = (id: number, name: string, value: number, itemType = 'Fee', co = 0, ca = 0, subs: { name: string; value: number }[] = []) => ({
   id: String(id), name, value, isOptional: false, commissionOwner: co, commissionAgent: ca, itemType, planSubItems: subs,
 });

@@ -13,9 +13,9 @@ import pdfFile from '../../../assets/cheque/REAL-ESTATE-TRUST-ACCOUNT.pdf';
 
 const AccountChequePosting = () => {
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const { data:tradeTransactionResponse, isLoading:isLoadingTradeTransactionData } = useGetSpecificTradeTransactionQuery(uuid);
-  const { data:bankAccountList, isLoading:bankAccountIsLoading, refetch:bankAccountRefetch} = useGetAccountingBankAccountsQuery(""); // Use the bank account data query
+  const { data:bankAccountList, isLoading:bankAccountIsLoading, refetch:bankAccountRefetch} = useGetAccountingBankAccountsQuery("");
   const [bankAccounts, setBankAccounts] = useState<DataType[]>([]);
   const { register, handleSubmit, setValue, formState: { errors },watch } = useForm();
   const [tradeTransactionData, setTradeTransactionData] = useState("");
@@ -23,7 +23,7 @@ const AccountChequePosting = () => {
   const [isModalChequeVisible, setIsModalChequeVisible] = useState(false);
 
   useEffect(() => {
-    setBankAccounts(bankAccountList?.data?.accounts); // Ensure correct data mapping
+    setBankAccounts(bankAccountList?.data?.accounts);
     setTradeTransactionData(tradeTransactionResponse?.data?.tradeTransaction)
     setValue(
       'chequeReceiptFrom',
@@ -37,14 +37,8 @@ const AccountChequePosting = () => {
     setValue('tradeSheetId',tradeTransactionData?.tradeSheetId);
     setValue('tradeTransactionId',tradeTransactionData?.id);
 
-    console.log('tradeTransactionData?.baseOfficeCommissionTotal',tradeTransactionData)
   }, [bankAccountList,tradeTransactionResponse,tradeTransactionData]);
 
-  // const [bankAccounts] = useState([
-  //   { label: "Bank A - 1234", value: "bank_a" },
-  //   { label: "Bank B - 5678", value: "bank_b" },
-  //   { label: "Bank C - 9012", value: "bank_c" },
-  // ]);
 
   const [chequeReceiptsFrom] = useState([
     { label: "Customer A", value: "customer_a" },
@@ -84,33 +78,6 @@ const AccountChequePosting = () => {
       <h2 className="text-xl font-semibold text-gray-800">Cheque Posting</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Cheque Receipt From */}
-        {/* <div>
-          <label
-            htmlFor="chequeReceiptFrom"
-            className="font-semibold text-gray-700"
-          >
-            Cheque Receipt From:
-          </label>
-          <select
-            {...register("chequeReceiptFrom", {
-              required: "Cheque Receipt From is required",
-            })}
-            className="w-full mt-2 p-2 border border-gray-300 rounded-md"
-          >
-            <option value="">Select</option>
-            {chequeReceiptsFrom.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          {errors.chequeReceiptFrom && (
-            <p className="text-red-500 text-sm">
-              {errors.chequeReceiptFrom.message}
-            </p>
-          )}
-        </div> */}
 
         <div>
           <label htmlFor="amount" className="font-semibold text-gray-700">
@@ -128,7 +95,6 @@ const AccountChequePosting = () => {
           )}
         </div>
 
-        {/* Cheque Type */}
         <div>
           <label htmlFor="chequeType" className="font-semibold text-gray-700">
             Cheque Type:
@@ -149,7 +115,6 @@ const AccountChequePosting = () => {
           )}
         </div>
 
-        {/* Conditionally rendered Cheque Number input */}
         {chequeType === "cheque" && (
           <div className="mt-4">
             <label htmlFor="chequeNumber" className="font-semibold text-gray-700">
@@ -166,7 +131,6 @@ const AccountChequePosting = () => {
           </div>
         )}
 
-        {/* Amount */}
         <div>
           <label htmlFor="amount" className="font-semibold text-gray-700">
             Amount:
@@ -190,7 +154,6 @@ const AccountChequePosting = () => {
           )}
         </div>
 
-        {/* Date of Receipt */}
         <div>
           <label
             htmlFor="dateOfReceipt"
@@ -212,7 +175,6 @@ const AccountChequePosting = () => {
           )}
         </div>
 
-        {/* Bank Account */}
         <div>
           <label htmlFor="bankAccount" className="font-semibold text-gray-700">
             Bank Account:
@@ -238,7 +200,6 @@ const AccountChequePosting = () => {
           )}
         </div>
 
-        {/* Submit Button */}
         <div className="flex justify-end mt-4">
           <button
             type="submit"

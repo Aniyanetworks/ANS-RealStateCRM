@@ -62,17 +62,14 @@ export default function UserReport({ branchIds }: UserReportProps) {
     const { data: activeBranches, isLoading: branchesLoading } = useGetActiveBranchListDataQuery("");
     const { data: roleData } = useGetRoleListQuery("");
 
-    // Initialize search text from localStorage
     useEffect(() => {
         setSearchText(localStorage.getItem("userReportSearchText") || "");
     }, []);
 
-    // Save search text to localStorage
     useEffect(() => {
         localStorage.setItem("userReportSearchText", searchText);
     }, [searchText]);
 
-    // Build query params
     const queryParams = useMemo(() => {
         const params: any = {};
         if (selectedBranches.length > 0) params.branchIds = selectedBranches.join(",");
@@ -106,7 +103,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
         otherUser: 0,
     };
 
-    // Helper function to extract all values from an object for search
     const extractValues = (obj: any): string[] => {
         const values: string[] = [];
         if (obj === null || obj === undefined) return values;
@@ -124,11 +120,9 @@ export default function UserReport({ branchIds }: UserReportProps) {
         return values;
     };
 
-    // Filter data based on search
     const filteredData = useMemo(() => {
         let filtered = [...userData];
 
-        // Search filter
         if (searchText) {
             const searchLower = searchText.toLowerCase();
             filtered = filtered.filter((item: any) => {
@@ -140,12 +134,10 @@ export default function UserReport({ branchIds }: UserReportProps) {
         return filtered;
     }, [userData, searchText]);
 
-    // Reset pagination when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedBranches, selectedRoleIds, selectedStatus, selectedIsActive, selectedUserType, createdDateRange, searchText]);
 
-    // Handle period filter
     const handlePeriodFilter = (period: string) => {
         const now = new Date();
         const startDate = new Date();
@@ -185,7 +177,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
         setPeriodFilter(period);
     };
 
-    // Handle custom date range
     const handleCustomDateRange = () => {
         if (createdCustomStart && createdCustomEnd) {
             setCreatedDateRange([createdCustomStart, createdCustomEnd]);
@@ -193,7 +184,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
         }
     };
 
-    // Reset filters
     const handleResetFilters = () => {
         setSelectedBranches(branchIds);
         setSelectedRoleIds([]);
@@ -209,7 +199,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
         setShowDropdown(false);
     };
 
-    // Status options
     const statusOptions = [
         { label: "Approved", value: "approved" },
         { label: "Pending", value: "pending" },
@@ -219,7 +208,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
         { label: "Closed", value: "closed" },
     ];
 
-    // Get role cards dynamically from summary
     const roleCards = useMemo(() => {
         if (!roleData?.data?.roles || !summary) return [];
         return roleData.data.roles.map((role: any) => {
@@ -230,15 +218,13 @@ export default function UserReport({ branchIds }: UserReportProps) {
                 name: role.name,
                 count: count,
             };
-        }).filter((role: any) => role.count > 0 || true); // Show all roles even if count is 0
+        }).filter((role: any) => role.count > 0 || true);
     }, [roleData, summary]);
 
-    // Export to PDF
     const handleExportPdf = () => {
         const doc = new jsPDF('landscape');
         const pageWidth = doc.internal.pageSize.getWidth();
 
-        // Add logo
         const logoX = (pageWidth / 2) - 10;
         const logoY = 5;
         const logoWidth = 20;
@@ -289,7 +275,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
         doc.save(`User_Report_${format(new Date(), "yyyy-MM-dd")}.pdf`);
     };
 
-    // Export to Excel
     const handleExportExcel = () => {
         const worksheet = XLSX.utils.json_to_sheet(
             filteredData.map((item: any, index: number) => ({
@@ -312,7 +297,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
         XLSX.writeFile(workbook, `User_Report_${format(new Date(), "yyyy-MM-dd")}.xlsx`);
     };
 
-    // Table columns
     const columns: TableColumnsType<any> = [
         {
             title: 'User ID',
@@ -377,7 +361,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
 
     return (
         <div className="pb-32">
-            {/* Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4 my-3">
                 <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500">
                     <div className="flex flex-col">
@@ -445,7 +428,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                         <span className="text-lg font-semibold text-slate-600">{summary.otherUser}</span>
                     </div>
                 </div>
-                {/* Dynamic Role Cards */}
                 {roleCards.map((role: any, index: number) => {
                     const colors = [
                         'border-cyan-500', 'border-amber-500', 'border-lime-500', 'border-emerald-500',
@@ -467,7 +449,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                 })}
             </div>
 
-            {/* Filter and Export Section */}
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
                 <div className="w-full sm:w-auto flex-1 max-w-2xl relative">
                     <div className="flex">
@@ -503,7 +484,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                     </div>
                 </div>
 
-                {/* Export Buttons */}
                 <div className="flex gap-3">
                     <FaFilePdf
                         onClick={handleExportPdf}
@@ -520,7 +500,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                 </div>
             </div>
 
-            {/* Backdrop */}
             {showDropdown && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"
@@ -528,7 +507,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                 />
             )}
 
-            {/* Slide-in Filter Panel */}
             <div
                 className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${showDropdown ? 'translate-x-0' : 'translate-x-full'
                     }`}
@@ -556,7 +534,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                 `}</style>
 
                 <div className="flex flex-col h-full">
-                    {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b bg-[#0f766e] text-white">
                         <h3 className="text-lg font-semibold">Filter Options</h3>
                         <button
@@ -567,7 +544,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                         </button>
                     </div>
 
-                    {/* Scrollable Content */}
                     <div
                         className="user-filter-scroll flex-1 overflow-y-auto overflow-x-hidden p-4"
                         style={{
@@ -576,7 +552,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                         }}
                     >
                         <div className="space-y-4">
-                            {/* Period Filter Buttons */}
                             <div className="flex gap-2 mb-4 flex-wrap">
                                 {['Day', 'Week', 'Month', 'Quarter', 'Year'].map((period) => (
                                     <button
@@ -592,7 +567,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                                 ))}
                             </div>
 
-                            {/* Predefined Date Ranges */}
                             <div className="space-y-2 mb-4">
                                 {['Last 30 days', 'Last 90 days', 'Last Year', 'All Time'].map((range) => (
                                     <button
@@ -608,7 +582,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                                 ))}
                             </div>
 
-                            {/* Branch (only for superadmin) */}
                             {isSuperAdmin && (
                                 <div>
                                     <label className="font-semibold mb-2 block">Branch</label>
@@ -632,7 +605,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                                 </div>
                             )}
 
-                            {/* User Role */}
                             <div>
                                 <label className="font-semibold mb-2 block">User Role</label>
                                 <Select
@@ -653,7 +625,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                                 />
                             </div>
 
-                            {/* Status */}
                             <div>
                                 <label className="font-semibold mb-2 block">Status</label>
                                 <Select
@@ -667,7 +638,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                                 />
                             </div>
 
-                            {/* Active/Inactive */}
                             <div>
                                 <label className="font-semibold mb-2 block">Active Status</label>
                                 <Select
@@ -683,7 +653,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                                 />
                             </div>
 
-                            {/* User Type (Our Users / Other Users) */}
                             <div>
                                 <label className="font-semibold mb-2 block">User Type</label>
                                 <Select
@@ -699,7 +668,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                                 />
                             </div>
 
-                            {/* Custom Date Range (Created At) */}
                             <div className="border p-2 rounded">
                                 <label className="font-semibold mb-2 block">Custom Range (Created At)</label>
                                 <div className="flex flex-col sm:flex-row gap-2 mt-1">
@@ -720,7 +688,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                         </div>
                     </div>
 
-                    {/* Fixed Footer with Action Buttons */}
                     <div className="flex gap-2 p-4 border-t bg-white">
                         <button
                             className="w-1/2 bg-[#0f766e] text-white p-2 rounded hover:bg-[#0f766e] transition-colors"
@@ -741,7 +708,6 @@ export default function UserReport({ branchIds }: UserReportProps) {
                 </div>
             </div>
 
-            {/* Table */}
             <Table
                 rowKey="uuid"
                 scroll={{ x: "max-content" }}

@@ -3,10 +3,8 @@ import { api } from './apiSlice';
 
 const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // registration-----------------
     userRegistration: builder.mutation({
       query: (data) => ({
-        // url: "/auth/registration/user",
         url: "/auth/registration",
         method: "POST",
         body: data,
@@ -14,7 +12,6 @@ const userApi = api.injectEndpoints({
       }),
     }),
 
-    // login-------------------
     userLogin: builder.mutation({
       query: (data) => ({
         url: "/auth/login",
@@ -24,7 +21,6 @@ const userApi = api.injectEndpoints({
       }),
     }),
 
-    // In your userSlice.ts
     resendOtp: builder.mutation({
       query: (body) => ({
         url: '/auth/resend-otp',
@@ -48,7 +44,6 @@ const userApi = api.injectEndpoints({
       }),
     }),
 
-    // In your userSlice.ts or appropriate API slice
     toggleSmsOtp: builder.mutation({
       query: (body) => ({
         url: '/auth/sms-otp/toggle',
@@ -79,7 +74,6 @@ const userApi = api.injectEndpoints({
       }),
     }),
 
-    // login-------------------
     userLogout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -177,7 +171,6 @@ const userApi = api.injectEndpoints({
       },
     }),
 
-    // send code-------------------
     sendCode: builder.mutation({
       query: (data) => ({
         url: `/auth/send-code`,
@@ -186,7 +179,6 @@ const userApi = api.injectEndpoints({
       }),
     }),
 
-    // verify code-------------------
     verifyCode: builder.mutation({
       query: (data) => ({
         url: `/auth/verify-code`,

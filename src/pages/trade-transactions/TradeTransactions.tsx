@@ -1,6 +1,3 @@
-// Trade Transactions — bodv's Transactions screen on ANS RealStateCRM's existing accounting data:
-// approved/closed trade sheets with their finalize state (TradeTransaction), cheque posting,
-// commission payroll and trust balances. Accounting → Trade List is unchanged.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -77,7 +74,6 @@ export default function TradeTransactions() {
   const [q, setQ] = useState("");
   const [stage, setStage] = useState("");
   const [rep, setRep] = useState("");
-  // ?open=<trade sheet uuid> opens that trade directly (links from other screens).
   const [editing, setEditing] = useState<{ uuid: string; tab: number } | null>(() => {
     const open = new URLSearchParams(window.location.search).get("open");
     return open ? { uuid: open, tab: 0 } : null;
@@ -99,7 +95,6 @@ export default function TradeTransactions() {
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const current = Math.min(page, pages);
   const pageRows = filtered.slice((current - 1) * pageSize, current * pageSize);
-  // Compact page list: first, last and the pages around the current one.
   const pageList = Array.from({ length: pages }, (_, i) => i + 1).filter((n) => n === 1 || n === pages || Math.abs(n - current) <= 2);
 
   const totals = useMemo(() => ({

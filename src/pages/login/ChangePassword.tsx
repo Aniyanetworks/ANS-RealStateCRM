@@ -34,7 +34,6 @@ const ChangePassword = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<PasswordFormInputs> = async (data) => {
-    // Add password confirmation validation
     if (data.password !== data.confirmPassword) {
       toast.error("Passwords do not match");
       return;

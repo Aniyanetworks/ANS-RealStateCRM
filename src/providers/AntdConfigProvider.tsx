@@ -45,5 +45,3 @@ const AntdConfigProvider = ({ children }: { children: ReactNode }) => {
 
 export default AntdConfigProvider;
 
-// this component is used on top level of the app  for globally apply styles on antd components
-// this is not compulsory, we can remove this if needed

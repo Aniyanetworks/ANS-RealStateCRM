@@ -9,7 +9,6 @@ import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import {
   useGetCitiesQuery,
-  // useGetCountriesQuery,
   useGetStatesQuery,
 } from "../../../../../redux/api/common/countryStateCitySlice";
 import TableLoader from "../../../../../components/loader/TableLoader";
@@ -192,7 +191,7 @@ const ExternalAgentManagement = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -200,7 +199,6 @@ const ExternalAgentManagement = () => {
       try {
         const response = await deleteMultipleExternalAgent(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -253,37 +251,11 @@ const ExternalAgentManagement = () => {
           setIsUploading(false);
         }
       } catch (error) {
-        // toast.error("Update failed. Something went wrong!");
         console.error("Update error:", error);
         setIsUploading(false);
       }
     } else {
-    //   try {
-    //     const response = (await createRole(data)) as any;
 
-    //     if (response?.error?.data?.status == false) {
-    //       setIsUploading(false);
-    //       response.error.data.errors
-    //         ? response.error.data.errors.forEach((error: any) => {
-    //             setError(error.path, {
-    //               type: "manual",
-    //               message: error.msg,
-    //             });
-    //           })
-    //         : toast.error(`${response?.error.data?.message}`);
-    //     } else if (response?.data?.status == true) {
-    //       toast.success(`${response?.data?.message}`);
-    //       setIsModalOpen(false);
-    //       resetForm();
-    //       setIsUploading(false);
-    //     } else {
-    //       resetForm();
-    //       setIsUploading(false);
-    //     }
-    //   } catch (error) {
-    //     console.error("Submission error:", error);
-    //     setIsUploading(false);
-    //   }
     }
   };
 
@@ -326,7 +298,7 @@ const ExternalAgentManagement = () => {
                     Edit
                   </button>
                 ),
-              }, // Empty array if condition is false,
+              },
               ,
               hasPermissionForSlug("delete-agent") && {
                 key: "delete",
@@ -340,7 +312,7 @@ const ExternalAgentManagement = () => {
                     Delete
                   </button>
                 ),
-              }, // Empty array if condition is false
+              },
               ,
             ],
           }}
@@ -360,7 +332,6 @@ const ExternalAgentManagement = () => {
   const showModal = () => setIsModalOpen(true);
   const showModal2 = () => setIsModal2Open(true);
 
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -435,7 +406,6 @@ const ExternalAgentManagement = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Lawyer Name */}
             <div className="flex flex-col gap-2">
               <label>
                 First Name <span className="text-red-500 ml-1">*</span>
@@ -507,26 +477,6 @@ const ExternalAgentManagement = () => {
                 }}
               />
             </div>
-            {/* <div className="flex flex-col gap-2">
-              <label>
-                User Type <span className="text-red-500 ml-1">*</span>
-              </label>
-              <select
-                {...register("userType", { required: "User type is required" })}
-              >
-                <option value="">Select User Type</option>
-                <option value="superAdmin">Super Admin</option>
-                <option value="admin">Admin</option>
-                <option value="agent">Agent</option>
-                <option value="accountant">Accountant</option>
-                <option value="client">Client</option>
-              </select>
-              {errors.userType && (
-                <p className="text-red-500 text-sm">
-                  {errors.userType.message as string}
-                </p>
-              )}
-            </div> */}
           </div>
         </form>
       </Modal>
@@ -553,7 +503,6 @@ const ExternalAgentManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

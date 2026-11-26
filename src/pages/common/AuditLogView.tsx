@@ -1,5 +1,4 @@
 // @ts-nocheck
-// Shared audit log viewer (accounting & time clock). Shows who did what, with before/after values.
 import React from "react";
 import { DatePicker, Input, Select, Space, Table, Tag } from "antd";
 import dayjs from "dayjs";
@@ -12,7 +11,6 @@ const fmtValue = (v) => {
   return String(v);
 };
 
-/** Side-by-side diff of changed fields (or full new record when there is no old one). */
 const ChangeDetail = ({ oldData, newData }) => {
   const oldObj = oldData && typeof oldData === "object" ? oldData : {};
   const newObj = newData && typeof newData === "object" ? newData : {};

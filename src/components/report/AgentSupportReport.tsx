@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { formatDate, parseISO } from 'date-fns';
-// import TableLoader from '../loader/TableLoader';
 import { Table, Tag } from 'antd';
 import type { TableColumnsType, TableProps } from "antd";
 import * as XLSX from 'xlsx';
@@ -34,8 +33,7 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
-  const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
+  const handleChange: OnChange = (_pagination, filters, sorter) => {
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
@@ -147,7 +145,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
 
   
 
-  // Function to handle Excel export
   const handleExport = () => {
     const exportData = filteredData.map(item => ({
       title: item.title,
@@ -193,7 +190,7 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
         x += columnWidths[index];
     });
 
-    let currentY = startY + 2 * lineHeight; // Start below headers
+    let currentY = startY + 2 * lineHeight;
     filteredData.forEach((item) => {
         const row = [
             item.title || "...",
@@ -210,7 +207,7 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
 
         x = margin;
         row.forEach((cell, index) => {
-            pdf.text(String(cell), x, currentY); // Convert to string to avoid errors
+            pdf.text(String(cell), x, currentY);
             x += columnWidths[index];
         });
 
@@ -242,9 +239,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
         />
       </div>
 
-        {/* {filteredData.length === 0 ? (
-          <TableLoader />
-        ) : ( */}
           <div id="table-container" ref={tableRef} >
             <Table
               rowKey="id"
@@ -255,7 +249,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
               onChange={handleChange}
             />
           </div>
-        {/* )} */}
       </div>
     </div>
   );

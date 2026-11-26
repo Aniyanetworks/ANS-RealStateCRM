@@ -18,11 +18,9 @@ const DataDisplay = ({ label, value }: { label: string; value: any }) => (
 
 const TradeSheetPreviewPageWithoutStep = () => {
   const { user } = useAppSelector((state: any) => state.user);
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const { data, isLoading } = useGetSpacificTradeSheetListDataQuery(uuid);
-  // State to track whether the section is expanded or collapsed
   const [isExpanded, setIsExpanded] = useState(false);
-  // Toggle the expanded/collapsed state
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   const agentBasicInfoData = data?.data?.tradeSheetData || {};
@@ -47,7 +45,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
       ) : (
         <div className="max-w-full mt-8 p-8 border border-gray-300/30 rounded-md">
           <div className="space-y-4">
-            {/* Agent's Basic Info */}
             <div className="flex space-x-4">
               <div className="bg-[#c9c1c13d] p-6 rounded-lg shadow-md flex-1">
                 <h3 className="py-2 font-semibold">Agent's Basic Info</h3>
@@ -67,7 +64,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
                 />
               </div>
 
-              {/* Property Details */}
               <div className="bg-[#c9c1c13d] p-6 rounded-lg shadow-md flex-1">
                 <h3 className="py-2 font-semibold">Property Details</h3>
                 <DataDisplay
@@ -84,7 +80,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
                     const price = propertieDetailsData?.soldPrice || propertieDetailsData?.salesPrice || propertieDetailsData?.listingPrice;
                     if (!price) return "N/A";
                     const formattedPrice = formatNumberWithCommasAndDecimals(price);
-                    // Use listing price unit/type for sales price (sales price shares listing type/unit)
                     const unitLabel = propertieDetailsData?.listingPriceUnit === "perSquareFoot" ? "Per Square Foot" 
                       : propertieDetailsData?.listingPriceUnit === "monthlyRent" ? "Monthly Rent"
                       : propertieDetailsData?.salesPriceUnit === "perSquareFoot" ? "Per Square Foot"
@@ -145,7 +140,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
             </div>
 
             <div className="flex space-x-4">
-              {/* Seller Informations */}
               <div className="bg-[#c9c1c13d] p-6 rounded-lg shadow-md flex-1">
                 <h3 className="py-2 font-semibold">Seller Informations</h3>
                 {sellerInformationsData.map((seller: any, index: any) => (
@@ -157,7 +151,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
                 ))}
               </div>
 
-              {/* Buyer Informations */}
               <div className="bg-[#c9c1c13d] p-6 rounded-lg shadow-md flex-1">
                 <h3 className="py-2 font-semibold">Buyer Informations</h3>
                 {buyerInformationsData.map((buyer: any, index: any) => (
@@ -170,7 +163,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
               </div>
             </div>
 
-            {/* Agent's and Lawyer's Details */}
             <div className="bg-[#c9c1c13d] p-6 rounded-lg shadow-md">
               <h3 className="py-2 font-semibold">
                 Agent's and Lawyer's Details
@@ -227,7 +219,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
                 </div>
                 {data?.data?.tradeSheetData.representation !== "buyer" && (
                   <div className="flex-1">
-                    {/* Repeat for Buyer's Agent and Lawyer's details */}
                     <h6 className="font-semibold">Buyer's Agent</h6>
                     <DataDisplay
                       label="First Name"
@@ -280,7 +271,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
               </div>
             </div>
 
-            {/* Lawyer's Details */}
             <div className="bg-[#c9c1c13d] p-6 rounded-lg shadow-md">
               <h3 className="py-2 font-semibold">Lawyer's Details</h3>
               <div className="flex space-x-6">
@@ -335,7 +325,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
                 </div>
                 {data?.data?.tradeSheetData?.representation !== "buyer" && (
                   <div className="flex-1">
-                    {/* Repeat for Buyer's Lawyer */}
                     <h6 className="font-semibold">Buyer's Lawyer</h6>
                     <DataDisplay
                       label="First Name"
@@ -392,7 +381,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
               <h6 className="text-base font-bold text-gray-800 border-b-4 border-gray-500 pb-2 mb-4 tracking-wide">
                 Uploaded Paperwork Attachment:
               </h6>
-              {/* Loop through each file in the attachment list */}
               {data?.data?.tradeSheetData?.paperWorkAttachmentFiles?.map(
                 (file: any, index: any) => (
                   <div
@@ -400,16 +388,13 @@ const TradeSheetPreviewPageWithoutStep = () => {
                     className="flex items-center justify-between bg-[#c9c1c13d] p-4 rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out"
                   >
                     <div className="flex items-center space-x-4">
-                      {/* Serial Number */}
                       <span className="text-sm">{index + 1}.</span>
 
-                      {/* File name with tooltip */}
                       <span className="text-sm">
                         {file?.uploadFileName?.name}
                       </span>
                     </div>
 
-                    {/* Upload Status */}
                     <span className="text-white px-3 py-1 rounded-full bg-green-500 text-sm">
                       Uploaded
                     </span>
@@ -426,18 +411,15 @@ const TradeSheetPreviewPageWithoutStep = () => {
                     className="flex items-center justify-between bg-[#c9c1c13d] p-4 rounded-lg shadow-md hover:shadow-xl transition duration-300 ease-in-out"
                   >
                     <div className="flex items-center space-x-4">
-                      {/* Serial Number */}
                       <span className="text-sm">{index + 1}.</span>
 
-                      {/* File name with tooltip */}
                       <span className="text-sm">
                         {file?.filePath
-                          ?.split(/[/\\]/) // Split by both forward slashes (/) and backslashes (\)
+                          ?.split(/[/\\]/)
                           .pop()}{" "}
                       </span>
                     </div>
 
-                    {/* Upload Status */}
                     <span className="text-white px-3 py-1 rounded-full bg-green-500 text-sm">
                       Uploaded
                     </span>
@@ -449,7 +431,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
               <div className="space-y-4">
                 <h5 className="text-base font-bold text-gray-800 border-b-4 border-gray-500 pb-2 mb-4 tracking-wide flex justify-between items-center">
                   <span>Activity Log:</span>
-                  {/* Button to toggle expand/collapse with icons */}
                   <button
                     className="text-blue-500 hover:text-blue-700 flex items-center"
                     onClick={toggleExpand}
@@ -462,7 +443,6 @@ const TradeSheetPreviewPageWithoutStep = () => {
                   </button>
                 </h5>
 
-                {/* Conditionally render activity logs based on expansion state */}
                 {isExpanded && (
                   <div className="max-h-[400px] overflow-y-auto space-y-3">
                     {data?.data?.tradeSheetData?.activityLog?.map(

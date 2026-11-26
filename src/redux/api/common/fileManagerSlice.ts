@@ -205,7 +205,6 @@ export const fileManagerApi = api.injectEndpoints({
       invalidatesTags: ["FileManagerSharedTag"],
     }),
 
-    // In fileManagerApi endpoints
     shareMultipleNodes: builder.mutation<{ status: boolean; data: FileShare[]; message: string; sharedCount: number }, { nodeIds: number[]; users: Array<{ userId: number; permissions?: string[] }> }>({
       query: (body) => ({
         url: `/common/file-manager/share-multiple-nodes`,
@@ -262,7 +261,6 @@ export const fileManagerApi = api.injectEndpoints({
       }),
     }),
 
-    // Add this endpoint to fileManagerApi
     shareSingleNodeWithMultipleUsers: builder.mutation<{ status: boolean; data: FileShare[] }, { nodeId: number; users: Array<{ userId: number; permissions?: string[] }> }>({
       query: (body) => ({
         url: `/common/file-manager/share-single-node`,
@@ -304,7 +302,6 @@ export const fileManagerApi = api.injectEndpoints({
       providesTags: ['FileManagerNodesTag'],
     }),
     
-    // Add lazy version for the search
     lazySearchNodes: builder.query({
       query: (params: { query: string; type?: string; limit?: number; offset?: number }) => ({
         url: '/common/file-manager/search',

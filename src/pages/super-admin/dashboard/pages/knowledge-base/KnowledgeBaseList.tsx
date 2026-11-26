@@ -117,7 +117,6 @@ const KnowledgeBaseList: React.FC = () => {
     { label: "Training", value: "training" },
   ];
 
-  // Tabs configuration
   const tabs = [
     {
       key: "all",
@@ -142,7 +141,6 @@ const KnowledgeBaseList: React.FC = () => {
   ];
 
   const getType = (cat_name: string) => {
-    // alert(cat_name)
   let new_cat: string;
 
   switch (cat_name) {
@@ -156,7 +154,7 @@ const KnowledgeBaseList: React.FC = () => {
       new_cat = "Training and Appointments";
       break;
     default:
-      new_cat = cat_name; // fallback if no match
+      new_cat = cat_name;
   }
 
   return new_cat;
@@ -168,16 +166,13 @@ const KnowledgeBaseList: React.FC = () => {
     }
   }, [data]);
 
-  // Filter data based on active tab and search text
   useEffect(() => {
     let filtered = tableData;
 
-    // Filter by active tab
     if (activeTab !== "all") {
       filtered = filtered.filter(item => item.type === activeTab);
     }
 
-    // Filter by search text
     if (searchText) {
       const searchTerm = searchText.toLowerCase();
       filtered = filtered.filter((record) => {
@@ -207,7 +202,7 @@ const KnowledgeBaseList: React.FC = () => {
 
   const handleTabChange = (key: string) => {
     setActiveTab(key);
-    setSelectedRowKeys([]); // Clear selection when changing tabs
+    setSelectedRowKeys([]);
   };
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
@@ -264,11 +259,10 @@ const KnowledgeBaseList: React.FC = () => {
     setFile(null);
     setUrl("");
     
-    // Set the type based on active tab (if not "all")
     if (activeTab !== "all") {
       setValue("type", activeTab as "document" | "tutorial" | "training");
     } else {
-      setValue("type", "document"); // Default to document if "all" tab
+      setValue("type", "document");
     }
     
     reset({
@@ -500,8 +494,6 @@ const KnowledgeBaseList: React.FC = () => {
       align: "center",
       render: (_, record) => (
         <div>
-          {/* {(hasPermissionForSlug("knowledge-base-edit") || 
-            hasPermissionForSlug("knowledge-base-delete")) && ( */}
             <Dropdown
               menu={{
                 items: [
@@ -539,7 +531,6 @@ const KnowledgeBaseList: React.FC = () => {
                 </Space>
               </a>
             </Dropdown>
-          {/* )} */}
         </div>
       ),
     },
@@ -549,7 +540,6 @@ const KnowledgeBaseList: React.FC = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Filter tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <button
@@ -612,7 +602,6 @@ const KnowledgeBaseList: React.FC = () => {
           )}
         </div>
 
-      {/* Add/Edit Modal */}
       <Modal
         title={
           editingItem 
@@ -668,7 +657,7 @@ const KnowledgeBaseList: React.FC = () => {
               <select
                 className="global-input"
                 {...register("type", { required: "Please select the type!" })}
-                disabled={activeTab !== "all" && !editingItem} // Disable if specific tab is selected and not editing
+                disabled={activeTab !== "all" && !editingItem}
               >
                 <option value="">Select a type</option>
                 <option value="document">Referral Forms</option>
@@ -755,7 +744,6 @@ const KnowledgeBaseList: React.FC = () => {
         </form>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Delete Knowledge Base Items"
         open={isDeleteModalVisible}

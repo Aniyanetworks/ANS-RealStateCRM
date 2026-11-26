@@ -5,7 +5,6 @@ import {
   FaShoppingCart, 
   FaTicketAlt, 
   FaFileContract, 
-  // FaDollarSign, 
   FaHome 
 } from 'react-icons/fa';
 import { formatNumberWithCommasAndDecimals } from '../../utils/formatNumberWithCommasAndDecimals';
@@ -55,7 +54,6 @@ const AgentDashboardStats: React.FC<AgentDashboardStatsProps> = ({ filteredData 
   return (
     <div className="my-3">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
-        {/* Agents Summary */}
         <StatCard title="Agents Overview" icon={<FaUserTie size={18} />}>
           <Link className='hover:text-blue-500'    to="/dashboard/super-admin/agent-management">
             <StatItem 
@@ -107,55 +105,7 @@ const AgentDashboardStats: React.FC<AgentDashboardStatsProps> = ({ filteredData 
           </Link>
         </StatCard>
 
-        {/* Trade Agent Commission */}
-        {/* <StatCard title="Trade Accounting" icon={<FaDollarSign size={18} />}>
-          <StatItem 
-            label="Total Accounting Tradesheet" 
-            value={new Set([
-              ...filteredData.flatMap(agent => 
-                agent.tradeAgentCommission?.map(commission => commission.id) || [])
-            ]).size} 
-          />
-          <StatItem 
-            label="Total Sales" 
-            value={`$${Number(filteredData.reduce((sum, agent) => 
-              sum + (agent.tradeAgentCommission?.reduce((total, commission) => 
-                total + (Number(commission.tradeSheet?.properties?.[0]?.listingPrice) || 0), 0) || 0), 0)).toFixed(2)}`} 
-          />
-          <StatItem 
-            label="Total Income" 
-            value={`$${Number(filteredData.reduce((sum, agent) => 
-              sum + (agent.tradeAgentCommission?.reduce((total, commission) => 
-                total + (Number(commission.agentCommissionTotal) || 0), 0) || 0), 0)).toFixed(2)}`} 
-          />
-          <StatItem 
-            label="Transferred Amount" 
-            value={`$${Number(filteredData.reduce((sum, agent) => 
-              sum + (agent.tradeAgentCommission?.filter(commission => 
-                commission.status === "completed")
-                .reduce((total, commission) => 
-                  total + (Number(commission.agentCommissionTotal) || 0), 0) || 0), 0)).toFixed(2)}`} 
-          />
-          
-          <StatItem 
-            label="Average Tax" 
-            value={`${Number(filteredData.reduce((sum, agent) => 
-              sum + (agent.tradeAgentCommission?.reduce((total, commission) => 
-                total + (Number(commission.tax) || 0), 0) || 0), 0) / 
-              filteredData.reduce((count, agent) => 
-                count + (agent.tradeAgentCommission?.length || 0), 0) || 0).toFixed(2)}%`} 
-          />
-          <StatItem 
-            label="Average Commission" 
-            value={`${Number(filteredData.reduce((sum, agent) => 
-              sum + (agent.tradeAgentCommission?.reduce((total, commission) => 
-                total + (Number(commission.commissionProperty) || 0), 0) || 0), 0) / 
-              filteredData.reduce((count, agent) => 
-                count + (agent.tradeAgentCommission?.length || 0), 0) || 0).toFixed(2)}%`} 
-          />
-        </StatCard> */}
         
-        {/* Trade Sheets */}
         <StatCard title="Trade Sheets" icon={<FaFileContract size={18} />}>
           <Link className='hover:text-blue-500'    to="/dashboard/agent/pages/form/trade-sheet/my-submission-trade-list">
             <StatItem 
@@ -229,7 +179,6 @@ const AgentDashboardStats: React.FC<AgentDashboardStatsProps> = ({ filteredData 
           </Link>
         </StatCard>
 
-        {/* Property Listings */}
         <StatCard title="Property Listings" icon={<FaHome size={18} />}>
           <Link className='hover:text-blue-500'    to="/dashboard/super-admin/property-listing">
             <StatItem 
@@ -379,7 +328,6 @@ const AgentDashboardStats: React.FC<AgentDashboardStatsProps> = ({ filteredData 
           </Link>
         </StatCard>
 
-        {/* Client Summary */}
         <StatCard title="Client Management" icon={<FaUsers size={18} />}>
           <Link className='hover:text-blue-500'    to="/dashboard/clients/client-list">
             <StatItem 
@@ -422,7 +370,6 @@ const AgentDashboardStats: React.FC<AgentDashboardStatsProps> = ({ filteredData 
           </Link>
         </StatCard>
 
-        {/* Marketplace Summary */}
         <StatCard title="Marketplace Activity" icon={<FaShoppingCart size={18} />}>
         <Link className='hover:text-blue-500'    to="/dashboard/invoice/order-history">
           <StatItem 
@@ -461,7 +408,6 @@ const AgentDashboardStats: React.FC<AgentDashboardStatsProps> = ({ filteredData 
           </Link>
         </StatCard>
 
-        {/* Support Tickets */}
         <StatCard title="Support Tickets" icon={<FaTicketAlt size={18} />}>
           <Link className='hover:text-blue-500'    to="/dashboard/support/requests">
             <StatItem 
@@ -503,7 +449,6 @@ const AgentDashboardStats: React.FC<AgentDashboardStatsProps> = ({ filteredData 
           />
           </Link>
         </StatCard>
-        {/* Ark Work Tickets */}
         <StatCard title="Art-Work Tickets" icon={<FaTicketAlt size={18} />}>
           <Link className='hover:text-blue-500'    to="/dashboard/support/art-work/request">
             <StatItem 

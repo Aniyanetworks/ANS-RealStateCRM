@@ -31,7 +31,7 @@ const AgentChequeAcknowledgement = () => {
   const navigate = useNavigate();
   const { uuid, agentAccountId } = useParams<{ uuid?: string; agentAccountId?: string }>();
   const { data: tradeAgentCommissionResponse, isLoading: isLoadingtradeAgentCommissionData } = useGetSpecificTradeAgentCommissionQuery({ uuid, agentAccountId });
-  const { data: bankAccountList, isLoading: bankAccountIsLoading, refetch: bankAccountRefetch } = useGetAccountingBankAccountsQuery(""); // Use the bank account data query
+  const { data: bankAccountList, isLoading: bankAccountIsLoading, refetch: bankAccountRefetch } = useGetAccountingBankAccountsQuery("");
   const [bankAccounts, setBankAccounts] = useState<DataType[]>([]);
   const { register, handleSubmit, setValue, formState: { errors }, watch } = useForm();
   const [tradeAgentCommissionData, setTradeAgentCommissionData] = useState("");
@@ -45,7 +45,7 @@ const AgentChequeAcknowledgement = () => {
   const [tradesheetData, setTradeSheetData] = useState<any>([]);
 
   useEffect(() => {
-    setBankAccounts(bankAccountList?.data?.accounts); // Ensure correct data mapping
+    setBankAccounts(bankAccountList?.data?.accounts);
     setTradeAgentCommissionData(tradeAgentCommissionResponse?.data?.tradeAgentCommission)
     setTradeSheetData(tradeAgentCommissionResponse?.data?.tradeAgentCommission?.tradeSheet)
     setTradeAgentData(tradeAgentCommissionResponse?.data?.agentDetails)
@@ -64,15 +64,12 @@ const AgentChequeAcknowledgement = () => {
 
     setTotalAgentCommission((parseFloat(tradeAgentCommissionData?.agentCommissionTotal)).toFixed(2));
     
-    console.log('tradeAgentCommissionData?.baseOfficeCommissionTotal',tradeAgentCommissionData)
   }, [bankAccountList,tradeAgentCommissionResponse,tradeAgentCommissionData, setTotalAgentCommission,tradeAgentData,finalAmount]);
 
   useEffect(() => {
     let total = parseFloat(totalAgentCommission);
     
-    // Loop through all plan items and their subitems
     tradeAgentData?.plan?.planItems?.forEach(item => {
-      // Check main item
       if (selectedFees[item.name]) {
         const discountItem = tradeAgentData?.discount?.discountItems?.find(
           d => d.discountItem === item.name
@@ -82,7 +79,6 @@ const AgentChequeAcknowledgement = () => {
         total -= discountedAmount;
       }
 
-      // Check subitems
       item.planSubItems?.forEach(subItem => {
         if (selectedFees[subItem.name]) {
           const subItemDiscountItem = tradeAgentData?.discount?.discountItems?.find(
@@ -95,7 +91,6 @@ const AgentChequeAcknowledgement = () => {
       });
     });
 
-    // Add cheque processing fee if applicable
     if (watch("chequeType") === "cheque") {
       total -= 25;
     }
@@ -103,13 +98,11 @@ const AgentChequeAcknowledgement = () => {
     setFinalAmount(total);
   }, [selectedFees, totalAgentCommission, tradeAgentData, watch("chequeType")]);
 
-  // Initialize form with invoice data
   useEffect(() => {
     if (tradeAgentCommissionResponse?.data?.tradeAgentCommission?.invoiceDetails) {
       const { invoiceDetails } = tradeAgentCommissionResponse.data.tradeAgentCommission;
       setInvoiceData(invoiceDetails);
       
-      // Set form values from existing invoice
       setValue('chequeType', invoiceDetails.paymentDetails.chequeType);
       setValue('dateOfReceipt', invoiceDetails.paymentDetails.dateOfReceipt);
       setValue('bankAccountId', invoiceDetails.paymentDetails.bankAccountId);
@@ -117,11 +110,6 @@ const AgentChequeAcknowledgement = () => {
     }
   }, [tradeAgentCommissionResponse]);
 
-  // const [bankAccounts] = useState([
-  //   { label: "Bank A - 1234", value: "bank_a" },
-  //   { label: "Bank B - 5678", value: "bank_b" },
-  //   { label: "Bank C - 9012", value: "bank_c" },
-  // ]);
 
   const [chequeReceiptsFrom] = useState([
     { label: "Customer A", value: "customer_a" },
@@ -151,7 +139,6 @@ const AgentChequeAcknowledgement = () => {
         ...(showRejectForm && { rejectReasons: data.rejectionReason }),
       };
       setShowRejectForm(false)
-      console.log('Submission payload:', payload);
 
       const response = await createAgentAcknowledgement(payload).unwrap();
       toast.success("Submited successfully.");
@@ -173,7 +160,6 @@ const AgentChequeAcknowledgement = () => {
       <div className=" rounded-md">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-          {/* Tradesheet Info */}
           <div className="flex items-center text-xs gap-2">
             <span className="font-medium">Tradesheet:</span>
             <span className="font-semibold text-black">
@@ -202,7 +188,6 @@ const AgentChequeAcknowledgement = () => {
             </span>
           </div>
 
-          {/* Prices based on representation */}
           {tradesheetData?.representation == "buyer" ? (
             <div className="flex items-center text-xs gap-2">
               <span className="font-medium">Sold Price:</span>
@@ -242,7 +227,6 @@ const AgentChequeAcknowledgement = () => {
         <div className="p-6 rounded-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-            {/* Seller Info Section */}
             <div className="border rounded-lg shadow-lg bg-gray-50 hover:bg-gray-100 transition-colors p-4 rounded-md">
               <h3 className="font-semibold text-lg mb-3">Seller Information</h3>
               <div className="flex items-center text-xs gap-2">
@@ -278,7 +262,6 @@ const AgentChequeAcknowledgement = () => {
               </div>
             </div>
 
-            {/* Buyer Info Section */}
             <div className="border rounded-lg shadow-lg bg-gray-50 hover:bg-gray-100 transition-colors p-4 rounded-md">
               <h3 className="font-semibold text-lg mb-3">Buyer Information</h3>
               <div className="flex items-center text-xs gap-2">
@@ -320,13 +303,11 @@ const AgentChequeAcknowledgement = () => {
       <h2 className="text-xl font-semibold text-gray-800 mb-6">Agent Commission Invoice</h2>
 
       <div className="space-y-6">
-        {/* Total Commission */}
         <div className="flex justify-between items-center text-lg font-medium border-b pb-2">
           <span>Total Commission:</span>
           <span>${invoiceData?.totalCommission.toFixed(2)}</span>
         </div>
 
-        {/* Deductions */}
         <div className="space-y-4">
           <h3 className="font-medium text-gray-700">Deductions:</h3>
           {invoiceData?.deductions.map((deduction, index) => (
@@ -361,7 +342,6 @@ const AgentChequeAcknowledgement = () => {
           ))}
         </div>
 
-        {/* Cheque Processing Fee */}
         {invoiceData?.chequeProcessingFee > 0 && (
           <div className="flex justify-between items-center text-gray-600 py-1">
             <span>Cheque Processing Fee</span>
@@ -369,7 +349,6 @@ const AgentChequeAcknowledgement = () => {
           </div>
         )}
 
-        {/* Final Amount */}
         <div className="flex justify-between items-center text-lg font-semibold border-t pt-4">
           <span>Final Amount:</span>
           <span>${invoiceData?.finalAmount.toFixed(2)}</span>
@@ -392,15 +371,11 @@ const AgentChequeAcknowledgement = () => {
           )}
         </div>
 
-        {/* Rejection Form */}
         {showRejectForm && (
           <div className="border-t pt-4 space-y-4">
             <h3 className="font-medium text-gray-700">Rejection Reason</h3>
             <div className="space-y-2">
               <textarea
-                // {...register('rejectionReason', {
-                //   required: showRejectForm ? 'Rejection reason is required' : false
-                // })}
                 {...register('rejectionReason')}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 rows={4}
@@ -410,7 +385,6 @@ const AgentChequeAcknowledgement = () => {
           </div>
         )}
 
-        {/* Action Buttons */}
         <div className="flex justify-end gap-4 mt-6">
           {!showRejectForm ? (
             <>

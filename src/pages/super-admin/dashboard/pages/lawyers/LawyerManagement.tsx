@@ -21,7 +21,6 @@ import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import {
   useGetCitiesQuery,
-  // useGetCountriesQuery,
   useGetStatesQuery,
 } from "../../../../../redux/api/common/countryStateCitySlice";
 import TableLoader from "../../../../../components/loader/TableLoader";
@@ -102,7 +101,6 @@ const LawyersDataManagement = () => {
     const inProperties3 = Object.values(record.city || {}).some((data) =>
       String(data).toLowerCase().includes(searchTerm.toLowerCase())
     );
-    // Only search firm.firmName
     const inFirmName = (record.firm?.firmName || "").toLowerCase().includes(searchTerm);
     const inRecord = Object.values(record).some((value) =>
       String(value).toLowerCase().includes(searchTerm)
@@ -133,7 +131,6 @@ const LawyersDataManagement = () => {
     reset({
       firstName: "",
       lastName: "",
-      /* lawyerFirmName: "", */
       firmId: "",
       address: "",
       streetAddress: "",
@@ -219,17 +216,13 @@ const LawyersDataManagement = () => {
   const selectedCountry = watch("countryId");
   const selectedState = watch("stateId");
 
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [] } = useGetCitiesQuery(selectedState, {
-    skip: !selectedState, // Skip if no state is selected
+    skip: !selectedState,
   });
 
   
@@ -276,7 +269,7 @@ const LawyersDataManagement = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -284,7 +277,6 @@ const LawyersDataManagement = () => {
       try {
         const response = await deleteLawyerDataMultiple(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -322,7 +314,6 @@ const LawyersDataManagement = () => {
           (response.error.data.errors as unknown[]).forEach((error) => {
             const err = error as { path: string; msg: string };
 
-            console.log(err);
             setError(err.path, {
               type: "field",
               message: err.msg,
@@ -348,7 +339,6 @@ const LawyersDataManagement = () => {
         const response = (await createLawyerData(data)) as any;
 
         if (response?.error?.data?.status == false) {
-          // setIsUploading(false);
           if (response.error.data.errors) {
             (response.error.data.errors as unknown[]).forEach((error) => {
               const err = error as { path: string; msg: string };
@@ -364,15 +354,12 @@ const LawyersDataManagement = () => {
           toast.success(`${response?.data?.message}`);
           setIsModalOpen(false);
           resetForm();
-          // setIsUploading(false);
         } else {
           resetForm();
           setIsEditMode(false);
-          // setIsUploading(false);
         }
       } catch (error) {
         console.error("Submission error:", error);
-        // setIsUploading(false);
       }
     }
   };
@@ -382,7 +369,6 @@ const LawyersDataManagement = () => {
   const sendLawyerPDF = async () => {
     if (!lawyerRef.current) return;
 
-    // Get form values from react-hook-form
     const formValues = getValues();
     const emailValue = formValues.recipientEmail || recipientEmail;
     const commentValue = formValues.comment || recipientNote;
@@ -401,26 +387,21 @@ const LawyersDataManagement = () => {
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
 
-        // Define margins
-        const margin = 20; // 20 units margin
+        const margin = 20;
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
 
-        // Calculate the width and height of the image to fit within the margins
-        let pdfImgWidth = pageWidth - 2 * margin; // Use `let` instead of `const`
-        let pdfImgHeight = (imgHeight * pdfImgWidth) / imgWidth; // Use `let` instead of `const`
+        let pdfImgWidth = pageWidth - 2 * margin;
+        let pdfImgHeight = (imgHeight * pdfImgWidth) / imgWidth;
 
-        // If the calculated height exceeds the page height, scale it down
         if (pdfImgHeight > pageHeight - 2 * margin) {
           const scaleRatio = (pageHeight - 2 * margin) / pdfImgHeight;
           pdfImgWidth *= scaleRatio;
           pdfImgHeight *= scaleRatio;
         }
 
-        // Add the image to the PDF with margins
         pdf.addImage(imgData, "PNG", margin, margin, pdfImgWidth, pdfImgHeight);
 
-        // Create a Blob from the PDF
         const pdfBlob = pdf.output("blob");
         const pdfFile = new File([pdfBlob], "lawyer-details.pdf", {
           type: "application/pdf",
@@ -491,33 +472,6 @@ const LawyersDataManagement = () => {
         </Tooltip>
       ),
     },
-    /* {
-      title: "First Name",
-      dataIndex: "firstName",
-      key: "firstName",
-      sorter: (a, b) => a.firstName.localeCompare(b.firstName),
-      ellipsis: true,
-      render: (text: string, record: any) => (
-        <Tooltip title={text}>
-          <button
-            onClick={() => handleEdit(record)}
-            style={{
-              cursor: "pointer",
-              // color: "#1890ff", // Optional: blue link color
-              // textDecoration: "underline", // Optional: underline to show it's clickable
-            }}
-          >
-            {text?.length > 30 ? `${text?.slice(0, 30)}...` : text}
-          </button>
-        </Tooltip>
-      ),
-    },
-    {
-      title: "Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
-      sorter: (a, b) => a.lastName.localeCompare(b.lastName),
-    }, */
     {
       title: "Email",
       dataIndex: "email",
@@ -591,7 +545,6 @@ const LawyersDataManagement = () => {
   const showModal = () => setIsModalOpen(true);
   const showModal2 = () => setIsModal2Open(true);
 
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: Lawyer, index: number) => {
     return {
       ...item,
@@ -599,26 +552,20 @@ const LawyersDataManagement = () => {
     };
   });
 
-  //set postal code format ......................start
   const handleChangePostalCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Get the input value
     const postalCode = e.target.value;
     const value = formatPostalCode(postalCode);
 
     setPostalCode(value);
   };
-  //.....................end........................
 
-  //.............set phone number format..................start
   const handleChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const phoneNumber = e.target.value;
 
     const value = formatPhoneNumber(phoneNumber);
     setPhoneNumber(value);
   };
-  //....................end phone number format.......................
 
-  //set cell phone number format......................start
   const handleChangeCellPhoneNumber = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -628,9 +575,7 @@ const LawyersDataManagement = () => {
     setCellPhoneNumber(value);
   };
 
-  //....................end cell phone number format.......................
 
-  //set fax number format......................start
   const handleChangeFaxNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const faxNumber = e.target.value;
 
@@ -722,7 +667,6 @@ const LawyersDataManagement = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Lawyer Name */}
             <div className="flex flex-col gap-2">
               <label>
                 First Name <span className="text-red-500 ml-1">*</span>
@@ -788,13 +732,12 @@ const LawyersDataManagement = () => {
               )}
             </div>
 
-            {/* Email */}
             <div className="flex flex-col gap-2">
               <label>
-                Email {/* <span className="text-red-500 ml-1">*</span> */}
+                Email
               </label>
               <input
-                {...register("email"/* , { required: "Email is required" } */)}
+                {...register("email")}
                 type="text"
                 placeholder="Enter your Email"
                 className=""
@@ -806,7 +749,6 @@ const LawyersDataManagement = () => {
               )}
             </div>
 
-            {/* Phone Number */}
             <div className="flex flex-col gap-2">
               <label>
                 Phone Number 
@@ -818,9 +760,7 @@ const LawyersDataManagement = () => {
                 placeholder="+1 (XXX) XXX-XXXX"
                 maxLength="18"
                 className=""
-                {...register("phoneNumber"/* , {
-                  required: "Phone number is required",
-                } */)}
+                {...register("phoneNumber")}
                 onChange={handleChangePhoneNumber}
               />
 
@@ -992,7 +932,6 @@ const LawyersDataManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

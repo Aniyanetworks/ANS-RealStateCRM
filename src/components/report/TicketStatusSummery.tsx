@@ -9,35 +9,18 @@ interface Ticket {
   }
   
   const TicketStatusSummary: React.FC<Props> = ({ filteredData }) => {
-    // Calculate status counts using reduce
     const statusCounts = filteredData.reduce((acc, item) => {
-      const status = item?.status?.toLowerCase(); // Normalize status to lowercase
+      const status = item?.status?.toLowerCase();
       if (status) {
         acc[status] = (acc[status] || 0) + 1;
       }
       return acc;
-    }, {} as Record<string, number>); // Type assertion for the accumulator
+    }, {} as Record<string, number>);
 
-    /* const typeCounts = filteredData.reduce((acc, item) => {
-    const type = item?.type; // Keep original casing
-    if (type) {
-      acc[type] = (acc[type] || 0) + 1;
-    }
-    return acc;
-  }, {} as Record<string, number>);
-
-    const priorityCounts = filteredData.reduce((acc, item) => {
-    const priority = item?.priority; // Keep original casing
-    if (priority) {
-      acc[priority] = (acc[priority] || 0) + 1;
-    }
-    return acc;
-  }, {} as Record<string, number>); */
 
 
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 my-3">
-        {/* Total Tickets */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Tickets</span>
@@ -47,7 +30,6 @@ interface Ticket {
           </div>
         </div>
 
-        {/* Open Tickets */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-green-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Open</span>
@@ -57,7 +39,6 @@ interface Ticket {
           </div>
         </div>
 
-        {/* Pending Tickets */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-yellow-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Pending</span>
@@ -67,7 +48,6 @@ interface Ticket {
           </div>
         </div>
 
-        {/* In Progress Tickets */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">In Progress</span>
@@ -77,7 +57,6 @@ interface Ticket {
           </div>
         </div>
 
-        {/* Completed Tickets */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Completed</span>
@@ -87,7 +66,6 @@ interface Ticket {
           </div>
         </div>
 
-        {/* Closed Tickets */}
         <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-gray-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Closed</span>
@@ -97,8 +75,6 @@ interface Ticket {
           </div>
         </div>
 
-        {/* Commented out sections can be added back in a similar style if needed */}
-        {/* Type counts and Priority counts would follow the same pattern */}
       </div>
     );
   };

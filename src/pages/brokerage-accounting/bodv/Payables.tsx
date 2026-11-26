@@ -1,6 +1,3 @@
-// Expenses & A/P — the original ANS Accounting screen: vendor invoices with HST split, document upload and
-// PDF invoice scan, approval → posting, payments (company bank or paid personally), cheque printing,
-// voids and recurring invoice schedules. Backed by the CRM's acct_bills / acct_vendors / acct_recurring_bills.
 import { useMemo, useState } from "react";
 import { pdfjs } from "react-pdf";
 import { useAcct, useAcctAction } from "../acctShared";
@@ -35,7 +32,6 @@ const SOURCE_METHOD: Record<string, string> = { EMPLOYEE: "PAID_BY_EMPLOYEE", SH
 const fieldhint: React.CSSProperties = { display: "block", color: "#7d8797", fontSize: 11, fontWeight: 400, marginTop: 4 };
 const fileLabel: React.CSSProperties = { display: "inline-flex", alignItems: "center", gap: 8, padding: "9px 12px", borderRadius: 8, cursor: "pointer" };
 
-/** Inclusive total → pre-tax amount + HST at the given rate. */
 function split(total: unknown, rate: unknown) {
   const t = n(total), base = r2(t / (1 + n(rate) / 100));
   return { amount: base, hst: r2(t - base) };
@@ -91,7 +87,6 @@ function printCheque(p: Payment, bill: Bill) {
   w.document.close();
 }
 
-/** Read text from the first pages of a PDF, one line per text row. */
 async function pdfText(file: File) {
   const doc = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
   let text = "";
@@ -173,7 +168,6 @@ export default function Payables() {
   const preview = split(form.total, form.hstRate);
   const setF = (patch: Partial<ReturnType<typeof emptyForm>>) => setForm((f) => ({ ...f, ...patch }));
 
-  // ---------- vendor invoice form ----------
   const openNew = () => {
     setEditing(null);
     setForm(emptyForm());
@@ -189,7 +183,6 @@ export default function Payables() {
     setFormOpen(true);
   };
 
-  /** Find the vendor by name (ignoring case/punctuation) or add it to the vendor list. */
   const resolveVendor = async (name: string) => {
     const found = vendors.find((v) => norm(v.name) === norm(name));
     if (found) return found.id;
@@ -310,7 +303,6 @@ export default function Payables() {
     }
   };
 
-  // ---------- row actions ----------
   const approve = async (b: Bill, decision: "APPROVED" | "REJECTED") => {
     if (!(await run(`/bills/${b.uuid}/approve`, { decision }, { silent: decision === "APPROVED" }))) return;
     if (decision === "APPROVED") await run(`/bills/${b.uuid}/post`, {}, { success: "Invoice approved and posted to the general ledger." });
@@ -366,7 +358,6 @@ export default function Payables() {
     if (ok) setPaying(null);
   };
 
-  // ---------- recurring schedules ----------
   const openRecurring = (t?: Recurring) => {
     setRecurringEdit(t || null);
     setRform(t

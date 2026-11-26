@@ -160,7 +160,6 @@ const ClockHistoryTab: React.FC<ClockHistoryTabProps> = ({
       latestClockInByUser[userId] = null;
     });
 
-    // Include any clock-ins with no matching clock-out in the current page.
     Object.entries(latestClockInByUser).forEach(([userIdStr, clockInRecord]) => {
       if (!clockInRecord) return;
       const userId = Number(userIdStr);
@@ -182,7 +181,6 @@ const ClockHistoryTab: React.FC<ClockHistoryTabProps> = ({
       });
     });
 
-    // Show newest sessions first
     sessions.sort((a, b) => {
       const aTime = new Date(a.clockOutAt || a.clockInAt || 0).getTime();
       const bTime = new Date(b.clockOutAt || b.clockInAt || 0).getTime();
@@ -708,7 +706,6 @@ const ClockHistoryTab: React.FC<ClockHistoryTabProps> = ({
                   format="DD MMM YYYY"
                   className="w-full sm:w-auto"
                   style={{ fontWeight: 400 }}
-                  // placeholder={["Start date", "End date"]}
                 />
               )}
               {isSuperAdmin && (

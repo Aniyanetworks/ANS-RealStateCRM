@@ -62,7 +62,6 @@ export const artWorkApi = api.injectEndpoints({
             invalidatesTags: ["GetArtWorkListTag"],
         }),
 
-        // get all support team
         getSupportTeam: builder.query({
             query: (type) => ({
                 url: `superadmin/support-team/list?type=${type}`,

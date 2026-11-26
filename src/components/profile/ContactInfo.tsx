@@ -1,6 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-// import { useGetCountriesQuery } from "../../redux/api/common/countryStateCitySlice";
 import { useUpdateContactInfoMutation } from "../../redux/api/userSlice";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "../../redux/hooks";
@@ -16,15 +15,11 @@ interface FormData {
 
 const ContactInfo = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>();
-  // const { user } = useSelector((state: any) => state.user);
   const {user} = useSelector((state: RootState) => state.user);
   const [updateContactInfo] = useUpdateContactInfoMutation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
   const [phoneNumber, setPhoneNumber] = useState<string>("");
-  console.log(user);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsLoading(true);
     const response = await updateContactInfo(data);
@@ -39,7 +34,6 @@ const ContactInfo = () => {
     }
   };
 
-  //set default value for phoneCode
   useEffect(() => {
     setValue("phoneCode", '1');
     setValue("phoneNumber", user.phoneNumber);
@@ -66,21 +60,6 @@ const ContactInfo = () => {
           />
         </div>
         <div className="flex gap-2">
-          {/* <div>
-            <label htmlFor="code">Phone Code</label>
-            <select {...register("phoneCode")}>
-              <option value="">---</option>
-              {countries?.data?.countries?.map((country: any) => (
-                <option
-                  selected={country.phoneCode == user.phoneCode}
-                  key={country.id}
-                  value={country.phoneCode || "1"}
-                >
-                  {country.phoneCode} ({country.countryName})
-                </option>
-              ))}
-            </select>
-          </div> */}
           <div className="w-full">
             <label htmlFor="number">Phone Number</label>
             <input

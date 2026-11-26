@@ -104,14 +104,8 @@ type Filters = Parameters<OnChange>[1];
 type GetSingle<T> = T extends (infer U)[] ? U : never;
 type Sorts = GetSingle<Parameters<OnChange>[2]>;
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-// Builds "street, city, province, postal code" for a lawyer: the firm's
-// office address for the street line (falling back to the lawyer's own
-// address if the lawyer isn't linked to a firm address), but the lawyer's
-// own city/state/postal code — this matches the already-working preview
-// page (LayerDetails.tsx), which is where this field combination is proven
-// to actually be populated.
 const formatLawyerAddress = (lawyer: any): string => {
   if (!lawyer) return "N/A";
   const parts = [
@@ -133,14 +127,11 @@ const MySubmissionsTradeList = () => {
   const isBranchAdmin = user?.roleId === 12 && user?.userType === "superAdmin";
   const { guardFile, modal: pdfSizeReductionModal } = usePdfSizeGuard(MAX_FILE_SIZE);
   const [activeTab, setActiveTab] = useState<string>("all");
-  // ...existing code...
   const [lawyerType, setLawyerType] = useState<string>("");
-  // ...existing code...
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deleteUuid, setDeleteUuid] = useState<string | null>(null);
   const [currentDateFilter, setCurrentDateFilter] = useState(null);
-  // Add user.id as a query param to force refetch when user changes
   const { data, isLoading, refetch } = useGetTradeSheetListDataQuery(
     user?.id || "",
     {
@@ -160,7 +151,6 @@ const MySubmissionsTradeList = () => {
     useState(false);
   const [archiveMultipleTradeSheets] = useArchiveMultipleTradeSheetsMutation();
 
-  // filter
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
@@ -224,7 +214,6 @@ const MySubmissionsTradeList = () => {
       value: "dft",
     },
     {
-      // Like DFT: the property can be used on a new trade sheet again
       label: "Deal Terminated",
       value: "dealTerminated",
     },
@@ -249,12 +238,9 @@ const MySubmissionsTradeList = () => {
   const query = new URLSearchParams(location.search);
   const tradeId = query.get("trade_id");
 
-  // Add this state for the original data
   const [allData, setAllData] = useState<DataType[]>([]);
 
   useEffect(() => {
-    // refetch()
-    // user?.userType
     setAllData(data?.data?.tradeSheetData || []);
     setSearchText(localStorage.getItem("searchText") || "");
   }, [data]);
@@ -271,11 +257,7 @@ const MySubmissionsTradeList = () => {
     }
   }, [tradeId, data]);
 
-  //set filter dates
-  // Remove the effect that sets tableData from filterDataByDate
-  // const [filterDataByDate, setFilterDataByDate] = useState([]);
 
-  //Change Item Status
   const [changeTradeSheetStatus] = useChangeTradeSheetStatusMutation();
   const [changeTradeAdminStatus] = useChangeTradeAdminStatusMutation();
   const handleChangeAdminStatus = async (newStatus: string, uuid: string) => {
@@ -331,24 +313,7 @@ const MySubmissionsTradeList = () => {
       }
     }
   };
-  // const handleRejectReasonChange = (e) => {
-  //   setRejectReason(e.target.value);
-  // };
 
-  // const handleRejectReasonView = (rejectReasonMain, uuid, currentStatus) => {
-  //   if (rejectReasonMain && rejectReasonMain.trim() !== "") {
-  //     // If reason exists, show the view modal
-  //     setRejectReasonMain(rejectReasonMain);
-  //     setIsRejectReasonViewModalVisible(true);
-  //   } else {
-  //     // If no reason exists, open the add reason modal
-  //     // Use the current status of the record (should be "rejected")
-  //     setChangeStatus(currentStatus || "rejected");
-  //     setChangeUuid(uuid);
-  //     setRejectReasonMain(""); // Clear any previous reason
-  //     setIsRejectModalVisible(true);
-  //   }
-  // };
 
   const handleRejectReasonView = (rejectReasonMain) => {
     setRejectReasonMain(rejectReasonMain);
@@ -361,16 +326,12 @@ const MySubmissionsTradeList = () => {
   };
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     localStorage.setItem("tradeSheetCurentPage", pagination?.current || 1);
     setCurrentPage(pagination?.current || 1);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
 
-  // const clearFilters = () => {
-  //   setFilteredInfo({});
-  // };
 
   const confirmDelete = async () => {
     try {
@@ -389,14 +350,14 @@ const MySubmissionsTradeList = () => {
 
     setIsRejectModalVisible(false);
     setIsRejectReasonViewModalVisible(false);
-    setRejectReasonMain(""); // Changed from setRejectReason
+    setRejectReasonMain("");
     setChangeStatus("");
     setChangeUuid(null);
     setIsDeleteModalMultipleVisible(false);
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -404,7 +365,6 @@ const MySubmissionsTradeList = () => {
       try {
         const response = await archiveMultipleTradeSheets(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -421,7 +381,6 @@ const MySubmissionsTradeList = () => {
     }
   };
 
-  // Date filter
   const dateFilteredData =
     currentDateFilter && currentDateFilter.length === 2
       ? allData.filter((record) => {
@@ -429,41 +388,30 @@ const MySubmissionsTradeList = () => {
           if (!closingDate) return false;
 
           try {
-            // Parse record date in UTC to match how it's displayed
-            // Extract date part from ISO string if it's a string
             let recordDateStr;
             if (typeof closingDate === "string") {
-              // Extract just the date part (YYYY-MM-DD) from ISO string
               const datePart = closingDate.split("T")[0].split(" ")[0];
-              // Validate and use the date part directly (already in YYYY-MM-DD format)
               if (/^\d{4}-\d{2}-\d{2}$/.test(datePart)) {
                 recordDateStr = datePart;
               } else {
-                // If format is different, parse in UTC
                 recordDateStr = moment.utc(closingDate).format("YYYY-MM-DD");
               }
             } else {
-              // If it's a Date object or moment, format it in UTC
               recordDateStr = moment.utc(closingDate).format("YYYY-MM-DD");
             }
 
             if (!recordDateStr || recordDateStr === "Invalid date")
               return false;
 
-            // Get filter dates from RangePicker (these are dayjs/moment objects)
             const [startMoment, endMoment] = currentDateFilter;
 
             if (!startMoment || !endMoment) return false;
 
-            // Format the selected dates - extract year, month, day from the date object
-            // This ensures we get the exact date the user selected
             let startDateStr, endDateStr;
 
             if (startMoment.format) {
-              // dayjs/moment object - format directly (preserves selected date)
               startDateStr = startMoment.format("YYYY-MM-DD");
             } else if (startMoment instanceof Date) {
-              // Date object - get components and format
               startDateStr = `${startMoment.getFullYear()}-${String(
                 startMoment.getMonth() + 1
               ).padStart(2, "0")}-${String(startMoment.getDate()).padStart(
@@ -475,10 +423,8 @@ const MySubmissionsTradeList = () => {
             }
 
             if (endMoment.format) {
-              // dayjs/moment object - format directly (preserves selected date)
               endDateStr = endMoment.format("YYYY-MM-DD");
             } else if (endMoment instanceof Date) {
-              // Date object - get components and format
               endDateStr = `${endMoment.getFullYear()}-${String(
                 endMoment.getMonth() + 1
               ).padStart(2, "0")}-${String(endMoment.getDate()).padStart(
@@ -498,8 +444,6 @@ const MySubmissionsTradeList = () => {
               return false;
             }
 
-            // Compare date strings directly (YYYY-MM-DD format allows string comparison)
-            // recordDateStr is in UTC (YYYY-MM-DD), filter dates are the selected dates (YYYY-MM-DD)
             const isInRange =
               recordDateStr >= startDateStr && recordDateStr <= endDateStr;
 
@@ -515,10 +459,7 @@ const MySubmissionsTradeList = () => {
           }
         })
       : allData;
-  // Search filter
-  // Filter the trade sheets based on brokerageId
   const filteredData = dateFilteredData.filter((record) => {
-    // Brokerage filter
     if (parsedBrokerageId) {
       const hasMatchingBrokerage = record.agentDetails.some(
         (agent) =>
@@ -528,7 +469,6 @@ const MySubmissionsTradeList = () => {
       if (!hasMatchingBrokerage) return false;
     }
 
-    // Existing search filter
     const searchTerm = searchText?.toLowerCase() || "";
     const extractValues = (obj: any): string[] => {
       if (
@@ -557,7 +497,6 @@ const MySubmissionsTradeList = () => {
     localStorage.getItem("tradeSheetId") || ""
   );
 
-  //filter by date range
 
   const handleFilter = (dates) => {
     if (!dates || dates?.length !== 2) {
@@ -565,11 +504,9 @@ const MySubmissionsTradeList = () => {
       return;
     }
 
-    // Store moment/dayjs objects for the filter
     setCurrentDateFilter(dates);
   };
 
-  // Represent/Type abbreviations: Tenant=T, Landlord=L, Seller=S, Buyer=B, Residential=R, Commercial=C
   const REP_TO_LETTER = { seller: "S", buyer: "B", landlord: "L", tenant: "T" };
   const LIST_TO_LETTER = { Commercial: "C", Residential: "R" };
 
@@ -642,14 +579,12 @@ const MySubmissionsTradeList = () => {
     );
   };
 
-  // Filter value (dropdown) -> letter for exact-match
   const VALUE_TO_LETTER: Record<string, string> = {
     ...REP_TO_LETTER,
     Residential: "R",
     Commercial: "C",
   };
 
-  // Exact match: row badges must equal selected filter set (e.g. S+B only shows S and B, not S+C)
   const representationFilteredData =
     filteredInfo?.representation?.length > 0
       ? filteredData.filter((record) => {
@@ -743,7 +678,7 @@ const MySubmissionsTradeList = () => {
           </Tooltip>
         );
       },
-      width: 150, // This should match the width in the style above
+      width: 150,
       ellipsis: true,
     },
     ...(user.userType !== "agent"
@@ -761,7 +696,6 @@ const MySubmissionsTradeList = () => {
           },
         ]
       : []),
-    // { title: "Email", dataIndex: "email", key: "email" },
     {
       title: "Shared Agent",
       dataIndex: "name",
@@ -1135,7 +1069,6 @@ const MySubmissionsTradeList = () => {
                       </Link>
                     ),
                   },
-                //view rejecction cause
                 record.status === "rejected" && {
                   key: "Rejected",
                   label: (
@@ -1154,7 +1087,6 @@ const MySubmissionsTradeList = () => {
                   ),
                 },
 
-                // view tradesher
                 {
                   key: "view",
                   label: (
@@ -1180,7 +1112,6 @@ const MySubmissionsTradeList = () => {
                   ),
                 },
 
-                //file manager for single representation
 
                 {
                   key: "fileManager",
@@ -1196,16 +1127,15 @@ const MySubmissionsTradeList = () => {
                         );
                       }}
                       to={`/dashboard/agent/pages/form/trade-sheet/paperwork-file-manager/${uuid}`}
-                      className=" flex items-center gap-2" // Added margin left for spacing
+                      className=" flex items-center gap-2"
                     >
                       <FaFileAlt /> File Manager
                     </button>
                   ),
                 },
 
-                //additional document
                 record.status != "closed" &&
-                  /* record.representationType == "single" && */ {
+                  {
                     key: "additionalDocument",
                     label: (
                       <button
@@ -1247,7 +1177,6 @@ const MySubmissionsTradeList = () => {
                   ),
                 },
 
-                //lawyer share
                 {
                   key: "lawyerShare",
                   label: (
@@ -1273,7 +1202,6 @@ const MySubmissionsTradeList = () => {
                             ? record.buyerInformations[0]
                             : {};
                         const sharedUsers = record.sharedUsers || [];
-                        // Collect only lawyer emails with names
                         let emailOptions = [];
                         if (sellerLawyer?.email)
                           emailOptions.push({
@@ -1289,7 +1217,6 @@ const MySubmissionsTradeList = () => {
                             })`,
                             value: buyerLawyer.email,
                           });
-                        // Remove duplicates and empty emails
                         emailOptions = emailOptions.filter(
                           (opt, idx, arr) =>
                             opt.value &&
@@ -1360,7 +1287,6 @@ const MySubmissionsTradeList = () => {
                   ),
                 },
 
-                //delete tradesheet
                 ((user.userType === "agent" && record.status === "draft") || isSuperAdmin || (isBranchAdmin && (user?.branchId == null ||record?.branchId == null || record.branchId === user.branchId))) &&
                   hasPermissionForSlug("delete-tradesheet") && {
                     key: "delete",
@@ -1374,7 +1300,6 @@ const MySubmissionsTradeList = () => {
                     ),
                   },
 
-                // trade accounting access (super admin / main admin only)
                 isSuperAdmin && {
                   key: "trade-accounting",
                   label: (
@@ -1404,7 +1329,6 @@ const MySubmissionsTradeList = () => {
   ];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -1446,12 +1370,10 @@ const MySubmissionsTradeList = () => {
     ],
   };
 
-  // Use representationFilteredData (exact-match Represent/Type) for filterProps and tableSourceData
   const filterProps = filter
     ? representationFilteredData?.filter((item) => item.tradeStatus === filter)
     : representationFilteredData;
 
-  //add index for serial number
   const tableSourceData = filterProps?.map((item: any, index: number) => {
     return {
       ...item,
@@ -1515,19 +1437,15 @@ const MySubmissionsTradeList = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
 
-        {/* Single toolbar row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
 
-          {/* Title */}
           <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             My Trade Sheet Submissions
             <span className="ml-1 text-gray-400 font-normal text-[11px]">({totalCount})</span>
           </h1>
 
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {[
               { key: "all", label: "All", count: totalCount },
@@ -1558,10 +1476,8 @@ const MySubmissionsTradeList = () => {
             ))}
           </div>
 
-          {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -1598,10 +1514,8 @@ const MySubmissionsTradeList = () => {
             )}
           </div>
 
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
-          {/* Manage Fields */}
           <Popover
             open={manageFieldsOpen}
             onOpenChange={setManageFieldsOpen}
@@ -1650,7 +1564,6 @@ const MySubmissionsTradeList = () => {
             </button>
           </Popover>
 
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             {hasPermissionForSlug("create-tradesheet") && (
               <Link
@@ -1676,19 +1589,16 @@ const MySubmissionsTradeList = () => {
           </div>
         </div>
 
-        {/* Table */}
         <div>{renderTable(activeTabData)}</div>
 
       </div>
 
-      {/* ── Delete Single Confirmation Modal ── */}
       <ConfirmDeleteModal
         open={isModalVisible}
         onCancel={cancelDelete}
         onConfirm={confirmDelete}
       />
 
-      {/* ── Reject Reason Modal ── */}
       <Modal
         title="Add Reject Reasons"
         open={isRejectModalVisible}
@@ -1721,7 +1631,6 @@ const MySubmissionsTradeList = () => {
         />
       </Modal>
 
-      {/* ── Missing Important Files Modal ── */}
       <Modal
         title="Important Documents Missing"
         open={isMissingFilesModalVisible}
@@ -1811,7 +1720,6 @@ const MySubmissionsTradeList = () => {
         )}
       </Modal>
 
-      {/* ── Reject Reason View Modal ── */}
       <Modal
         title="Reject Reasons View"
         open={isRejectReasonViewModalVisible}
@@ -1825,14 +1733,12 @@ const MySubmissionsTradeList = () => {
         <div>{rejectReasonMain ? rejectReasonMain : rejectReason}</div>
       </Modal>
 
-      {/* ── Delete Multiple Confirmation Modal ── */}
       <ConfirmDeleteModal
         open={isDeleteMultipleModalVisible}
         onCancel={cancelDelete}
         onConfirm={handleDeleteConfirmMultiple}
       />
 
-      {/* ── File Manager Modal ── */}
       <Modal
         title={
           <span>
@@ -1872,7 +1778,6 @@ const MySubmissionsTradeList = () => {
         </div>
       </Modal>
 
-      {/* ── Share Document Modal ── */}
       <Modal
         title="Share TradeSheet Document"
         open={isModalShareTradeSheetDocumentVisible}
@@ -1888,7 +1793,6 @@ const MySubmissionsTradeList = () => {
         </div>
       </Modal>
 
-      {/* ── Additional Document Modal ── */}
       <Modal
         title="Additional TradeSheet Document"
         open={isModalAdditionalDocumentVisible}
@@ -1908,7 +1812,6 @@ const MySubmissionsTradeList = () => {
         </div>
       </Modal>
 
-      {/* ── Preview Modal ── */}
       <Modal
         title="Tradesheet Preview page"
         open={isModalPreviewTradeSheetVisible}
@@ -1928,7 +1831,6 @@ const MySubmissionsTradeList = () => {
         </div>
       </Modal>
 
-      {/* Lawyer Share Modal */}
       <Modal
         title="Share Lawyer Data"
         open={isModalLawyerShareVisible}
@@ -1962,7 +1864,6 @@ const MySubmissionsTradeList = () => {
                   return;
                 }
                 if (!lawyerInfoRef.current) return;
-                // Generate PDF from lawyer info
                 const canvas = await html2canvas(lawyerInfoRef.current);
                 const imgData = canvas.toDataURL("image/png");
                 const pdf = new jsPDF();
@@ -1990,7 +1891,6 @@ const MySubmissionsTradeList = () => {
                 const pdfFile = new File([pdfBlob], "lawyer-details.pdf", {
                   type: "application/pdf",
                 });
-                // Prepare FormData
                 const formData = new FormData();
                 formData.append("email", selectedEmail);
                 formData.append("note", comment);
@@ -2013,7 +1913,6 @@ const MySubmissionsTradeList = () => {
       >
         <div className="space-y-3">
           <div ref={lawyerInfoRef}>
-            {/* Trade Info Box */}
             <h2 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               Trade Information
             </h2>
@@ -2086,10 +1985,8 @@ const MySubmissionsTradeList = () => {
               </tbody>
             </table>
 
-            {/* Show both if lawyerType is "" */}
             {(lawyerType === "" || lawyerType === "seller") && (
               <>
-                {/* Seller Lawyer Info Table */}
                 <h2 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                   Seller Lawyer Information
                 </h2>
@@ -2158,7 +2055,6 @@ const MySubmissionsTradeList = () => {
             )}
             {(lawyerType === "" || lawyerType === "buyer") && (
               <>
-                {/* Buyer Lawyer Info Table */}
                 <h2 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                   Buyer Lawyer Information
                 </h2>
@@ -2245,7 +2141,6 @@ const MySubmissionsTradeList = () => {
               options={selectedTradeData?.emailOptions || []}
               value={selectedEmail ? [selectedEmail] : []}
               onChange={(values) => {
-                // Only allow one value
                 const value = values[0] || "";
                 setSelectedEmail(value);
                 setEmailError("");

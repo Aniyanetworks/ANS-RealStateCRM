@@ -92,7 +92,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
     });
   }, [connectSocket]);
 
-  // Calculate and update clocked-in duration for navbar
   useEffect(() => {
     if (isClockedIn && lastRecord?.createdAt) {
       const updateDuration = () => {
@@ -132,7 +131,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
     }
   };
 
-  // Handle individual notification deletion
   const handleDelete = async (id: number) => {
     try {
       await deleteNotification(id).unwrap();
@@ -144,7 +142,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
     toast.success(msg);
   };
 
-  // Handle bulk delete for all notifications
   const handleDeleteAll = async () => {
     const ids = data?.data?.data_list?.map((item) => item.id);
     if (ids?.length) {
@@ -194,7 +191,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
             enableHighAccuracy: true,
             timeout: 10000,
-            // Small cache window to avoid jitter but not too stale
             maximumAge: 60 * 1000,
           });
         });
@@ -254,10 +250,8 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
     );
 
     if (originalUser.token && originalUser.user) {
-      // Reset all API cache before switching
       dispatch(api.util.resetApiState());
 
-      // Switch back to Super Admin
       dispatch(setAccessToken(originalUser.token));
       dispatch(setUser(originalUser.user));
       localStorage.removeItem("originalUser");
@@ -269,7 +263,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
   const userDisplayName = user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "My Account";
   const userInitials = userDisplayName.split(" ").map((p: string) => p[0]).slice(0, 2).join("").toUpperCase() || "U";
 
-  // avatar profile dropdown items
   const dropitems: MenuProps["items"] = [
     {
       key: "1",
@@ -313,9 +306,9 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
 
   const notifications: MenuProps["items"] = Array.isArray(data?.data?.data_list)
     ? data.data.data_list.map((item: any, index: number) => {
-      const parsedData = JSON.parse(item.data); // Parse the `data` field
+      const parsedData = JSON.parse(item.data);
       return {
-        key: item.id || `notification-${index}`, // Ensure unique key
+        key: item.id || `notification-${index}`,
         label: (
           <div
             className="flex justify-between items-center"
@@ -355,7 +348,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         {sidebarCollapsed ? <AlignLeftOutlined /> : <AlignLeftOutlined />}
       </button>
 
-      {/* User Information Section */}
       <div className="flex flex-col xl:flex-row  gap-4">
         {user && (
           <h2 className="flex items-center gap-1 !m-0">
@@ -377,7 +369,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
           </h2>
         )}
 
-        {/* Eye Focus Training Mode Banner */}
         {window.location.hostname.includes("dev.dvrealty.ca") && (
           <div className="mt-0">
             <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium text-center">
@@ -395,7 +386,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         )}
       </div>
 
-      {/* Avatar Section */}
       <div className="flex items-center gap-5">
         {isClockedIn && (
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-50 border border-green-200">
@@ -457,7 +447,6 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
             <Badge count={data?.data?.data_list?.length} showZero size="small">
               <FiBell className="text-xl" />
             </Badge>
-            {/* New icon to trigger ClosingDatePopup */}
           </Dropdown>
         </div>
         <Dropdown menu={{ items: dropitems }} className="cursor-pointer">

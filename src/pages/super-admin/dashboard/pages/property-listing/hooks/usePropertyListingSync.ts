@@ -96,8 +96,6 @@ export const usePropertyListingSync = (refetch: () => void) => {
         try {
           const mappedData = mapRealtorDataToPropertyListing(pair.realtorProperty.fullRealtorData);
           
-          console.log('Syncing data for property:', pair.propertyListing.propertyAddress);
-          console.log('Mapped data:', mappedData);
 
           const response = await syncPropertyFromRealtor({
             uuid: pair.propertyListing.uuid,
@@ -106,7 +104,6 @@ export const usePropertyListingSync = (refetch: () => void) => {
 
           if (response?.status === true) {
             successCount++;
-            console.log(`Successfully synced property ${pair.propertyListing.propertyAddress}`);
           } else {
             errorCount++;
             console.error(`Failed to sync data for pair ${pairId}:`, response);

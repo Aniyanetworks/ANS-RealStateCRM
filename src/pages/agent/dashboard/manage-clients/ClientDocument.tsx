@@ -3,12 +3,9 @@
 import {  useParams } from "react-router-dom";
 import { useEffect, useState ,useRef} from "react";
 import logo from "/logo.svg";
-// import type { TableColumnsType, TableProps } from "antd";
 import ModalMain from "../../../../components/ui/Modal";
 import { useForm } from "react-hook-form";
 import {  Modal, Tabs, Button, Tooltip } from "antd";
-// import { FaComment, FaRegEdit } from "react-icons/fa";
-// import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import TableLoader from "../../../../components/loader/TableLoader";
 import {
@@ -22,17 +19,13 @@ import {
 import { useAppSelector } from "../../../../redux/hooks";
 import { Link } from 'react-router-dom';
 import { baseUrl } from "../../../../utils/constant";
-// import { TiDocument } from "react-icons/ti";
 import uploadIcon from "./../../../../assets/upload2.svg";
 import crossIcon from "./../../../../assets/cross.svg";
 import ButtonLoader from "../../../../components/loader/buttonLoader";
-// import Templates from './../../../templates/Templates';
 import { AlignLeftOutlined } from "@ant-design/icons";
 import rightArrow from "./../../../../assets/right-arrow.svg";
 
 
-/* type TableRowSelection<T extends object = object> =
-  TableProps<T>["rowSelection"]; */
 interface DataType {
   relation: string;
   name: string;
@@ -43,14 +36,12 @@ interface DataType {
 
 
 const ClientDocumentManagement = () => {
-  // const [fetchLoading, setFetchLoading] = useState<boolean>(false);
   const { uuid } = useParams<{ uuid?: string }>();
   const { client } = useParams<{ client?: string }>();
   const [tableData, setTableData] = useState<DataType[]>([]);
   const { data, isLoading, refetch } = useGetClientDocumentQuery({ uuid });
   const { data:documentData, isLoadingDocument } = useGetClientDocumentNameQuery('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isEditMode, setIsEditMode] = useState(false);
   const [DocumentName, setDocumentName] = useState(null);
   const [isUploadingOther, setIsUploadingOther] = useState<boolean>(false);
   const [isDeletingOther, setIsDeletingOther] = useState<number | null>(null);
@@ -80,7 +71,6 @@ const ClientDocumentManagement = () => {
     return inUsers || inRecord;
   });
 
-  /* pdf */
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [pdfToView, setPdfToView] = useState<object>({});
@@ -132,16 +122,13 @@ const ClientDocumentManagement = () => {
 
   useEffect(() => {
     if (!isLoadingDocument && data) {
-      // setFetchLoading(true);
   
-      // Check if documentData and its properties are defined
       if (documentData?.data?.clientDocumentName) {
         const activeDocuments = documentData.data.clientDocumentName.filter(
           (file: FileType) => file.status === "active"
         );
   
         const documents = activeDocuments?.map((file: FileType) => {
-          // Check if data and clientDocumentData are defined
           const fileData = data?.data?.clientDocumentData?.filter(
             (upload: UploadFileType) => upload.fileID === file.id
           );
@@ -151,14 +138,11 @@ const ClientDocumentManagement = () => {
           };
         });
   
-        // setClientDocuments(activeDocuments || []);
         setFileDocuments(documents || []);
       }
       
-      // setFetchLoading(false);
     }
   
-    // Only update tableData if data is available
     if (data?.data?.clientDocumentData) {
       setTableData(data.data.clientDocumentData);
     }
@@ -173,14 +157,9 @@ const ClientDocumentManagement = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    /* if (pdfToView?.status) {
-      setSelectedStatus(pdfToView?.status);
-    } */
 
-    // Add event listener on component mount
     window.addEventListener("resize", handleResize);
 
-    // Remove event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -188,11 +167,8 @@ const ClientDocumentManagement = () => {
 
   const {
     formState: { errors },
-    /* reset,
-    getValues, */
     setValue,
     setError,
-    // handleSubmit,
   } = useForm<DataType>({});
 
   const handleMouseDown = () => {
@@ -232,7 +208,6 @@ const ClientDocumentManagement = () => {
     setError(null);
   };
 
-  // if (isLoading) return <TableLoader />;
   const handleDownload = async () => {
     const pdfUrl = `${baseUrl}${pdfToView.file}`;
 
@@ -243,7 +218,6 @@ const ClientDocumentManagement = () => {
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
 
-      // Create a temporary link to download the file
       const link = document.createElement("a");
       link.href = url;
       link.download = pdfToView.file;
@@ -251,7 +225,6 @@ const ClientDocumentManagement = () => {
       link.click();
       document.body.removeChild(link);
 
-      // Release the URL object
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading the PDF:", error);
@@ -261,48 +234,7 @@ const ClientDocumentManagement = () => {
   
   
 
-  /* const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  }; */
 
-  /* const rowSelection: TableRowSelection<DataType> = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-    selections: [
-      Table.SELECTION_ALL,
-      Table.SELECTION_INVERT,
-      Table.SELECTION_NONE,
-      {
-        key: "odd",
-        text: "Select Odd Row",
-        onSelect: (changeableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return false;
-            }
-            return true;
-          });
-          setSelectedRowKeys(newSelectedRowKeys);
-        },
-      },
-      {
-        key: "even",
-        text: "Select Even Row",
-        onSelect: (changeableRowKeys) => {
-          let newSelectedRowKeys = [];
-          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-            if (index % 2 !== 0) {
-              return true;
-            }
-            return false;
-          });
-          setSelectedRowKeys(newSelectedRowKeys);
-        },
-      },
-    ],
-  }; */
 
   
 
@@ -313,7 +245,6 @@ const ClientDocumentManagement = () => {
   const handleCancel = () => {
     resetForm();
     setIsModalOpen(false);
-    // setIsEditMode(false);
     setSelectedUUID("null");
   };
 
@@ -321,19 +252,12 @@ const ClientDocumentManagement = () => {
     setValue("title", "");
     setValue("filePath", null);
     setValue("userId", uuid);
-    // setIsEditMode(false);
     setSelectedUUID("null");
   };
 
-  /* const handleEdit = (record: DataType) => {
-    reset(record);
-    setIsEditMode(true);
-    setSelectedUUID(record.uuid);
-    showModal();
-  }; */
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deleteClientDocument(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -435,59 +359,6 @@ const ClientDocumentManagement = () => {
       }
     };
 
-  /* const onSubmit = async () => {
-    setIsUploading(true);
-    setValue("userId", uuid);
-    const data = getValues();
-
-    const handleResponse = (response: any) => {
-      if (response?.error?.data?.status === false) {
-        response.error.data.errors
-          ? response.error.data.errors.forEach((error: any) => {
-              setError(error.path, {
-                type: "manual",
-                message: error.msg,
-              });
-            })
-          : toast.error(response.error.data.message);
-      } else if (response?.data?.status === true) {
-        toast.success(response.data.message);
-        setIsModalOpen(false);
-        resetForm();
-      }
-    };
-
-    try {
-      if (!data.filePath) {
-        setError("filePath", {
-          type: "manual",
-          message: "File Is Required",
-        });
-        return;
-      }
-      
-      const formData = new FormData();
-      formData.append("filePath", data.filePath);
-      formData.append("title", data.title);
-      formData.append("userId", data.userId);
-
-      const response = await createUpdateClientDocument({
-        uuid: selectedUUID,
-        data:formData,
-      });
-
-      handleResponse(response);
-    } catch (error: any) {
-      toast.error("Update failed. Something went wrong!");
-      console.error("Error:", error);
-    } finally {
-      setIsUploading(false);
-      if (isEditMode) {
-        setIsEditMode(false);
-        setSelectedUUID("null"); 
-      }
-    }
-  }; */
 
   const handleDeleteMultipleClick = () => {
     setIsDeleteModalMultipleVisible(true); 
@@ -514,78 +385,6 @@ const ClientDocumentManagement = () => {
     }
   };
 
- /*  const columns: TableColumnsType<DataType> = [
-    {
-        title: "Title",
-        dataIndex: "title",
-        key: "title",
-        render: (title) => (
-          <span>
-            {title || "N/A"}
-          </span>
-        ),
-  
-        width: 240,
-      },
-      
-      {
-        title: "File",
-        dataIndex: "file",
-        key: "file",
-        render: (file) => (
-          file ? (
-            <div>
-              <NavLink
-                to={`${baseUrl + file}`}
-                className="flex items-center p-1 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition-colors rounded-md"
-                target="_blank"
-              >
-                <span className="flex-1">Download</span>
-                <TiDocument />
-              </NavLink>
-            </div>
-          ) : null
-        ),
-      width: 240,
-    },
-    {
-      title: "Actions",
-      dataIndex: "uuid",
-      key: "actions",
-      fixed: "right",
-      render: (uuid, recoard) => (
-        <div className="flex gap-5 items-center">
-          <button
-            onClick={() => handleEdit(recoard)}
-            className="hover:text-red-500 text-lg duration-100"
-          >
-            <FaRegEdit />
-          </button>
-
-          {recoard.status === "rejected" && (
-            <button
-              onClick={() => handleRejectReasonView(recoard?.rejectReason)}
-              className="text-[16px] hover:text-primaryPurple duration-100 ml-4"
-            >
-              <FaComment className="text-red-500" />{" "}
-            </button>
-          )}
-
-          {((user.userType === "agent") ||
-            user.userType === "superAdmin" ||
-            user.userType === "admin") && (
-            <button
-              onClick={() => handleDelete(uuid)}
-              className="hover:text-red-500 text-lg duration-100"
-            >
-              <MdDelete /> 
-            </button>
-          )}
-          
-        </div>
-      ),
-    },
-  ]; */
 
   const showModal = () => setIsModalOpen(true);
   return (
@@ -605,12 +404,6 @@ const ClientDocumentManagement = () => {
           <button onClick={showModal} className="primary-btn mx-3">
             Upload Document
           </button>
-          {/* <button
-            onClick={handleDeleteMultipleClick}
-            className="cancel-btn mx-3"
-          >
-            Delete All
-          </button> */}
         </div>
       </div>
 
@@ -629,19 +422,10 @@ const ClientDocumentManagement = () => {
         {isLoading ? (
           <TableLoader />
         ) : (
-          /* <Table
-          scroll={{ x: "max-content" }}
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={filteredData}
-          pagination={{ pageSize: 20 }}
-          rowKey="uuid"
-          /> */
 
 
           <div>
         <div className="flex h-[calc(100vh-7rem)]">
-          {/* Resizer */}
 
           <div
             style={{ width: `${sidebarWidth}px` }}
@@ -958,17 +742,14 @@ const ClientDocumentManagement = () => {
         )}
       </div>
       
-      {/* File Upload */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}
-        // handleOk={handleSubmit(onSubmit)}
         title="Manage Clients Documents"
         isLoading={isUploading}
         modalClass={"lg:!w-[60%] !z-[10000]"}
         hideFooter={true}
       >
-        {/* documents upload and show */}
         {fileDocuments?.map((document: any, index: number) => (
           <div key={index}>
             <div className="flex px-2 border-b border-[#eaf4f2] hover:bg-[#f8f8f8e3] py-2 items-center justify-between">
@@ -1102,7 +883,6 @@ const ClientDocumentManagement = () => {
           </div>
         ))}
 
-        {/* other files upload */}
         <div className="flex justify-between items-center p-2">
           <div className="flex items-center gap-3">
             <p className="w-[80px] ">*</p>
@@ -1138,7 +918,6 @@ const ClientDocumentManagement = () => {
           </div>
         </div>
 
-        {/* all files others show */}
         <div>
           {filteredData?.map((file: any, index: number) => {
             if (!file.fileID) {
@@ -1176,7 +955,6 @@ const ClientDocumentManagement = () => {
         </div>
       </ModalMain>
 
-      {/* Delete  Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isModalVisible}
@@ -1199,7 +977,6 @@ const ClientDocumentManagement = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

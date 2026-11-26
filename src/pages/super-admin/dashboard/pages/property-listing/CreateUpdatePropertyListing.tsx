@@ -79,7 +79,6 @@ const RESIDENTIAL_PROPERTY_TYPES = [
   "Other",
 ];
 
-// Reusable Text Input Component
 const TextInput = ({
   label,
   register,
@@ -106,7 +105,6 @@ const TextInput = ({
   </div>
 );
 
-// Reusable Date Input Component
 const DateInput = ({ label, control, name, errors, required }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -116,7 +114,7 @@ const DateInput = ({ label, control, name, errors, required }: any) => (
       name={name}
       control={control}
       defaultValue=""
-      rules={{ required: required ? `${label} is required` : false }} // Add validation rules conditionally
+      rules={{ required: required ? `${label} is required` : false }}
       render={({ field }) => (
         <input {...field} type="date" className="border rounded p-2 w-full" />
       )}
@@ -127,7 +125,6 @@ const DateInput = ({ label, control, name, errors, required }: any) => (
   </div>
 );
 
-// Reusable Select Input Component
 const SelectInput = ({ label, register, name, errors, options = [] }: any) => (
   <div className="flex flex-col gap-2">
     <label>
@@ -149,17 +146,7 @@ const SelectInput = ({ label, register, name, errors, options = [] }: any) => (
     )}
   </div>
 );
-// const formatDate = (isoDate: any) => {
-//   if(isoDate)
-//   {
-//     return format(new Date(isoDate), "yyyy-MM-dd");
-//   }
-//   else
-//   {
-//     return "";
-//   }
 
-// };
 
 const formatDate = (isoDate: any) => {
   if (isoDate) {
@@ -174,7 +161,7 @@ const CreateUpdatePropertyListing = () => {
   const [selectedAgentId, setSelectedAgentId] = useState(null);
   const [agentIdSet, setAgentIdSet] = useState(null);
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const [btnLoading, setBtnLoading] = useState("");
   const [propertiesData, setPropertiesData] = useState([]);
   const { data, isLoading } = useGetSpacificPropertyListingQuery(uuid);
@@ -187,11 +174,10 @@ const CreateUpdatePropertyListing = () => {
   const [selectedCityId, setSelectedCityId] = useState<
     { value: string; label: string }[]
   >([]);
-  const [sellers, setSellers] = useState([{ id: Date.now() }]); // Initial seller state
+  const [sellers, setSellers] = useState([{ id: Date.now() }]);
   const { user } = useSelector((state: any) => state.user);
   const isSuperAdmin = user?.roleId == 1;
 
-  // Fetch active branches for super admin
   const { data: activeBranches } = useGetActiveBranchListDataQuery("", {
     skip: !isSuperAdmin,
   });
@@ -202,7 +188,6 @@ const CreateUpdatePropertyListing = () => {
     mlsDataSheet: "",
     recoGuide: "",
   });
-  // Handle loading and error states
   const {
     register,
     handleSubmit,
@@ -224,25 +209,22 @@ const CreateUpdatePropertyListing = () => {
   const propertyListingType = watch("propertyListingType");
   const listType = watch("listType");
 
-  // seleted files
   const firstPictureFile = watch("firstPicture");
   const listingAgreementFile = watch("listingAgreement");
   const mlsDataSheetFile = watch("mlsDataSheet");
   const recoGuideFile = watch("recoGuide");
 
-  const [defaultAddressValue, setDefaultAddressValue] = useState([]); // Store the address suggestions
-  const [suggestions, setSuggestions] = useState([]); // Store the address suggestions
-  const [query, setQuery] = useState(""); // Store the search query input
+  const [defaultAddressValue, setDefaultAddressValue] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     if (query.length > 0) {
-      // Fetch the suggestions from the API based on the user's input (query)
       fetch(
         `https://ws1.postescanada-canadapost.ca/Capture/Interactive/Find/v1.00/json3ex.ws?Key=TF36-KU97-AB94-ZC85&Text=${query}&Container=&Origin=CAN&Countries=&Datasets=&Limit=7&Filter=&Language=en&$block=true&$cache=true&SOURCE=PCA-SCRIPT&SESSION=ebb3da4f-a6ab-56cc-2b04-a54c42bb58a2`
       )
         .then((response) => response.json())
         .then((data) => {
-          // Format the fetched data into a format suitable for react-select
           const formattedSuggestions = data.Items.map((item) => ({
             label: item.Text,
             value: item.Text,
@@ -255,19 +237,16 @@ const CreateUpdatePropertyListing = () => {
           console.error("Error fetching address suggestions:", error)
         );
     } else {
-      setSuggestions([]); // Clear suggestions if input is empty
+      setSuggestions([]);
     }
-  }, [query]); // Trigger fetch when query changes
+  }, [query]);
 
   const handleSelectionChange = (selectedOption) => {
-    // You can set the selected address here if needed
-    setQuery(selectedOption?.value || ""); // Update the input with selected address
-    fetchAddressDetails(selectedOption.id); // Call the second API to fetch address details
-    // console.log('selectedOption',selectedOption)
+    setQuery(selectedOption?.value || "");
+    fetchAddressDetails(selectedOption.id);
   };
 
   const fetchAddressDetails = (addressId) => {
-    // Make the second API call with the selected address Id
     fetch(
       `https://ws1.postescanada-canadapost.ca/Capture/Interactive/Retrieve/v1.00/json3ex.ws?Key=TF36-KU97-AB94-ZC85&Id=${addressId}&Source=&$cache=true&SOURCE=PCA-SCRIPT&SESSION=392d4c2e-6cf0-a3de-259c-d62903ad50c5`
     )
@@ -276,22 +255,20 @@ const CreateUpdatePropertyListing = () => {
         if (data.Items && data.Items.length > 0) {
           const firstItem = data.Items[0];
 
-          // Directly access and format the suggestion without using map
           const formattedSuggestions = [
             {
-              label: firstItem.Label, // Use the 'Label' property for label
-              value: firstItem.Label, // Set the same value for value
+              label: firstItem.Label,
+              value: firstItem.Label,
               postalCode: firstItem.PostalCode,
               provinceName: firstItem.ProvinceName,
               cityName: firstItem.City,
             },
           ];
 
-          setDefaultAddressValue(formattedSuggestions); // Set the suggestions in state
+          setDefaultAddressValue(formattedSuggestions);
           setValue("postalCode", formattedSuggestions?.[0]?.postalCode);
           const provinceName = formattedSuggestions?.[0]?.provinceName;
           const cityName = formattedSuggestions?.[0]?.cityName;
-          // const selectedState = states?.data?.states?.find(item.name ==provinceName).id;
           const selectedState = states?.data?.states?.find(
             (state) => state.name == provinceName
           )?.id;
@@ -300,10 +277,6 @@ const CreateUpdatePropertyListing = () => {
           )?.id;
           setSelectedCityId(selectedCity);
           setValue("stateId", selectedState);
-          // console.log('selectedCity', selectedCity); // Log the formatted suggestions
-          // console.log('selectedState', selectedState); // Log the formatted suggestions
-          // console.log('provinceName', provinceName); // Log the formatted suggestions
-          // console.log('formattedSuggestions', formattedSuggestions?.postalCode); // Log the formatted suggestions
         }
       })
       .catch((error) =>
@@ -311,16 +284,14 @@ const CreateUpdatePropertyListing = () => {
       );
   };
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [], isLoading: isCityLoading } = useGetCitiesQuery(
     selectedState,
     {
-      skip: !selectedState, // Skip if no state is selected
+      skip: !selectedState,
     }
   );
 
@@ -343,21 +314,18 @@ const CreateUpdatePropertyListing = () => {
     })) || [];
 
   const updatedAgentOptions = agentOptions.map((option) => {
-    // Disable the option if the email matches the specified agentEmail
     if (option?.value === selectedAgentId) {
-      return { ...option, isDisabled: true }; // Disable this option
+      return { ...option, isDisabled: true };
     }
     if (option?.value === user?.id) {
-      return { ...option, isDisabled: true }; // Disable this option
+      return { ...option, isDisabled: true };
     }
-    return option; // Leave other options unchanged
+    return option;
   });
 
-  // Watch the value of 'conditional' field
   const conditionalValue = watch("conditional");
   const conditionalOptionValue = watch("conditionalOption");
 
-  // Clear property type when list type changes so selection stays valid
   useEffect(() => {
     const current = getValues("propertyType");
     const validList =
@@ -381,7 +349,6 @@ const CreateUpdatePropertyListing = () => {
 
       setSelectedCityId(data?.data?.propertyListingData?.cityId);
 
-      // Determine branchId: use existing branchId or user's branchId for non-super admin
       const branchId = data?.data?.propertyListingData?.branchId ||
         (!isSuperAdmin && user?.branchId ? user.branchId : undefined);
 
@@ -395,9 +362,7 @@ const CreateUpdatePropertyListing = () => {
         branchId: branchId,
       };
       reset(processedProperty);
-      // console.log('data?.data?.propertyListingData?.sellersInfo',JSON.parse(data?.data?.propertyListingData?.sellersInfo)?.sellersInfo);
 
-      //  setSellers(JSON.parse(data?.data?.propertyListingData?.sellersInfo)?.sellersInfo);
 
       if (data?.data?.propertyListingData?.sellersInfo) {
         try {
@@ -422,11 +387,9 @@ const CreateUpdatePropertyListing = () => {
         data?.data?.propertyListingData?.sharedUsers.length > 0
       ) {
         const multipleShareAgentValues =
-          data?.data?.propertyListingData?.sharedUsers; // Array of user objects (with sharedUserId)
-        // Use .map to find the corresponding objects in 'multipleRepresentation'
+          data?.data?.propertyListingData?.sharedUsers;
         const selectedShareAgent = multipleShareAgentValues
           .map((value) => {
-            // Find the corresponding object for each value in the original array
             return agentOptions.find(
               (item) => item.value === value.sharedUserId
             );
@@ -439,19 +402,17 @@ const CreateUpdatePropertyListing = () => {
   }, [data, reset, propertiesData, setPropertiesData, setSelectedAgentId]);
 
   useEffect(() => {
-    setValue("countryId", 39); //by defult set county canada
+    setValue("countryId", 39);
     setSelectedAgentId(propertiesData.createdBy);
     setValue("agentId", propertiesData.createdBy);
     if (uuid) {
       setAgentIdSet(propertiesData.createdBy);
     }
 
-    // For new property listings, set branchId for non-super admin users
     if (!uuid && !isSuperAdmin && user?.branchId) {
       setValue("branchId", user.branchId);
     }
 
-    // Recompute the property address whenever any field changes
     const stateName =
       states?.data?.states?.find((state) => state.id == selectedState)?.name ||
       "";
@@ -484,9 +445,7 @@ const CreateUpdatePropertyListing = () => {
   }
 
   const onSubmit = async (data: any) => {
-    console.log("agentIdSet", agentIdSet);
     setIsUploadLoading(true);
-    // Initialize the FormData object to hold the data
     const sellersInfo = sellers.map((seller, index) => ({
       firstName: data[`seller${index + 1}FirstName`],
       lastName: data[`seller${index + 1}LastName`],
@@ -494,7 +453,6 @@ const CreateUpdatePropertyListing = () => {
       phoneNumber: data[`seller${index + 1}PhoneNumber`],
     }));
 
-    // Structure the data as a JSON object to be set in the form state
     const jsonData = {
       sellersInfo: sellersInfo,
     };
@@ -502,42 +460,35 @@ const CreateUpdatePropertyListing = () => {
     setValue("sellersInfo", jsonData);
     setValue("agentId", agentIdSet);
 
-    const dataData = getValues(); // Get all form values (can include files)
-    console.log(dataData);
+    const dataData = getValues();
     const formData = new FormData();
 
     for (const key in dataData) {
       if (dataData.hasOwnProperty(key)) {
         const value = dataData[key];
 
-        // Check if the value is a File (single file)
         if (value instanceof File) {
-          formData.append(key, value); // Append the file directly
+          formData.append(key, value);
 
-          // Check if the value is a FileList (multiple files)
         } else if (value instanceof FileList) {
           Array.from(value).forEach((file) => {
-            formData.append(key, file); // Append each file in the FileList
+            formData.append(key, file);
           });
 
-          // Handle other non-file values (e.g., text fields)
         } else if (key === "sellersInfo") {
-          // Explicitly stringify the sellersInfo array
-          formData.append(key, JSON.stringify(value)); // stringify sellersInfo array
+          formData.append(key, JSON.stringify(value));
         } else if (key === "sharedAgent") {
-          formData.append(key, JSON.stringify(value)); // stringify sellersInfo array
+          formData.append(key, JSON.stringify(value));
         } else if (key === "listingType") {
-          // Skip appending listingType here, will set it below
           continue;
         } else {
-          formData.append(key, value); // Append text or other non-file data
+          formData.append(key, value);
         }
       }
     }
 
     formData.set("listingType", "regular");
 
-    // setBtnLoading(data.saveBtn); // Start loading state
 
     try {
       const isDraft = data.saveBtn === "save-draft";
@@ -549,7 +500,6 @@ const CreateUpdatePropertyListing = () => {
       }).unwrap();
       const responseUuid = response?.data?.propertyListingData?.uuid;
 
-      // Show success message
       toast.success(`${response?.message}`);
       setIsUploadLoading(false);
 
@@ -580,18 +530,14 @@ const CreateUpdatePropertyListing = () => {
           break;
       }
 
-      // Navigate to the determined path
       if (navigatePath) {
         navigate(navigatePath, { replace: true });
       }
     } catch (error: any) {
-      // Handle error
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
       setIsUploadLoading(false);
     }
 
-    // // Reset loading state
-    // setBtnLoading("");
   };
 
   const resetForm = () => {
@@ -605,11 +551,9 @@ const CreateUpdatePropertyListing = () => {
   };
 
   const handleAgentChange = (selectedOption: any) => {
-    console.log("selectedOption", selectedOption);
     if (selectedOption) {
       setSelectedAgentId(selectedOption?.value);
       setValue("agentId", selectedOption?.value);
-      // setAgentIdSet(selectedOption?.value);
     }
   };
   const handleSharedAgentChange = (selectedOptions: any) => {
@@ -618,43 +562,40 @@ const CreateUpdatePropertyListing = () => {
       "sharedAgent",
       selectedOptions.map((option: any) => option)
     );
-    // console.log('getValues',getValues('sharedAgent'));
   };
 
   const saveAndNextFunction = () => {
     setValue("saveBtn", "save-next");
   };
 
-  // Handler for file input change
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Selected file
+    const file = e.target.files[0];
     if (file) {
-      setValue("firstPicture", file); // Update react-hook-form state manually
+      setValue("firstPicture", file);
     }
   };
   const handleFileChangeListingAgreement = (e) => {
-    const file = e.target.files[0]; // Selected file
+    const file = e.target.files[0];
     if (file) {
-      setValue("listingAgreement", file); // Update react-hook-form state manually
+      setValue("listingAgreement", file);
     }
   };
   const handleFileChangeMls = (e) => {
-    const file = e.target.files[0]; // Selected file
+    const file = e.target.files[0];
     if (file) {
-      setValue("mlsDataSheet", file); // Update react-hook-form state manually
+      setValue("mlsDataSheet", file);
     }
   };
   const handleFileChangeReco = (e) => {
-    const file = e.target.files[0]; // Selected file
+    const file = e.target.files[0];
     if (file) {
-      setValue("recoGuide", file); // Update react-hook-form state manually
+      setValue("recoGuide", file);
     }
   };
 
   const handleCityChange = (selectedOptions: any) => {
     setSelectedCityId(selectedOptions.value);
     setValue("cityId", selectedOptions.value);
-    // console.log('getValues',getValues('sharedAgent'));
   };
 
   const addSeller = () => {
@@ -680,7 +621,6 @@ const CreateUpdatePropertyListing = () => {
 
       <div className="max-w-full mt-0 p-2 border border-gray-300/30  rounded-md  border-2 mb-10">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-          {/* Property Details: */}
           <div className="max-FULL  p-6 bg-white rounded-lg shadow-md">
             <div className="flex justify-between items-center">
               <h3 className="py-2 font-bold">Property Details:</h3>
@@ -707,12 +647,11 @@ const CreateUpdatePropertyListing = () => {
                   value={agentOptions.find(
                     (option: any) => option.value === selectedAgentId
                   )}
-                  isClearable // Allow clearing the selection
+                  isClearable
                 />
               </div>
             )}
 
-            {/* Branch Selection - Only for Super Admin */}
             {isSuperAdmin ? (
               <div className="flex flex-col gap-2 mb-4">
                 <label>Assign to Branch:</label>
@@ -757,21 +696,6 @@ const CreateUpdatePropertyListing = () => {
               </>
             )}
 
-            {/* Show user's branch (read-only) for branch users */}
-            {/* {!isSuperAdmin && user?.branch && (
-              <div className="flex flex-col gap-2 mb-4">
-                <label>Branch:</label>
-                <input
-                  type="text"
-                  value={user.branch.name}
-                  disabled
-                  className="border rounded p-2 w-full bg-gray-100"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Property listing will be assigned to your branch automatically
-                </p>
-              </div>
-            )} */}
             <div className="flex flex-col gap-2 mb-2 mt-3">
               <label>
                 Share multiple Agent from list:{" "}
@@ -783,15 +707,11 @@ const CreateUpdatePropertyListing = () => {
               </label>
 
               <Select
-                // {...register("sharedAgent", {
-                //   required: "Multiple Representation is required",
-                // })}
                 options={updatedAgentOptions}
                 isMulti
                 value={selectedShareAgent}
                 onChange={handleSharedAgentChange}
                 classNamePrefix="react-select"
-              // isDisabled={!selectedMainCategory}
               />
               {errors.subcategories && (
                 <p className="text-red-500 text-sm">
@@ -843,13 +763,6 @@ const CreateUpdatePropertyListing = () => {
                           />
                         </div>
                         <div className="w-full">
-                          {/* <TextInput
-                            label="Phone Number"
-                            register={register}
-                            required={index === 0}
-                            name={`seller${index + 1}PhoneNumber`}
-                            errors={errors}
-                          /> */}
 
                           <label>Phone Number</label>
                           <input
@@ -902,7 +815,6 @@ const CreateUpdatePropertyListing = () => {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-              {/* MLS # */}
               <TextInput
                 label="MLS #"
                 register={register}
@@ -971,7 +883,6 @@ const CreateUpdatePropertyListing = () => {
                     </option>
                   ))}
                 </select>
-                {/* Error message for Province */}
                 {errors.stateId && (
                   <p className="text-red-500">{errors.stateId.message}</p>
                 )}
@@ -981,16 +892,6 @@ const CreateUpdatePropertyListing = () => {
                 <label>
                   City <span className="text-red-500 ml-1">*</span>
                 </label>
-                {/* <select
-                  {...register("cityId", { required: "City is required" })}
-                >
-                  <option value="">Select City</option>
-                  {cities?.data?.cities?.map((city: any) => (
-                    <option key={city.id} value={city.id}>
-                      {city.name}
-                    </option>
-                  ))}
-                </select> */}
                 <Controller
                   name="cityId"
                   control={control}
@@ -1015,10 +916,6 @@ const CreateUpdatePropertyListing = () => {
                     </>
                   )}
                 />
-                {/* Error message for City */}
-                {/* {errors.cityId && (
-                  <p className="text-red-500">{errors.cityId.message}</p>
-                )} */}
               </div>
 
               <div className="w-full">
@@ -1038,7 +935,6 @@ const CreateUpdatePropertyListing = () => {
                     setValue("postalCode", formatPostalCode(e.target.value));
                   }}
                 />
-                {/* Error message for Postal Code */}
                 {errors.postalCode && (
                   <p className="text-red-500">{errors.postalCode.message}</p>
                 )}
@@ -1062,36 +958,6 @@ const CreateUpdatePropertyListing = () => {
                 )}
               </div>
 
-              {/* <div>
-                <label htmlFor="address">
-                  Address <span className="text-red-500 ml-1">*</span>
-                </label>
-
-                <Select
-                  inputId="address-select"
-                  options={suggestions}
-                  onInputChange={(newQuery) => setQuery(newQuery)} // Update query state on input change
-                  onChange={handleSelectionChange} // Handle selection change
-                  value={
-                     defaultAddressValue
-                  } // Set the current selected address value
-                  getOptionLabel={(e) => (
-                    <>
-                      <div>{e.label}</div>
-                      <small>{e.description}</small>
-                    </>
-                  )}
-                  placeholder="Start typing an address..."
-                  noOptionsMessage={() => "No suggestions available"}
-                  isSearchable
-                  isClearable
-                  classNamePrefix="react-select"
-                />
-
-                {errors.address && (
-                  <p className="text-red-500">{errors.address.message}</p>
-                )}
-              </div> */}
 
               <div>
                 <label htmlFor="addressTwo">Address 2</label>
@@ -1104,7 +970,6 @@ const CreateUpdatePropertyListing = () => {
                 />
               </div>
 
-              {/* Sold Price */}
               <TextInput
                 label="Lockbox"
                 register={register}
@@ -1112,19 +977,6 @@ const CreateUpdatePropertyListing = () => {
                 errors={errors}
               />
 
-              {/* <TextInput
-                label="Seller’s name"
-                register={register}
-                name="sellerName"
-                errors={errors}
-              />
-
-              <TextInput
-                label="Seller’s phone number"
-                register={register}
-                name="sellerPhoneNumber"
-                errors={errors}
-              /> */}
               <TextInput
                 label="Listing Price"
                 register={register}
@@ -1136,7 +988,7 @@ const CreateUpdatePropertyListing = () => {
 
               <DateInput
                 label="Contract date"
-                required={false} // This will make the field optional
+                required={false}
                 control={control}
                 name="contractDate"
                 errors={errors}
@@ -1152,7 +1004,7 @@ const CreateUpdatePropertyListing = () => {
 
               <DateInput
                 label="Offer date (if any)"
-                required={false} // This will make the field optional
+                required={false}
                 control={control}
                 name="offerDate"
                 errors={errors}
@@ -1194,19 +1046,8 @@ const CreateUpdatePropertyListing = () => {
                 register={register}
                 name="listingStatus"
                 errors={errors}
-                // options={[
-                //   { value: "Available", label: "Available" },
-                //   { value: "Cond.sale/Pending", label: "Cond.sale/Pending" },
-                //   { value: "Expired", label: "Expired" },
-                //   { value: "Firm sale/Pending", label: "Firm sale/Pending" },
-                //   { value: "Off Market", label: "Off Market" },
-                //   { value: "Rented/Leased", label: "Rented/Leased" },
-                //   { value: "Sold/Closed", label: "Sold/Closed" },
-                //   { value: "Withdrawn", label: "Withdrawn" },
-                // ]}
                 options={[
                   { value: "New", label: "New" },
-                  // { value: "listed", label: "Listed" },
                   { value: "sold", label: "Sold" },
                   { value: "leased", label: "Leased" },
                   { value: "terminated", label: "Terminated" },
@@ -1215,7 +1056,6 @@ const CreateUpdatePropertyListing = () => {
                   { value: "expired", label: "Expired" },
                   { value: "dft", label: "DFT" },
                   { value: "Price Change", label: "Price Change" },
-                  // { value: "closed", label: "Closed" },
                   { value: "exclusive", label: "Exclusive" },
                 ]}
               />
@@ -1249,7 +1089,7 @@ const CreateUpdatePropertyListing = () => {
                       id="upload"
                       name="firstPicture"
                       className="file-input hidden"
-                      accept="image/*" // Restrict to image files only
+                      accept="image/*"
                       onChange={handleFileChange}
                       {...register("firstPicture")}
                     />
@@ -1265,7 +1105,6 @@ const CreateUpdatePropertyListing = () => {
             </div>
           </div>
           <div className="flex justify-between my-15 mx-5">
-            {/* Save and Next Button */}
 
             <button
               type="submit"
@@ -1275,7 +1114,6 @@ const CreateUpdatePropertyListing = () => {
               {btnLoading == "save-next" ? <ButtonLoader /> : "Save and Next"}
             </button>
 
-            {/* Save and Exit Button */}
 
             <button
               type="submit"
@@ -1286,7 +1124,6 @@ const CreateUpdatePropertyListing = () => {
               {btnLoading == "save-exit" ? <ButtonLoader /> : "Save and Exit"}
             </button>
 
-            {/* Save as Draft Button */}
             <button
               type="submit"
               onClick={() => setValue("saveBtn", "save-draft")}
@@ -1304,7 +1141,6 @@ const CreateUpdatePropertyListing = () => {
               {btnLoading === "reset" ? <ButtonLoader /> : "Rest Form"}
             </button>
 
-            {/* Cancel Button */}
             <button
               onClick={cancelSubmit}
               type="button"
@@ -1316,7 +1152,6 @@ const CreateUpdatePropertyListing = () => {
         </form>
       </div>
 
-      {/* Form */}
     </div>
   );
 };

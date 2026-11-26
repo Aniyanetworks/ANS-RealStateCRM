@@ -1,5 +1,3 @@
-// Reports — the original ANS Accounting report centre: choose one of 14 reports, filter (dates, status, agent,
-// search), preview, export CSV or PDF; live ledger summary. Data comes from the accounting ledger and ANS RealStateCRM.
 import { useState } from "react";
 import jsPDF from "jspdf";
 import { useLazyAcctGetQuery } from "../../../redux/api/accounting/brokerageAccountingSlice";
@@ -154,7 +152,6 @@ export default function Reports() {
       lines = ((await get("/reports/t4a-working-paper")) || []).map((r: Any) => [r.year, r.name, r.gross, r.fees, r.net, r.count]);
     }
 
-    // Shared filters (same rules as the original): dates, status, agent, free-text search; then money formatting.
     const moneyIdx = headers.map((h, i) => (MONEY.test(h) ? i : -1)).filter((i) => i >= 0);
     const dateIdx = headers.map((h, i) => (DATE.test(h.toLowerCase()) ? i : -1)).filter((i) => i >= 0);
     const statusIdx = headers.map((h, i) => (h.toLowerCase().includes("status") ? i : -1)).filter((i) => i >= 0);

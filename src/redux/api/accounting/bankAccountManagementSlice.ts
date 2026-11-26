@@ -3,7 +3,6 @@ import { api } from "../apiSlice";
 
 const bankAccountApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Create an accounting bank account
     createAccountingBankAccount: builder.mutation({
       query: (data) => ({
         url: "/accounting/bank-accounts-management/create",
@@ -16,7 +15,6 @@ const bankAccountApi = api.injectEndpoints({
       invalidatesTags: ["BankAccountListTag","SingleBankAccountTag"],
     }),
 
-    // Update an accounting bank account
     updateAccountingBankAccount: builder.mutation({
       query: ({ data, uuid }: { data: any; uuid: string }) => ({
         url: `/accounting/bank-accounts-management/update?uuid=${uuid}`,
@@ -29,7 +27,6 @@ const bankAccountApi = api.injectEndpoints({
       invalidatesTags: ["BankAccountListTag", "SingleBankAccountTag"],
     }),
 
-    // Get list of all accounting bank accounts
     getAccountingBankAccounts: builder.query({
       query: () => ({
         url: "/accounting/bank-accounts-management/get",
@@ -41,7 +38,6 @@ const bankAccountApi = api.injectEndpoints({
       providesTags: ["BankAccountListTag"],
     }),
 
-    // Get a specific accounting bank account
     getSpecificAccountingBankAccount: builder.query({
       query: (uuid: string) => ({
         url: `/accounting/bank-accounts-management/get-spacific?uuid=${uuid}`,
@@ -63,7 +59,6 @@ const bankAccountApi = api.injectEndpoints({
       ],
     }),
 
-    // Delete an accounting bank account
     deleteAccountingBankAccount: builder.mutation({
       query: (uuid: string) => ({
         url: `/accounting/bank-accounts-management/delete?uuid=${uuid}`,
@@ -75,7 +70,6 @@ const bankAccountApi = api.injectEndpoints({
       invalidatesTags: ["BankAccountListTag"],
     }),
 
-    // Delete multiple accounting bank accounts
     deleteMultipleAccountingBankAccounts: builder.mutation({
       query: (uuids: string[]) => ({
         url: "/accounting/bank-accounts-management/delete-multiple",

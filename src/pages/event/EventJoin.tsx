@@ -113,14 +113,6 @@ const EventJoin = () => {
                                 <label className="block text-sm font-medium text-gray-700" htmlFor="email">
                                     Phone Number
                                 </label>
-                                {/* <input
-                                    type="text"
-                                    id="phoneNumber"
-                                    {...register("phoneNumber")}
-                                    required
-                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring focus:ring-blue-500"
-                                    placeholder="Enter your phone number"
-                                /> */}
                                 <input
                                     {...register("phoneNumber", {
                                     required: "Phone number is required",

@@ -17,7 +17,6 @@ import { setUser } from "../../redux/slices/userSlice";
 import ButtonLoader from "../loader/buttonLoader";
 import { usePermissions } from "../../utils/permissionUtils";
 
-// set ratio of crop image
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 
@@ -49,35 +48,33 @@ const BasicInfo = () => {
   const [updateBasicInfo] = useUpdateBasicInfoMutation();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; // Safely access the first file
-    if (!file) return; // Return if no file is selected
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       const imageElement = new Image();
-      const imageUrl = reader.result?.toString() || ""; // Safely convert result to string
+      const imageUrl = reader.result?.toString() || "";
       imageElement.src = imageUrl;
 
       imageElement.addEventListener("load", (event: Event) => {
         const { naturalWidth, naturalHeight } =
           event.currentTarget as HTMLImageElement;
 
-        setImageFile(null); // Resetting the file
+        setImageFile(null);
 
         if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
           alert("Image must be at least 1000 x 500 pixels.");
-          return setSelectedImage(""); // Reset the selected image if the dimensions are invalid
+          return setSelectedImage("");
         }
 
-        // Set the selected image if the dimensions are valid
         setSelectedImage(imageUrl);
       });
     });
 
-    reader.readAsDataURL(file); // Read the file as Data URL
+    reader.readAsDataURL(file);
   };
 
-  // crop image
   const onImageLoad = (e: React.ChangeEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget;
     const cropWidthInPercent = (MIN_DIMENSION / width) * 100;
@@ -183,8 +180,6 @@ const BasicInfo = () => {
           </div>
         </div>
 
-        {/* croper start  */}
-        {/* crop imaeg  */}
 
         <div className="">
           {imageFile ? (
@@ -220,20 +215,18 @@ const BasicInfo = () => {
                         <p
                           className="btn-common cursor-pointer"
                           onClick={() => {
-                            // Check if imgRef.current and previewCanvasRef.current are not null
                             if (imgRef.current && previewCanvasRef.current) {
-                              // Ensure crop is defined and use a fallback if needed
                               if (crop) {
                                 const croppedArea = convertToPixelCrop(
-                                  crop, // Safe to use because we've checked it
+                                  crop,
                                   imgRef.current.width,
                                   imgRef.current.height
                                 );
 
                                 setCanvasPreview(
-                                  imgRef.current, // HTMLImageElement
-                                  previewCanvasRef.current, // HTMLCanvasElement
-                                  croppedArea // Should be of the correct type
+                                  imgRef.current,
+                                  previewCanvasRef.current,
+                                  croppedArea
                                 );
 
                                 const dataUrl =

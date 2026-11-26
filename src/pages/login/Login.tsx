@@ -26,7 +26,6 @@ const Login = () => {
   const [loginData, setLoginData] = useState({});
   const { firstValue, secondValue, result, operator, resetCaptcha } = useCaptcha();
 
-  // redux
   const [userLogin] = useUserLoginMutation();
   const [resendOtp] = useResendOtpMutation();
   const dispatch = useAppDispatch();
@@ -45,23 +44,19 @@ const Login = () => {
   const onSubmit = async (data: any) => {
     const formData = new FormData();
 
-    // Append all fields to FormData
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
 
     const res = (await userLogin(formData)) as any;
 
-    // Store login data for potential OTP verification
     setLoginData(data);
 
     if (res?.data?.requiresOtp) {
-      // Show OTP modal if OTP is required
       setResponseData(res.data);
       setIsModalOtpVisible(true);
       toast.success("OTP sent to your phone number");
     } else if (res?.data?.data?.user) {
-      // Successful login
       handleSuccessfulLogin(res.data);
     }
     else if (res.error) {
@@ -77,12 +72,10 @@ const Login = () => {
     try {
       const formData = new FormData();
       
-      // Add original login data
       Object.keys(loginData).forEach((key) => {
         formData.append(key, loginData[key]);
       });
       
-      // Add OTP
       formData.append("otp", otpCode);
 
       const res = (await userLogin(formData)) as any;
@@ -98,7 +91,6 @@ const Login = () => {
     }
   };
 
-  // Auto-verify when OTP length reaches 6
   const handleSuccessfulLogin = useCallback((response: any) => {
     dispatch(setAccessToken(response?.token));
     dispatch(setUser(response.data.user));
@@ -118,12 +110,10 @@ const Login = () => {
         try {
           const formData = new FormData();
           
-          // Add original login data
           Object.keys(loginData).forEach((key) => {
             formData.append(key, loginData[key]);
           });
           
-          // Add OTP
           formData.append("otp", otpCode);
 
           const res = (await userLogin(formData)) as any;
@@ -158,22 +148,17 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
-      {/* Left Section */}
       <Branding />
 
-      {/* Right Section (Login Form) */}
       <div className="sm:w-[75%] p-8 flex flex-col">
         <div className="flex items-center justify-center flex-1">
           <div className="w-full max-w-sm">
-            {/* Login Form -------------------------------------*/}
             <h1>Log in to your account</h1>
 
-            {/* Email/Password Login */}
             <form
               className="flex mt-5 flex-col gap-4"
               onSubmit={handleSubmit(onSubmit)}
             >
-              {/* email ----------------------------------------------*/}
               <div className="">
                 <label className="block mb-2 text-[15px]">Email</label>
                 <input
@@ -188,7 +173,6 @@ const Login = () => {
                 )}
               </div>
 
-              {/* password -------------------------------------------*/}
               <div className="">
                 <label className="block mb-2 text-[15px]">Password</label>
                 <div>
@@ -214,7 +198,6 @@ const Login = () => {
                 </div>
               </div>
 
-              {/* captcha */}
               <div>
                 <Captcha
                   firstValue={firstValue}
@@ -248,7 +231,6 @@ const Login = () => {
                 ) : null}
               </div>
 
-              {/* remember me --------------------------------------------- */}
               <div className="flex justify-between">
                 <label
                   htmlFor="registration"
@@ -296,7 +278,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* SMS OTP Verification Modal */}
       <Modal
         title="SMS OTP Verification"
         open={isModalOtpVisible}

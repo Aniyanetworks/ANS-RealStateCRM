@@ -8,7 +8,6 @@ interface AgentStepsProps {
 
 const AgentSteps: React.FC<AgentStepsProps> = ({ active, uuid }) => {
     
-    // Define your steps
     const steps = [
         {
             label: "Agent Information",

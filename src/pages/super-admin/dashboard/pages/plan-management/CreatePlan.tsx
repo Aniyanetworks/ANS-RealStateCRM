@@ -22,7 +22,6 @@ interface PlanItem {
 }
 
 const CreatePlan = () => {
-  // Initialize the state for the plan's main properties
   const [planName, setPlanName] = useState<string>("");
   const [planType, setPlanType] = useState<string>("Yearly");
   const [planItems, setPlanItems] = useState<PlanItem[]>([]);
@@ -30,7 +29,6 @@ const CreatePlan = () => {
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-  // Initialize with dummy data
   useEffect(() => {
     const dummyData: PlanItem[] = [
       {
@@ -74,11 +72,9 @@ const CreatePlan = () => {
       },
     ];
 
-    // Set the initial dummy data to planItems
     setPlanItems(dummyData);
   }, []);
 
-  // Handle adding new plan item
   const handleAddPlanItem = () => {
     setPlanItems([
       ...planItems,
@@ -94,13 +90,11 @@ const CreatePlan = () => {
     ]);
   };
 
-  // Handle removing plan item
   const handleRemovePlanItem = (index: number) => {
     const newPlanItems = planItems.filter((_, i) => i !== index);
     setPlanItems(newPlanItems);
   };
 
-  // Handle plan item changes (name, value, etc.)
   const handlePlanItemChange = <K extends keyof PlanItem>(
     index: number,
     field: K,
@@ -111,14 +105,12 @@ const CreatePlan = () => {
     setPlanItems(newPlanItems);
   };
 
-  // Handle adding subitem
   const handleAddSubItem = (itemIndex: number) => {
     const newPlanItems = [...planItems];
     newPlanItems[itemIndex].planSubItems.push({ name: "", value: 0 });
     setPlanItems(newPlanItems);
   };
 
-  // Handle removing subitem
   const handleRemoveSubItem = (itemIndex: number, subItemIndex: number) => {
     const newPlanItems = [...planItems];
     newPlanItems[itemIndex].planSubItems = newPlanItems[
@@ -127,7 +119,6 @@ const CreatePlan = () => {
     setPlanItems(newPlanItems);
   };
 
-  // Handle subitem changes (name, value, etc.)
   const handleSubItemChange = <K extends keyof PlanSubItem>(
     itemIndex: number,
     subItemIndex: number,
@@ -171,7 +162,6 @@ const CreatePlan = () => {
             Create a New Plan
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 px-4 pt-4 gap-5">
-            {/* Plan Name Input */}
             <div className="mb-4">
               <input
                 id="planName"
@@ -184,7 +174,6 @@ const CreatePlan = () => {
               />
             </div>
 
-            {/* Plan Type Selection */}
             <div className="mb-4">
               <select
                 id="planType"
@@ -202,7 +191,6 @@ const CreatePlan = () => {
           </div>
         </div>
 
-        {/* Plan Items Section */}
         <h3 className="text-lg font-semibold mb-2 mt-5">Plan Items</h3>
         <div className="space-y-5 ">
           {planItems.map((item, index) => (
@@ -255,7 +243,6 @@ const CreatePlan = () => {
                 </button>
               </div>
               <div className="grid grid-cols-3 my-5 gap-5 px-4">
-                {/* Item Name */}
                 <div>
                   <input
                     id={`itemName-${index}`}
@@ -270,7 +257,6 @@ const CreatePlan = () => {
                   />
                 </div>
 
-                {/* Item Type Selection */}
                 <div>
                   <select
                     id={`itemType-${index}`}
@@ -290,7 +276,6 @@ const CreatePlan = () => {
                   </select>
                 </div>
 
-                {/* Value Field */}
                 {item.itemType !== "Commission" && (
                   <div>
                     <input
@@ -312,7 +297,6 @@ const CreatePlan = () => {
                 )}
               </div>
 
-              {/* Commission Fields */}
               {item.itemType === "Commission" && (
                 <div className="px-4">
                   <h5 className="text-md font-semibold text-gray-700 mb-2">
@@ -367,7 +351,6 @@ const CreatePlan = () => {
               )}
 
               <div className="mx-5 mb-5 bg-white rounded-xl shadow-lg border border-gray-300">
-                {/* Subitems */}
                 <h5 className="text-md px-4 py-2 rounded-t-xl bg-[#EEEEEE] font-semibold mb-2">
                   Sub Items
                 </h5>

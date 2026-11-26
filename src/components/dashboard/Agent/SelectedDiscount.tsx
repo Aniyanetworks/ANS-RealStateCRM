@@ -3,9 +3,9 @@ import React from 'react';
 type DiscountItem = {
   discountItem: string;
   discountType: 'Date Range' | 'Once' | 'Weekly' | 'Monthly' | 'Yearly';
-  startDate?: string; // Date string in case of Date Range
-  endDate?: string;   // Date string in case of Date Range
-  duration?: number;  // For Weekly/Monthly/Yearly discounts
+  startDate?: string;
+  endDate?: string;
+  duration?: number;
   discountMethod: 'Percentage' | 'Amount';
   discountValue: number;
 };
@@ -25,7 +25,6 @@ interface SelectedDiscountProps {
 }
 
 const SelectedDiscount: React.FC<SelectedDiscountProps> = ({ agentAccount }) => {
-  // Helper function to get the duration text with proper plural form
   const getDurationText = (duration: number, type: string) => {
     const durationTypes = {
       'Weekly': duration === 1 ? 'Week Discount ' : 'Weeks Discount ',

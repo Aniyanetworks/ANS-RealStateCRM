@@ -100,21 +100,10 @@ const agentManagementApi = api.injectEndpoints({
       },
       providesTags: ["getAgentReportDataTag", "getAgentListDataTag"],
     }),
-    // getTopAgentReportData: builder.query({
-    //   query: (filterMonth = "All Time") => ({
-    //     url: `/superadmin/agent-reports/top-agent-list?filterMonth=${filterMonth}`,
-    //     method: "GET",
-    //     headers: {
-    //       authorization: `Bearer ${getEnvUrls().accessToken}`,
-    //     },
-    //   }),
-    //   providesTags: ["getAgentReportDataTag", "getTradeSheetListDataTag"],
-    // }),
     getTopAgentReportData: builder.query({
       query: (params = "All Time") => {
         const queryParams = new URLSearchParams();
 
-        // If params is an object with custom date range and/or branchIds
         if (typeof params === "object" && params !== null) {
           const { filterMonth, startDate, endDate, branchIds } = params;
 
@@ -128,13 +117,11 @@ const agentManagementApi = api.injectEndpoints({
             queryParams.append("filterMonth", "All Time");
           }
 
-          // Add branchIds if provided (for super admin filtering)
           if (branchIds && (Array.isArray(branchIds) ? branchIds.length > 0 : branchIds)) {
             const branchIdsStr = Array.isArray(branchIds) ? branchIds.join(",") : branchIds;
             queryParams.append("branchIds", branchIdsStr);
           }
         } else {
-          // If params is a string (preset filter) or undefined
           queryParams.append("filterMonth", params || "All Time");
         }
 
@@ -307,7 +294,6 @@ const agentManagementApi = api.injectEndpoints({
       invalidatesTags: ["getAgentListDataTag", "getSingleAgentDataTag"],
     }),
 
-    // remove the file
     removeAgentFile: builder.mutation({
       query: ({ fileName, id }: { fileName: any; id: any }) => {
         return {

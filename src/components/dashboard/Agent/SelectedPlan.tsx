@@ -27,7 +27,7 @@ const SelectedPlansDisplay: React.FC<SelectedPlansDisplayProps> = ({ plan }) => 
           <p className="font-bold">Selected Plans</p>
           <ul className="space-y-4 mt-3">
             <li
-              key={plan.id} // Assuming each plan has a unique ID
+              key={plan.id}
               className={`border border-gray-300 rounded-md p-4 ${
                 plan.id ? "bg-gray-50 hover:bg-gray-100" : ""
               }`}

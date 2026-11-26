@@ -21,12 +21,9 @@ const AgreementPageFive = () => {
       toast.success("Agreement save successfully!");
       navigate('/agent/agent-agreeement-page-six', { replace: true });
     }
-    // toast.success("Application save successfully!");
-    // navigate('/agent-information-submit', { replace: true });
     
   }
 
-  // Function to format the date to "DD Month YYYY"
   const formatDate = (date:any) => {
     const options = { day: '2-digit', month: 'long', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
@@ -41,18 +38,17 @@ const AgreementPageFive = () => {
       salesperson: {
         name: "Mahnaz Rahman",
         signature: "Mahnaz Rahman",
-        date: formatDate(currentDate) // Set current date
+        date: formatDate(currentDate)
       },
       broker: {
         signature: getFileUrl(user.signature),
-        date: formatDate(currentDate) // Set current date
+        date: formatDate(currentDate)
       }
     }
   };
 
   return (
     <div className="max-w-[850px] mx-auto p-8 bg-white">
-      {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 border border-gray-300">
           <img
@@ -67,7 +63,6 @@ const AgreementPageFive = () => {
         </div>
       </div>
 
-      {/* Legal Text */}
       <div className="space-y-6 text-sm">
         <p className="mb-6">
           Any such notice or communication shall be deemed received on the
@@ -92,9 +87,7 @@ const AgreementPageFive = () => {
           have duly signed the Agreement as of the date indicated.
         </p>
 
-        {/* Signature Section */}
         <div className="space-y-12 mt-16">
-          {/* First Row */}
           <div className="grid grid-cols-[1fr_2fr_1fr] gap-8 items-end">
             <div className="pt-1">
               <div className="h-12 flex items-center justify-center">
@@ -120,7 +113,6 @@ const AgreementPageFive = () => {
             </div>
           </div>
 
-          {/* Second Row */}
           <div className="grid grid-cols-[1fr_2fr_1fr] gap-8 items-end">
             <div className="pt-1">
               <div className="h-12 flex items-center justify-center">
@@ -146,7 +138,6 @@ const AgreementPageFive = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="flex justify-between items-center mt-12">
         <p className="text-sm">
           Page {data.pageNumber} of {data.totalPages}

@@ -1,5 +1,4 @@
 import Select from 'react-select';
-// import { BrokerageDisplay } from './BrokerageDisplay';
 
 
 interface Brokerage {
@@ -32,7 +31,6 @@ export const BrokerageSelector = ({
     onSelect,
     onCreateClick,
 }: BrokerageSelectorProps) => {
-    // console.log('selectedBrokerage',selectedBrokerage);
     return (
         <div className="flex flex-col gap-2">
             <label>
@@ -56,9 +54,6 @@ export const BrokerageSelector = ({
                     +
                 </button>
             </div>
-            {/* {selectedBrokerage && (
-                <BrokerageDisplay brokerage={selectedBrokerage} />
-            )} */}
         </div>
     );
 }; 

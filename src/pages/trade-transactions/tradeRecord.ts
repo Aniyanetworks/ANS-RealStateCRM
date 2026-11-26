@@ -1,4 +1,3 @@
-// Trade Record preview / print (bodv's "Trade Record: Preview / Save / Print") from the trade sheet data.
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { calcCommission } from "./commission";
 import { listingSellers } from "./TransactionEditor";

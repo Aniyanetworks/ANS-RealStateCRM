@@ -90,10 +90,8 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
 }) => {
   const tableRef = useRef<HTMLDivElement | null>(null);
 
-  // Transform data to create separate rows for each tax component
   const expandedData: ExpandedRowData[] = [];
   
-  // Process trade data
   filteredData.forEach((item) => {
     if (item.agentCommissionTax && Number(item.agentCommissionTax)) {
       expandedData.push({
@@ -122,7 +120,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     }
   });
 
-  // Process marketplace data
   filteredMarketplaceData.forEach((item) => {
     if (item.tax && Number(item.tax)) {
       expandedData.push({
@@ -138,7 +135,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     }
   });
 
-  // Process expense data
   filteredExpenseData.forEach((item) => {
     if (item.tax && Number(item.tax)) {
       expandedData.push({
@@ -146,15 +142,14 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
         type: "Expense",
         reference: item.invoice_number || item.expense_id,
         createdAt: item.transactionDate,
-        earned: "0.00", // Expenses do not contribute to Earned
-        itc: item.tax, // For expenses, ITC equals the tax amount
+        earned: "0.00",
+        itc: item.tax,
         parentId: item.id,
         source: 'expense'
       });
     }
   });
 
-  // Calculate summary statistics
   const totalHst = expandedData
     .reduce((sum, item) => sum + Number(item.earned || 0), 0)
     .toFixed(2);
@@ -174,7 +169,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
       .toFixed(2);
   };
 
-  // Prepare summary data for the table
   const summaryData: SummaryData[] = [
     {
       key: '1',
@@ -258,7 +252,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     const ws = XLSX.utils.json_to_sheet(exportData);
     const wb = XLSX.utils.book_new();
 
-    // Add date range label
         if (dateRangeLabel) {
           const dateRangeText = String(dateRangeLabel.props.children).replace(/,\s*/g, '');
           XLSX.utils.sheet_add_aoa(ws, [[`Source: ${dateRangeText}`]], { origin: "A1" });
@@ -279,23 +272,19 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(fontSize);
 
-    // Add logo
     const logoX = (pageWidth / 2) - 10;
     const logoY = 5;
     const logoWidth = 20;
     const logoHeight = 20;
     pdf.addImage(logo1, "PNG", logoX, logoY, logoWidth, logoHeight);
     
-    // Add title
     pdf.text("HST Summary Report", pageWidth / 2, startY, { align: "center" });
 
-    // Add date range label
     if (dateRangeLabel) {
       const dateRangeText = `${String(dateRangeLabel.props.children).replace(/,\s*/g, '')}`;
       pdf.text(dateRangeText, pageWidth / 2, startY + lineHeight, { align: "center" });
     }
   
-    // Add table headers
     let currentY = startY + 3 * lineHeight;
     pdf.setFontSize(12);
     pdf.setFont("helvetica", "bold");
@@ -303,15 +292,12 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     pdf.text("Amount", pageWidth - margin - 20, currentY, { align: "right" });
     currentY += lineHeight;
 
-    // Add summary rows
     pdf.setFont("helvetica", "normal");
     
-    // Total HST Earned row
     pdf.text("Total HST Earned", margin, currentY);
     pdf.text(`$${formatNumberWithCommasAndDecimals(totalHst)}`, pageWidth - margin - 20, currentY, { align: "right" });
     currentY += lineHeight;
     
-    // Breakdown of HST Earned
     pdf.setFontSize(10);
     pdf.text(`From Trade: $${formatNumberWithCommasAndDecimals(totalBySource('trade', 'earned'))}`, margin + 5, currentY);
     currentY += lineHeight;
@@ -320,13 +306,11 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     pdf.text(`From Expense: $${formatNumberWithCommasAndDecimals(totalBySource('expense', 'earned'))}`, margin + 5, currentY);
     currentY += lineHeight;
     
-    // Total HST I.T.C row
     pdf.setFontSize(12);
     pdf.text("Total HST I.T.C", margin, currentY);
     pdf.text(`$${formatNumberWithCommasAndDecimals(totalItc)}`, pageWidth - margin - 20, currentY, { align: "right" });
     currentY += lineHeight;
     
-    // Breakdown of HST I.T.C
     pdf.setFontSize(10);
     pdf.text(`From Trade: $${formatNumberWithCommasAndDecimals(totalBySource('trade', 'itc'))}`, margin + 5, currentY);
     currentY += lineHeight;
@@ -335,7 +319,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     pdf.text(`From Expense: $${formatNumberWithCommasAndDecimals(totalBySource('expense', 'itc'))}`, margin + 5, currentY);
     currentY += lineHeight;
     
-    // Net Remit row
     pdf.setFontSize(12);
     pdf.text("Net Remit", margin, currentY);
     pdf.text(`$${formatNumberWithCommasAndDecimals(totalNetRemit)}`, pageWidth - margin - 20, currentY, { align: "right" });

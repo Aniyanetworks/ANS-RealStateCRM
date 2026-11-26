@@ -48,7 +48,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
   items,
   selectedType,
 }) => {
-  // --- helper functions unchanged ---
   const cleanText = (html: string): string => {
     if (!html) return '';
     return html
@@ -120,7 +119,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "8px 12px" }}>
-      {/* Search Input */}
       <div className='flex gap-3' style={{ position: 'relative', marginBottom: '8px' }}>
         <Input
           prefix={<SearchOutlined style={{ color: '#999', fontSize: '12px' }} />}
@@ -138,7 +136,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
           allowClear
         />
 
-        {/* Suggestions */}
         {showSuggestions && searchTerm && suggestions.length > 0 && (
           <Card
             size="small"
@@ -188,12 +185,6 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
         )}
       </div>
 
-      {/* Categories */}
-      {/* <div style={{ textAlign: 'center', marginBottom: '4px' }}>
-        <Text strong style={{ fontSize: '12px' }}>
-          Browse Categories
-        </Text>
-      </div> */}
       <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
         {typeCards.map((card) => (
           <div

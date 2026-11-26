@@ -71,7 +71,6 @@ const ApiTokens = () => {
         </p>
       </div>
 
-      {/* New token reveal */}
       {newToken && (
         <div className="border border-green-400 bg-green-50 rounded-md p-4 space-y-2">
           <p className="text-sm font-semibold text-green-700">
@@ -97,7 +96,6 @@ const ApiTokens = () => {
         </div>
       )}
 
-      {/* Generate form */}
       <div className="space-y-2">
         <h3 className="text-sm font-semibold text-gray-700">Generate New Token</h3>
         <div className="flex gap-3 items-start">
@@ -121,7 +119,6 @@ const ApiTokens = () => {
         </div>
       </div>
 
-      {/* Token list */}
       <div>
         <h3 className="text-sm font-semibold text-gray-700 mb-3">Your Tokens</h3>
         {isLoading ? (
@@ -161,7 +158,6 @@ const ApiTokens = () => {
         )}
       </div>
 
-      {/* Usage guide */}
       <div className="border-t pt-4">
         <h3 className="text-sm font-semibold text-gray-700 mb-2">How to Use</h3>
         <p className="text-xs text-gray-500 mb-2">

@@ -7,7 +7,7 @@ interface Plan {
 }
 
 interface SelectedAddonsPlansProps {
-  optionalPlans: Plan[]; // Array of selected addon plans
+  optionalPlans: Plan[];
 }
 
 const SelectedAddonsPlans: React.FC<SelectedAddonsPlansProps> = ({ optionalPlans }) => {

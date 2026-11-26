@@ -1,5 +1,3 @@
-// Employee console screens (My Schedule, My Attendance Report, Open Shifts, Shift Tasks) and the
-// management Shift Task Lists.
 import { useState } from "react";
 import { useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { useTcAction, useTimeClock } from "../TimeClockContext";

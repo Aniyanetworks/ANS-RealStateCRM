@@ -50,7 +50,6 @@ const AgentSelectedPlanDiscountAddon: React.FC<AgentDocumentProps> = ({
   const [agentAccountInfo, setAgentAccount] = useState<any>(null);
   const [agentAccountInfoForFile, setAgentAccountForFile] = useState<any>(null);
 
-  // Fetch and manage other documents
   const { data: agentOtherDocuments, refetch: refetchOtherDocuments } =
     useGetAgentOtherDocumentsQuery(agentAccount?.id);
 
@@ -58,7 +57,6 @@ const AgentSelectedPlanDiscountAddon: React.FC<AgentDocumentProps> = ({
   const [removeAgentFile] = useRemoveAgentFileMutation();
   const [removeOtherFile] = useRemoveOtherFileMutation();
 
-  // Refs for file inputs
   const fileRefs: Record<FileKeys, React.RefObject<HTMLInputElement>> = {
     nationalIdentity: useRef<HTMLInputElement>(null),
     recoLicence: useRef<HTMLInputElement>(null),
@@ -67,7 +65,6 @@ const AgentSelectedPlanDiscountAddon: React.FC<AgentDocumentProps> = ({
     others: useRef<HTMLInputElement>(null),
   };
 
-  // File fields
   const fileFields: { key: FileKeys; label: string }[] = [
     { label: "Government Issued ID", key: "nationalIdentity" },
     {
@@ -78,7 +75,6 @@ const AgentSelectedPlanDiscountAddon: React.FC<AgentDocumentProps> = ({
     { label: "Agreement File", key: "agreementFile" },
   ];
 
-  // Add these new states for document preview
     const { data: optionalPlanData,isFetching } = useGetOptionalPlanListDataQuery("");
   const [selectedDocument, setSelectedDocument] = useState<any>(null);
   const [previewCollapsed, setPreviewCollapsed] = useState(false);
@@ -86,9 +82,7 @@ const AgentSelectedPlanDiscountAddon: React.FC<AgentDocumentProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [optionalPlans, setOptionalPlans] = useState<OptionalPlan[]>([]);
   const [plan, setPlan] = useState<Plan | null>(null);
-  // Sync agentAccount prop to state
   useEffect(() => {
-    console.log('agentAccount',agentAccount)
     if (agentAccount) {
       setAgentAccount(agentAccount);
       setPlan(agentAccount?.plan);
@@ -108,14 +102,12 @@ const AgentSelectedPlanDiscountAddon: React.FC<AgentDocumentProps> = ({
 
 
 
-  // Add document preview handler
   const handleDocumentPreview = (document: any) => {
     setSelectedDocument(document);
     setLoading(true);
     setError(null);
   };
 
-  // Add document download handler
   const handleDocumentDownload = async (filePath: string) => {
     try {
       const response = await fetch(`${baseUrl}${filePath}`);

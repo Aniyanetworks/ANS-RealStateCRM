@@ -11,7 +11,6 @@ interface ShareLawyerProps {
 const ShareLawyer: React.FC<ShareLawyerProps> = ({ register, errors, watch, states, cities }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-      {/* Lawyer Name */}
       <div className="flex flex-col gap-2">
         <label>
           First Name <span className="text-red-500 ml-1">*</span>
@@ -57,7 +56,6 @@ const ShareLawyer: React.FC<ShareLawyerProps> = ({ register, errors, watch, stat
         {errors.lawyerFirmName && <p className="text-red-500 text-sm">{errors.lawyerFirmName.message as string}</p>}
       </div>
 
-      {/* Address */}
       <div className="flex flex-col gap-2">
         <label>
           Address <span className="text-red-500 ml-1">*</span>
@@ -118,7 +116,6 @@ const ShareLawyer: React.FC<ShareLawyerProps> = ({ register, errors, watch, stat
         {errors.cityId && <p className="text-red-500 text-sm">{errors.cityId.message as string}</p>}
       </div>
 
-      {/* Other Fields */}
       {[
         { name: "postalZipCode", label: "Postal Code", required: "Postal code is required" },
         { name: "email", label: "Email", required: "Email is required" },

@@ -80,7 +80,6 @@ const { Option } = Select;
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
 
-// Status options based on campaign type
 const BUYER_TENANT_STATUS_OPTIONS = [
   { value: "New", label: "New" },
   { value: "Attempted Contact", label: "Attempted Contact" },
@@ -160,7 +159,6 @@ const LeadsList = () => {
   const [tableData, setTableData] = useState<Lead[]>([]);
   const [campaignData, setCampaignData] = useState<any>(null);
   const { user } = useSelector((state: any) => state.user);
-  // const { data, isLoading, refetch } = useGetLeadsByAgentQuery(user?.agentAccount?.[0]?.id);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUUID, setSelectedUUID] = useState<string | null>(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -182,7 +180,6 @@ const LeadsList = () => {
   const [changeLeadStatus] = useChangeLeadStatusMutation();
   const [isDeleteModalVisible, setIsModalVisible] = useState(false);
   const { data, isLoading, refetch } = useGetLeadsByCampaignQuery(campaignUuid);
-  // const [searchText, setSearchText] = useState("");
   const [sendInvitation] = useSendInvitationMutation();
   const [leadToClient] = useLeadToClientMutation();
   const [isAssignModalVisible, setIsAssignModalVisible] = useState(false);
@@ -215,10 +212,8 @@ const LeadsList = () => {
   const [moveLeadsToCampaign] = useMoveLeadsToCampaignMutation();
   const { data: campaignsData } = useGetCampaignsQuery("");
 
-  // Fetch recent activity to get last activity dates
-  const { data: recentActivityData } = useGetRecentActivityQuery(1000); // Get enough to cover all leads
+  const { data: recentActivityData } = useGetRecentActivityQuery(1000);
 
-  // Update URL when search text changes
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     if (searchText) {
@@ -238,12 +233,10 @@ const LeadsList = () => {
       }));
       setTableData(leadsWithKeys);
 
-      // Extract dynamic fields from campaign structure
       if (data.data.campaign?.formStructure) {
         const fields = extractDynamicFields(data.data.campaign.formStructure);
         setCampaignFields(fields);
       } else if (leadsWithKeys.length > 0) {
-        // Fallback: extract from first lead if no campaign structure
         const fields = extractDynamicFieldsFromLead(leadsWithKeys[0]);
         setCampaignFields(fields);
       }
@@ -254,7 +247,6 @@ const LeadsList = () => {
     }
   }, [data]);
 
-  // Helper function to extract dynamic fields from campaign form structure
   const extractDynamicFields = (formStructure: any): string[] => {
     const fields: string[] = [];
 
@@ -273,7 +265,6 @@ const LeadsList = () => {
     return fields;
   };
 
-  // Helper function to extract dynamic fields from a lead
   const extractDynamicFieldsFromLead = (lead: Lead): string[] => {
     const fields: string[] = [];
     const standardFields = [
@@ -288,7 +279,6 @@ const LeadsList = () => {
 
     let rowData = lead.rows?.[0]?.data || {};
 
-    // Handle nested structure
     if (Array.isArray(rowData.rows) && rowData.rows[0]?.data) {
       rowData = rowData.rows[0].data;
     }
@@ -303,7 +293,6 @@ const LeadsList = () => {
     return fields;
   };
 
-  // Check if field is standard
   const isStandardField = (fieldName: string): boolean => {
     const standardFields = [
       "name",
@@ -337,7 +326,6 @@ const LeadsList = () => {
       customFields: {},
     };
 
-    // Initialize dynamic fields with empty values
     campaignFields.forEach((fieldName) => {
       defaultValues.customFields[fieldName] = "";
     });
@@ -404,10 +392,8 @@ const LeadsList = () => {
         agentAssigned: record.agentAssigned || null,
       };
 
-      // Extract dynamic fields deeply from rows structure
       let dynamicData = record.rows?.[0]?.data || {};
 
-      // If nested rows exist, dig deeper
       if (
         Array.isArray(dynamicData.rows) &&
         dynamicData.rows.length > 0 &&
@@ -444,21 +430,19 @@ const LeadsList = () => {
   );
 
   const handleAgentAssignment = async (value: any, record: any) => {
-    // Preserve existing dynamic fields
     let existingRowData = record.rows?.[0]?.data || {};
     if (Array.isArray(existingRowData.rows) && existingRowData.rows[0]?.data) {
       existingRowData = existingRowData.rows[0].data;
     }
 
-    // âœ… Include static fields from record
     const updateData = {
       agentAssigned: value,
       leadDate: new Date().toISOString(),
-      name: record.name, // âœ… keep existing name
-      phone: record.phone, // âœ… keep existing phone
-      email: record.email, // âœ… keep existing email
-      platform: record.platform, // if you need
-      status: record.status, // if you need
+      name: record.name,
+      phone: record.phone,
+      email: record.email,
+      platform: record.platform,
+      status: record.status,
       rows: [
         {
           id: record.rows?.[0]?.id,
@@ -497,18 +481,15 @@ const LeadsList = () => {
         return;
       }
 
-      // âœ… Get all unique dynamic fields from ALL leads, not just the first one
       const allDynamicFields = new Set<string>();
 
       tableData.forEach((lead) => {
         let rowData = lead.rows?.[0]?.data || {};
 
-        // Handle nested structure
         if (Array.isArray(rowData.rows) && rowData.rows[0]?.data) {
           rowData = rowData.rows[0].data;
         }
 
-        // Collect all dynamic field names
         Object.keys(rowData).forEach((fieldName) => {
           const lower = fieldName.toLowerCase();
           if (
@@ -528,10 +509,8 @@ const LeadsList = () => {
         });
       });
 
-      // Convert Set to Array for mapping
       const dynamicFieldNames = Array.from(allDynamicFields);
 
-      // Generate dynamic columns
       const dynamicCols = dynamicFieldNames.map((fieldName) => ({
         title: fieldName,
         dataIndex: fieldName,
@@ -606,7 +585,6 @@ const LeadsList = () => {
         },
       }));
 
-      // --- 4ï¸âƒ£ Fixed columns (Lead Date, Agent, Status, Action) ---
       const fixedCols = [
         {
           title: "Lead Assign Date",
@@ -784,7 +762,6 @@ const LeadsList = () => {
               allowClear
               showSearch
               optionFilterProp="children"
-              // âœ… Use your reusable function instead of inline update
               onChange={(value) => handleAgentAssignment(value, record)}
               filterOption={(input, option) =>
                 (option?.children ?? "")
@@ -802,7 +779,6 @@ const LeadsList = () => {
             </Select>
           ),
 
-          // --- your existing filterDropdown, onFilter, sorter remain unchanged ---
           filterDropdown: ({
             setSelectedKeys,
             selectedKeys,
@@ -1001,7 +977,6 @@ const LeadsList = () => {
           key: "status",
           width: 200,
           render: (text: any, record: any) => {
-            // Determine which status options to show based on campaign type
             const statusOptions =
               campaignData?.typeOfCampaign === "Seller" ||
               campaignData?.typeOfCampaign === "Landlord"
@@ -1141,13 +1116,11 @@ const LeadsList = () => {
         },
       ];
 
-      // --- 5ï¸âƒ£ Set final columns (dynamic first, then fixed) ---
       setDynamicColumns([...dynamicCols, ...fixedCols]);
     },
     [tableData, agentList]
   );
 
-  // Add this helper function
   const getActionColor = (action: string) => {
     switch (action) {
       case "created":
@@ -1166,7 +1139,6 @@ const LeadsList = () => {
         return "default";
     }
   };
-  // Base columns that don't depend on dynamic fields
   const baseColumns = useMemo<TableColumnsType<Lead>>(() => {
     const allColumns = [
       {
@@ -1362,9 +1334,6 @@ const LeadsList = () => {
       },
     ];
 
-    // Safely check if data exists and is an array
-    // const hasLeadDate = Array.isArray(data) && data.some(record => record.leadDate != null);
-    // const hasPlatform = Array.isArray(data) && data.some(record => record.platform != null);
 
     return allColumns.filter((column) => {
       if (column.key === "platform") {
@@ -1372,11 +1341,10 @@ const LeadsList = () => {
           Array.isArray(data) && data.some((record) => record.platform != null)
         );
       }
-      return true; // Always show mandatory columns (name, phone, email, leadDate)
+      return true;
     });
   }, [user.userType, changeLeadStatus, refetch, handleEdit, data]);
 
-  // Combine base columns with dynamic columns
   const columns = useMemo(() => {
     return [...baseColumns, ...dynamicColumns];
   }, [baseColumns, dynamicColumns]);
@@ -1387,9 +1355,7 @@ const LeadsList = () => {
     }
   }, [tableData, generateDynamicColumns]);
 
-  // ... (keep all your existing handler functions)
   const handleNotesClick = (record: Lead) => {
-    // Flatten the data structure before passing to the modal
     let flatData = record.rows?.[0]?.data || {};
 
     if (Array.isArray(flatData.rows) && flatData.rows[0]?.data) {
@@ -1398,7 +1364,7 @@ const LeadsList = () => {
 
     setSelectedLeadForNotes({
       ...record,
-      flatData, // Add the flattened data to the record
+      flatData,
     });
     setIsNotesModalOpen(true);
   };
@@ -1426,7 +1392,6 @@ const LeadsList = () => {
       setIsAssigning(false);
     }
   };
-  // Add this function before the generateDynamicColumns function
   const getLastActivity = useCallback(
     (leadId: number) => {
       if (!recentActivityData?.data?.logs) return null;
@@ -1437,7 +1402,6 @@ const LeadsList = () => {
 
       if (leadActivities.length === 0) return null;
 
-      // Activities are already sorted by createdAt desc (latest first)
       return leadActivities[0];
     },
     [recentActivityData]
@@ -1503,7 +1467,6 @@ const LeadsList = () => {
       setIsMoving(true);
       setMoveProgress(0);
 
-      // Simulate progress
       const progressInterval = setInterval(() => {
         setMoveProgress((prev) => {
           if (prev >= 90) {
@@ -1529,7 +1492,6 @@ const LeadsList = () => {
         });
         toast.success(response.message);
         
-        // Wait a moment to show completion, then close and refetch
         setTimeout(async () => {
           await refetch();
           setIsMoveModalVisible(false);
@@ -1597,9 +1559,7 @@ const LeadsList = () => {
 
       if (response.status) {
         toast.success(response.message);
-        // Ensure dates are properly handled in the refetch
         const updatedData = await refetch();
-        // Explicitly handle dates in the updated data
         setTableData(
           updatedData.data?.data?.leads.map((lead) => ({
             ...lead,
@@ -1641,7 +1601,6 @@ const LeadsList = () => {
   const handleLeadToClient = async (uuid: string) => {
     try {
       if (uuid) {
-        // Update lead
         await leadToClient({ data: { uuid }, uuid }).unwrap();
         toast.success(`Lead Successfully converted to Client`);
         navigate("/dashboard/clients/client-list");
@@ -1663,8 +1622,6 @@ const LeadsList = () => {
       email,
       agentId: agentAcc,
     };
-    // alert(data.agentId)
-    console.log("data for inviting client:-----------", data);
     try {
       const res = await sendInvitation({
         data,
@@ -1690,7 +1647,7 @@ const LeadsList = () => {
     try {
       const response = await deleteLead(selectedUUID).unwrap();
       toast.success(`${response?.message}`);
-      refetch(); // Refetch leads after deletion
+      refetch();
     } catch (error) {
       toast.error("Delete failed. Something went wrong!");
       console.error("Delete error:", error);
@@ -1703,8 +1660,8 @@ const LeadsList = () => {
     try {
       const response = await deleteMultipleLeads(selectedRowKeys).unwrap();
       toast.success(`${response?.message}`);
-      refetch(); // Refetch data to update the table
-      setSelectedRowKeys([]); // Clear selected rows
+      refetch();
+      setSelectedRowKeys([]);
     } catch (error) {
       toast.error("Delete failed. Something went wrong!");
       console.error("Delete error:", error);
@@ -1724,14 +1681,11 @@ const LeadsList = () => {
       customFields,
     } = formData;
 
-    // Prepare dynamic fields data
     const dynamicData: Record<string, any> = {};
 
     if (existingLead) {
-      // For edit mode: preserve ALL existing dynamic fields first
       let existingRowData = existingLead.rows?.[0]?.data || {};
 
-      // Handle nested structure if it exists
       if (
         Array.isArray(existingRowData.rows) &&
         existingRowData.rows[0]?.data
@@ -1739,21 +1693,18 @@ const LeadsList = () => {
         existingRowData = existingRowData.rows[0].data;
       }
 
-      // Copy all existing dynamic fields (non-standard fields)
       Object.keys(existingRowData).forEach((key) => {
         if (!isStandardField(key)) {
           dynamicData[key] = existingRowData[key];
         }
       });
 
-      // Then update with new values from the form
       if (customFields) {
         Object.entries(customFields).forEach(([key, value]) => {
           dynamicData[key] = value;
         });
       }
     } else {
-      // For create mode: just use the customFields from form
       if (customFields) {
         Object.entries(customFields).forEach(([key, value]) => {
           dynamicData[key] = value;
@@ -1779,11 +1730,9 @@ const LeadsList = () => {
 
     try {
       if (selectedUUID) {
-        // Update existing lead
         await updateLead({ uuid: selectedUUID, data: payload }).unwrap();
         toast.success("Lead updated successfully");
       } else {
-        // Create new lead
         await createLead({
           campaignUuid,
           data: payload,
@@ -1815,30 +1764,25 @@ const LeadsList = () => {
       const searchTerm = searchText.toLowerCase();
       const fieldValues = record.rows?.[0]?.data || {};
 
-      // Get agent name by ID
       const agent = agentList.data.userData.find(
         (a) => String(a.id) === String(record.agentAssigned)
       );
       const agentName = agent?.user?.name?.toLowerCase() || "";
 
-      // Apply agent filter
       if (agentFilter) {
         if (String(record.agentAssigned) !== String(agentFilter)) {
           return false;
         }
       }
 
-      // Then check search term
       if (searchTerm) {
-        // Check standard fields
         const matchesStandardFields =
           record.name?.toLowerCase().includes(searchTerm) ||
           record.phone?.toLowerCase().includes(searchTerm) ||
           record.email?.toLowerCase().includes(searchTerm) ||
-          agentName.includes(searchTerm) || // now searching by agent's name
+          agentName.includes(searchTerm) ||
           record.status?.toLowerCase().includes(searchTerm);
 
-        // Check dynamic fields
         const matchesDynamicFields = Object.values(fieldValues).some((value) =>
           String(value).toLowerCase().includes(searchTerm)
         );
@@ -1854,18 +1798,14 @@ const LeadsList = () => {
 
   return (
     <div>
-      {/* Header and search section */}
       <div className="mb-5 p-1">
         <div className="flex flex-col xl:flex-row xl:items-center xl:gap-6 gap-3">
-          {/* Main heading */}
           <div className="flex-1 mb-3 xl:mb-0">
             <h1 className="text-center xl:text-left mb-1 xl:mb-0">
               Leads List for Campaign: {campaignData?.name}
             </h1>
           </div>
-          {/* Search and Controls */}
           <div className="flex flex-col xl:flex-row xl:items-center gap-3 w-full xl:w-auto">
-            {/* Search input */}
             <div className="w-full xl:w-64 flex-shrink-0">
               <input
                 type="text"
@@ -1875,7 +1815,6 @@ const LeadsList = () => {
                 className="global-search w-full"
               />
             </div>
-            {/* Action buttons */}
             <div className="flex flex-wrap xl:flex-nowrap gap-2 justify-start xl:justify-end w-full xl:w-auto">
               {selectedRowKeys.length <= 0 && (
                 <>
@@ -1960,7 +1899,6 @@ const LeadsList = () => {
         </div>
       </div>
 
-      {/* Table */}
       {isLoading ? (
         <TableLoader />
       ) : (
@@ -1974,7 +1912,6 @@ const LeadsList = () => {
         />
       )}
 
-      {/* Edit Lead Modal */}
       <Modal
         title={selectedUUID ? "Edit Lead" : "Add Lead"}
         open={isModalOpen}
@@ -1984,7 +1921,6 @@ const LeadsList = () => {
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Standard Fields */}
             <div>
               <label className="block mb-2">Lead Date:*</label>
               <input
@@ -2079,9 +2015,7 @@ const LeadsList = () => {
               />
             </div>
 
-            {/* Dynamic Fields - Show for both create and edit */}
             {campaignFields.map((fieldName) => {
-              // For edit mode, get the existing value
               let defaultValue = "";
               if (existingLead) {
                 let dynamicData = existingLead.rows?.[0]?.data || {};
@@ -2119,7 +2053,6 @@ const LeadsList = () => {
         </form>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Delete"
         open={isDeleteModalVisible}
@@ -2139,7 +2072,6 @@ const LeadsList = () => {
         </p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Delete Selected"
         open={isDeleteMultipleModalVisible}
@@ -2172,7 +2104,6 @@ const LeadsList = () => {
         </div>
       </Modal>
 
-      {/* Assign Multiple Modal */}
       <Modal
         title="Assign Selected Leads"
         open={isAssignModalVisible}
@@ -2211,7 +2142,6 @@ const LeadsList = () => {
         </div>
       </Modal>
 
-      {/* Change Status Multiple Modal */}
       <Modal
         title="Change Selected Status Leads"
         open={isChangeStatusModalVisible}
@@ -2255,7 +2185,6 @@ const LeadsList = () => {
         </div>
       </Modal>
 
-      {/* Save to Validation Log Modal */}
       <Modal
         title="Save Selected Leads to Validation Log"
         open={isSaveValidationLogModalVisible}
@@ -2303,7 +2232,6 @@ const LeadsList = () => {
         </div>
       </Modal>
 
-      {/* Lead Notes Modal */}
       {selectedLeadForNotes && (
         <LeadNotes
           leadId={selectedLeadForNotes.id}
@@ -2314,7 +2242,6 @@ const LeadsList = () => {
         />
       )}
 
-      {/* Lead Activity Log Modal */}
       {selectedLeadForActivity && (
         <LeadActivityLog
           leadUuid={selectedLeadForActivity.uuid}
@@ -2324,7 +2251,6 @@ const LeadsList = () => {
         />
       )}
 
-      {/* Move Leads Modal */}
       <Modal
         title="Move Leads to Another Campaign"
         open={isMoveModalVisible}

@@ -59,7 +59,6 @@ import { api } from '../../redux/api/apiSlice';
 import {
   useGetNotificationsQuery,
 } from '../../redux/api/common/notificationSlice';
-// import { useAppSelector } from "../../redux/hooks";
 import { useUserLogoutMutation } from '../../redux/api/userSlice';
 import {
   useAppDispatch,
@@ -68,7 +67,6 @@ import {
 import { clearUser } from '../../redux/slices/userSlice';
 import { baseUrl } from '../../utils/constant';
 
-// Small "New" badge for recently added menu items.
 const NewBadge = () => (
   <span
     style={{
@@ -81,7 +79,6 @@ const NewBadge = () => (
   </span>
 );
 
-// ANS Time Clock (rebuild of the dvclock app; separate from Clock In/Out).
 const dvTimeClockItem = (key: string) => ({
   key,
   icon: <ClockCircleOutlined />,
@@ -92,7 +89,6 @@ const dvTimeClockItem = (key: string) => ({
     </NavLink>
   ),
 });
-// Trade Transactions (bodv Transactions screen on the existing trade accounting data).
 const tradeTransactionsItem = (key: string, extra: Record<string, unknown> = {}) => ({
   key,
   icon: <AuditOutlined />,
@@ -104,7 +100,6 @@ const tradeTransactionsItem = (key: string, extra: Record<string, unknown> = {})
     </NavLink>
   ),
 });
-// Everyone except clients uses the time clock (agents included).
 const isStaffType = (userType?: string) => Boolean(userType) && userType !== "client";
 
 
@@ -123,7 +118,6 @@ const Sidebar = ({
   const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const sidebarItems = () => {
-    // Helper function to check if user has permission for a specific category
     const hasPermissionForCategory = (categorySlug: string): boolean => {
       const hasPermission = user?.userRole?.permissions?.some((permission) => {
         return permission?.permission?.category?.slug == categorySlug;
@@ -153,8 +147,7 @@ const Sidebar = ({
       if (user && user.userType === "agent") {
         if (
           user.status != "approved" ||
-          user.agentAccount[0].status != "approved" /* ||
-          user.agentAccount[0].agreementStatus != "approved" */
+          user.agentAccount[0].status != "approved"
         ) {
           agentItemsList = [
             {
@@ -189,15 +182,11 @@ const Sidebar = ({
       }
     } else {
       const filteredItems = commonItemsList.filter((item) => {
-        // if (!user?.permissions) return false;
-        // If item doesn't have permissionCategorySlug, always show it
         if (!item?.permissionCategorySlug) {
           return true;
         }
-        // Check if user has permission for this item's category (e.g., 'agent-marketplace')
         return hasPermissionForCategory(item?.permissionCategorySlug);
       });
-      // Return filtered items with the logout item
       return [...filteredItems, logoutItem];
     }
 
@@ -208,10 +197,7 @@ const Sidebar = ({
   const dispatch = useAppDispatch();
   const [userLogout] = useUserLogoutMutation();
 
-  const { data /* , refetch */ } = useGetNotificationsQuery();
-  /* const [deleteNotification] = useDeleteNotificationMutation(); */
-  /* const [deleteMultipleNotifications] =
-    useDeleteMultipleNotificationsMutation(); */
+  const { data } = useGetNotificationsQuery();
 
   const isValidInvoiceUrl = (url, substring) => {
     return url?.includes(substring);
@@ -219,38 +205,28 @@ const Sidebar = ({
 
   const matchingIds = [];
 
-  // Your main logic
   const checkUrls = (url_data) => {
     let isInvoiceUrl = false;
 
     data?.data?.data_list?.forEach((item) => {
-      let url = ""; // Default value for the URL
+      let url = "";
 
       try {
-        const parsedData = JSON.parse(item.data); // Parse the stringified JSON
-        url = parsedData.url; // Extract the URL
+        const parsedData = JSON.parse(item.data);
+        url = parsedData.url;
       } catch (error) {
         console.error("Error parsing data:", error);
       }
 
-      // Use the function to check if URL includes the specified substring
       if (isValidInvoiceUrl(url, url_data)) {
         isInvoiceUrl = true;
         matchingIds.push(item.id);
       }
     });
 
-    return isInvoiceUrl; // Return the result
+    return isInvoiceUrl;
   };
 
-  /* const handleDelete = async (id: number) => {
-      try {
-        await deleteNotification(id).unwrap();
-        refetch()
-      } catch (error) {
-        toast.error("Failed to delete notification");
-      }
-    }; */
 
   const handleLogout = async () => {
     try {
@@ -260,23 +236,13 @@ const Sidebar = ({
       dispatch(api.util.resetApiState());
       dispatch(clearUser());
     } catch (error: any) {
-      // toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
       dispatch(api.util.resetApiState());
       dispatch(clearUser());
       navigate("/login");
     }
   };
 
-  // Handle bulk delete for all notifications
-  /* const handleDeleteAll = async () => {
-    if (matchingIds?.length) {
-        await deleteMultipleNotifications(matchingIds).unwrap();
-        refetch()
-    }
-  };
- */
   const superAdminitems: MenuProps["items"] = [
-    // user
 
     {
       key: "1",
@@ -292,7 +258,7 @@ const Sidebar = ({
       icon: <FaFileInvoice />,
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={
             "/dashboard/agent/pages/form/trade-sheet/my-submission-trade-list"
           }
@@ -412,7 +378,7 @@ const Sidebar = ({
       icon: <FaBuilding />,
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={"/dashboard/super-admin/property-listing"}
         >
           Property Listing{" "}
@@ -473,7 +439,7 @@ const Sidebar = ({
       permissionCategorySlug: "property-listing",
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={"/dashboard/super-admin/property-mere-listing"}
         >
           Mere Listings{" "}
@@ -498,15 +464,6 @@ const Sidebar = ({
         </NavLink>
       ),
     },
-    // {
-    //   key: "100",
-    //   icon: <TiUserAdd />,
-    //   label: (
-    //     <NavLink className="flex items-center" to={"/dashboard/super-admin/freehold-sale"}>
-    //       Freehold Sale
-    //     </NavLink>
-    //   ),
-    // },
     {
       key: "101",
       icon: <FaFilePdf />,
@@ -635,7 +592,6 @@ const Sidebar = ({
       ),
     },
     dvTimeClockItem("dv-time-clock-superadmin"),
-    // Brokerage Accounting is hidden from the menu (page still at /dashboard/brokerage-accounting).
     tradeTransactionsItem("trade-transactions-superadmin"),
     {
       key: "12",
@@ -934,7 +890,6 @@ const Sidebar = ({
         </NavLink>
       ),
     },
-    // devider
     { type: "divider" },
     {
       key: "group",
@@ -1022,7 +977,7 @@ const Sidebar = ({
     },
     {
       key: "20",
-      permissionCategorySlug: "dashboard", // matches "dashboard" slug
+      permissionCategorySlug: "dashboard",
       icon: <SettingOutlined />,
       label: (
         <NavLink
@@ -1097,10 +1052,8 @@ const Sidebar = ({
 
   ];
 
-  // Function to check if URL includes the specified substring
 
   const adminItems: MenuProps["items"] = [
-    // user
     {
       key: "1",
       icon: <BlockOutlined />,
@@ -1115,7 +1068,7 @@ const Sidebar = ({
       icon: <FaFileInvoice />,
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={
             "/dashboard/agent/pages/form/trade-sheet/my-submission-trade-list"
           }
@@ -1142,7 +1095,6 @@ const Sidebar = ({
         </NavLink>
       ),
     },
-    // devider
     { type: "divider" },
     {
       key: "group",
@@ -1203,7 +1155,6 @@ const Sidebar = ({
   ];
 
   const agentItems: MenuProps["items"] = [
-    // user
     {
       key: "1",
       icon: <BlockOutlined />,
@@ -1218,7 +1169,7 @@ const Sidebar = ({
       icon: <FaFileInvoice />,
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={
             "/dashboard/agent/pages/form/trade-sheet/my-submission-trade-list"
           }
@@ -1435,39 +1386,7 @@ const Sidebar = ({
         </NavLink>
       ),
     },
-    // devider
     { type: "divider" },
-    /* {
-      key: "122111",
-      icon: <AuditOutlined />,
-      permissionCategorySlug: "trade-sheet", 
-      label: "Agent Accounting",
-      children: [
-        {
-          key: "7.1",
-          permissionCategorySlug: "role-permission", 
-          icon: <AuditOutlined />,
-          label: (
-            <NavLink
-              className="flex items-center"
-              to={"/dashboard/accounting/acknowledgement-list"}
-            >
-              Acknowledgement list
-            </NavLink>
-          ),
-        },
-        {
-          key: "8.1",
-          permissionCategorySlug: "role-permission", 
-          icon: <AuditOutlined />,
-          label: (
-            <NavLink to={"/dashboard/accounting/agent-commission-transfer-history"}>
-              Transfer History
-            </NavLink>
-          ),
-        },
-      ],
-    }, */
     {
       key: "group",
       label: "Settings",
@@ -1484,21 +1403,6 @@ const Sidebar = ({
         },
       ],
     },
-    // {
-    //   key: "111",
-    //   icon: <FaHandshake />,
-    //   label: (
-    //     <NavLink
-    //       className="flex items-center"
-    //       to={`${baseUrl}${
-    //         user?.agentAccount ? user?.agentAccount[0]?.agreementFile : ""
-    //       }`}
-    //       target="_blank"
-    //     >
-    //       My Agreement
-    //     </NavLink>
-    //   ),
-    // },
     {
       key: "support",
       icon: <FaHeadset />,
@@ -1529,19 +1433,9 @@ const Sidebar = ({
         </NavLink>
       ),
     },
-    /* {
-      key: "clock-in-out-agent",
-      icon: <ClockCircleOutlined />,
-      label: (
-        <NavLink className="flex items-center" to={"/dashboard/clock-in-out"}>
-          Clock In/Out
-        </NavLink>
-      ),
-    }, */
   ];
 
   const clientItems: MenuProps["items"] = [
-    // user
     {
       key: "dashboard",
       icon: <BlockOutlined />,
@@ -1584,7 +1478,6 @@ const Sidebar = ({
     },
   ];
 
-  //support
   const supportItems: MenuProps["items"] = [
     {
       key: "1",
@@ -1672,22 +1565,13 @@ const Sidebar = ({
         </NavLink>
       ),
     },
-    /* {
-      key: "clock-in-out-support",
-      icon: <ClockCircleOutlined />,
-      label: (
-        <NavLink className="flex items-center" to={"/dashboard/clock-in-out"}>
-          Clock In/Out
-        </NavLink>
-      ),
-    }, */
     dvTimeClockItem("dv-time-clock-support"),
   ];
 
   const commonItems: MenuProps["items"] = [
     {
       key: "1",
-      permissionCategorySlug: "dashboard", // matches "dashboard" slug
+      permissionCategorySlug: "dashboard",
       icon: <BlockOutlined />,
       label: (
         <NavLink className="flex items-center" to={"/"}>
@@ -1697,11 +1581,11 @@ const Sidebar = ({
     },
     {
       key: "2",
-      permissionCategorySlug: "trade-sheet", // matches "dashboard" slug
+      permissionCategorySlug: "trade-sheet",
       icon: <FaFileInvoice />,
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={
             "/dashboard/agent/pages/form/trade-sheet/my-submission-trade-list"
           }
@@ -1796,7 +1680,7 @@ const Sidebar = ({
       ? [
         {
           key: "3",
-          permissionCategorySlug: "paperwork-documents", // matches "paperwork-documents" slug
+          permissionCategorySlug: "paperwork-documents",
           icon: <FaMoneyCheckAlt />,
           label: (
             <NavLink
@@ -1811,11 +1695,11 @@ const Sidebar = ({
       : []),
     {
       key: "4",
-      permissionCategorySlug: "property-listing", // matches "property-listing" slug
+      permissionCategorySlug: "property-listing",
       icon: <FaBuilding />,
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={"/dashboard/super-admin/property-listing"}
         >
           {user?.userType === "agent" ? "My Listings " : "Property Listings "}
@@ -1859,7 +1743,7 @@ const Sidebar = ({
       icon: <FaBuilding />,
       label: (
         <NavLink
-          /* onClick={handleDeleteAll} */ className="flex items-center"
+          className="flex items-center"
           to={"/dashboard/super-admin/realtor-property-listing"}
         >
           Office Listings{" "}
@@ -1892,7 +1776,7 @@ const Sidebar = ({
           icon: <FaBuilding />,
           label: (
             <NavLink
-                /* onClick={handleDeleteAll} */ className="flex items-center"
+                className="flex items-center"
               to={"/dashboard/super-admin/property-mere-listing"}
             >
               Mere Listings{" "}
@@ -1923,7 +1807,7 @@ const Sidebar = ({
       ? [
         {
           key: "12111",
-          permissionCategorySlug: "property-listing", // matches "property-listing" slug
+          permissionCategorySlug: "property-listing",
           icon: <FaPeopleLine />,
           label: (
             <NavLink
@@ -1952,20 +1836,11 @@ const Sidebar = ({
         },
       ]
       : []),
-    // {
-    //   key: "100",
-    //   icon: <TiUserAdd />,
-    //   label: (
-    //     <NavLink className="flex items-center" to={"/dashboard/super-admin/freehold-sale"}>
-    //       Freehold Sale
-    //     </NavLink>
-    //   ),
-    // },
     ...(user?.userType == "superAdmin"
       ? [
         {
           key: "101",
-          permissionCategorySlug: "role-permission", // matches "dashboard" slug
+          permissionCategorySlug: "role-permission",
           icon: <FaFilePdf />,
           label: (
             <NavLink
@@ -1978,7 +1853,7 @@ const Sidebar = ({
         },
         {
           key: "9",
-          permissionCategorySlug: "user", // matches "user" slug
+          permissionCategorySlug: "user",
           icon: <FaUser />,
           label: (
             <NavLink
@@ -2019,7 +1894,7 @@ const Sidebar = ({
     
     {
       key: "5",
-      permissionCategorySlug: "brokerage", // matches "brokerage" slug
+      permissionCategorySlug: "brokerage",
       icon: <FaUniversity />,
       label: (
         <NavLink
@@ -2032,7 +1907,7 @@ const Sidebar = ({
     },
     {
       key: "6",
-      permissionCategorySlug: "lawyers", // matches "lawyers" slug
+      permissionCategorySlug: "lawyers",
       icon: <FaGavel />,
       label: (
         <NavLink
@@ -2047,7 +1922,7 @@ const Sidebar = ({
       ? [
         {
           key: "7",
-          permissionCategorySlug: "deposit-receipt", // matches "deposit-receipt" slug
+          permissionCategorySlug: "deposit-receipt",
           icon: <FaReceipt />,
           label: (
             <NavLink
@@ -2060,7 +1935,7 @@ const Sidebar = ({
         },
         {
           key: "8",
-          permissionCategorySlug: "cheque-pickup-receipt", // matches "cheque-pickup-receipt" slug
+          permissionCategorySlug: "cheque-pickup-receipt",
           icon: <FaMoneyCheckDollar />,
           label: (
             <NavLink
@@ -2073,10 +1948,9 @@ const Sidebar = ({
         },
       ]
       : []),
-    // clients
     {
       key: "/client-list",
-      permissionCategorySlug: "client", // matches "client" slug
+      permissionCategorySlug: "client",
       icon: <FaUsers />,
       label: (
         <NavLink
@@ -2091,7 +1965,7 @@ const Sidebar = ({
       ? [
         {
           key: "my-property",
-          permissionCategorySlug: "dashboard", // matches "dashboard" slug
+          permissionCategorySlug: "dashboard",
           icon: <FaHome />,
           label: (
             <NavLink
@@ -2109,7 +1983,7 @@ const Sidebar = ({
       ? [
         {
           key: "10",
-          permissionCategorySlug: "agent", // matches "agent-marketplace" slug
+          permissionCategorySlug: "agent",
           icon: <FaUserTie />,
           label: (
             <NavLink
@@ -2122,10 +1996,9 @@ const Sidebar = ({
         },
       ]
       : []),
-    // plans
     {
       key: "11",
-      permissionCategorySlug: "plans", // matches "plans" slug
+      permissionCategorySlug: "plans",
       icon: <FaClipboardList />,
       label: (
         <NavLink
@@ -2139,7 +2012,7 @@ const Sidebar = ({
 
     {
       key: "12",
-      permissionCategorySlug: "announcements", // matches "announcements" slug
+      permissionCategorySlug: "announcements",
       icon: <FaBullhorn />,
       label: (
         <NavLink
@@ -2326,10 +2199,8 @@ const Sidebar = ({
       ]
       : []),
 
-    // support
     {
       key: "122",
-      // permissionCategorySlug: "support-requests",
       permissionCategorySlug: "support",
       icon: <FaHeadset />,
       label: (
@@ -2551,19 +2422,6 @@ const Sidebar = ({
           permissionCategorySlug: "report-management",
           label: "Reports",
           children: [
-            /* {
-        key: "report-summery",
-        permissionCategorySlug: "role-permission", 
-        icon: <FaFile  />,
-        label: (
-          <NavLink
-            className="flex items-center"
-            to={"/dashboard/reports/report-summery"}
-          >
-            Report Summery
-          </NavLink>
-        ),
-      }, */
             {
               key: "top-report",
               permissionCategorySlug: "agent-report",
@@ -2695,20 +2553,18 @@ const Sidebar = ({
         },
       ]
       : []),
-    // devider
     { type: "divider" },
-    // Brokerage Accounting is hidden from the menu (page still at /dashboard/brokerage-accounting).
     ...(isStaffType(user?.userType) ? [dvTimeClockItem("dv-time-clock-common")] : []),
     tradeTransactionsItem("trade-transactions-common", { permissionCategorySlug: "accounting-management" }),
     {
       key: "group",
-      permissionCategorySlug: "dashboard", // matches "dashboard" slug
+      permissionCategorySlug: "dashboard",
       label: "Settings",
       type: "group",
       children: [
         {
           key: "13",
-          permissionCategorySlug: "my-profile", // matches "dashboard" slug
+          permissionCategorySlug: "my-profile",
           icon: <FaRegIdBadge />,
           label: (
             <NavLink className="flex items-center" to={"/profile"}>
@@ -2795,7 +2651,7 @@ const Sidebar = ({
         },
         {
           key: "20",
-          permissionCategorySlug: "role-permission", // matches "dashboard" slug
+          permissionCategorySlug: "role-permission",
           icon: <SettingOutlined />,
           label: (
             <NavLink
@@ -2809,7 +2665,7 @@ const Sidebar = ({
         },
         {
           key: "15",
-          permissionCategorySlug: "role-permission", // matches "role-permission" slug
+          permissionCategorySlug: "role-permission",
           icon: <FaKey />,
           label: (
             <NavLink
@@ -2822,7 +2678,7 @@ const Sidebar = ({
         },
         {
           key: "17",
-          permissionCategorySlug: "sys-log", // matches "syslog" slug
+          permissionCategorySlug: "sys-log",
           icon: <FaFile />,
           label: "Syslog",
           children: [
@@ -2876,7 +2732,6 @@ const Sidebar = ({
     const [searchTerm, setSearchTerm] = useState("");
     const [showResults, setShowResults] = useState(false);
 
-    // Flatten all menu items recursively to make them searchable
     const flattenMenuItems = (items, parentLabel = "") => {
       let flattened = [];
 
@@ -2888,14 +2743,12 @@ const Sidebar = ({
           item.type !== "divider" &&
           item.type !== "group"
         ) {
-          // Extract text from label (it might be a React component)
           let labelText = "";
           let navLink = "";
 
           if (typeof item.label === "string") {
             labelText = item.label;
           } else if (item.label?.props?.children) {
-            // Handle NavLink with text
             const children = item.label.props.children;
             if (typeof children === "string") {
               labelText = children;
@@ -2909,7 +2762,6 @@ const Sidebar = ({
             ? `${parentLabel} > ${labelText}`
             : labelText;
 
-          // Only add items that have a navLink (items that actually navigate somewhere)
           if (navLink) {
             flattened.push({
               key: item.key,
@@ -2920,7 +2772,6 @@ const Sidebar = ({
             });
           }
 
-          // Recursively flatten children
           if (item.children && Array.isArray(item.children)) {
             flattened = [
               ...flattened,
@@ -2948,7 +2799,7 @@ const Sidebar = ({
             item.label.toLowerCase().includes(search) ||
             item.fullPath.toLowerCase().includes(search)
         )
-        .slice(0, 8); // Limit to 8 results
+        .slice(0, 8);
     }, [searchTerm, allMenuItems]);
 
     const handleSelect = (item) => {
@@ -3041,12 +2892,8 @@ const Sidebar = ({
         </div>
       </div>
       <div className="relative">
-        {/* Bottom controls container */}
         <div className="absolute bottom-0 left-0 w-full flex justify-center items-center">
-          {/* Centered version text */}
-          {/* <p className="text-center text-white/50 text-[12px]">v25.12.22.01</p> */}
 
-          {/* Icon button on the right */}
           <div className="absolute right-4">
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}

@@ -1,5 +1,3 @@
-// Lucide icons used by Brokerage Accounting (same icons as the original app), inlined so the page does not
-// depend on the large react-icons/lu bundle. Source: Lucide (ISC licence), via react-icons.
 import { SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement> & { size?: number | string };

@@ -14,4 +14,3 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
 
 export default PrivateRoute;
 
-// this is the wrapper  component to protect all route

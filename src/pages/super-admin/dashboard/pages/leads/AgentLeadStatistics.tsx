@@ -21,7 +21,6 @@ const STATUS_TAG_COLOR: Record<string, string> = {
   "Not Qualified": "red",
 };
 
-// Bar fill per status — project palette variants
 const STATUS_BAR_COLOR: Record<string, string> = {
   New: "#3B82F6",
   "Attempted Contact": "#D97706",
@@ -46,7 +45,6 @@ const AgentLeadStatistics = () => {
     now.endOf("month"),
   ]);
 
-  // Fetch all statuses at once (no status filter)
   const queryParams = useMemo(() => ({
     status: undefined,
     startDate: dateRange[0]?.format("YYYY-MM-DD"),
@@ -55,18 +53,15 @@ const AgentLeadStatistics = () => {
 
   const { data, isLoading } = useGetAgentLeadStatisticsQuery(queryParams);
 
-  // For an agent, statistics[0] is always their own data
   const agentData = data?.data?.statistics?.[0];
   const statusBreakdown: Record<string, number> = agentData?.statusBreakdown || {};
   const totalLeads = agentData?.totalLeads || 0;
 
-  // Sort statuses by count desc
   const sortedStatuses = Object.entries(statusBreakdown).sort((a, b) => b[1] - a[1]);
   const maxCount = sortedStatuses.length > 0 ? sortedStatuses[0][1] : 1;
 
   return (
     <div className="p-3">
-      {/* Header + date filter */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b border-gray-100">
         <div>
           <p className="text-sm font-semibold text-[#082624]">My Lead Statistics</p>
@@ -95,15 +90,12 @@ const AgentLeadStatistics = () => {
         </div>
       ) : (
         <div className="space-y-4">
-          {/* Summary cards */}
           <div className="grid grid-cols-5 gap-1.5">
-            {/* Total */}
             <div className="bg-white rounded-md border border-gray-100 shadow-sm px-2.5 py-1.5 flex items-center gap-2" style={{ borderLeft: "3px solid #082624" }}>
               <span className="text-xl font-bold text-[#082624] leading-none">{totalLeads}</span>
               <span className="text-[10px] text-gray-400 uppercase tracking-wide leading-tight">Total Leads</span>
             </div>
 
-            {/* Key statuses */}
             {SUMMARY_STATUSES.map((s) => {
               const count = statusBreakdown[s] || 0;
               const barColor = STATUS_BAR_COLOR[s] || "#0f766e";
@@ -120,7 +112,6 @@ const AgentLeadStatistics = () => {
             })}
           </div>
 
-          {/* Status breakdown bars */}
           {sortedStatuses.length > 0 && (
             <div className="bg-white rounded-md border border-gray-100 shadow-sm px-3 py-2">
               <p className="text-[10px] font-semibold text-[#082624] mb-2 uppercase tracking-wide">Status Breakdown</p>
@@ -131,7 +122,6 @@ const AgentLeadStatistics = () => {
                   const pct = totalLeads > 0 ? Math.round((count / totalLeads) * 100) : 0;
                   return (
                     <div key={s} className="flex items-center gap-3">
-                      {/* Status label */}
                       <div className="flex-shrink-0" style={{ width: 180 }}>
                         <Tag
                           color={STATUS_TAG_COLOR[s] || "default"}
@@ -140,14 +130,12 @@ const AgentLeadStatistics = () => {
                           {s}
                         </Tag>
                       </div>
-                      {/* Bar */}
                       <div className="flex-1 bg-gray-100 rounded-full" style={{ height: 5 }}>
                         <div
                           className="rounded-full transition-all duration-700"
                           style={{ width: `${barPct}%`, height: 5, backgroundColor: barColor }}
                         />
                       </div>
-                      {/* Count + % */}
                       <div className="flex items-center gap-1.5 flex-shrink-0" style={{ width: 56, textAlign: "right" }}>
                         <span className="text-xs font-bold text-[#082624]">{count}</span>
                         <span className="text-[10px] text-gray-400">({pct}%)</span>

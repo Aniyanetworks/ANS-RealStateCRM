@@ -1,5 +1,3 @@
-// Tax Documents — the original ANS Accounting screen: per tax year and type (T4A agents / T4 employees),
-// add recipient drafts, upload a PDF beside each recipient (releases it to their portal), replace or remove it.
 import { useState } from "react";
 import { useAcct, useAcctAction } from "../acctShared";
 import { LuCircleAlert, LuFileText, LuPlus, LuRefreshCw, LuTrash2, LuUpload } from "./icons";

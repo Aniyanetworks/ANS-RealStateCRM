@@ -3,10 +3,9 @@ import { api } from "../apiSlice";
 
 const tradeAccountingApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Create a trade transaction
     createTradeTransaction: builder.mutation({
       query: (data) => ({
-        url: '/accounting/trade-accounting/transactions/create', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/transactions/create',
         method: 'POST',
         body: data,
         headers: {
@@ -16,10 +15,9 @@ const tradeAccountingApi = api.injectEndpoints({
       invalidatesTags: ['TradeTransactionListTag','ChequePostingListTag','SingleTradeTransactionTag','getSpacificTradeSheetListDataTag','getTradeSheetListDataTag','getAgentListDataTag','getSingleAgentDataTag','BankAccountListTag'],
     }),
 
-    // Create a cheque posting
     createChequePosting: builder.mutation({
       query: (data) => ({
-        url: '/accounting/trade-accounting/cheque-postings/create', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/cheque-postings/create',
         method: 'POST',
         body: data,
         headers: {
@@ -31,7 +29,7 @@ const tradeAccountingApi = api.injectEndpoints({
 
     transferCommissionAgent: builder.mutation({
       query: (data) => ({
-        url: '/accounting/trade-accounting/transfer-commission-agent/create', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/transfer-commission-agent/create',
         method: 'POST',
         body: data,
         headers: {
@@ -41,22 +39,10 @@ const tradeAccountingApi = api.injectEndpoints({
       invalidatesTags: ['TradeTransactionListTag','ChequePostingListTag','SingleTradeTransactionTag','getSpacificTradeSheetListDataTag','getTradeSheetListDataTag','getAgentListDataTag','getSingleAgentDataTag','BankAccountListTag'],
     }),
 
-    // // Get list of all trade transactions
-    // getTradeTransactions: builder.query({
-    //   query: () => ({
-    //     url: '/trade-accounting/transactions/get', // Adjust the route as per your API structure
-    //     method: 'GET',
-    //     headers: {
-    //       authorization: `Bearer ${getEnvUrls().accessToken}`,
-    //     },
-    //   }),
-    //   providesTags: ['TradeTransactionListTag'],
-    // }),
 
-    // // Get a specific trade transaction
     getSpecificTradeTransaction: builder.query({
       query: (uuid) => ({
-        url: `/accounting/trade-accounting/transactions/get-specific-trade-transaction?uuid=${uuid}`, // Adjust the route as per your API structure
+        url: `/accounting/trade-accounting/transactions/get-specific-trade-transaction?uuid=${uuid}`,
         method: 'GET',
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
@@ -68,7 +54,7 @@ const tradeAccountingApi = api.injectEndpoints({
 
     getSpecificTradeAgentCommission: builder.query({
       query: ({ uuid, agentAccountId }) => ({
-        url: `/accounting/trade-accounting/transactions/get-specific-trade-agent-commission?uuid=${uuid}&agentAccountId=${agentAccountId}`, // Correct query string format
+        url: `/accounting/trade-accounting/transactions/get-specific-trade-agent-commission?uuid=${uuid}&agentAccountId=${agentAccountId}`,
         method: 'GET',
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
@@ -77,10 +63,9 @@ const tradeAccountingApi = api.injectEndpoints({
       providesTags: ['SingleTradeTransactionTag'],
     }),
 
-    // // Get list of all cheque postings
     getChequePostings: builder.query({
       query: () => ({
-        url: '/accounting/trade-accounting/transactions/get-all-cheque-postings', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/transactions/get-all-cheque-postings',
         method: 'GET',
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
@@ -89,22 +74,10 @@ const tradeAccountingApi = api.injectEndpoints({
       providesTags: ['ChequePostingListTag'],
     }),
 
-    // // Get a specific cheque posting
-    // getSpecificChequePosting: builder.query({
-    //   query: (uuid) => ({
-    //     url: `/trade-accounting/cheque-postings/get-specific?uuid=${uuid}`, // Adjust the route as per your API structure
-    //     method: 'GET',
-    //     headers: {
-    //       authorization: `Bearer ${getEnvUrls().accessToken}`,
-    //     },
-    //   }),
-    //   providesTags: ['SingleChequePostingTag'],
-    // }),
 
-    // Create a cheque posting
     transferCommissionCheque: builder.mutation({
       query: (data) => ({
-        url: '/accounting/trade-accounting/transfer-commission-cheque/create', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/transfer-commission-cheque/create',
         method: 'POST',
         body: data,
         headers: {
@@ -117,7 +90,7 @@ const tradeAccountingApi = api.injectEndpoints({
     
     createAgentAcknowledgement: builder.mutation({
       query: (data) => ({
-        url: '/accounting/trade-accounting/transfer-commission-agent/store-agent-acknowledgement', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/transfer-commission-agent/store-agent-acknowledgement',
         method: 'POST',
         body: data,
         headers: {
@@ -129,7 +102,7 @@ const tradeAccountingApi = api.injectEndpoints({
 
     acknowledgementList: builder.query({
       query: () => ({
-        url: '/accounting/trade-accounting/transfer-commission-agent/acknowledgement-list', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/transfer-commission-agent/acknowledgement-list',
         method: 'GET',
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
@@ -140,7 +113,7 @@ const tradeAccountingApi = api.injectEndpoints({
 
     agentCommissionTransferHistoryList: builder.query({
       query: () => ({
-        url: '/accounting/trade-accounting/transfer-commission-agent/agent-commission-transfer-history-list', // Adjust the route as per your API structure
+        url: '/accounting/trade-accounting/transfer-commission-agent/agent-commission-transfer-history-list',
         method: 'GET',
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
@@ -182,7 +155,6 @@ export const {
   useCreateAgentAcknowledgementMutation,
   useCreateTradeTransactionMutation,
   useCreateChequePostingMutation,
-  // useGetTradeTransactionsQuery,
   useGetSpecificTradeTransactionQuery,
   useGetChequePostingsQuery,
   useTransferCommissionChequeMutation,
@@ -192,6 +164,5 @@ export const {
   useAgentCommissionTransferHistoryListQuery,
   useSendBuyerCommissionInvoiceMutation,
   useBuyerCommissionInvoiceUploadMutation
-  // useGetSpecificChequePostingQuery,
   
 } = tradeAccountingApi;

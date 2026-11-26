@@ -3,8 +3,6 @@ import toast from "react-hot-toast";
 import PdfSizeReductionModal from "../components/ui/PdfSizeReductionModal";
 import { isPdfFile, formatFileSize } from "../utils/pdfCompression";
 
-// Lets an oversized PDF be reduced (with preview) before upload continues;
-// non-PDF oversized files are still rejected outright.
 export function usePdfSizeGuard(maxSize: number) {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const resolverRef = useRef<((file: File | null) => void) | null>(null);

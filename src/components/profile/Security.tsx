@@ -52,22 +52,19 @@ const Security = () => {
 
   const handleGoogleAuthToggle = async () => {
     const newGoogleAuthEnabled = !googleAuthEnabled;
-    setGoogleAuthEnabled(newGoogleAuthEnabled); // Update the state immediately
+    setGoogleAuthEnabled(newGoogleAuthEnabled);
 
     localStorage.setItem('isGoogleAuthEnabled',newGoogleAuthEnabled)
 
     try {
       const response = await setupAppAuthenticator({email:user.email,isGoogleAuthEnabled:newGoogleAuthEnabled}).unwrap();
       setQrCodeUrl(response?.qr_code_url)
-      console.log('response?.qr_code_url',response?.qr_code_url)
       if(response?.qr_code_url)
       {
-        console.log('if response?.qr_code_url',response?.qr_code_url)
         setIsModalQuCodeVisible(true)
       }
       toast.success(response?.message);
     } catch (error) {
-      console.log(error);
       toast.error(error?.message);
     }
   };
@@ -76,7 +73,6 @@ const Security = () => {
     <div>
       <div className=" bg-gray-50 py-12 px-6 sm:px-12">
         <div className="">
-          {/* Google Authenticator Section */}
           <div className="flex justify-between items-center space-x-4">
             <div className="flex-1">
               <h3 className="text-xl font-medium text-gray-700">
@@ -89,7 +85,6 @@ const Security = () => {
               </p>
             </div>
 
-            {/* Toggle Button */}
             <div className="relative">
               <input
                 type="checkbox"

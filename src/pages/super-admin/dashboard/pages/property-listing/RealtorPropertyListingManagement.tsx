@@ -52,7 +52,6 @@ const RealtorPropertyListingManagement = () => {
     useState<RealtorPropertyType | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Log error for debugging
   useEffect(() => {
     if (error) {
       console.error("Realtor Properties Error:", error);
@@ -61,9 +60,7 @@ const RealtorPropertyListingManagement = () => {
 
   useEffect(() => {
     if (data?.data) {
-      // Transform the API data to match our table structure
       const transformedData = data.data.map((property: RealtorPropertyType) => {
-        // Build full address
         const addressParts = [
           property.StreetNumber,
           property.StreetName,
@@ -71,7 +68,6 @@ const RealtorPropertyListingManagement = () => {
         ].filter(Boolean);
         const propertyAddress = addressParts.join(" ");
 
-        // Map MlsStatus to listingStatus (normalize to lowercase)
         const listingStatus =
           property.MlsStatus?.toLowerCase() ||
           property.StandardStatus?.toLowerCase() ||
@@ -79,7 +75,6 @@ const RealtorPropertyListingManagement = () => {
 
         return {
           ...property,
-          // Map fields for compatibility with existing UI
           mlsNumber: property.ListingKey,
           propertyAddress: propertyAddress,
           listingPrice: property.ListPrice,
@@ -97,7 +92,6 @@ const RealtorPropertyListingManagement = () => {
           roomsBelowGrade: property.RoomsBelowGrade,
           originatingSystemName: property.OriginatingSystemName,
           expirationDate: property.ExpirationDate,
-          // Generate a unique ID for each property
           id: property.ListingKey,
           uuid: property.ListingKey,
         };
@@ -138,7 +132,6 @@ const RealtorPropertyListingManagement = () => {
 
   const filterProps = getFilteredData();
 
-  // serial number in the table
   const tableSourceData = filterProps?.map((item: any, index: number) => {
     return {
       ...item,
@@ -238,7 +231,6 @@ const RealtorPropertyListingManagement = () => {
       dataIndex: "MlsStatus",
       key: "MlsStatus",
       filters: [
-        // { value: "New", text: "New" },
         { value: "Price Change", text: "Price Change" },
         { value: "Terminated", text: "Terminated" },
         { value: "Expired", text: "Expired" },
@@ -301,19 +293,15 @@ const RealtorPropertyListingManagement = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
 
-        {/* Single toolbar row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
 
-          {/* Title */}
           <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             Office Listings
             <span className="ml-1 text-gray-400 font-normal text-[11px]">({allCount})</span>
           </h1>
 
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabList.map((tab) => (
               <button
@@ -339,10 +327,8 @@ const RealtorPropertyListingManagement = () => {
             ))}
           </div>
 
-          {/* Spacer */}
           <div className="flex-1" />
 
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -374,7 +360,6 @@ const RealtorPropertyListingManagement = () => {
           </div>
         </div>
 
-        {/* Table */}
         <div>
           {isLoading ? (
             <TableLoader />
@@ -405,7 +390,6 @@ const RealtorPropertyListingManagement = () => {
 
       </div>
 
-      {/* Property Preview Modal */}
       <Modal
         title="Property Preview"
         open={isModalPropertyListPreviewVisible}
@@ -432,7 +416,6 @@ const RealtorPropertyListingManagement = () => {
                 .filter(Boolean)
                 .join(", ") || "N/A"}
             </h2>
-            {/* Property Details Section */}
             <div className="mb-6 mt-3">
               <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 PROPERTY DETAILS
@@ -537,7 +520,6 @@ const RealtorPropertyListingManagement = () => {
               </table>
             </div>
 
-            {/* Status Information Section */}
             <div className="mb-6">
               <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 STATUS INFORMATION
@@ -579,7 +561,6 @@ const RealtorPropertyListingManagement = () => {
               </table>
             </div>
 
-            {/* Agent & Office Information Section */}
             <div className="mb-6">
               <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 AGENT & OFFICE INFORMATION
@@ -610,7 +591,6 @@ const RealtorPropertyListingManagement = () => {
               </table>
             </div>
 
-            {/* Room Information Section */}
             <div className="mb-6">
               <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 ROOM INFORMATION

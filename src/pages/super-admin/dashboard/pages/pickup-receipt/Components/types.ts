@@ -1,13 +1,13 @@
 export interface DataType {
-  date: string; // Date of the transaction
-  propertyAddress: string; // Address of the property
-  receivedFrom: string; // Received from (Sales Representative, Buyer, Tenant)
-  representation: string; // Representation type
-  paymentType: string; // Type of payment
-  paymentMethod: string; // Payment method
-  amountReceived: number; // Amount received
-  receivedBy: string; // Received by (who received the payment)
-  signature: string; // Signature
+  date: string;
+  propertyAddress: string;
+  receivedFrom: string;
+  representation: string;
+  paymentType: string;
+  paymentMethod: string;
+  amountReceived: number;
+  receivedBy: string;
+  signature: string;
   representationReceivedBy: string;
   bankDraftImage: File | null;
   uuid: string;
@@ -23,7 +23,6 @@ export interface DataType {
   serial?: number;
 }
 
-/** Reason For Payment (optional). The stored value "balanceOfDepositRefundReturn" is kept so existing receipts still read correctly. */
 export const REASON_OPTIONS = [
   { value: "balanceOfDepositRefundReturn", label: "Balance of Deposit Refund" },
   { value: "depositRefund", label: "Deposit Refund" },

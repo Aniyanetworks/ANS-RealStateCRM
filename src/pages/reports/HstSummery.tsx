@@ -9,18 +9,15 @@ import { useGetOrderQuery } from "../../redux/api/superadmin/invoice/orderDataSl
 import { useGetExpenseListQuery } from "../../redux/api/superadmin/expenses/expenseSlice";
 import { format } from "date-fns";
 
-// Type definitions
 interface Agent {
   id: number;
   name: string;
   email: string;
   phoneNumber: string;
-  // Add other agent properties as needed
 }
 
 interface InvoiceItem {
   id: number;
-  // Add invoice item properties as needed
 }
 
 interface MarketplaceOrder {
@@ -40,9 +37,7 @@ interface MarketplaceOrder {
 }
 
 interface TradeData {
-  // Define your trade data structure here
   id: number;
-  // Add other trade properties
 }
 
 interface Expense {
@@ -83,7 +78,6 @@ export default function TradeReport() {
   const { data: marketplace } = useGetOrderQuery();
   const { data: expense } = useGetExpenseListQuery();
 
-  // Function to set predefined date ranges
   const handlePeriodFilter = (period: string) => {
     const now = new Date();
     const startDate = new Date();
@@ -151,7 +145,6 @@ export default function TradeReport() {
     });
   };
   
-  // Memoized logic for filtering all datasets
   const { filteredData, filteredMarketplaceData, filteredExpenseData } = useMemo(() => {
     const emptyResult = { 
       filteredData: [], 
@@ -167,7 +160,6 @@ export default function TradeReport() {
     let marketplaceData: MarketplaceOrder[] = marketplace.data.OrderData;
     let expenseData: Expense[] = expense.data.expenses;
   
-    // Filter by Date Range
     if (dateRange) {
       const [startStr, endStr] = dateRange;
       if (!startStr || !endStr) return emptyResult;
@@ -191,7 +183,6 @@ export default function TradeReport() {
       });
     }
   
-    // Search Filter
     if (searchText) {
       reportData = reportData.filter((item) => searchInObject(item, searchText));
       marketplaceData = marketplaceData.filter((item) => searchInObject(item, searchText));
@@ -205,12 +196,10 @@ export default function TradeReport() {
     };
   }, [data, marketplace, expense, dateRange, searchText]);
 
-  // Function to handle search input changes
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
 
-    // Generate search suggestions from all datasets
     if (value.trim() === "") {
       setSearchSuggestions([]);
     } else {
@@ -269,7 +258,6 @@ export default function TradeReport() {
     }
   };
 
-  // Function to handle suggestion selection
   const handleSuggestionClick = (suggestion: string) => {
     setSearchText(suggestion);
     setSearchSuggestions([]);

@@ -1,4 +1,3 @@
-// components/TextInput.tsx
 interface TextInputProps {
   label: string;
   register: any;

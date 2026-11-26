@@ -34,7 +34,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
   isModalOpen,
   setIsModalOpen,
 }) => {
-  // ======== COMMON HELPERS ========
   const calculateTimeline = (targetDate: string) => {
     const today = moment.utc().startOf("day");
     const target = moment.utc(targetDate).startOf("day");
@@ -43,7 +42,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
 
   const today = moment.utc().startOf("day");
 
-  // ======== TRADE SHEET HELPERS ========
   const getCurrentMonthClosings = () => {
     const currentMonth = today.month();
     const currentYear = today.year();
@@ -76,7 +74,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
     });
   };
 
-  // ======== PROPERTY LISTING HELPERS ========
   const getExpiringSoonListings = () => {
     return propertyData.filter((listing) => {
       if (!listing.expiryDate) return false;
@@ -87,7 +84,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
   };
 
 
-  // ======== REMINDER HANDLERS ========
   const handleDontRemind = () => {
     localStorage.setItem("popupVisibility", "false");
     setIsModalOpen(false);
@@ -100,17 +96,14 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
     setIsModalOpen(false);
   };
 
-  // ======== VISIBILITY CONTROL ========
   useEffect(() => {
     const popupVisibility = localStorage.getItem("popupVisibility");
     const reminderDate = localStorage.getItem("reminderDate");
     const todayStr = today.format("YYYY-MM-DD");
-    console.log("propertyData:", propertyData);
     const shouldShow =
       popupVisibility === "true" ||
       (reminderDate && moment.utc(todayStr).isSameOrAfter(moment.utc(reminderDate))) ||
       getExpiringSoonListings().length > 0;
-    console.log("--------------------", getExpiringSoonListings().length)
     if (shouldShow) {
       setIsModalOpen(true);
       localStorage.setItem("popupVisibility", "true");
@@ -119,7 +112,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
     }
   }, [tradeData, propertyData]);
 
-  // ======== UI ========
   return (
     <Modal
       width={780}
@@ -169,7 +161,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
       ]}
     >
       <div className="space-y-3 py-1">
-        {/* ================= TRADE SHEETS ================= */}
         <div>
           <h6 className="font-bold text-gray-800 flex items-center mb-1 text-xs uppercase tracking-wide">
             <span className="mr-1">📅</span> Current Month Closings
@@ -211,7 +202,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
           )}
         </div>
 
-        {/* ================= UPCOMING CLOSINGS ================= */}
         <div>
           <h6 className="font-bold text-gray-800 flex items-center mb-1 text-xs uppercase tracking-wide">
             <span className="mr-1">🔜</span> Upcoming Closings
@@ -253,7 +243,6 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
           )}
         </div>
 
-        {/* ================= PROPERTY LISTING EXPIRY ================= */}
         <div>
           <h6 className="font-bold text-gray-800 flex items-center mb-1 text-xs uppercase tracking-wide">
             <span className="mr-1">⏰</span> Property Listings Expiring Soon

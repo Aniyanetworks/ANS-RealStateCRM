@@ -9,7 +9,7 @@ import "react-pdf/dist/Page/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 import toast from "react-hot-toast";
 import { FaComment } from "react-icons/fa";
 import ButtonLoader from "../../../../../../components/loader/buttonLoader";
@@ -71,35 +71,28 @@ const TradeSheetPaperworkFileManagerMultipleRepresentationComponent: React.FC =
 
         const activeDocuments = data?.data?.uploadFileCategoryData?.uploadFileNames?.filter(
           (file: any) => {
-            // Filter by status
             if (file.status !== "active") {
               return false;
             }
             
-            // Filter by listType if tradesheet has a listType
             if (tradesheetListType) {
               const fileListType = file.listType;
               
-              // If tradesheet is "Both", show all documents
               if (tradesheetListType === "Both") {
                 return true;
               }
               
-              // If tradesheet is "Commercial", show documents with "Commercial" or "Both"
               if (tradesheetListType === "Commercial") {
                 return fileListType === "Commercial" || fileListType === "Both";
               }
               
-              // If tradesheet is "Residential", show documents with "Residential" or "Both"
               if (tradesheetListType === "Residential") {
                 return fileListType === "Residential" || fileListType === "Both";
               }
               
-              // If tradesheet listType doesn't match any known value, show documents with matching listType or "Both"
               return fileListType === tradesheetListType || fileListType === "Both";
             }
             
-            // If no listType on tradesheet, show all active documents
             return true;
           }
         );
@@ -152,7 +145,6 @@ const TradeSheetPaperworkFileManagerMultipleRepresentationComponent: React.FC =
     const [resubmitPaperWorkFileOtherAttachment] =
       useResubmitPaperWorkOtherFileAttachmentMutation();
 
-    // Reset pdfToView when resetTrigger, uuid, or dynamicRepresentation changes
     useEffect(() => {
       setPdfToView({});
     }, [resetTrigger, uuid, dynamicRepresentation]);
@@ -180,7 +172,6 @@ const TradeSheetPaperworkFileManagerMultipleRepresentationComponent: React.FC =
     const [rejectReason, setRejectReason] = useState("");
     const [changeFileType, setChangeFileType] = useState<string | null>(null);
 
-    // Add this with your existing state variables
 const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 const [editingFile, setEditingFile] = useState<any>(null);
 
@@ -341,7 +332,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
     };
 
     const handleViewClick = (file: object) => {
-      console.log(file);
       
       if (loadingTimeout) {
         clearTimeout(loadingTimeout);
@@ -424,7 +414,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
           return;
         }
 
-        // Determine file type based on current pdfToView
         const isOtherDocument = !pdfToView?.uploadFileName?.name;
 
         setIsUploading(isOtherDocument ? "paperWorkOtherFile" : "paperWorkFile");
@@ -444,7 +433,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
               }).unwrap()
           );
 
-          // Update state based on file type
           const updatedFile = isOtherDocument 
             ? response?.data?.updatedOtherAttachment 
             : response?.data?.newFileAttachment;
@@ -473,7 +461,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
       
     };
 
-    // Cleanup timeout on unmount
     useEffect(() => {
       return () => {
         if (loadingTimeout) {
@@ -486,7 +473,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
       <div className=" relative">
         <div>
           <div className="flex h-[calc(100vh-7rem)]">
-            {/* Sidebar */}
             <div
               style={{ width: `${sidebarWidth}px` }}
               className={`absolute lg:relative rounded-l-lg bg-white h-[calc(100vh-7rem)] overflow-y-auto overflow-x-hidden py-5 ${
@@ -525,7 +511,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
                 </svg>
               </button>
               
-              {/* Documents List */}
               {paperworkDocuments?.map((file: any, index: number) => (
                 <div key={index} className="">
                   <div>
@@ -705,7 +690,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
                 </div>
               ))}
 
-              {/* Others Documents */}
               <div>
                 {uploadedFilesOther?.length === 1 ? (
                   uploadedFilesOther.map((uploadFile: any, i: number) => (
@@ -828,13 +812,11 @@ const [editingFile, setEditingFile] = useState<any>(null);
               </div>
             </div>
 
-            {/* Resizer */}
             <div
               className="w-[4px] bg-gray-200 cursor-ew-resize"
               onMouseDown={handleMouseDown}
             ></div>
 
-            {/* Main Content */}
             <div className="w-full bg-white rounded-r-lg shadow-md p-4">
               <div className="flex justify-between pb-4 items-center border-b mb-2">
                 <h3 className="font-semibold flex items-center gap-2 text-[#0b3b38]">
@@ -904,24 +886,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
                 </div>
 
                 <div className="flex">
-                  {/* {pdfToView.status === "rejected" &&
-                    pdfToView?.uploadFileName?.name && (
-                      <div className="w-[200px]">
-                        <p className="mb-2">Resubmit File</p>
-                        <label className="flex justify-center items-center py-[6px] border border-dashed border-gray-400 rounded-md gap-2 hover:border-blue-500 cursor-pointer w-full">
-                          <input
-                            type="file"
-                            className="hidden"
-                            onChange={(event) =>
-                              handlePaperWorkFileResubmit(event, pdfToView?.id)
-                            }
-                            accept="application/pdf"
-                          />
-                          {isUploading == "paperWorkFile" && <ButtonLoader />}
-                          <span>Upload files</span>
-                        </label>
-                      </div>
-                    )} */}
                   {selectedStatus &&
                     pdfToView?.uploadFileName?.name &&
                     user?.userType !== "superAdmin" && (
@@ -985,7 +949,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
                             }
                           </Document>
 
-                          {/* Pagination — mobile/tablet only */}
                           {windowWidth < 1024 && pdfNumPages > 1 && (
                             <div className="sticky bottom-0 w-full flex items-center justify-center gap-3 py-2 mt-2 bg-white border-t border-gray-200 shadow-sm z-10">
                               <button
@@ -1046,7 +1009,6 @@ const [editingFile, setEditingFile] = useState<any>(null);
           </div>
         </div>
 
-        {/* Modals */}
         <Modal
           title="Add Reject Reasons"
           visible={isRejectModalVisible}
@@ -1115,7 +1077,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
         className="hidden"
         onChange={(event) => {
           if (editingFile?.id) {
-            handlePaperWorkFileResubmit(event, editingFile.id); // Same function handles both
+            handlePaperWorkFileResubmit(event, editingFile.id);
             setIsEditModalVisible(false);
           }
         }}

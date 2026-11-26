@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { route } from '../route';
 
-// ---- helpers ----
 const DAY = 86400000;
 const ago = (days: number, hour?: number, min = 0) => {
   const d = new Date(Date.now() - days * DAY);
@@ -25,7 +24,6 @@ const person = (i: number) => {
 };
 const strip = (s: string) => s.replace(/<[^>]*>/g, '');
 
-// ---- notifications ----
 const notifMsgs: [string, string][] = [
   ['New trade sheet submitted for 128 Maple Ave, Toronto', '/dashboard/super-admin/trade-sheets'],
   ['A new support request was assigned to you', '/dashboard/super-admin/support-request'],
@@ -49,7 +47,6 @@ const notifications = notifMsgs.map(([message, url], i) => ({
   notifiableUser: { id: 1, firstName: 'Ava', lastName: 'Morgan', name: 'Ava Morgan', email: 'admin@ans.demo' },
 }));
 
-// ---- announcement logs ----
 const logTitles = ['Q4 Brokerage Meeting', 'New Commission Structure', 'Holiday Office Hours', 'Compliance Reminder: RECO Renewal', 'Spring Open House Event', 'CRM Training Webinar', 'Referral Program Update', 'Market Report: GTA November'];
 const announcementLogs = logTitles.map((title, i) => {
   const type = ['EMAIL', 'SMS', 'BOTH'][i % 3];
@@ -80,7 +77,6 @@ const announcementLogs = logTitles.map((title, i) => {
   };
 });
 
-// ---- calendar notes ----
 const noteTexts = ['Broker open house at 128 Maple Ave', 'Submit RECO renewal paperwork', 'Team lunch - Mississauga office', 'Quarterly commission review', 'Photographer booked for 55 King St W', 'Mortgage broker call at 2 PM', 'Office closed - statutory holiday', 'Agent training: new CRM features', 'Closing day: 14 Bayview Dr', 'Staff meeting - Oakville branch'];
 const owner1 = { id: 1, firstName: 'Ava', lastName: 'Morgan', name: 'Ava Morgan', email: 'admin@ans.demo' };
 const calendarNotes = noteTexts.map((note, i) => ({
@@ -100,7 +96,6 @@ const branchAdmins = [
   { id: 4, firstName: 'Omar', lastName: 'Siddiqui', name: 'Omar Siddiqui', email: 'omar.siddiqui@ans.demo', branchId: 3, roleId: 1 },
 ];
 
-// ---- leads ----
 const campaignDefs: [string, string, string][] = [
   ['Facebook Buyers - Mississauga', 'active', 'Facebook'],
   ['Google Ads - Toronto Condos', 'active', 'Google'],
@@ -160,7 +155,6 @@ const allLeads = mk(40, (i) => {
   };
 });
 
-// ---- support ----
 const supportTeam = [
   { id: 21, firstName: 'Jordan', lastName: 'Ellis', name: 'Jordan Ellis', email: 'jordan.ellis@ans.demo', roleId: 5, userType: 'support' },
   { id: 22, firstName: 'Mia', lastName: 'Tanaka', name: 'Mia Tanaka', email: 'mia.tanaka@ans.demo', roleId: 5, userType: 'support' },
@@ -204,7 +198,6 @@ const supportRequests = (kind: string) => supportDefs.map(([title, type, priorit
   };
 });
 
-// ---- vendors ----
 const vendorCategories = ['Home Inspection', 'Mortgage Broker', 'Real Estate Lawyer', 'Photography', 'Staging', 'Moving Company', 'Cleaning Services', 'Contractor', 'Insurance', 'Appraisal'].map((name, i) => ({ id: i + 1, name, createdAt: ago(100 - i), updatedAt: ago(100 - i) }));
 const companyDefs: [string, string, string, string[], string, string][] = [
   ['Northshore Home Inspections', 'northshoreinspect.demo', '416-555-0111', ['Home Inspection'], 'coupon', 'ANS10'],
@@ -250,7 +243,6 @@ const vendors = companies.slice(0, 8).map((c, i) => {
   };
 });
 
-// ---- templates ----
 const templateDefs: [string, string, string][] = [
   ['Trade Sheet Share - Standard', 'Documents for {{property_address}}', '<p>Hi {{recipient_name}},</p><p>Please find attached the documents for {{property_address}}.</p><p>Regards,<br/>ANS RealStateCRM</p>'],
   ['Trade Sheet Share - Lawyer Package', 'Closing package: {{property_address}}', '<p>Dear Counsel,</p><p>Attached is the closing package for {{property_address}}. Closing date: {{closing_date}}.</p>'],
@@ -275,7 +267,6 @@ const templateBuilders = templateDefs.map(([name, subject, content], i) => ({
   createdUser: owner1,
 }));
 
-// ---- knowledge base ----
 const kbDefs: [string, string, string, string][] = [
   ['Buyer Representation Agreement (Form 300)', 'document', 'https://ans.demo/docs/form-300.pdf', 'Standard OREA buyer representation agreement.'],
   ['Listing Agreement (Form 200)', 'document', 'https://ans.demo/docs/form-200.pdf', 'Seller listing agreement for exclusive listings.'],
@@ -300,7 +291,6 @@ const knowledgeBase = kbDefs.map(([title, type, url, description], i) => ({
   updatedAt: ago(i * 9 + 1),
 }));
 
-// ---- file manager ----
 const fnode = (id: number, name: string, parentId: number | null, isFolder: boolean, extra: any = {}) => ({
   id, ownerId: 1, name, parentId, isFolder, permissions: [], s3Key: isFolder ? null : `demo/${id}-${name}`,
   size: isFolder ? null : extra.size ?? 250000, mimeType: isFolder ? null : extra.mimeType ?? 'application/pdf',
@@ -329,7 +319,6 @@ const sharedNodes = [
   { ...fnode(104, 'Branch Marketing Plan', null, true), ownerId: 3, permissions: ['view'] },
 ];
 
-// ---- clock in/out ----
 const clockUsers = [2, 3, 4, 5, 6, 7].map((k) => {
   const p = person(k);
   return { ...p, branchId: BRANCHES[k % 3].id, branch: { id: BRANCHES[k % 3].id, name: BRANCHES[k % 3].name } };
@@ -338,7 +327,7 @@ const clockRecords: any[] = [];
 let cid = 1;
 for (let d = 0; d < 6; d++) {
   clockUsers.forEach((u, ui) => {
-    if (d === 0 && ui >= 3) return; // today: only some clocked in
+    if (d === 0 && ui >= 3) return;
     const inH = 8 + (ui % 3);
     const inMin = (ui * 7 + d * 3) % 40;
     const mk1 = (action: 'clock_in' | 'clock_out', hour: number, min: number) => ({
@@ -382,7 +371,6 @@ export const miscRoutes = [
     const b = parseInt(query.branchId || '', 10);
     return { status: true, data: { campaigns: Number.isNaN(b) ? campaigns : campaigns.filter((c) => c.branchId === b) } };
   }),
-  // additional lead endpoints used by the leads pages
   route('GET', 'superadmin/allLeads', () => ({ status: true, data: { leads: allLeads, total: allLeads.length } })),
   route('GET', 'superadmin/leads/list/(?<campaignUuid>[^/]+)', ({ params }) => {
     const campaign = campaigns.find((c) => c.uuid === params.campaignUuid) || campaigns[0];

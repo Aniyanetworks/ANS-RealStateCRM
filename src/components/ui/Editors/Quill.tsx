@@ -1,8 +1,5 @@
 // @ts-nocheck
 // eslint-disable @typescript-eslint/no-explicit-any
-// import ReactQuill from "react-quill-new";
-// 
-// import "react-quill/dist/quill.bubble.css"; // Import for bubble theme
 
 type QuillProps = {
   value: string;
@@ -10,11 +7,7 @@ type QuillProps = {
 };
 
 const Quill = ({ value, onChange }: QuillProps) => {
-  // const [editorHtml, setEditorHtml] = useState("");
 
-  // const handleChange = (html: string) => {
-  //   setEditorHtml(html);
-  // };
 
   const modules = {
     toolbar: [
@@ -31,7 +24,7 @@ const Quill = ({ value, onChange }: QuillProps) => {
       ["clean"],
     ],
     clipboard: {
-      matchVisual: false, // To avoid extra line breaks when pasting HTML
+      matchVisual: false,
     },
   };
 
@@ -54,15 +47,6 @@ const Quill = ({ value, onChange }: QuillProps) => {
 
   return (
     <div>
-      {/* <ReactQuill
-        theme={"snow"}
-        value={value}
-        onChange={onChange}
-        modules={modules}
-        formats={formats}
-        bounds={".app"}
-        placeholder={"write here"}
-      /> */}
     </div>
   );
 };

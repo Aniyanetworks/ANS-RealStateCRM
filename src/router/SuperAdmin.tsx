@@ -17,4 +17,3 @@ const SuperAdmin = ({ children }: { children: ReactNode }) => {
 
 export default SuperAdmin;
 
-// this is the wrapper  component to protect all route

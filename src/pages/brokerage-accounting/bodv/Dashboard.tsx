@@ -1,5 +1,3 @@
-// Admin Dashboard — the original ANS Accounting dashboard (layout, panels, per-panel date ranges, Top Agents,
-// RECO renewal status, Brokerage Income for Super Admin), using ANS RealStateCRM agents, trade sheets and accounting.
 import { useEffect, useMemo, useState } from "react";
 import { LuLandmark, LuPlus, LuReceipt, LuSettings, LuWallet } from "./icons";
 import { useAcct, useAcctAction } from "../acctShared";
@@ -151,7 +149,6 @@ export default function Dashboard({ onNavigate }: { onNavigate: (key: string) =>
     </>
   );
 
-  // ---- Brokerage income (Super Admin) ----
   const between = (d: string | null, a: string, b: string) => Boolean(d && a && b && d >= a && d <= b);
   const tradeIncome = (a: string, b: string) => trades.filter((t) => t.netToOffice > 0 && between(t.closeDate || t.finalizedDate, a, b)).reduce((n, t) => n + t.netToOffice, 0);
   const general = (a: string, b: string) => (data?.generalIncome || []).filter((g) => between(g.date, a, b)).reduce((n, g) => n + g.amount, 0);

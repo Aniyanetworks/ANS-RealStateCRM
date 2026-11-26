@@ -13,16 +13,12 @@ import ReactCrop, {
   makeAspectCrop,
 } from "react-image-crop";
 
-/* import { useParams } from "react-router-dom";
-import { apiUrl } from "../../../../utils/constant"; */
 import setCanvasPreview from "../../../../components/cropper/setCanvasPreview";
 import { baseUrl, getFileUrl } from "../../../../utils/constant";
-// set ratio of crop image
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 import { square_applicationId } from "../../../../utils/constant";
 import { locationId } from "../../../../utils/constant";
-// import { getEnvUrls } from "../../../../utils/constant";
 import { useEffect, useState, useRef } from "react";
 import type { TableColumnsType, TableProps } from "antd";
 import ModalMain from "../../../../components/ui/Modal";
@@ -61,7 +57,6 @@ import { useCreateUpdateOrderMutation } from "../../../../redux/api/superadmin/i
 
 import { useAppSelector } from "../../../../redux/hooks";
 import { Link } from "react-router-dom";
-// import Select from "react-select";
 import { useGetAgentListDataQuery } from "../../../../redux/api/superadmin/agent/agentManagementSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReactQuill from "react-quill-new";
@@ -72,7 +67,6 @@ import { formatNumberWithCommasAndDecimals } from "../../../../utils/formatNumbe
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
 interface DataType {
-  // unit_price: string;
   product_name: string;
   quantity: string;
   description: string;
@@ -135,7 +129,6 @@ const BorrowProductList = () => {
   const [isAgreed, setIsAgreed] = useState(false);
 
 
-  // State to track quantities for each product
   const [quantities, setQuantities] = useState({});
   const [dueDate, setDueDate] = useState({});
   const [pickupDate, setPickupDate] = useState({});
@@ -165,7 +158,7 @@ const BorrowProductList = () => {
     multiple: true,
     beforeUpload: (file) => {
       setNewFiles((prevFiles) => [...prevFiles, file]);
-      return false; // Prevent automatic upload
+      return false;
     },
     onRemove: (file) => {
       handleRemoveFile(file as unknown as File);
@@ -193,7 +186,6 @@ const BorrowProductList = () => {
 
   const applyCoupon = async () => {
     try {
-      // Get product UUIDs from cart items (cartItems already contains UUIDs)
       const productIds = cartItems.filter(Boolean) as string[];
       
       const response = await getValidatedCoupon({
@@ -212,9 +204,7 @@ const BorrowProductList = () => {
         const couponData = response.data.data.CouponData;
         let calculatedDiscount = 0;
 
-        // Check if coupon is product-based
         if (couponData.discount_scope === "Product Based") {
-          // Find matching products - cartItems contains UUIDs that should match coupon's products array
           const matchingCartItemUuids = productIds.filter((uuid) =>
             couponData.products && Array.isArray(couponData.products) && couponData.products.includes(uuid)
           );
@@ -225,13 +215,11 @@ const BorrowProductList = () => {
             return;
           }
 
-          // Find matching products from selectedProducts by matching UUIDs
           const matchingProducts = selectedProducts.filter((product) => {
             const tableProduct = tableData.find((item) => item.id === product.id);
             return tableProduct && matchingCartItemUuids.includes(tableProduct.uuid);
           });
 
-          // Calculate total for matching products only
           const matchingProductsTotal = matchingProducts.reduce(
             (sum, item) => sum + Number(item.total_price),
             0
@@ -240,11 +228,9 @@ const BorrowProductList = () => {
           if (couponData.type == "Percentage") {
             calculatedDiscount = (matchingProductsTotal * parseFloat(couponData.discount)) / 100;
           } else {
-            // Fixed discount - total amount off
             calculatedDiscount = parseFloat(couponData.discount);
           }
         } else {
-          // Global discount - apply to entire subtotal
           if (couponData.type == "Percentage") {
             calculatedDiscount =
               (parseFloat(calculateSubTotal()) * parseFloat(couponData.discount)) / 100;
@@ -275,7 +261,6 @@ const BorrowProductList = () => {
     setDiscount(0.0);
   };
 
-  // Handle input change to update quantity
   const handleDueDateChange = (uuid, value) => {
     setDueDate((prev) => ({
       ...prev,
@@ -290,7 +275,6 @@ const BorrowProductList = () => {
   };
 
   const handleQuantityChange = (uuid, value) => {
-    // Remove leading zeros and convert to number
     const sanitizedValue = value.replace(/^0+(?=\d)/, "") || "0";
 
     const item = tableData.find((item) => item.uuid === uuid);
@@ -299,7 +283,6 @@ const BorrowProductList = () => {
       return;
     }
 
-    // Always check stock for borrow
     if (item.quantity < sanitizedValue) {
       toast.error("Opp! Stock Finished");
       return;
@@ -313,7 +296,7 @@ const BorrowProductList = () => {
 
   const handleQuantityIncrement = (uuid) => {
     setQuantities((prev) => {
-      const currentValue = Number(prev[uuid] || 0); // Convert to number
+      const currentValue = Number(prev[uuid] || 0);
 
       const item = tableData.find((item) => item.uuid === uuid);
       if (!item) {
@@ -336,7 +319,7 @@ const BorrowProductList = () => {
   const handleQuantityDecrement = (uuid) => {
     setQuantities((prev) => ({
       ...prev,
-      [uuid]: Math.max((prev[uuid] || 0) - 1, 0), // Decrement quantity but not below 0
+      [uuid]: Math.max((prev[uuid] || 0) - 1, 0),
     }));
   };
 
@@ -353,7 +336,7 @@ const BorrowProductList = () => {
           total_price: (quantities[item.uuid] || 0) * item.borrow_unit_price,
           due_date: dueDate[item.uuid],
           pickup_date: pickupDate[item.uuid],
-          order_item_status: "Borrow", // Always set to Borrow
+          order_item_status: "Borrow",
           quantity: quantities[item.uuid] || 0,
         }));
       setSelectedProducts(filteredProducts);
@@ -361,11 +344,10 @@ const BorrowProductList = () => {
   }, [cartItems, tableData, quantities, dueDate,pickupDate]);
 
   const handleRemoveItem = (uuid) => {
-    /* if (e) e.preventDefault();  */
     setCartItems((prev) => prev.filter((key) => key !== uuid));
     setQuantities((prev) => {
       const updatedQuantities = { ...prev };
-      delete updatedQuantities[uuid]; // Remove quantity for the specific product
+      delete updatedQuantities[uuid];
       return updatedQuantities;
     });
   };
@@ -381,7 +363,6 @@ const BorrowProductList = () => {
         [uuid]: quantity,
       }));
       
-      // Always set to Borrow
       setOrderItemStatus((prev) => ({
         ...prev,
         [uuid]: "Borrow",
@@ -434,12 +415,11 @@ const BorrowProductList = () => {
   const handleTabChange = (key: string) => {
     const tab = tabs.find((t) => t.id === key);
     if (tab) {
-      setActiveKey(key); // Update the active tab
-      navigate(tab.link); // Update the URL
+      setActiveKey(key);
+      navigate(tab.link);
     }
   };
 
-  // Filter only borrow products
   useEffect(() => {
     if (data?.data?.TradeProductsData) {
       const borrowProducts = data.data.TradeProductsData.filter(
@@ -462,7 +442,6 @@ const BorrowProductList = () => {
   } = useForm<DataType>({});
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -520,7 +499,6 @@ const BorrowProductList = () => {
   };
 
   const resetCart = () => {
-    //Create Order
     setValue("agentId", "");
     setValue("status", "");
     setValue("total_amount", "");
@@ -552,7 +530,6 @@ const BorrowProductList = () => {
 
   const handleEdit = (record: DataType) => {
     reset(record);
-    // setEditingRequest(record);
     setExistingFiles(record.tradeFile || []);
     setIsEditMode(true);
     setSelectedUUID(record.uuid);
@@ -564,7 +541,7 @@ const BorrowProductList = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
     try {
       const response = await deletePropertyListing(selectedUUID).unwrap();
       toast.success(response?.message);
@@ -625,7 +602,6 @@ const BorrowProductList = () => {
     }
   }, [sourceId]);
 
-  // Validate order before submission
   const validateOrder = () => {
     for (const item of selectedProducts) {
       if (!item.pickup_date) {
@@ -641,7 +617,6 @@ const BorrowProductList = () => {
       return toast.error("Please wait, your order is being processed");
     }
 
-    // Validate due dates
     if (!validateOrder()) {
       return;
     }
@@ -697,25 +672,22 @@ const BorrowProductList = () => {
     const data = getValues();
     data.imageFile = imageFile;
     data.payment_method = 'Offline';
-    data.type = 'Borrow'; // Always set to Borrow
+    data.type = 'Borrow';
     data.removedFileIds = JSON.stringify(removedFileIds);
 
     const formData = new FormData();
 
-    // Handle attachments dynamically
     newFiles.forEach((file) => {
       formData.append("attachments", file);
     });
-    // Append all fields dynamically
     Object.entries(data).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         if (value.length > 0 && value[0] instanceof File) {
-          // Handle multiple file uploads
           value.forEach((file) => {
-            formData.append(`${key}[]`, file); // Append files properly
+            formData.append(`${key}[]`, file);
           });
         } else {
-          formData.append(key, JSON.stringify(value)); // Convert other arrays to JSON string
+          formData.append(key, JSON.stringify(value));
         }
       } else if (value instanceof File || value instanceof Blob) {
         formData.append(key, value);
@@ -738,13 +710,13 @@ const BorrowProductList = () => {
       setIsUploading(false);
       if (isEditMode) {
         setIsEditMode(false);
-        setSelectedUUID("null"); // Use null instead of 'null'
+        setSelectedUUID("null");
       }
     }
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -754,7 +726,6 @@ const BorrowProductList = () => {
           selectedRowKeys
         );
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -772,29 +743,23 @@ const BorrowProductList = () => {
   };
 
   const calculateTax = (total, discount, taxRate) => {
-    // Ensure inputs are numbers and default to 0 if invalid
     const validTotal = parseFloat(total) || 0;
     const validDiscount = parseFloat(discount) || 0;
     const validTaxRate = parseFloat(taxRate) || 0;
 
-    // Calculate taxable amount and tax
     const taxableAmount = validTotal - validDiscount;
     const tax = (taxableAmount * validTaxRate) / 100;
 
-    // Return tax rounded to 2 decimal places
     return parseFloat(tax.toFixed(2));
   };
   const calculateOnlineTransectionCharge = (total, discount, percent) => {
-    // Ensure inputs are numbers and default to 0 if invalid
     const validTotal = parseFloat(total) || 0;
     const validDiscount = parseFloat(discount) || 0;
     const transectionTaxRate = parseFloat(percent) || 0;
 
-    // Calculate taxable amount and tax
     const taxableAmount = validTotal - validDiscount;
     const tax = (taxableAmount * transectionTaxRate) / 100;
 
-    // Return tax rounded to 2 decimal places
     return paymentMethod === "Card" ? parseFloat(tax.toFixed(2)) : 0.0;
   };
   const calculateSubTotal = () => {
@@ -805,37 +770,34 @@ const BorrowProductList = () => {
     return parseFloat(subTotalAmount).toFixed(2);
   };
 
-  //Image Upload
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; // Safely access the first file
-    if (!file) return; // Return if no file is selected
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       const imageElement = new Image();
-      const imageUrl = reader.result?.toString() || ""; // Safely convert result to string
+      const imageUrl = reader.result?.toString() || "";
       imageElement.src = imageUrl;
 
       imageElement.addEventListener("load", (event: Event) => {
         const { naturalWidth, naturalHeight } =
           event.currentTarget as HTMLImageElement;
 
-        setImageFile(null); // Resetting the file
+        setImageFile(null);
 
         if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
           alert("Image must be at least 1000 x 500 pixels.");
-          return setSelectedImage(""); // Reset the selected image if the dimensions are invalid
+          return setSelectedImage("");
         }
 
-        // Set the selected image if the dimensions are valid
         setSelectedImage(imageUrl);
       });
     });
 
-    reader.readAsDataURL(file); // Read the file as Data URL
+    reader.readAsDataURL(file);
   };
 
-  // crop image
   const onImageLoad = (e: React.ChangeEvent<HTMLImageElement>) => {
     const { width, height } = e.currentTarget;
     const cropWidthInPercent = (MIN_DIMENSION / width) * 100;
@@ -875,7 +837,6 @@ const BorrowProductList = () => {
             className="w-full h-full rounded-full object-cover"
           />
 
-          {/* Enlarged Image Popup - Only Show for Hovered Row */}
           {hoveredIndex === index && (
             <div className="fixed inset-[450px] flex items-center justify-center  z-[9999]">
               <div className="relative w-[450px] h-[450px] rounded-lg bg-white shadow-xl border border-gray-300 flex items-center justify-center">
@@ -957,7 +918,7 @@ const BorrowProductList = () => {
       render: (uuid, records) => (
         <button
           type="button"
-          onClick={(e) => handleAddToCart(uuid, 1, e)} // Correctly passing the function reference
+          onClick={(e) => handleAddToCart(uuid, 1, e)}
           className="primary-btn mx-3"
         >
           {selectedProducts.some((item) => item.id === records.id)
@@ -1038,7 +999,6 @@ const BorrowProductList = () => {
     },
   ];
 
-  //=============== columns for cart table
   const cartItemColumns = [
     {
       title: "Product Thumbnail",
@@ -1153,7 +1113,6 @@ const BorrowProductList = () => {
             +
           </button>
 
-          {/* --- remoove button ----- */}
           <div>
             <button
               onClick={() => handleRemoveItem(record.uuid)}
@@ -1169,7 +1128,6 @@ const BorrowProductList = () => {
     },
   ];
 
-  //================ columns for checkout  table
   const checkoutItemColumns = [
     {
       title: "Product Name",
@@ -1191,14 +1149,6 @@ const BorrowProductList = () => {
       dataIndex: "quantity",
       key: "quantity",
     },
-    /* {
-      title: "Total Price",
-      dataIndex: "total_price",
-      key: "total_price",
-      render: (total_price) => (
-        <span>${formatNumberWithCommasAndDecimals(total_price)}</span>
-      ),
-    }, */
     {
       title: "Pickup Date",
       dataIndex: "pickup_date",
@@ -1213,7 +1163,6 @@ const BorrowProductList = () => {
     },
   ];
 
-  // searchable select on cart
 
   const showModal = () => setIsModalOpen(true);
   const showCreateOrderModal = () => {
@@ -1227,7 +1176,6 @@ const BorrowProductList = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <Link
@@ -1243,9 +1191,7 @@ const BorrowProductList = () => {
               </Link>
             ))}
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -1275,9 +1221,7 @@ const BorrowProductList = () => {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <button
               onClick={showCreateOrderModal}
@@ -1302,7 +1246,6 @@ const BorrowProductList = () => {
           </div>
         </div>
 
-      {/* ==== product table ========= */}
       <div>
         {isLoading ? (
           <TableLoader />
@@ -1318,7 +1261,6 @@ const BorrowProductList = () => {
         )}
       </div>
 
-      {/* ======== create update product ======== */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}
@@ -1345,7 +1287,6 @@ const BorrowProductList = () => {
                 </label>
               </div>
 
-              {/* croper start  */}
 
               <div>
                 {imageFile ? (
@@ -1429,7 +1370,6 @@ const BorrowProductList = () => {
                 )}
               </div>
 
-              {/* croper end */}
 
               <div className="w-1/2 flex justify-center">
                 {imageFile ? (
@@ -1457,14 +1397,12 @@ const BorrowProductList = () => {
                 )}
               </div>
             </div>
-            {/* Product Name */}
             <div className="flex flex-col ">
               <label>
                 Product Name <span className="text-red-500 ml-1">*</span>
               </label>
               <input
                 {...register("product_name", {
-                  // required: "Product name is required",
                 })}
                 type="text"
                 placeholder="Enter Product Name"
@@ -1477,7 +1415,6 @@ const BorrowProductList = () => {
               )}
             </div>
 
-            {/* Quantity */}
             <div className="flex flex-col ">
               <label>
                 Quantity <span className="text-red-500 ml-1">*</span>
@@ -1495,7 +1432,6 @@ const BorrowProductList = () => {
               )}
             </div>
 
-            {/* Borrow Price */}
             <div className="flex flex-col ">
               <label>
                 Unit Value <span className="text-red-500 ml-1">*</span>
@@ -1550,7 +1486,6 @@ const BorrowProductList = () => {
             )}
           </div>
 
-          {/* Description */}
           <div className="flex flex-col  w-full">
             <label>Description</label>
 
@@ -1573,9 +1508,7 @@ const BorrowProductList = () => {
         </form>
       </ModalMain>
 
-      {/* Create New Order */}
 
-      {/* ====== cart modal =======s */}
       <ModalMain
         handleCancel={cancelCreateOrder}
         isModalOpen={isCreateOrderModalVisible}
@@ -1595,7 +1528,6 @@ const BorrowProductList = () => {
           {isCheckout &&
             (user.userType == "superAdmin" || user.userType == "admin") && (
               <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mb-6 ">
-                {/* Select Agent */}
                 <div className="flex flex-col gap-2 ">
                   <div className="flex flex-col ">
                     <label htmlFor="">Select Agent From Existing One</label>
@@ -1603,7 +1535,6 @@ const BorrowProductList = () => {
                     <Controller
                       name="agentId"
                       control={control}
-                      // rules={{ required: "Agent is required" }}
                       defaultValue={user.userType === "agent" ? user.id : ""}
                       render={({ field }) => (
                         <Select
@@ -1639,7 +1570,6 @@ const BorrowProductList = () => {
               </div>
             )}
 
-          {/* ====cart ======= */}
 
           {isCheckout && (
             <Table
@@ -1653,7 +1583,6 @@ const BorrowProductList = () => {
             />
           )}
 
-          {/* ===== checkout ======= */}
 
           {!isCheckout && (
             <div className="">
@@ -1666,10 +1595,8 @@ const BorrowProductList = () => {
               />
 
               <div className=" mt-8 grid grid-cols-1 gap-4 mb-8">
-                {/*  calculate total /tax/subtotal */}
                 <div className="hidden">
                   <div className="space-y-3 border border-neutral-300/30 p-4 rounded-md">
-                    {/* discount */}
                     <div className="flex justify-between  ">
                       <span className="text-sm text-gray-600">Discount</span>
                       <span className="font-medium">
@@ -1678,7 +1605,6 @@ const BorrowProductList = () => {
                       </span>
                     </div>
 
-                    {/* tax */}
 
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">
@@ -1710,7 +1636,6 @@ const BorrowProductList = () => {
                       </div>
                     )}
 
-                    {/* sub total */}
                     <div className="flex justify-between  ">
                       <span className="text-sm text-gray-600">Sub Total</span>
                       <span className="font-medium">
@@ -1720,7 +1645,6 @@ const BorrowProductList = () => {
                       </span>
                     </div>
 
-                    {/* total */}
                     <div className="flex justify-between items-center  border-t border-gray-100 pt-2">
                       <span className="text-[16px] font-medium text-gray-900">
                         Total
@@ -1746,9 +1670,7 @@ const BorrowProductList = () => {
                   </div>
                 </div>
 
-                {/* payment method and card info */}
                 <div className="shadow-sm space-y-4 border border-neutral-300/30 p-4 rounded-md">
-                  {/* payment status */}
                   {(user.userType == "superAdmin" ||
                     user.userType == "admin") && (
                     <div className="flex flex-col hidden">
@@ -1770,7 +1692,6 @@ const BorrowProductList = () => {
                     </div>
                   )}
 
-                  {/* payment method */}
                   <div className="flex  flex-col  hidden">
                     <label className="">Payment Method</label>
                     <select
@@ -1791,7 +1712,6 @@ const BorrowProductList = () => {
                     )}
                   </div>
 
-                  {/* apply coupon */}
                   <div>
                     {!appliedCoupon ? (
                       <div className="flex  gap-2 flex-col hidden">
@@ -1871,7 +1791,6 @@ const BorrowProductList = () => {
 
                   {paymentMethod != "Card" && (
                     <div className="mt-6 w-full space-y-4">
-  {/* Terms and Agreement Section */}
   <div className="">
     <h5 className="text-sm text-red-500  mb-2">
       Terms & Conditions
@@ -1885,7 +1804,6 @@ item's FULL unit value
     </p>
   </div>
 
-  {/* Agreement Checkbox */}
   <div className="flex  space-x-2">
     <input
       id="agree"
@@ -1902,7 +1820,6 @@ item's FULL unit value
     </label>
   </div>
 
-  {/* Confirmation Button */}
   <div className="flex gap-4">
     <button
       disabled={loading || !isAgreed}
@@ -1947,7 +1864,6 @@ item's FULL unit value
         </form>
       </ModalMain>
 
-      {/* View  product  Details Modal  */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isDetailsModalOpen}
@@ -2000,15 +1916,12 @@ item's FULL unit value
                 </div>
               )}
 
-              {/* Product Details */}
               <div className="overflow-hidden bg-white  rounded-lg">
                 <div className=" space-y-2 ">
-                  {/* Title */}
                   <h3 className="text-xl font-semibold text-gray-900">
                     {selectedRecord.product_name}
                   </h3>
 
-                  {/* Pricing Section */}
                   <div className="space-y-2 ">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-700 font-medium">
@@ -2039,7 +1952,7 @@ item's FULL unit value
                           selectedRecord.tradeFile.map((file) => (
                             <a
                               key={file.id}
-                              href={`${file.filePath}`} // Linking to the file path
+                              href={`${file.filePath}`}
                               className="text-sm text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-white transition duration-200"
                               target="_blank"
                               rel="noopener noreferrer"
@@ -2058,7 +1971,6 @@ item's FULL unit value
 
                   <hr className="!my-4" />
 
-                  {/* Description Section */}
                   {selectedRecord.description && (
                     <div>
                       <h4 className="text-lg font-semibold mb-2">
@@ -2073,7 +1985,6 @@ item's FULL unit value
                     </div>
                   )}
 
-                  {/* add to cart btn */}
                   <div className=" flex justify-end  !mt-6">
                     <button
                       type="button"
@@ -2118,7 +2029,6 @@ item's FULL unit value
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

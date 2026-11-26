@@ -74,7 +74,6 @@ const ReceiptTable = ({
     ],
   };
 
-  // serial number in the table
   const tableSourceData = data?.map((item: any, index: number) => {
     return {
       ...item,
@@ -90,25 +89,21 @@ const ReceiptTable = ({
       width: 130,
       fixed: "left",
       render: (text, record) => {
-        // Check if the status is either 'refundProcess' or 'refundCompleted'
         if (
           record.status === "refundProcess" ||
           record.status === "refundCompleted"
         ) {
           let statusText = "";
 
-          // Assign custom text based on the status
           if (record.status === "refundProcess") {
             statusText = "Refund Process";
           } else if (record.status === "refundCompleted") {
             statusText = "Refund Completed";
           }
 
-          // Return receiptId with the custom status text
           return `${record.receiptId} (${statusText})`;
         }
 
-        // Return just the receiptId if no matching status
         return (
           <span
             onClick={() => onView(record)}

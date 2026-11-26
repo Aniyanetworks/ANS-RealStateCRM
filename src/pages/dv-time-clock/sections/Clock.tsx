@@ -1,4 +1,3 @@
-// Clock In / Out: GPS clock-in at the assigned branch, clock-out, offsite clock-in requests.
 import { useEffect, useState } from "react";
 import { useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { useTcAction, useTimeClock } from "../TimeClockContext";
@@ -38,7 +37,7 @@ export function ClockSection() {
   const openQ = useTcGetQuery({ path: "/attendance", params: { userId: me.userId, open: 1, limit: 1 } }, { pollingInterval: 30000 });
   const offQ = useTcGetQuery({ path: "/offsite", params: { userId: me.userId, mine: 1 } }, { pollingInterval: 30000 });
   const [branchInfo, setBranchInfo] = useState<{ branch?: Branch; error?: string } | null>(null);
-  const [picked, setPicked] = useState<number | null>(null); // like the Clock In/Out page: the person may choose the branch
+  const [picked, setPicked] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   useEffect(() => {
     getClockBranch(picked).then(setBranchInfo).catch(() => setBranchInfo({ error: "unavailable" }));

@@ -83,20 +83,15 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
   toolbar
 }) => {
   const tableRef = useRef<HTMLDivElement | null>(null);
-  // const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({} as Sorts);
 
   const handleChange: OnChange = (_, filters, sorter) => {
-    // setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
 
-  // Transform data to create separate rows for each tax component
   const expandedData: ExpandedRowData[] = [];
   
-  // Process trade data
   filteredData.forEach((item) => {
-    // Agent Commission Tax row
     if (item.agentCommissionTax && Number(item.agentCommissionTax)) {
       expandedData.push({
         key: `${item.id}-agent`,
@@ -110,7 +105,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
       });
     }
 
-    // Net Commission Tax row
     if (item.netCommissionTax && Number(item.netCommissionTax)) {
       expandedData.push({
         key: `${item.id}-net`,
@@ -125,7 +119,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     }
   });
 
-  // Process marketplace data
   filteredMarketplaceData.forEach((item) => {
     if (item.tax && Number(item.tax)) {
       expandedData.push({
@@ -141,7 +134,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     }
   });
 
-  // Process expense data
   filteredExpenseData.forEach((item) => {
     if (item.tax && Number(item.tax)) {
       expandedData.push({
@@ -227,7 +219,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     }
   ];
 
-  // Calculate summary statistics
   const totalHst = () => {
     return expandedData
       .reduce((sum, item) => sum + Number(item.earned || 0), 0)
@@ -271,7 +262,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
       "Net Remit": `$${formatNumberWithCommasAndDecimals((Number(item.earned) - Number(item.itc)) || 0)}`
     }));
 
-    // Add total row
     exportData.push({
       Source: "Total",
       Reference: "",
@@ -285,7 +275,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     const ws = XLSX.utils.json_to_sheet(exportData);
     const wb = XLSX.utils.book_new();
 
-    // Add date range label
     if (dateRangeLabel) {
       const dateRangeText = String(dateRangeLabel.props.children).replace(/,\s*/g, '');
       XLSX.utils.sheet_add_aoa(ws, [[`Source: ${dateRangeText}`]], { origin: "A1" });
@@ -306,23 +295,19 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(fontSize);
 
-    // Add logo
     const logoX = (pageWidth / 2) - 10;
     const logoY = 5;
     const logoWidth = 20;
     const logoHeight = 20;
     pdf.addImage(logo1, "PNG", logoX, logoY, logoWidth, logoHeight);
 
-    // Add title
     pdf.text("Detailed HST Report", pageWidth / 2, startY, { align: "center" });
 
-    // Add date range label
     if (dateRangeLabel) {
       const dateRangeText = `${String(dateRangeLabel.props.children).replace(/,\s*/g, '')}`;
       pdf.text(dateRangeText, pageWidth / 2, startY + lineHeight, { align: "center" });
     }
 
-    // Column headers
     const headers = [
       "Source",
       "Reference",
@@ -333,17 +318,14 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
       "Net Remit"
     ];
 
-    // Column widths
     const columnWidths = [20, 25, 40, 25, 20, 20, 20];
 
-    // Add headers
     let x = margin;
     headers.forEach((header, index) => {
       pdf.text(header, x, startY + 2 * lineHeight);
       x += columnWidths[index];
     });
 
-    // Add rows
     let currentY = startY + 3 * lineHeight;
     expandedData.forEach((item) => {
       const row = [
@@ -370,7 +352,6 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
       currentY += lineHeight;
     });
 
-    // Add summary section
     currentY += lineHeight;
     pdf.setFontSize(10);
     pdf.setFont("helvetica", "bold");

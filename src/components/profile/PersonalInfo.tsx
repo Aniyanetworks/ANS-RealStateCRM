@@ -2,7 +2,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import {
   useGetCitiesQuery,
-  // useGetCountriesQuery,
   useGetStatesQuery,
 } from "../../redux/api/common/countryStateCitySlice";
 import { useEffect, useState } from "react";
@@ -58,21 +57,17 @@ const PersonalInfo = () => {
   }, [user, setValue]);
   const selectedState = watch("stateId");
 
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [] } = useGetCitiesQuery(selectedState, {
-    skip: !selectedState, // Skip if no state is selected
+    skip: !selectedState,
   });
 
   useEffect(() => {
-    setValue("countryId", 39); //by defult set county canada
+    setValue("countryId", 39);
   }, [setValue,user]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -99,7 +94,6 @@ const PersonalInfo = () => {
   };
 
   const handleChangePostalCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //clear the error
     setError('postalCode', { type: 'manual', message: '' });
     const postalCode = e.target.value;
     const value = formatPostalCode(postalCode);

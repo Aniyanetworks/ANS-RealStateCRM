@@ -82,9 +82,6 @@ const UpcommingCalendarCard = ({ index, calendarEvent }: UpcommingCalendarCardPr
         <div className="bg-white rounded-2xl p-6">
           <div className="flex justify-between items-start">
             <div className="flex items-start gap-4">
-              {/* <div className="w-16 h-16 rounded-full bg-gray-50 flex-shrink-0">
-                <img className="h-full w-full rounded-full" src={announcement1} alt="Event" />
-              </div> */}
               <div>
                 <h3 className="text-xl font-medium mb-2">{calendarEvent.title}</h3>
                 <p className="text-gray-600 flex items-center gap-2">

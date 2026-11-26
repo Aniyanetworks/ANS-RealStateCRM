@@ -15,7 +15,6 @@ import TableLoader from "../../../../../../components/loader/TableLoader";
 import ButtonLoader from "../../../../../../components/loader/buttonLoader";
 import { useAppSelector } from "../../../../../../redux/hooks";
 
-// Reusable Text Input Component
 const TextInput = ({
   label,
   register,
@@ -44,7 +43,7 @@ const TextInput = ({
 
 const TradeSheetSellerInformation = () => {
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const [btnLoading, setBtnLoading] = useState('');
   const { tradeSheetRepresentationData } = useAppSelector(
     (state: any) => state.user
@@ -62,11 +61,10 @@ const TradeSheetSellerInformation = () => {
     formState: { errors },
     reset,
   } = useForm();
-  const [sellers, setSellers] = useState([{ id: Date.now() }]); // Initial seller state
+  const [sellers, setSellers] = useState([{ id: Date.now() }]);
 
   const { data, isLoading } = useGetSpacificTradeSheetListDataQuery(uuid);
   useEffect(() => {
-    // console.log('data?.data?.propertyListingData?.sellersInfo',data?.data?.propertyListing);
     if (
       data?.data?.tradeSheetData?.sellerInformations &&
       data?.data?.tradeSheetData?.sellerInformations.length > 0
@@ -104,7 +102,6 @@ const TradeSheetSellerInformation = () => {
   setBtnLoading(formData.saveBtn);
   
   try {
-    // Build sellers array from form data
     const sellersArray = sellers.map((seller, index) => ({
       firstName: formData[`seller${index + 1}FirstName`],
       lastName: formData[`seller${index + 1}LastName`],
@@ -137,7 +134,6 @@ const TradeSheetSellerInformation = () => {
           break;
       }
   
-      // Navigate to the determined path
       if (navigatePath) {
         navigate(navigatePath, { replace: true });
       }
@@ -175,7 +171,6 @@ const TradeSheetSellerInformation = () => {
 
   return (
     <div>
-      {/* <h2 className="uppercase text-center bg-[#c9c1c13d] py-5">Trade Sheet</h2> */}
       <TradeSheetSteps active={3} uuid={uuid} />
 
       {isLoading ? (
@@ -237,7 +232,6 @@ const TradeSheetSellerInformation = () => {
               </div>
             </div>
             <div className="flex justify-between my-15 mx-5">
-              {/* Save and Next Button */}
               <button
                 type="submit"
                 onClick={() => {
@@ -316,7 +310,6 @@ const TradeSheetSellerInformation = () => {
                 {btnLoading === "reset" ? <ButtonLoader /> : "Rest Form"}
               </button>
 
-              {/* Cancel Button */}
               <button
                 onClick={cancelSubmit}
                 type="button"

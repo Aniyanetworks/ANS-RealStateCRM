@@ -46,7 +46,6 @@ const AgentManagement: React.FC = () => {
   const [suggestions, setSuggestions] = useState<DataType[]>([]);
   const [filteredData, setFilteredData] = useState<DataType[]>([]);
 
-  // Helper function to check if a date is within range
   const isDateInRange = (dateToCheck: string) => {
     if (!dateRange) return true;
     const [start, end] = dateRange;
@@ -54,30 +53,23 @@ const AgentManagement: React.FC = () => {
     return date >= new Date(start) && date <= new Date(end);
   };
 
-  // Handle branch filter change
   const handleBranchFilter = (selectedBranchIds: string[]) => {
     setSelectedBranches(selectedBranchIds);
   };
 
-  // Enhanced filter function
   const filteredValue = filteredData?.filter((record) => {
     const searchTerm = searchText?.toLowerCase();
 
-    // If no search term, no date range, and no branch filter, return all data
     if (!searchTerm && !dateRange && selectedBranches.length === 0) return true;
 
-    // Check all fields recursively
     const searchInObject = (obj: any): boolean => {
       return Object.entries(obj).some(([key, value]) => {
-        // Skip certain keys
         if (key === 'key' || key === 'user' || key === 'plan') return false;
 
-        // Handle nested objects
         if (value && typeof value === 'object') {
           return searchInObject(value);
         }
 
-        // Handle arrays
         if (Array.isArray(value)) {
           return value.some(item =>
             typeof item === 'object'
@@ -86,28 +78,22 @@ const AgentManagement: React.FC = () => {
           );
         }
 
-        // Handle regular values
         return String(value).toLowerCase().includes(searchTerm);
       });
     };
 
-    // Search in main record
     const matchesSearch = searchTerm ? searchInObject(record) : true;
 
-    // Search in user object
     const matchesUserSearch = searchTerm ? searchInObject(record.user || {}) : true;
 
-    // Search in plan
     const matchesPlanSearch = searchTerm
       ? record?.plan?.name?.toLowerCase().includes(searchTerm)
       : true;
 
-    // Check date range if applicable
     const matchesDateRange = dateRange
       ? isDateInRange(record.createdAt)
       : true;
 
-    // Filter by Branches
     const matchesBranch = selectedBranches.length > 0
       ? selectedBranches.includes(record?.branch?.id?.toString()) ||
       selectedBranches.includes(record?.user?.branchId?.toString()) ||
@@ -117,7 +103,6 @@ const AgentManagement: React.FC = () => {
     return (matchesSearch || matchesUserSearch || matchesPlanSearch) && matchesDateRange && matchesBranch;
   });
 
-  // Period filter handlers
   const handlePeriodFilter = (period: string) => {
     const now = new Date();
     let startDate = new Date();
@@ -158,7 +143,6 @@ const AgentManagement: React.FC = () => {
     setShowDropdown(false);
   };
 
-  // Custom date range handler
   const handleCustomDateRange = () => {
     if (customStart && customEnd) {
       setDateRange([

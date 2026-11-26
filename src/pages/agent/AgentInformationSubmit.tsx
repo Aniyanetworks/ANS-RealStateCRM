@@ -112,12 +112,7 @@ const AgentInformationSubmit = () => {
       setSelectedOptionalPlans(agentAc?.optionalPlanId?.split(',').map((id: string) => parseInt(id, 10)) || []);
     }
 
-    /* const agreementStep = agentData?.data?.agentDetails?.agentAccount[0]?.agreementStep as keyof typeof agreementRoutes;
-
-    if (agreementStep && agreementRoutes[agreementStep] && agreementStep !== '7') {
-      navigate(agreementRoutes[agreementStep]);
-    } */
-  }, [agentData, reset, setValue, /* navigate, */ agreementRoutes, user]);
+  }, [agentData, reset, setValue, agreementRoutes, user]);
 
 
   const onSubmit = async () => {
@@ -132,7 +127,6 @@ const AgentInformationSubmit = () => {
         setAgentAccount(response.data.updatedUser.agentAccount);
         toast.success("Agent account created successfully!");
         await refetch();
-        // navigate('/agent-information-submit', { replace: true });
       } else {
         toast.error(response.message || "Failed to create agent account.");
       }
@@ -160,7 +154,6 @@ const AgentInformationSubmit = () => {
 
   const initialRef = useRef<SignatureCanvas | null>(null);
 
-  // Handle file change for signature image upload
   const handleChangeSignatureImage = (e: React.ChangeEvent<HTMLInputElement>, type: 'signature' | 'initial') => {
     const file = e.target.files?.[0];
 
@@ -182,7 +175,6 @@ const AgentInformationSubmit = () => {
     }
   };
 
-  // Clear signature canvas
   const clear = (type: 'signature' | 'initial') => {
     if (type === 'signature' && signatureRef.current) {
       (signatureRef.current as SignatureCanvas).clear();
@@ -191,7 +183,6 @@ const AgentInformationSubmit = () => {
     }
   };
 
-  // Save signature canvas image
   const save = (type: 'signature' | 'initial') => {
     let dataUrl = '';
     if (type === 'signature' && signatureRef.current) {
@@ -205,7 +196,6 @@ const AgentInformationSubmit = () => {
     }
   };
 
-  // Remove signature or initial image
   const handleRemoveImage = (type: 'signature' | 'initial') => {
     if (type === 'signature') {
       setUploadSignatureImage('');
@@ -219,7 +209,6 @@ const AgentInformationSubmit = () => {
   const handleChangeCellPhone = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    //clear the error
     setError('cellPhone', { type: 'manual', message: '' });
     const cellPhone = e.target.value;
     const value = formatPhoneNumber(cellPhone);
@@ -228,7 +217,6 @@ const AgentInformationSubmit = () => {
   const handleChangeEmergencyContact = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    //clear the error
     setError('emergencyContact', { type: 'manual', message: '' });
     const emergencyContact = e.target.value;
     const value = formatPhoneNumber(emergencyContact);
@@ -238,11 +226,10 @@ const AgentInformationSubmit = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Agent Account Details</h1>
-      {agentAccount?.status === "underReview" /* &&
-      agentAccount?.agreementStatus === "underReview" */ ? (
+      {agentAccount?.status === "underReview" ? (
         <div>
           <h1>
-            Thank you for submitting all information {/* document */}. Please wait for admin
+            Thank you for submitting all information . Please wait for admin
             approval.
           </h1>
         </div>
@@ -253,7 +240,6 @@ const AgentInformationSubmit = () => {
               <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
                 <div>
                   <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-                    {/* First Name */}
                     <div>
                       <label className="block mb-1">
                         First Name <span className="text-red-500">*</span>
@@ -274,7 +260,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* Last Name */}
                     <div>
                       <label className="block mb-1">
                         Last Name <span className="text-red-500">*</span>
@@ -293,7 +278,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* Email */}
                     <div>
                       <label className="block mb-1">
                         Email <span className="text-red-500">*</span>
@@ -316,7 +300,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* Address */}
                     <div>
                       <label className="block mb-1">
                         Address <span className="text-red-500">*</span>
@@ -335,7 +318,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* Cell Phone */}
                     <div>
                       <label className="block mb-1">
                         Cell Phone <span className="text-red-500">*</span>
@@ -360,7 +342,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* PREC Name */}
                     <div>
                       <label className="block mb-1">PREC Name (if any)</label>
                       <input
@@ -372,18 +353,7 @@ const AgentInformationSubmit = () => {
                       />
                     </div>
 
-                    {/* Phone Service Provider */}
-                    {/* <div>
-                    <label className="block mb-1">Phone Service Provider <span className="text-red-500">*</span></label>
-                    <input
-                      type="text"
-                      {...register("phoneServiceProvider", { required: "Phone service provider is required" })}
-                      className={`border p-2 w-full ${errors.phoneServiceProvider ? "border-red-500" : "border-gray-300"}`}
-                    />
-                    {errors.phoneServiceProvider && <p className="text-red-500">Phone service provider is required</p>}
-                  </div> */}
 
-                    {/* RECO Reg Number */}
                     <div>
                       <label className="block mb-1">
                         RECO Reg Number <span className="text-red-500">*</span>
@@ -406,7 +376,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* RECO Expiry Date */}
                     <div>
                       <label className="block mb-1">RECO Expiry Date</label>
                       <input
@@ -434,7 +403,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* SIN */}
                     <div>
                       <label className="block mb-1">
                         SIN <span className="text-red-500">*</span>
@@ -451,7 +419,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* Date of Birth */}
                     <div>
                       <label className="block mb-1">
                         Date of Birth <span className="text-red-500">*</span>
@@ -472,7 +439,6 @@ const AgentInformationSubmit = () => {
                       )}
                     </div>
 
-                    {/* Emergency Contact */}
                     <div>
                       <label>Emergency Contact</label>
                       <div className="flex">
@@ -499,10 +465,8 @@ const AgentInformationSubmit = () => {
                           }`}
                         />
                       </div>
-                      {/* {errors.emergencyContact && <p className="text-red-500">Emergency contact is required</p>} */}
                     </div>
 
-                    {/* HST Number */}
                     <div>
                       <label className="block mb-1">
                         HST Number <span className="text-red-500">*</span>
@@ -534,7 +498,6 @@ const AgentInformationSubmit = () => {
                       />
                     </div>
 
-                    {/* Expected Gross */}
                     <div>
                       <label className="block mb-1">
                         Expected Gross <span className="text-red-500">*</span>
@@ -589,24 +552,9 @@ const AgentInformationSubmit = () => {
                     ></p>
                   </div>
 
-                  {/* <div className="grid grid-cols-1 gap-4 w-full p-5 border"> */}
-                    {/* Select Plan */}
-                    {/* <SelectPlan
-                      plans={planData?.data?.plans}
-                      selectedPlanId={selectedPlanId}
-                      onSelect={handlePlanSelect}
-                    /> */}
 
-                    {/* Select Addons Plan */}
-                    {/* <AddonsPlanSelector
-                      optionalPlanData={optionalPlanData}
-                      optionalPlans={selectedOptionalPlans}
-                      register={register}
-                      handleOptionalPlanChange={handleOptionalPlanChange}
-                    /> */}
                     <AgentSelectedPlanDiscountAddon agentAccount={agentAccount} />
-                    {/* <SelectedDiscount agentAccount={agentAccount} /> */}
-                    <div>{/* </div> */}
+                    <div>
                   </div>
 
                   <div className="my-10">
@@ -614,7 +562,6 @@ const AgentInformationSubmit = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 w-full p-5">
-                    {/* Signature */}
                     <div>
                       <div className="flex flex-col gap-2 my-3">
                         <label>Signature Draw</label>
@@ -691,7 +638,6 @@ const AgentInformationSubmit = () => {
                       </div>
                     </div>
 
-                    {/* Initial Draw */}
                     <div>
                       <div className="flex flex-col gap-2 my-3">
                         <label>Initial Draw</label>
@@ -767,7 +713,6 @@ const AgentInformationSubmit = () => {
                   </div>
                 </div>
                 <div className="flex justify-end">
-                  {/* Submit Button */}
                   <button type="submit" className="primary-btn">
                     Save
                   </button>
@@ -775,11 +720,10 @@ const AgentInformationSubmit = () => {
               </form>
             )}
 
-          {agentAccount?.status === "approved" &&/* 
-            agentAccount?.agreementStatus === "approved" && */ (
+          {agentAccount?.status === "approved" &&(
               <div className="mt-4">
                 <h4>
-                  Congratulation! Your {/* all documents */} account details are approved. Please logout
+                  Congratulation! Your  account details are approved. Please logout
                   and login again to access your full dashboard.
                 </h4>
               </div>

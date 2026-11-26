@@ -39,7 +39,6 @@ const LeadReminder: React.FC<LeadReminderProps> = ({ leadId, agentId }) => {
   const { user } = useAppSelector((state) => state.user);
   const isAdmin = user.userType === 'superAdmin' || user.userType === 'admin';
 
-  // Always call all hooks, select based on role
   const agentRemindersQuery = useGetAgentLeadRemindersQuery({ leadId: String(leadId) });
   const adminRemindersQuery = useGetLeadRemindersQuery({ agentId, leadId });
   const [createAgentReminder] = useCreateAgentLeadReminderMutation();
@@ -87,7 +86,6 @@ const LeadReminder: React.FC<LeadReminderProps> = ({ leadId, agentId }) => {
   };
 
   const handleFinish = async (values: { type: 'sms' | 'email'; message: string; scheduledTime: string }) => {
-    // Use scheduledTime directly from the form
     const { scheduledTime, ...payload } = values;
     const isoScheduledTime = dayjs(scheduledTime).toISOString();
     const finalPayload = {

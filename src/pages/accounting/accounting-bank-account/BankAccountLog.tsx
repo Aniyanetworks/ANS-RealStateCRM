@@ -11,7 +11,7 @@ import {
   useDeleteMultipleAccountingBankAccountsMutation,
   useGetAccountingBankAccountsQuery,
   useGetSpecificAccountingBankAccountQuery
-} from "../../../redux/api/accounting/bankAccountManagementSlice"; // Use the correct API hooks
+} from "../../../redux/api/accounting/bankAccountManagementSlice";
 import { FaEye, FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
@@ -34,10 +34,10 @@ interface DataType {
   uuid: string;
 }
 const BankAccountLog = () => {
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
   const { hasPermissionForSlug } = usePermissions();
   const [tableData, setTableData] = useState<DataType[]>([]);
-  const { data, isLoading, refetch } = useGetSpecificAccountingBankAccountQuery(uuid); // Use the bank account data query
+  const { data, isLoading, refetch } = useGetSpecificAccountingBankAccountQuery(uuid);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedUUID, setSelectedUUID] = useState<string | null>(null);
@@ -57,7 +57,7 @@ const BankAccountLog = () => {
   });
 
   useEffect(() => {
-    setTableData(data?.data?.account?.bankAccountLog); // Ensure correct data mapping
+    setTableData(data?.data?.account?.bankAccountLog);
   }, [data]);
 
   const {
@@ -71,11 +71,11 @@ const BankAccountLog = () => {
   } = useForm();
   const showModal = () => setIsModalOpen(true);
 
-  const [createBankAccount] = useCreateAccountingBankAccountMutation(); // Correct mutation
-  const [updateBankAccount] = useUpdateAccountingBankAccountMutation(); // Correct mutation
-  const [deleteBankAccount] = useDeleteAccountingBankAccountMutation(); // Correct mutation
+  const [createBankAccount] = useCreateAccountingBankAccountMutation();
+  const [updateBankAccount] = useUpdateAccountingBankAccountMutation();
+  const [deleteBankAccount] = useDeleteAccountingBankAccountMutation();
   const [deleteMultipleBankAccounts] =
-    useDeleteMultipleAccountingBankAccountsMutation(); // Correct mutation
+    useDeleteMultipleAccountingBankAccountsMutation();
 
   const resetForm = () => {
     reset({
@@ -83,7 +83,7 @@ const BankAccountLog = () => {
       description: "",
       accountNumber: "",
       bankName: "",
-      status: "active", // Default status
+      status: "active",
     });
   };
 
@@ -176,7 +176,6 @@ const BankAccountLog = () => {
       try {
         const response = await deleteMultipleBankAccounts(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -262,26 +261,6 @@ const BankAccountLog = () => {
   };
 
   const columns: TableColumnsType<DataType> = [
-    // {
-    //   title: "UUID",
-    //   dataIndex: "uuid",
-    //   key: "uuid",
-    // },
-    // {
-    //   title: "User ID",
-    //   dataIndex: "userId",
-    //   key: "userId",
-    // },
-    // {
-    //   title: "Account ID",
-    //   dataIndex: "accountId",
-    //   key: "accountId",
-    // },
-    // {
-    //   title: "Transfer Account ID",
-    //   dataIndex: "transferAccountId",
-    //   key: "transferAccountId",
-    // },
     {
       title: "Transaction ID",
       dataIndex: "transactionId",
@@ -318,125 +297,26 @@ const BankAccountLog = () => {
       key: "balanceAfterChange",
       render: (balanceAfterChange: any, record) => `$ ${formatNumberWithCommasAndDecimals(balanceAfterChange)}`,
     },
-    // {
-    //   title: "Transaction Reference",
-    //   dataIndex: "transactionReference",
-    //   key: "transactionReference",
-    // },
-    // {
-    //   title: "Category",
-    //   dataIndex: "category",
-    //   key: "category",
-    // },
     {
       title: "Payment Method",
       dataIndex: "paymentMethod",
       key: "paymentMethod",
       render: (paymentMethod: any, record) => `$ ${capitalizeAllLetters(paymentMethod)}`,
     },
-    // {
-    //   title: "Payment Type",
-    //   dataIndex: "paymenType",
-    //   key: "paymenType",
-    // },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (description: any) => description || 'N/A', // Show 'N/A' if no description
+      render: (description: any) => description || 'N/A',
     },
-    // {
-    //   title: "Note",
-    //   dataIndex: "note",
-    //   key: "note",
-    //   render: (note: any) => note || 'N/A', // Show 'N/A' if no note
-    // },
-    // {
-    //   title: "Is Reversed",
-    //   dataIndex: "isReversed",
-    //   key: "isReversed",
-    //   render: (isReversed: any) => (isReversed ? "Yes" : "No"),
-    // },
-    // {
-    //   title: "Currency",
-    //   dataIndex: "currency",
-    //   key: "currency",
-    // },
     {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (createdAt: any) => new Date(createdAt).toLocaleString(),
     },
-    // {
-    //   title: "Updated At",
-    //   dataIndex: "updatedAt",
-    //   key: "updatedAt",
-    //   render: (updatedAt: any) => new Date(updatedAt).toLocaleString(),
-    // },
-    // {
-    //   title: "Status",
-    //   dataIndex: "status",
-    //   key: "status",
-    //   render: (status: any) => (
-    //     <span
-    //       style={{
-    //         color: status === "active" ? "green" : "red",
-    //       }}
-    //     >
-    //       {status}
-    //     </span>
-    //   ),
-    // },
-    // {
-    //   title: "Actions",
-    //   dataIndex: "uuid",
-    //   key: "actions",
-    //   render: (uuid, record) => (
-    //     <Dropdown
-    //       menu={{
-    //         items: [
-    //           (hasPermissionForSlug("edit-bank-account") || true) && {
-    //             key: "edit",
-    //             label: (
-    //               <Link
-    //                 to={`/dashboard/accounting/bank-account-management/bank-account-log/${record.uuid || ''}`}
-    //                 className="flex items-center gap-2 w-full"
-    //               >
-    //                 <FaStreetView />
-    //                 Log/Statement
-    //               </Link>
-    //             ),
-    //           },
-    //           (hasPermissionForSlug("delete-bank-account") || true) && {
-    //             key: "delete",
-    //             label: (
-    //               <button
-    //                 onClick={() => handleDelete(uuid)}
-    //                 aria-label="Delete"
-    //                 className="flex items-center gap-2"
-    //               >
-    //                 <MdDelete size={17} />
-    //                 Delete
-    //               </button>
-    //             ),
-    //           },
-    //         ].filter(Boolean), // Filters out any falsey values like `undefined`
-    //       }}
-    //     >
-    //       <a onClick={(e) => e.preventDefault()}>
-    //         <Space>
-    //           <BsThreeDotsVertical />
-    //         </Space>
-    //       </a>
-    //     </Dropdown>
-    //   ),
-    //   fixed: "right",
-    //   align: "center",
-    // },
   ];
   
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -458,22 +338,6 @@ const BankAccountLog = () => {
           />
         </div>
         <div className="flex">
-          {/* {(hasPermissionForSlug("create-bank-account") || true) && (
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="primary-btn mx-3"
-            >
-              Add New
-            </button>
-          )}
-          {(hasPermissionForSlug("delete-bank-account") ||true) && (
-              <button
-                onClick={handleDeleteMultipleClick}
-                className="cancel-btn mx-3"
-              >
-                Delete Selected
-              </button>
-            )} */}
           <NavLink to="/dashboard/accounting/bank-account-management" className="back-btn mx-3">
             <button className="primary-btn mx-3">Go Back</button>
           </NavLink>
@@ -522,7 +386,6 @@ const BankAccountLog = () => {
       >
         <form className="space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Bank Account Name */}
             <div className="flex flex-col gap-2">
               <label>
                 Account Name <span className="text-red-500 ml-1">*</span>
@@ -549,7 +412,7 @@ const BankAccountLog = () => {
                 {...register("description")}
                 placeholder="Enter Description"
                 rows="4"
-                className="" // Optional: To prevent resizing of the text area
+                className=""
               />
               {errors.description && (
                 <p className="text-red-500 text-sm">
@@ -558,45 +421,8 @@ const BankAccountLog = () => {
               )}
             </div>
 
-            {/* Account Number */}
-            {/* <div className="flex flex-col gap-2">
-              <label>
-                Account Number <span className="text-red-500 ml-1">*</span>
-              </label>
-              <input
-                {...register("accountNumber", {
-                  required: "Account number is required",
-                })}
-                type="text"
-                placeholder="Enter Account Number"
-              />
-              {errors.accountNumber && (
-                <p className="text-red-500 text-sm">
-                  {errors.accountNumber.message as string}
-                </p>
-              )}
-            </div> */}
 
-            {/* Bank Name */}
-            {/* <div className="flex flex-col gap-2">
-              <label>
-                Bank Name <span className="text-red-500 ml-1">*</span>
-              </label>
-              <input
-                {...register("bankName", {
-                  required: "Bank name is required",
-                })}
-                type="text"
-                placeholder="Enter Bank Name"
-              />
-              {errors.bankName && (
-                <p className="text-red-500 text-sm">
-                  {errors.bankName.message as string}
-                </p>
-              )}
-            </div> */}
 
-            {/* Status */}
             <div className="flex flex-col gap-2">
               <label>
                 Status <span className="text-red-500 ml-1">*</span>

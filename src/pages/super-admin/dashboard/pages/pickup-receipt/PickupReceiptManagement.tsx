@@ -40,7 +40,7 @@ const PickupReceiptManagement = () => {
   const { user } = useAppSelector((state: any) => state.user);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [uploadReceiverIdImage, setUploadReceiverIdImage] = useState("");
-  const [activeTab, setActiveTab] = useState("pickup"); // Active tab state
+  const [activeTab, setActiveTab] = useState("pickup");
   const [isEmailSend, setIsEmailSend] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] =
@@ -67,14 +67,11 @@ const PickupReceiptManagement = () => {
   const filteredData = tableData?.filter((record) => {
     const searchTerm = searchText?.toLowerCase();
 
-    /* const inProperties = Object.values(record.createdUser || {}).some((data) =>
-      String(data).toLowerCase().includes(searchTerm.toLowerCase())
-  ); */
 
     const inRecord = Object.values(record).some((value) =>
       String(value).toLowerCase().includes(searchTerm)
     );
-    return /* inProperties || */ inRecord;
+    return inRecord;
   });
 
   const handleChange = (value: any) => {
@@ -92,7 +89,6 @@ const PickupReceiptManagement = () => {
     .tz("America/Toronto")
     .format("YYYY-MM-DDTHH:mm");
   const resetForm = () => {
-    // reset();
     setValue("date", torontoDate);
     setValue("propertyAddress", "");
     setValue("pickupPerson", "");
@@ -133,7 +129,7 @@ const PickupReceiptManagement = () => {
 
   const propertyListingOptions =
     tradeListData?.data?.tradeSheetData
-      .filter((item: any) => item.status === "approved") // Filter for 'approved' status
+      .filter((item: any) => item.status === "approved")
       .map((item: any) => ({
         value: item.id,
         propertyAddress: `${
@@ -141,20 +137,17 @@ const PickupReceiptManagement = () => {
         }`,
         label: `${item.tradeSheetTypeId} - ${
           item?.properties[0]?.propertyAddress || "No address available"
-        }`, // Handle missing address
+        }`,
       })) || [];
 
   const handlePropertyListingChange = (selectedOption: any) => {
-    console.log("selectedOption", selectedOption);
     if (selectedOption) {
       setSelectedPropertyListingId(selectedOption?.value);
       setValue("propertyAddress", selectedOption?.propertyAddress);
       setValue("tradeSheetId", selectedOption?.value);
-      // setValue("receivedFrom", selectedOption?.value);
     }
   };
 
-  // Create and update method
   const onSubmit = async () => {
     const data = getValues();
     const formData = new FormData();
@@ -194,7 +187,6 @@ const PickupReceiptManagement = () => {
     }
   };
 
-  // Delete method
   const confirmDelete = async () => {
     if (!selectedUUID || selectedUUID === "null") return;
     try {
@@ -221,7 +213,7 @@ const PickupReceiptManagement = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -229,7 +221,6 @@ const PickupReceiptManagement = () => {
       try {
         const response = await deleteMultiplePickupReceipt(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -246,24 +237,19 @@ const PickupReceiptManagement = () => {
     }
   };
 
-  // Edit method
   const handleEdit = (record: DataType) => {
-    console.log("record", record);
-    // Create a new object with formatted date fields
     const formattedRecord = {
       ...record,
       date: moment
-        .utc(record.date) // Parse as UTC
-        .tz("America/Toronto") // Convert to Toronto timezone
+        .utc(record.date)
+        .tz("America/Toronto")
         .format("YYYY-MM-DDTHH:mm"),
     };
 
     setSelectedPropertyListingId(formattedRecord?.tradeSheetId);
 
     setUploadReceiverIdImage(record.receiversId);
-    // Reset the form with the formatted record
     reset(formattedRecord);
-    // Trigger validation to ensure the required validation works
     trigger();
 
     setIsEditMode(true);
@@ -271,7 +257,6 @@ const PickupReceiptManagement = () => {
     showModal();
   };
 
-  // Bank receipt image
   const handleUploadReceiverIdImage = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -291,7 +276,6 @@ const PickupReceiptManagement = () => {
     setUploadReceiverIdImage("");
   };
 
-  // Send Email
   const [sendPickupReceiptInvoiceEmail] =
     useSendPickupReceiptInvoiceEmailMutation();
   
@@ -299,10 +283,8 @@ const PickupReceiptManagement = () => {
     setIsEmailSend(true);
     
     try {
-      // Get all form values
       const formValues = getValues();
       
-      // Validate required fields
       if (!formValues.recipients) {
         toast.error("Recipients email is required");
         setIsEmailSend(false);
@@ -315,8 +297,6 @@ const PickupReceiptManagement = () => {
         return;
       }
       
-      // Always generate PDF from receipt section (ensure it's generated fresh)
-      // Wait a bit to ensure DOM is ready
       await new Promise(resolve => setTimeout(resolve, 300));
       
       const printSection = document.getElementById("printSection");
@@ -327,14 +307,10 @@ const PickupReceiptManagement = () => {
         return;
       }
       
-      // Generate PDF attachment
       let pdfFile: File;
       try {
-        console.log("Starting PDF generation...");
         pdfFile = await generatePDFFromElement(printSection as HTMLElement, setValue);
-        console.log("PDF generated successfully:", pdfFile);
         
-        // Wait a bit to ensure setValue has processed
         await new Promise(resolve => setTimeout(resolve, 200));
       } catch (err: any) {
         console.error("PDF generation error details:", err);
@@ -344,7 +320,6 @@ const PickupReceiptManagement = () => {
         return;
       }
       
-      // Verify PDF was generated
       if (!pdfFile || !(pdfFile instanceof File)) {
         console.error("PDF file is invalid:", pdfFile);
         toast.error("Failed to generate PDF attachment. Please try again.");
@@ -352,7 +327,6 @@ const PickupReceiptManagement = () => {
         return;
       }
       
-      // Verify PDF size is reasonable (should be > 0)
       if (pdfFile.size === 0) {
         console.error("PDF file is empty");
         toast.error("Generated PDF is empty. Please try again.");
@@ -360,15 +334,11 @@ const PickupReceiptManagement = () => {
         return;
       }
       
-      console.log("PDF verification passed. Size:", pdfFile.size, "bytes");
       
-      // Get updated form values (including the PDF attachment)
       const updatedValues = getValues();
       
-      // Prepare FormData
       const formDataEmail = new FormData();
 
-      // Recipients: handle both string and array formats
       const recipientsValue = updatedValues.recipients || formValues.recipients;
       const recipientsArray = Array.isArray(recipientsValue)
         ? recipientsValue
@@ -382,23 +352,17 @@ const PickupReceiptManagement = () => {
       
       formDataEmail.append("recipients", recipientsArray.join(","));
 
-      // Subject
       const subject = updatedValues.subject || formValues.subject || "";
       formDataEmail.append("subject", subject);
 
-      // Email body (data field) - ensure it's a string and properly formatted
-      // ReactQuill stores HTML, so we need to get the current value
       const emailBody = updatedValues.data || formValues.data || "";
-      // Remove any empty HTML tags or whitespace-only content
       const cleanEmailBody = String(emailBody).trim();
-      // If email body is empty or just HTML tags, provide a default message
       if (!cleanEmailBody || cleanEmailBody === "<p><br></p>" || cleanEmailBody === "<p></p>") {
         formDataEmail.append("data", "<p>Please find the attached Cheque Pickup Receipt.</p>");
       } else {
         formDataEmail.append("data", cleanEmailBody);
       }
 
-      // Append receipt data fields that might be needed by backend
       if (updatedValues.propertyAddress) {
         formDataEmail.append("propertyAddress", String(updatedValues.propertyAddress));
       }
@@ -409,10 +373,8 @@ const PickupReceiptManagement = () => {
         formDataEmail.append("uuid", String(receiptModalData.uuid));
       }
 
-      // Append the PDF file
       formDataEmail.append("attachments", pdfFile, "Cheque-Pickup-Receipt.pdf");
 
-      // Send email
       const response = await sendPickupReceiptInvoiceEmail({ data: formDataEmail }).unwrap();
       toast.success(response?.message || "Email sent successfully!");
       resetForm();
@@ -425,7 +387,6 @@ const PickupReceiptManagement = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -467,7 +428,6 @@ const PickupReceiptManagement = () => {
     ],
   };
 
-  // Table Column
   const columns = createTableColumns(
     handleReceiptModal,
     handleEdit,
@@ -481,7 +441,6 @@ const PickupReceiptManagement = () => {
     showModal();
   };
 
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -491,7 +450,6 @@ const PickupReceiptManagement = () => {
   return (
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        {/* Toolbar row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
           <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Cheque Pickup Receipt List</h1>
           <div className="flex-1" />
@@ -540,7 +498,6 @@ const PickupReceiptManagement = () => {
           )}
         </div>
 
-      {/*  Receipt Download and view*/}
       <ReceiptViewModal
         isModalOpen={isReceiptModalOpen}
         handleCancel={handleCancel}
@@ -558,7 +515,6 @@ const PickupReceiptManagement = () => {
         setValue={setValue}
       />
 
-      {/* Receipt Create and edit */}
       <ReceiptCreateEditModal
         isModalOpen={isModalOpen}
         handleCancel={handleCancel}
@@ -574,7 +530,6 @@ const PickupReceiptManagement = () => {
         handleRemoveReceiverIdImage={handleRemoveReceiverIdImage}
       />
 
-      {/* Delete Modals */}
       <DeleteConfirmModals
         isModalVisible={isModalVisible}
         isDeleteMultipleModalVisible={isDeleteMultipleModalVisible}

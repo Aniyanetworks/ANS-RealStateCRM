@@ -34,10 +34,7 @@ interface CalendarNote {
 
 const CalendarNoteManagement = () => {
   const { user } = useAppSelector((state: any) => state.user);
-  // Any admin-type user (userType "superAdmin") has identical permissions
-  // here (create/view all/share); only edit/delete is creator-only.
   const isAdminRole = user?.userType === "superAdmin";
-  // Regardless of role, only the person who created a note can edit/delete it.
   const isOwnNote = (note: CalendarNote) => note?.owner?.id === user?.id;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,7 +71,6 @@ const CalendarNoteManagement = () => {
     String(record.note).toLowerCase().includes(searchText.toLowerCase())
   );
 
-  // Group notes by their (UTC, date-only) date for the calendar cells
   const notesByDate = useMemo(() => {
     const map: Record<string, CalendarNote[]> = {};
     filteredData.forEach((note) => {
@@ -127,7 +123,7 @@ const CalendarNoteManagement = () => {
   };
 
   const handleEdit = (record: CalendarNote) => {
-    if (!isOwnNote(record)) return; // Shared viewers can look but not edit
+    if (!isOwnNote(record)) return;
     reset({
       note: record.note,
       date: record.date ? moment.utc(record.date).format("YYYY-MM-DD") : "",
@@ -156,9 +152,8 @@ const CalendarNoteManagement = () => {
     resetForm();
   };
 
-  // Clicking a blank (note-less) date opens the create modal prefilled with that date
   const handleDateSelect = (date: any) => {
-    if (!isAdminRole) return; // Non-admins can't create notes
+    if (!isAdminRole) return;
     const dateKey = date.format("YYYY-MM-DD");
     if (notesByDate[dateKey]?.length) return;
 
@@ -265,7 +260,6 @@ const CalendarNoteManagement = () => {
         </div>
       </div>
 
-      {/* Create/Edit Modal */}
       <ModalMain
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}
@@ -328,7 +322,6 @@ const CalendarNoteManagement = () => {
         </form>
       </ModalMain>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isModalVisible}

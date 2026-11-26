@@ -1,5 +1,3 @@
-// Scheduling: month calendar / list of shifts with recorded hours, holidays, create (single, repeating,
-// multiple), edit, assign, delete, shift notes, and the "Email Employee Schedule" helper.
 import { useCallback, useMemo, useState } from "react";
 import { useLazyTcGetQuery, useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { useCan, useTcAction, useTimeClock } from "../TimeClockContext";
@@ -21,7 +19,6 @@ const clock = (v: string) => new Date(v).toLocaleTimeString([], { hour: "numeric
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 export const CAL_HEAD = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-/** Notify employees about shift changes through Messages (as the original does). */
 export function useShiftNotifier() {
   const { me } = useTimeClock();
   const act = useTcAction();
@@ -38,7 +35,6 @@ export function useShiftNotifier() {
   return { notify, notifyRows };
 }
 
-/** Load shifts on the proposed dates and confirm any overlap / duplicate / >12h warnings. */
 export function useConflictCheck() {
   const [fetchTc] = useLazyTcGetQuery();
   const { toast } = useTimeClock();
@@ -277,7 +273,6 @@ function AssignShiftForm({ s }: { s: Shift }) {
   );
 }
 
-/** "Leave Shift Note" (used by Scheduling and My Schedule). */
 export function HandoverNoteForm({ shiftUuid }: { shiftUuid: string }) {
   const { me, toast, closeModal } = useTimeClock();
   const act = useTcAction();

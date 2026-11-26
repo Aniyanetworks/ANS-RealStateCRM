@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { route } from '../route';
 
-// ---- ANS Time Clock demo data (responses mirror DvTimeClockController: { status, message, data }) ----
 const ok = (message: string, data: any) => ({ status: true, message, data });
 const pad = (n: number) => String(n).padStart(2, '0');
 const dateKey = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -46,7 +45,6 @@ const settings = {
   updatedAt: '2026-01-05T15:00:00.000Z',
 };
 
-// ---- generated data (relative to today so the page always looks current) ----
 function buildAttendance() {
   const rows: any[] = [];
   const now = new Date();
@@ -56,7 +54,6 @@ function buildAttendance() {
     if (d.getDay() === 0 || d.getDay() === 6) continue;
     employees.forEach((e, i) => {
       seq++;
-      // a couple of absences
       if ((back === 9 && i === 3) || (back === 4 && i === 6) || (back === 11 && i === 1)) return;
       const late = (back + i) % 7 === 0;
       const inMin = late ? 25 + (i % 3) * 10 : (i * 3) % 10;
@@ -64,7 +61,6 @@ function buildAttendance() {
       const outMin = (i * 7) % 30;
       const clockIn = at(d, 9, inMin);
       const isToday = back === 0;
-      // today: two people are still clocked in (open sessions), others have not started yet
       if (isToday) {
         if (i > 1) return;
         const t = new Date(now.getTime() - (2 + i) * 3600000);
@@ -135,7 +131,6 @@ export const timeclockRoutes = [
       pendingShiftRequests: 0, missedClockouts: 0, attendanceRecords: attendance.length, openShifts: shifts.filter((s) => s.status === 'open').length, clockedIn: open,
     });
   }),
-  // Filters mirror listAttendance: userId, open=1 (only unfinished sessions), from/to/before (ISO or date-time), order, limit.
   route('GET', 'dv-time-clock/attendance', ({ query }) => {
     let rows = attendance.slice();
     if (query.userId) rows = rows.filter((r) => r.userId === Number(query.userId));

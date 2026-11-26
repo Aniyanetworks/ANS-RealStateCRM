@@ -55,7 +55,6 @@ type PaperworkDocumentType = {
 
 const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
     
-    // const { uuid } = useParams<{ uuid?: string }>();
     const [fetchLoading, setFetchLoading] = useState<boolean>(false);
     const [selectedFilePaths, setSelectedFilePaths] = useState<string[]>([]);
     const [selectedOtherFilePaths, setSelectedOtherFilePaths] = useState<string[]>([]);
@@ -76,7 +75,7 @@ const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
     const {
         data: spacificTradeSheetLisData,
         isLoading,
-        refetch, // <-- add this
+        refetch,
     } = useGetSpacificTradeSheetListDataQuery(uuid);
 
     const { data: fetchlawyerListData} = useGetLawyerDataQuery("");
@@ -142,7 +141,7 @@ const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
             setShareLinkPopupOpen(true);
             setShareLink(`${window.location.origin}/shared-document/${response.data.data.uuid}`);
             setEmailBody(`Here is the link of shared documents: <a href="${window.location.origin}/shared-document/${response.data.data.uuid}">${window.location.origin}/shared-document/${response.data.data.uuid}</a>`);
-            refetch(); // <-- refresh the log after sharing
+            refetch();
         }
     };
 
@@ -225,7 +224,6 @@ const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
             });
             setEmailBody(`Here is the link to the shared document: ${shareLink}`);
         }).catch(err => {
-            console.log(err);
             notification.error({
                 message: 'Copy Failed',
                 description: 'Failed to copy the link. Please try again.',
@@ -295,7 +293,6 @@ const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
                     </div>
                 ))}
 
-                {/* all files others with checkboxes */}
                 <div>
                     
                     {spacificTradeSheetLisData?.data?.tradeSheetData?.paperWorkOtherAttachments?.map(
@@ -468,12 +465,10 @@ const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
                         classNamePrefix="select"
                         onChange={(selectedOption: any) => {
                             if (selectedOption) {
-                                // Get the current share link part from the email body
                                 const shareLinkPart = emailBody.includes('Here is the link to the shared document:') 
                                     ? emailBody.substring(emailBody.indexOf('Here is the link to the shared document:'))
                                     : '';
                                 
-                                // Add the new template content before the share link
                                 setEmailBody(selectedOption.content + (shareLinkPart ? '\n\n' + shareLinkPart : ''));
                             }
                         }}

@@ -1,6 +1,3 @@
-// Messages: threaded conversations with New / Inbox / Outstanding / Completed / Sent tabs, replies,
-// multi-recipient messages (one copy each) and deletion. Outstanding/Completed is a personal marker kept
-// in the browser, as in the original.
 import { useMemo, useState } from "react";
 import { useTcGetQuery } from "../../../redux/api/common/dvTimeClockSlice";
 import { useCan, useTcAction, useTimeClock } from "../TimeClockContext";
@@ -143,7 +140,7 @@ export function MessagesSection({ management }: { management: boolean }) {
     const next = { ...store };
     if (status) next[id] = status; else delete next[id];
     setStore(next);
-    try { localStorage.setItem(storeKey(me.userId), JSON.stringify(next)); } catch { /* storage unavailable */ }
+    try { localStorage.setItem(storeKey(me.userId), JSON.stringify(next)); } catch { }
   };
 
   const byId = useMemo(() => new Map(all.map((m) => [m.uuid, m])), [all]);

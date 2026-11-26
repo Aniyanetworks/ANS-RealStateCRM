@@ -49,11 +49,6 @@ const FinalizeTrade = ({ uuid, open, setIsOpen }) => {
       name: "Lawyer Info",
       component: <Lawyer data={data} />,
     },
-    /* {
-      id: 5,
-      name: "Trust",
-      component: <div>Trust</div>,
-    }, */
     {
       id: 6,
       name: "Outside Brokers",

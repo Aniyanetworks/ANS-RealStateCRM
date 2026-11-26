@@ -36,15 +36,13 @@ const VendorCategoryManagement = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] = useState(false);
-  const [searchText, setSearchText] = useState(""); // Search state
+  const [searchText, setSearchText] = useState("");
 
-  // API hooks
   const { data, isLoading, refetch } = useGetVendorCategoryQuery("");
   const [createVendorCategory] = useCreateVendorCategoryMutation();
   const [updateVendorCategory] = useUpdateVendorCategoryMutation();
   const [deleteMultipleVendorCategory] = useDeleteMultipleVendorCategoryMutation();
 
-  // Form
   const {
     register,
     formState: { errors },
@@ -53,20 +51,16 @@ const VendorCategoryManagement = () => {
     setError,
   } = useForm<VendorCategoryFormData>({ defaultValues: { name: "" } });
 
-  // Table data
   const VendorCategorys = data?.data?.VendorCategory || [];
 
-  // Filtered data for search
   const filteredData = VendorCategorys.filter((record: VendorCategory) =>
     record.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  // Reset form
   const resetForm = () => {
     reset({ name: "" });
   };
 
-  // Modal handlers
   const handleCancel = () => {
     resetForm();
     setIsModalOpen(false);
@@ -106,7 +100,6 @@ const VendorCategoryManagement = () => {
     setIsModalVisible(true);
   };
 
-  // Table row selection
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -121,7 +114,6 @@ const VendorCategoryManagement = () => {
     ],
   };
 
-  // Delete multiple
   const handleDeleteMultipleClick = () => {
     setIsDeleteModalMultipleVisible(true);
   };
@@ -143,9 +135,7 @@ const VendorCategoryManagement = () => {
     }
   };
 
-  // Create/Edit submit - FIXED VERSION
   const onSubmit = async (formData: VendorCategoryFormData) => {
-    console.log("Form data:", formData); // Debug log
     
     if (isEditMode && selectedId) {
       try {
@@ -185,7 +175,6 @@ const VendorCategoryManagement = () => {
     }
   };
 
-  // Table columns
   const columns: TableColumnsType<VendorCategory> = [
     {
       title: "Category Name",
@@ -296,13 +285,12 @@ const VendorCategoryManagement = () => {
           )}
         </div>
 
-      {/* Modal with proper form submission */}
       <Modal
         onCancel={handleCancel}
         open={isModalOpen}
         title={isEditMode ? "Edit Vendor Category" : "Create Vendor Category"}
         width={"400px"}
-        footer={null} // Remove footer buttons since we'll handle submission in the form
+        footer={null}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div className="flex flex-col gap-2">

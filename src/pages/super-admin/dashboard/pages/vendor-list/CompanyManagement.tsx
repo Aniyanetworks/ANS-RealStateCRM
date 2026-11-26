@@ -51,8 +51,8 @@ type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"
 
 interface PlatformUrl {
   platform: string;
-  username: string;  // This maps to 'handle' in the database
-  url: string;       // This maps to 'fullUrl' in the database
+  username: string;
+  url: string;
 }
 
 interface Company {
@@ -63,11 +63,11 @@ interface Company {
   companyEmail: string;
   category: string[];
   discountType: string;
-  discount: string;  // Single discount field from database
-  discountUrl?: string;  // For frontend display only
-  discountCouponCode?: string;  // For frontend display only
-  socialUrls?: SocialUrl[];  // From database
-  platformUrls?: PlatformUrl[];  // Mapped from socialUrls for frontend
+  discount: string;
+  discountUrl?: string;
+  discountCouponCode?: string;
+  socialUrls?: SocialUrl[];
+  platformUrls?: PlatformUrl[];
   createdAt: string;
   updatedAt: string;
   vendorLists?: Vendor[];
@@ -111,22 +111,9 @@ const STATUS_OPTIONS = [
   },
 ];
 
-// Category options
-/* const CATEGORY_OPTIONS = [
-  "Mortgage Broker",
-  "Home Inspector",
-  "Contractor / Renovation Specialist",
-  "Painter",
-  "Home Stager",
-  "Photographer / Videographer",
-  "Cleaning Service",
-  "Mover / Moving Company",
-  "Insurance Broker"
-]; */
 
 
 
-// Social Media Platform options with URL prefixes
 const SOCIAL_PLATFORMS = [
   { 
     value: 'facebook', 
@@ -180,7 +167,6 @@ const SOCIAL_PLATFORMS = [
   }
 ];
 
-// Discount type options
 const DISCOUNT_TYPES = [
   { label: 'Discount URL', value: 'url' },
   { label: 'Coupon Code', value: 'coupon' },
@@ -262,7 +248,6 @@ const CompanyManagement = () => {
     }
   };
 
-  // Add Vendor Modal State
   const [isAddVendorModalOpen, setIsAddVendorModalOpen] = useState(false);
   const [newVendor, setNewVendor] = useState({
     companyId: '',
@@ -274,7 +259,6 @@ const CompanyManagement = () => {
   });
   const [addVendorErrors, setAddVendorErrors] = useState<any>({});
 
-  // API hooks
   const { data, isLoading, refetch } = useGetCompaniesQuery("");
   const { data: vendorsData, refetch: refetchVendors } = useGetVendorsQuery("");
   const [createCompany] = useCreateCompanyMutation();
@@ -284,7 +268,6 @@ const CompanyManagement = () => {
   const [createVendor, { isLoading: isCreatingVendor }] = useCreateVendorMutation();
   const [shareVendor] = useShareVendorMutation();
 
-  // Form
   const {
     register,
     formState: { errors },
@@ -311,29 +294,23 @@ const CompanyManagement = () => {
   const watchPlatformUrls = watch("platformUrls", []);
   const watchDiscountType = watch("discountType", "none");
 
-  // Table data
   const companies = useMemo(() => {
   if (!data?.data?.companies) return [];
   
   return data.data.companies.map((company: any) => {
-    // Safely handle category data - it might be string, array, or JSON string
     let categoryArray: string[] = [];
     
     if (company.category) {
       if (Array.isArray(company.category)) {
-        // If it's already an array, use it directly
         categoryArray = company.category;
       } else if (typeof company.category === 'string') {
         try {
-          // Try to parse as JSON
           const parsed = JSON.parse(company.category);
           categoryArray = Array.isArray(parsed) ? parsed : [parsed];
         } catch {
-          // If not JSON, check if it's comma-separated
           if (company.category.includes(',')) {
             categoryArray = company.category.split(',').map((cat: string) => cat.trim());
           } else {
-            // Single category as string
             categoryArray = [company.category];
           }
         }
@@ -342,14 +319,12 @@ const CompanyManagement = () => {
     
     return {
       ...company,
-      category: categoryArray, // Ensure it's always an array
-      // Map socialUrls to platformUrls for frontend compatibility
+      category: categoryArray,
       platformUrls: company.socialUrls ? company.socialUrls.map((social: SocialUrl) => ({
         platform: social.platform,
         username: social.handle,
         url: social.fullUrl
       })) : [],
-      // Map discount field to appropriate frontend fields
       discountUrl: company.discountType === 'url' ? company.discount : null,
       discountCouponCode: company.discountType === 'coupon' ? company.discount : null
     };
@@ -365,11 +340,9 @@ const CompanyManagement = () => {
         const companyId = parseInt(editId);
         
         try {
-          // Find the company in the current data
           const companyToEdit = companies.find((company: Company) => company.id === companyId);
           
           if (companyToEdit) {
-            // Map the data for the form
             const formData = {
               ...companyToEdit,
               discountType: companyToEdit.discountType || "none",
@@ -383,7 +356,6 @@ const CompanyManagement = () => {
             setSelectedId(companyId);
             setIsModalOpen(true);
             
-            // Remove the edit_id parameter from URL
             searchParams.delete('edit_id');
             setSearchParams(searchParams);
             
@@ -399,13 +371,11 @@ const CompanyManagement = () => {
       }
     };
 
-    // Only run if we have companies data loaded and not already editing
     if (companies.length > 0 && !isEditMode) {
       handleEditFromUrl();
     }
   }, [companies, reset, searchParams, setSearchParams, isEditMode]);
 
-  // Filtered data for search
   const filteredData = companies.filter((record: Company) => {
     const searchTerm = searchText?.toLowerCase() || "";
     const extractValues = (obj: any): string[] => {
@@ -428,12 +398,10 @@ const CompanyManagement = () => {
     return allValues.some((value) => value.includes(searchTerm));
   });
 
-  // Get vendors for selected company
   const getCompanyVendors = (companyId: number) => {
   return allVendors.filter((vendor: Vendor) => vendor.companyId === companyId);
 };
 
-  // Filter vendors based on search text
   const filteredVendors = useMemo(() => {
     if (!selectedCompany) return [];
     
@@ -450,14 +418,13 @@ const CompanyManagement = () => {
     );
   }, [selectedCompany, allVendors, vendorSearchText]);
 
- // Reset form
 const resetForm = () => {
   reset({
     companyName: "",
     companyWebsite: "",
     companyPhoneNumber: "",
     companyEmail: "",
-    category: [] as string[], // Reset to empty array
+    category: [] as string[],
     discountType: "none",
     discountUrl: "",
     discountCouponCode: "",
@@ -466,12 +433,10 @@ const resetForm = () => {
   setActivePlatformPanels([]);
 };
 
-  // Platform URL handlers
   const addPlatformUrl = () => {
     const currentPlatformUrls = getValues("platformUrls") || [];
     const newPlatformUrl: PlatformUrl = { platform: '', username: '', url: '' };
     setValue("platformUrls", [...currentPlatformUrls, newPlatformUrl]);
-    // Auto-open the new panel
     setActivePlatformPanels([...activePlatformPanels, `platform-${currentPlatformUrls.length}`]);
   };
 
@@ -511,7 +476,6 @@ const resetForm = () => {
     currentPlatformUrls.splice(index, 1);
     setValue("platformUrls", currentPlatformUrls);
     
-    // Remove from active panels if it was open
     const panelKey = `platform-${index}`;
     setActivePlatformPanels(activePlatformPanels.filter(panel => panel !== panelKey));
   };
@@ -531,14 +495,12 @@ const resetForm = () => {
     return platform ? platform.prefix : 'https://';
   };
 
-  // Modal handlers
   const handleCancel = () => {
     resetForm();
     setIsModalOpen(false);
     setIsEditMode(false);
     setSelectedId(null);
     
-    // Clear any edit_id from URL when modal closes
     if (searchParams.get('edit_id')) {
       searchParams.delete('edit_id');
       setSearchParams(searchParams);
@@ -553,7 +515,7 @@ const resetForm = () => {
     setSelectedCompany(companyWithVendors);
     setSelectedVendor(companyWithVendors.vendorLists?.[0] || null);
     setSelectedTab('details');
-    setVendorSearchText(""); // Reset vendor search when opening modal
+    setVendorSearchText("");
     setIsViewModalOpen(true);
   };
 
@@ -561,11 +523,10 @@ const resetForm = () => {
     setIsViewModalOpen(false);
     setSelectedCompany(null);
     setSelectedVendor(null);
-    setVendorSearchText(""); // Reset vendor search when closing modal
+    setVendorSearchText("");
   };
 
   const handleEdit = (record: Company) => {
-  // Ensure category is properly handled for the form
   let categoryArray: string[] = [];
   
   if (record.category) {
@@ -585,17 +546,15 @@ const resetForm = () => {
     }
   }
   
-  // Map the data for the form
   const formData = {
     ...record,
-    category: categoryArray, // Ensure it's an array
+    category: categoryArray,
     discountType: record.discountType || "none",
     discountUrl: record.discountType === 'url' ? (record.discount || '') : '',
     discountCouponCode: record.discountType === 'coupon' ? (record.discount || '') : '',
     platformUrls: record.platformUrls || []
   };
   
-  console.log('Edit form data:', formData); // For debugging
   
   reset(formData);
   setIsEditMode(true);
@@ -632,18 +591,14 @@ const resetForm = () => {
     setIsModalVisible(true);
   };
 
-  // Handle vendor status change
   const handleVendorStatusChange = async (vendorId: number, newStatus: string) => {
     try {
       await updateVendorStatus({ id: vendorId, status: newStatus });
       toast.success("Vendor status updated successfully!");
-      // Refresh the vendor data
       await refetchVendors();
-      // Update the selected vendor if it's the one being updated
       if (selectedVendor && selectedVendor.id === vendorId) {
         setSelectedVendor({ ...selectedVendor, status: newStatus });
       }
-      // Update the selected company data
       if (selectedCompany) {
         const updatedVendors = getCompanyVendors(selectedCompany.id);
         setSelectedCompany({ ...selectedCompany, vendorLists: updatedVendors });
@@ -653,14 +608,12 @@ const resetForm = () => {
     }
   };
 
-  // Phone number formatting handler
   const handleCompanyPhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const formattedValue = formatPhoneNumber(value);
     setValue("companyPhoneNumber", formattedValue);
   };
 
-  // Add Vendor Handlers
   const handleOpenAddVendorModal = () => {
     setNewVendor({
       companyId: selectedCompany?.id?.toString() || '',
@@ -718,15 +671,12 @@ const resetForm = () => {
       toast.success('Vendor created successfully!');
       setIsAddVendorModalOpen(false);
       
-      // Refresh vendor data immediately
       await refetchVendors();
       
-      // Update selected company with new vendor list
       if (selectedCompany) {
         const updatedVendors = getCompanyVendors(selectedCompany.id);
         setSelectedCompany({ ...selectedCompany, vendorLists: updatedVendors });
         
-        // Auto-select the newly created vendor
         const newVendorFromResponse = updatedVendors.find((v: Vendor) => 
           v.contactPerson === newVendor.contactPerson && v.email === newVendor.email
         );
@@ -742,17 +692,14 @@ const resetForm = () => {
     }
   };
 
-  // Handle vendor search
   const handleVendorSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVendorSearchText(e.target.value);
   };
 
-  // Clear vendor search
   const clearVendorSearch = () => {
     setVendorSearchText("");
   };
 
-  // Table row selection
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -762,7 +709,6 @@ const resetForm = () => {
     onChange: onSelectChange,
   };
 
-  // Delete multiple
   const handleDeleteMultipleClick = () => {
     setIsDeleteModalMultipleVisible(true);
   };
@@ -789,7 +735,6 @@ const resetForm = () => {
     }
   };
 
-  // Share functionality
   const handleShareVendors = () => {
     if (selectedRowKeys.length === 0) {
       toast.error("Please select vendors to share.");
@@ -874,14 +819,12 @@ const resetForm = () => {
     return;
   }
 
-  // Clean up discount data based on selected type for backend
   const submitData = {
     ...formData,
     category: formData.category,
     discountType: formData.discountType === 'none' ? null : formData.discountType
   };
 
-  console.log('Submitting data:', submitData); // For debugging
 
   if (isEditMode && selectedId) {
     try {
@@ -921,7 +864,6 @@ const resetForm = () => {
 };
 
 
-  // Get status tag color for vendors
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'green';
@@ -931,7 +873,6 @@ const resetForm = () => {
     }
   };
 
-  // Company table columns
   const columns: TableColumnsType<Company> = [
     {
       title: "Vendor Name",
@@ -1054,7 +995,6 @@ const resetForm = () => {
   key: "category",
   width: 200,
   render: (categories: any) => {
-    // Safely handle categories data
     let categoriesArray: string[] = [];
     
     if (categories) {
@@ -1094,7 +1034,6 @@ const resetForm = () => {
     value: category,
   })),
   onFilter: (value, record) => {
-    // Safely handle record.category for filtering
     let recordCategories: string[] = [];
     
     if (record.category) {
@@ -1166,7 +1105,6 @@ const resetForm = () => {
       : []),
   ];
 
-  // Add index for serial number
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -1231,7 +1169,6 @@ const resetForm = () => {
         </div>
       </div>
 
-      {/* Create/Edit Company Modal */}
       <Modal
         onCancel={handleCancel}
         open={isModalOpen}
@@ -1333,7 +1270,6 @@ const resetForm = () => {
             </div>
           </div>
 
-          {/* Discount Section */}
           <div className="mt-4">
             <label className="font-semibold">Discount Type</label>
             <Radio.Group 
@@ -1371,7 +1307,6 @@ const resetForm = () => {
             )}
           </div>
 
-          {/* Platform URLs Section */}
           <div className="mt-4">
             <div className="flex justify-between items-center mb-3">
               <label className="font-semibold">Social Media & Platform URLs</label>
@@ -1485,7 +1420,6 @@ const resetForm = () => {
         </form>
       </Modal>
 
-      {/* Company Details Modal with Sidebar */}
       {isViewModalOpen && selectedCompany && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative">
@@ -1512,8 +1446,6 @@ const resetForm = () => {
               
             </div>
 
-            {/* Details Tab */}
-            {/* Details Tab */}
 {selectedTab === 'details' && (
   <table className="min-w-full border">
     <thead>
@@ -1551,7 +1483,6 @@ const resetForm = () => {
         <td className="p-2 border font-semibold">Email</td>
         <td className="p-2 border">{selectedCompany.companyEmail}</td>
       </tr>
-      {/* In the Details Tab of CompanyManagement */}
 <tr>
   <td className="p-2 border font-semibold">Categories</td>
   <td className="p-2 border">
@@ -1563,7 +1494,6 @@ const resetForm = () => {
   </td>
 </tr>
       
-      {/* Show discount information only if available */}
       {selectedCompany.discountType && selectedCompany.discountType !== 'none' && (
         <>
           <tr>
@@ -1599,7 +1529,6 @@ const resetForm = () => {
         </>
       )}
       
-      {/* Show N/A if no discount */}
       {(!selectedCompany.discountType || selectedCompany.discountType === 'none' || !selectedCompany.discount) && (
         <tr>
           <td className="p-2 border font-semibold">Discount</td>
@@ -1645,12 +1574,9 @@ const resetForm = () => {
   </table>
 )}
 
-            {/* Vendors Tab with Sidebar */}
             {selectedTab === 'vendors' && (
               <div className="flex gap-6 w-full" style={{ minHeight: 400 }}>
-                {/* Sidebar */}
                 <div className="w-2/5 border-r pr-1">
-                  {/* Vendor Search */}
                   <div className="mb-3 relative">
                     <Input
                       placeholder="Search vendors..."
@@ -1700,7 +1626,6 @@ const resetForm = () => {
                   </div>
                 </div>
 
-                {/* Main Area */}
                 <div className="w-3/5">
                   {selectedVendor ? (
                     <table className="min-w-full border text-[11px]">
@@ -1753,7 +1678,6 @@ const resetForm = () => {
                 </div>
               </div>
             )}
-            {/* Add Vendor Modal */}
             <Modal
               open={isAddVendorModalOpen}
               onCancel={handleCloseAddVendorModal}
@@ -1847,7 +1771,6 @@ const resetForm = () => {
         </div>
       )}
 
-      {/* Share Vendors Modal */}
       <Modal
         open={isShareModalOpen}
         onCancel={handleCloseShareModal}
@@ -1874,7 +1797,6 @@ const resetForm = () => {
         ]}
       >
         <div className="space-y-6">
-          {/* Vendor Information Section */}
           <div>
             <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1">
               Vendor Information
@@ -1936,7 +1858,6 @@ const resetForm = () => {
             </div>
           </div>
 
-          {/* Email Section */}
           <div>
             <h4 className="text-lg font-semibold mb-3">Email</h4>
             <div className="space-y-4">
@@ -1997,7 +1918,6 @@ const resetForm = () => {
         </div>
       </Modal>
 
-      {/* Delete Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isModalVisible}
@@ -2030,7 +1950,6 @@ const resetForm = () => {
         </div>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -2061,7 +1980,6 @@ const resetForm = () => {
           </p>
         </div>
       </Modal>
-      {/* Category Management Modal */}
       <Modal
         title={
           <div className="flex items-center gap-2">
@@ -2083,7 +2001,6 @@ const resetForm = () => {
         zIndex={1100}
       >
         <div className="space-y-5 pt-1">
-          {/* Add new category */}
           <div className="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-4">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Add New Category</p>
             <div className="flex gap-2">
@@ -2106,7 +2023,6 @@ const resetForm = () => {
             </div>
           </div>
 
-          {/* Existing categories */}
           <div>
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
               Existing Categories

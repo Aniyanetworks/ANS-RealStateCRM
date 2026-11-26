@@ -44,25 +44,20 @@ const ReceiptViewModal = ({
   const receiptSectionRef = useRef<HTMLDivElement>(null);
   const [renderKey, setRenderKey] = useState(0);
 
-  // Reset to pickup tab when modal opens or when receipt data changes
   useEffect(() => {
     if (isModalOpen) {
       setActiveTab("pickup");
-      // Force re-render when modal opens with new data
       setRenderKey(prev => prev + 1);
     }
   }, [isModalOpen, setActiveTab, receiptModalData?.receiptId, receiptModalData?.uuid]);
 
-  // Force re-render when switching tabs
   useEffect(() => {
     setRenderKey(prev => prev + 1);
   }, [activeTab]);
 
-  // Generate PDF when switching to email tab
   useEffect(() => {
     if (isModalOpen && activeTab === "email") {
       const generatePDF = async () => {
-        // Wait for DOM to be ready
         await new Promise(resolve => setTimeout(resolve, 500));
         const printSection = document.getElementById("printSection");
         if (printSection) {
@@ -165,7 +160,6 @@ const ReceiptViewModal = ({
       modalClass={"!w-[750px] !z-[10000] mx-auto"}
       title={null}
     >
-      {/* Tab Navigation */}
       <div className="flex justify-around mb-4">
         <button
           type="button"
@@ -189,7 +183,6 @@ const ReceiptViewModal = ({
         </button>
       </div>
 
-      {/* Receipt Display - Conditionally rendered based on active tab */}
       {activeTab === "pickup" && (
         <div
           ref={receiptSectionRef}
@@ -203,7 +196,6 @@ const ReceiptViewModal = ({
         </div>
       )}
       
-      {/* Hidden receipt for PDF generation when on email tab */}
       {activeTab === "email" && (
         <div
           key={`receipt-email-${receiptModalData?.receiptId || receiptModalData?.uuid || 'new'}-${activeTab}-${renderKey}`}
@@ -223,7 +215,6 @@ const ReceiptViewModal = ({
         </div>
       )}
 
-      {/* Email Form */}
       {activeTab === "email" && (
         <div ref={sectionRef}>
           <EmailForm

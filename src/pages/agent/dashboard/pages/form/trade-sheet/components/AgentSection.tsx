@@ -1,4 +1,3 @@
-// components/AgentSection.tsx
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 import TextInput from './TextInput';
@@ -180,7 +179,6 @@ const AgentSection: React.FC<AgentSectionProps> = ({
             errors={errors}
           />
 
-          {/* State Select */}
           <div className="flex flex-col gap-2">
             <label>Brokerage's Province</label>
             <select
@@ -199,7 +197,6 @@ const AgentSection: React.FC<AgentSectionProps> = ({
             )}
           </div>
 
-          {/* City Select */}
           <div className="flex flex-col gap-2">
             <label>Brokerage's City</label>
             <select
@@ -287,9 +284,6 @@ const AgentSection: React.FC<AgentSectionProps> = ({
                     control={control}
                     defaultValue=""
                     render={({ field }) => {
-                      // Convert value to string for display - handle all cases including 0
-                      // Check if value exists (not null/undefined), then convert to string
-                      // This handles: numbers (including 0), strings, but excludes null/undefined
                       const displayValue = field.value !== null && field.value !== undefined 
                         ? String(field.value) 
                         : '';
@@ -301,7 +295,6 @@ const AgentSection: React.FC<AgentSectionProps> = ({
                           className="border border-gray-300 p-2 rounded"
                           onChange={(e) => {
                             const value = e.target.value;
-                            // Allow empty, numbers, and one decimal point
                             if (value === '' || /^\d*\.?\d*$/.test(value)) {
                               field.onChange(value);
                             }
@@ -325,7 +318,6 @@ const AgentSection: React.FC<AgentSectionProps> = ({
                     name={`${type}CommissionAmount`}
                     control={control}
                     render={({ field }) => {
-                      // Convert value to string for display, handle null/undefined
                       const displayValue = field.value != null && field.value !== '' 
                         ? String(field.value) 
                         : '';
@@ -337,7 +329,6 @@ const AgentSection: React.FC<AgentSectionProps> = ({
                           className="border border-gray-300 p-2 rounded"
                           onChange={(e) => {
                             const value = e.target.value;
-                            // Allow empty, numbers, and one decimal point
                             if (value === '' || /^\d*\.?\d*$/.test(value)) {
                               field.onChange(value);
                             }

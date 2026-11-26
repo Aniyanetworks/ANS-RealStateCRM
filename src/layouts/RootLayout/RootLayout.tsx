@@ -23,14 +23,12 @@ const RootLayout = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const { connectSocket, disconnectSocket } = useSocket();
 
-  // ✅ Fetch trade sheet data
   const {
     data: tradeListData,
     isLoading: tradeLoading,
     refetch: refetchTrade,
   } = useGetTradeSheetListBasedonClosingQuery("");
 
-  // ✅ Fetch property listing data (based on expiry)
   const {
     data: propertyListData,
     isLoading: propertyLoading,
@@ -58,7 +56,6 @@ const RootLayout = () => {
 
   return (
     <div className="flex">
-      {/* ✅ Send both tradeData and propertyData to ClosingDatePopup */}
       <ClosingDatePopup
         tradeData={tradeData}
         propertyData={propertyData}

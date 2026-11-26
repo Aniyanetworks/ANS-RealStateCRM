@@ -9,21 +9,18 @@ import { formatStringCamelCasecapitalize } from "../../../../../../utils/stringU
 import TradeSheetPaperworkFileManagerMultipleRepresentationComponent from "./TradeSheetPaperworkFileManagerMultipleRepresentationComponent";
 
 const TradeSheetPaperworkFileManagerMultipleRepresentation = ({ uuid }) => {
-  // const { uuid } = useParams<{ uuid?: string }>();
-  const [multipleRepresentation, setMultipleRepresentation] = useState<string[]>([]); // Initialize as an empty array
+  const [multipleRepresentation, setMultipleRepresentation] = useState<string[]>([]);
   const [representation, setRepresentation] = useState<string | null>(null);
 
-  // Fetch data using a query hook
   const { data: spacificTradeSheetLisData, isLoading } = useGetSpacificTradeSheetListDataQuery(uuid);
 
   useEffect(() => {
     if (spacificTradeSheetLisData?.data?.tradeSheetData?.multipleRepresentation) {
-      // Split the comma-separated string into an array
       const multipleRepresentationArray = spacificTradeSheetLisData.data.tradeSheetData.multipleRepresentation.split(',');
       setMultipleRepresentation(multipleRepresentationArray);
-      setRepresentation(multipleRepresentationArray[0]); // Set the first element as the default representation
+      setRepresentation(multipleRepresentationArray[0]);
     }
-  }, [spacificTradeSheetLisData]); // Re-run when the data is updated
+  }, [spacificTradeSheetLisData]);
 
   if (isLoading) {
     return <TableLoader />;
@@ -33,22 +30,20 @@ const TradeSheetPaperworkFileManagerMultipleRepresentation = ({ uuid }) => {
     <div className="">
       <div>
         <Tabs
-          defaultActiveKey={representation || "2"} // Set default key based on first element or a fallback
+          defaultActiveKey={representation || "2"}
           type="card"
           items={multipleRepresentation.map((tab) => {
             return {
-              label: <span>{formatStringCamelCasecapitalize(tab)}</span>, // Capitalize string
+              label: <span>{formatStringCamelCasecapitalize(tab)}</span>,
               key: tab,
             };
           })}
           onChange={(key) => {
-            // Set selected representation based on the tab key
             setRepresentation(key);
           }}
         />
       </div>
       <div>
-        {/* Pass dynamic representation prop */}
         <TradeSheetPaperworkFileManagerMultipleRepresentationComponent dynamicRepresentation={representation} uuid={uuid} />
       </div>
     </div>

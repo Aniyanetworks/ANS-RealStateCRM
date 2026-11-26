@@ -32,15 +32,13 @@ const ConditionTypeManagement = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] = useState(false);
-  const [searchText, setSearchText] = useState(""); // Search state
+  const [searchText, setSearchText] = useState("");
 
-  // API hooks
   const { data, isLoading, refetch } = useGetConditionTypeQuery("");
   const [createConditionType] = useCreateConditionTypeMutation();
   const [updateConditionType] = useUpdateConditionTypeMutation();
   const [deleteMultipleConditionType] = useDeleteMultipleConditionTypeMutation();
 
-  // Form
   const {
     register,
     formState: { errors },
@@ -50,20 +48,16 @@ const ConditionTypeManagement = () => {
     handleSubmit,
   } = useForm({ defaultValues: { condition: "" } });
 
-  // Table data
   const conditionTypes = data?.data?.ConditionType || [];
 
-  // Filtered data for search
   const filteredData = conditionTypes.filter((record: ConditionType) =>
     record.condition.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  // Reset form
   const resetForm = () => {
     reset({ condition: "" });
   };
 
-  // Modal handlers
   const handleCancel = () => {
     resetForm();
     setIsModalOpen(false);
@@ -103,7 +97,6 @@ const ConditionTypeManagement = () => {
     setIsModalVisible(true);
   };
 
-  // Table row selection
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
@@ -118,7 +111,6 @@ const ConditionTypeManagement = () => {
     ],
   };
 
-  // Delete multiple
   const handleDeleteMultipleClick = () => {
     setIsDeleteModalMultipleVisible(true);
   };
@@ -140,7 +132,6 @@ const ConditionTypeManagement = () => {
     }
   };
 
-  // Create/Edit submit
   const onSubmit = async () => {
     const formData = getValues();
     if (isEditMode) {
@@ -180,7 +171,6 @@ const ConditionTypeManagement = () => {
     }
   };
 
-  // Table columns
   const columns: TableColumnsType<ConditionType> = [
     {
       title: "Condition",

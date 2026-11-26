@@ -11,10 +11,6 @@ const { Title } = Typography;
 const CalendarList = () => {
   const { data, isLoading } = useGetCalendarEventsQuery("");
 
-  // event.start is stored/returned as UTC. Convert to the fixed business
-  // timezone (America/Toronto) rather than the viewer's browser-local
-  // timezone, so agents see the same date/time the admin actually scheduled
-  // (matches the convention used in CalendarEventManagement.tsx).
   const events = useMemo(() => {
     return (
       data?.data?.calendarEvents.map((event: any) => {
@@ -41,7 +37,6 @@ const CalendarList = () => {
 
   return (
     <div>
-      {/* Header */}
       <Card className="!rounded-lg shadow-none border-b">
         <Title level={4} style={{ margin: 0 }}>
           <CalendarOutlined style={{ marginRight: "8px", fontSize: "16px" }} />
@@ -49,10 +44,6 @@ const CalendarList = () => {
         </Title>
       </Card>
 
-      {/*####################
-      ####### Events #######
-      ######################
-      */}
       <Events events={events} />
     </div>
   );

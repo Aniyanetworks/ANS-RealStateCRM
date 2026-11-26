@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
-// import { Condition, CreateUpdateConditionRequest } from '../../types/condition';
-/* import {
-  useGetConditionalDetailsQuery,
-  useCreateUpdateConditionMutation,
-  useDeleteConditionMutation,
-} from '../../redux/api/agent/trade-sheet/tradeSheetConditionSlice'; */
 import ConditionPopup from './ConditionPopup';
 import ConditionsList from './ConditionsList';
 import toast from 'react-hot-toast';
@@ -27,7 +21,6 @@ const ConditionalSection: React.FC<ConditionalSectionProps> = ({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [editingCondition, setEditingCondition] = useState<Condition | null>(null);
 
-  // Fetch conditions
   const {
     data: conditionsData,
     isLoading: isLoadingConditions,
@@ -36,7 +29,6 @@ const ConditionalSection: React.FC<ConditionalSectionProps> = ({
     skip: !tradeSheetId || !isConditional,
   });
 
-  // Mutations
   const [createUpdateCondition, { isLoading: isSubmitting }] = useCreateUpdateConditionMutation();
   const [deleteCondition, { isLoading: isDeleting }] = useDeleteConditionMutation();
 
@@ -78,9 +70,6 @@ const ConditionalSection: React.FC<ConditionalSectionProps> = ({
 
       if (editingCondition) {
         conditionData.id = editingCondition.id;
-        // The popup form has no field for conditionMetDate, so it's never part of
-        // `data`. Without carrying it forward here, updating anything else on an
-        // existing condition (e.g. its due date) wipes the previously-set met date.
         conditionData.conditionMetDate = editingCondition.conditionMetDate;
       }
 

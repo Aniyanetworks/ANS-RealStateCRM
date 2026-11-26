@@ -22,9 +22,8 @@ import TableLoader from "../loader/TableLoader";
 import ButtonLoader from "../loader/buttonLoader";
 import { usePdfSizeGuard } from "../../hooks/usePdfSizeGuard";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-// type of file
 type FileType = {
   id: number;
   name: string;
@@ -40,7 +39,6 @@ type UploadFileType = {
 const PaperworkAdditional = ({ uuid }) => {
   const navigate = useNavigate();
   const [btnLoading, setBtnLoading] = useState<string | null>(null);
-  // const { uuid } = useParams<{ uuid?: string }>();
   const [otherDocumentName, setOtherDocumentName] = useState("");
   const [isUploading, setIsUploading] = useState<number | null>(null);
   const [isUploadingOther, setIsUploadingOther] = useState<boolean>(false);
@@ -70,7 +68,6 @@ const PaperworkAdditional = ({ uuid }) => {
     refetch,
   } = useGetSpacificTradeSheetListDataQuery(uuid);
   const [paperworkDocuments, setPaperworkDocuments] = useState<object[]>([]);
-  // Determine representation info, including support for multiple representation trades
   const tradeSheetData = spacificTradeSheetLisData?.data?.tradeSheetData;
   const multipleRepString = tradeSheetData?.multipleRepresentation || "";
   const multipleRepsArray = multipleRepString
@@ -106,8 +103,8 @@ const PaperworkAdditional = ({ uuid }) => {
     isLoading: tradeSheetLoading,
     refetch: trdaeSheetRefetch,
   } = useGetUploadFileCategoriesQuery({
-    slug: uploadFileCategory, // Ensure uploadFileCategory is available and valid
-    representation: representationForCategory, // Use normalized representation for both single and multiple types
+    slug: uploadFileCategory,
+    representation: representationForCategory,
   });
 
   useEffect(() => {
@@ -119,35 +116,28 @@ const PaperworkAdditional = ({ uuid }) => {
       const activeDocuments =
         data?.data?.uploadFileCategoryData?.uploadFileNames?.filter(
           (file: FileType) => {
-            // Filter by status
             if (file.status !== "active") {
               return false;
             }
             
-            // Filter by listType if tradesheet has a listType
             if (tradesheetListType) {
               const fileListType = file.listType;
               
-              // If tradesheet is "Both", show all documents
               if (tradesheetListType === "Both") {
                 return true;
               }
               
-              // If tradesheet is "Commercial", show documents with "Commercial" or "Both"
               if (tradesheetListType === "Commercial") {
                 return fileListType === "Commercial" || fileListType === "Both";
               }
               
-              // If tradesheet is "Residential", show documents with "Residential" or "Both"
               if (tradesheetListType === "Residential") {
                 return fileListType === "Residential" || fileListType === "Both";
               }
               
-              // If tradesheet listType doesn't match any known value, show documents with matching listType or "Both"
               return fileListType === tradesheetListType || fileListType === "Both";
             }
             
-            // If no listType on tradesheet, show all active documents
             return true;
           }
         );
@@ -205,7 +195,6 @@ const PaperworkAdditional = ({ uuid }) => {
         setIsUploading(null);
       }
     } catch (error: any) {
-      // setIsUploading(null);
       setIsUploading(null);
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
     }
@@ -244,12 +233,10 @@ const PaperworkAdditional = ({ uuid }) => {
     );
   };
 
-  // Handle the loading states for each button
   const handleButtonClick = (action: string) => {
     setBtnLoading(action);
   };
 
-  // upload others documents
   const handleOtherDocumentUpload = async (e) => {
     const rawFile = e.target.files[0];
     if (!rawFile) return;
@@ -282,13 +269,11 @@ const PaperworkAdditional = ({ uuid }) => {
       toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
       setIsUploadingOther(false);
     }
-    // setIsUploading(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   };
 
-  // delete other file
   const handleRemoveOtherFile = async (id) => {
     setIsDeletingOther(id);
     try {
@@ -377,19 +362,6 @@ const PaperworkAdditional = ({ uuid }) => {
                           </a>
                         </p>
 
-                        {/* {isRemoving?.tradeSheetId == document.id &&
-                        isRemoving?.fileId == file.id ? (
-                          <ButtonLoader />
-                        ) : (
-                          <button
-                            onClick={() =>
-                              handleRemoveUploadedFile(document.id, file.id)
-                            } // Pass file.id to enable re-uploading
-                            className="text-white px-3 rounded-md"
-                          >
-                            <img src={crossIcon} alt="" />
-                          </button>
-                        )} */}
                       </div>
                     ))
                   : ""}
@@ -435,12 +407,6 @@ const PaperworkAdditional = ({ uuid }) => {
                   ""
                 )}
 
-                {/* {document.paperType !== "singleUpload" &&
-                  document.fileData.length > 1 && (
-                    <button className="text-primary">
-                      <img src={downArrow} alt="" />
-                    </button>
-                  )} */}
               </div>
             </div>
             <div>
@@ -461,19 +427,6 @@ const PaperworkAdditional = ({ uuid }) => {
                           {"  "}
                           {file.filePath.split(/[/\\]/).pop()}
                         </a>
-                        {/* {isRemoving?.tradeSheetId == document.id &&
-                        isRemoving?.fileId == file.id ? (
-                          <ButtonLoader />
-                        ) : (
-                          <button
-                            onClick={() =>
-                              handleRemoveUploadedFile(document.id, file.id)
-                            } // Pass file.id to enable re-uploading
-                            className="text-white px-3 rounded-md"
-                          >
-                            <img src={crossIcon} alt="" />
-                          </button>
-                        )} */}
                       </p>
                     </div>
                   ))}
@@ -483,7 +436,6 @@ const PaperworkAdditional = ({ uuid }) => {
           </div>
         ))}
 
-        {/* other files  */}
         <div className="flex justify-between items-center px-2">
           <div className="flex items-center gap-3">
             <p className="w-[80px] ">*</p>
@@ -519,7 +471,6 @@ const PaperworkAdditional = ({ uuid }) => {
           </div>
         </div>
 
-        {/* all files others  */}
         <div>
           {spacificTradeSheetLisData?.data?.tradeSheetData?.paperWorkOtherAttachments?.map(
             (file: any, index: number) => (
@@ -538,16 +489,6 @@ const PaperworkAdditional = ({ uuid }) => {
                     {file.filePath.split(/[/\\]/).pop()}
                   </a>
 
-                  {/* <button
-                    onClick={() => handleRemoveOtherFile(file.id)}
-                    className="text-white px-3 rounded-md"
-                  >
-                    {isDeletingOther == file.id ? (
-                      <ButtonLoader />
-                    ) : (
-                      <img src={crossIcon} alt="" />
-                    )}
-                  </button> */}
                 </p>
               </div>
             )

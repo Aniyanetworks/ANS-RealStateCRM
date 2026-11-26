@@ -10,7 +10,6 @@ const branch = {
   phone: '4165550100', email: 'toronto@ans.demo', isDefault: 'yes', status: 'active',
 };
 
-// ---------- Trade products ----------
 const PRODUCT_DEFS: [string, string, number, number, number, number, string][] = [
   ['Realtor Lockbox (Bluetooth)', 'Purchase', 89.5, 0, 60, 0, 'Bluetooth-enabled realtor lockbox with 4-digit backup code.'],
   ['Standard Combination Lockbox', 'Purchase', 39, 0, 120, 0, 'Durable zinc alloy combination lockbox for property showings.'],
@@ -34,7 +33,6 @@ const tradeProducts = PRODUCT_DEFS.map((p, i) => ({
   branch, branchIds: [1],
 }));
 
-// ---------- Coupons ----------
 const COUPONS: [string, string, number, string, string, number[]][] = [
   ['WELCOME10', 'Percentage', 10, 'Active', 'Global', []],
   ['NEWAGENT25', 'Fixed', 25, 'Active', 'Global', []],
@@ -53,7 +51,6 @@ const coupons = COUPONS.map((c, i) => ({
   createdAt: iso(-60 + i * 4), branch: i % 3 === 0 ? null : branch,
 }));
 
-// ---------- Users ----------
 const USERS = [
   { id: 11, firstName: 'Olivia', lastName: 'Hart', name: 'Olivia Hart', email: 'olivia@ans.demo', phoneNumber: '4165551001' },
   { id: 12, firstName: 'Marcus', lastName: 'Bell', name: 'Marcus Bell', email: 'marcus@ans.demo', phoneNumber: '4165551002' },
@@ -64,7 +61,6 @@ const USERS = [
 ];
 const pubUser = (u: any) => ({ id: u.id, firstName: u.firstName, lastName: u.lastName, name: u.name, email: u.email });
 
-// ---------- Inventory ----------
 const INV: [string, number, string][] = [
   ['Realtor Lockbox (Bluetooth)', 48, 'Bluetooth lockboxes in stock'],
   ['Standard Combination Lockbox', 95, 'Combination lockboxes'],
@@ -95,7 +91,6 @@ const inventory = baseInventory.map((inv) => ({
 })).reverse();
 const transactionData = transactions.map((t) => ({ ...t, inventory: baseInventory[t.inventoryId - 1] }));
 
-// ---------- Orders (invoices) ----------
 const orders = Array.from({ length: 12 }, (_, i) => {
   const type = i % 4 === 3 ? 'borrow' : 'purchase';
   const pool = tradeProducts.filter((p) => p.type === (type === 'borrow' ? 'Borrow' : 'Purchase'));
@@ -123,7 +118,6 @@ const orders = Array.from({ length: 12 }, (_, i) => {
   };
 });
 
-// ---------- Realtor (MLS-style) properties ----------
 const CITIES = ['Toronto', 'Mississauga', 'Brampton', 'Oakville', 'Markham', 'Vaughan'];
 const STREETS = ['Maple Ave', 'Lakeshore Blvd', 'King St', 'Oak Lane', 'Bayview Dr', 'Queen St W', 'Yonge St', 'Dundas St'];
 const PTYPES = ['Residential Freehold', 'Residential Condo & Other', 'Residential Freehold', 'Commercial'];
@@ -142,7 +136,6 @@ const realtorProps = Array.from({ length: 14 }, (_, i) => {
   };
 });
 
-// ---------- Upload file names ----------
 const CATS = [
   { id: 1, uuid: 'cat-0001', slug: 'listing-docs', name: 'Listing Documents', status: 'active' },
   { id: 2, uuid: 'cat-0002', slug: 'buyer-docs', name: 'Buyer Documents', status: 'active' },
@@ -169,7 +162,6 @@ const uploadFileNames = FILES.map((f, i) => ({
   sellerOrder: i + 1, buyerOrder: i + 1, tenantOrder: i + 1, landlordOrder: i + 1, uploadFileCategory: CATS[f[2]],
 }));
 
-// ---------- Expiring listings / closing trade sheets ----------
 const expiring = Array.from({ length: 4 }, (_, i) => ({
   id: 900 + i, uuid: `pl-exp-${i + 1}`, propertyListingTypeId: `PL-26${String(210 + i)}`,
   address: `${40 + i * 13} ${STREETS[(i + 2) % 8]}, ${CITIES[i % 6]}, ON`, city: CITIES[i % 6], state: 'ON',

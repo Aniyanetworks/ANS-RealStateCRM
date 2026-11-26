@@ -30,7 +30,6 @@ const AgreementPageThree = () => {
   return (
     <div className="max-w-[850px] mx-auto p-8 bg-white">
 
-      {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 border border-gray-300">
           <img
@@ -133,7 +132,6 @@ const AgreementPageThree = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="flex justify-between items-center mt-12">
         <p className="text-sm">Page {data.pageNumber} of {data.totalPages}</p>
         <div className="flex gap-4">

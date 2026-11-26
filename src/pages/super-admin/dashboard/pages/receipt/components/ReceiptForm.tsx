@@ -33,7 +33,6 @@ interface ReceiptFormProps {
   selectedPropertyListingId: string | number;
   onPropertyListingChange: (selectedOption: any) => void;
   paymentMethodChange: string;
-  // Signature props
   signatureRef: React.RefObject<any>;
   uploadSignatureImage: string;
   setUploadSignatureImage: (value: string) => void;
@@ -41,7 +40,6 @@ interface ReceiptFormProps {
   onSignatureRemove: () => void;
   onClearSignature: () => void;
   onSaveSignature: () => void;
-  // Bank receipt images props
   uploadBankReceiptImages: ImageItem[];
   onBankReceiptImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBankReceiptImageRemove: (index: number) => void;
@@ -78,31 +76,20 @@ const ReceiptForm = ({
   const [furtherListing, setFurtherListing] = useState(false);
   const filterMountedRef = useRef(false);
 
-  // Filter property listing options based on checkbox selections
   const filteredPropertyListingOptions = useMemo(() => {
     if (expiredListing) {
-      // Show only expired listings. listingStatus is free-text (not an enum) and
-      // shows up in mixed casing depending on how it was set (e.g. MLS sync vs.
-      // manual selection), so compare it case-insensitively; option.status is a
-      // Prisma enum and is always consistently lowercase, so it's compared as-is.
       return propertyListingOptions.filter(
         (option: any) =>
           String(option.listingStatus || "").toLowerCase() === "expired" ||
           option.status === "expired"
       );
     } else if (furtherListing) {
-      // Show all except closed, expired, and draft
-      // Also include property listings with trade sheets that have tradeStatus === "closed"
       return propertyListingOptions.filter(
         (option: any) => {
-          // Check if property has a closed trade sheet
           const hasClosedTradeSheet = option.tradeSheets?.some(
             (tradeSheet: any) => tradeSheet.tradeStatus === "closed"
           );
 
-          // Include if:
-          // 1. Has closed trade sheet, OR
-          // 2. Property status is not closed, expired, or draft
           if (hasClosedTradeSheet) {
             return true;
           }
@@ -119,10 +106,6 @@ const ReceiptForm = ({
         }
       );
     } else {
-      // Default behavior - show only approved listings with specific listingStatus values.
-      // listingStatus casing is inconsistent across the app (MLS-synced values like "New"/
-      // "Leased" vs. manually-selected lowercase values like "exclusive"), so compare
-      // case-insensitively instead of matching one exact casing.
       const includedStatuses = ["new", "price change", "listed", "leased", "extended", "dft", "exclusive"];
       return propertyListingOptions.filter(
         (option: any) =>
@@ -132,8 +115,6 @@ const ReceiptForm = ({
     }
   }, [propertyListingOptions, expiredListing, furtherListing]);
 
-  // Clear selection only when the user actively changes the filter checkboxes
-  // (skip on first render so pre-filled edit values are not wiped)
   useEffect(() => {
     if (!filterMountedRef.current) {
       filterMountedRef.current = true;
@@ -148,9 +129,8 @@ const ReceiptForm = ({
         setValue("propertyListingId", "");
       }
     }
-  }, [expiredListing, furtherListing]); // only run when user toggles checkboxes
+  }, [expiredListing, furtherListing]);
 
-  // Reset checkboxes and filter-mounted flag when modal closes
   useEffect(() => {
     if (!isOpen) {
       setExpiredListing(false);
@@ -170,7 +150,6 @@ const ReceiptForm = ({
     >
       <form className="space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-          {/* Date */}
           <div className="flex flex-col gap-2">
             <label>
               Date <span className="text-red-500 ml-1">*</span>
@@ -188,7 +167,6 @@ const ReceiptForm = ({
             )}
           </div>
 
-          {/* Property Address */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-4">
               <label>
@@ -253,7 +231,6 @@ const ReceiptForm = ({
             )}
           </div>
 
-          {/* Received From */}
           <div className="flex flex-col gap-2">
             <label>
               Received From <span className="text-red-500 ml-1">*</span>
@@ -273,7 +250,6 @@ const ReceiptForm = ({
             )}
           </div>
 
-          {/* Payment Method */}
           <div className="flex flex-col gap-2">
             <label>
               Payment Method <span className="text-red-500 ml-1">*</span>
@@ -332,7 +308,6 @@ const ReceiptForm = ({
             )}
           </div>
 
-          {/* Type of Payment */}
           <div className="flex flex-col gap-2">
             <label>
               Type of Payment <span className="text-red-500 ml-1">*</span>
@@ -372,7 +347,6 @@ const ReceiptForm = ({
             </div>
           </div>
 
-          {/* Representation */}
           <div className="flex flex-col gap-2">
             <div>
               <label>
@@ -410,7 +384,6 @@ const ReceiptForm = ({
             </div>
           </div>
 
-          {/* Transaction Type */}
           <div className="flex flex-col gap-2">
             <label>
               Transaction Type <span className="text-red-500 ml-1">*</span>
@@ -442,7 +415,6 @@ const ReceiptForm = ({
             </div>
           </div>
 
-          {/* Amount Received */}
           <div className="flex flex-col gap-2">
             <label>
               Amount Received <span className="text-red-500 ml-1">*</span>
@@ -462,7 +434,6 @@ const ReceiptForm = ({
             )}
           </div>
 
-          {/* Received by */}
           <div className="flex flex-col gap-2">
             <label>
               Received by <span className="text-red-500 ml-1">*</span>
@@ -482,7 +453,6 @@ const ReceiptForm = ({
             )}
           </div>
 
-          {/* Signature Section */}
           <SignatureSection
             signatureRef={signatureRef}
             uploadSignatureImage={uploadSignatureImage}
@@ -496,7 +466,6 @@ const ReceiptForm = ({
             onSaveSignature={onSaveSignature}
           />
 
-          {/* Bank Receipt Images */}
           <BankReceiptImages
             uploadBankReceiptImages={uploadBankReceiptImages}
             onImageChange={onBankReceiptImageChange}
@@ -504,7 +473,6 @@ const ReceiptForm = ({
           />
         </div>
 
-        {/* Audit trail — only shown when editing an existing record */}
         {auditInfo && (auditInfo.createdByName || auditInfo.updatedByName) && (
           <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-x-6 gap-y-1">
             {auditInfo.createdByName && (

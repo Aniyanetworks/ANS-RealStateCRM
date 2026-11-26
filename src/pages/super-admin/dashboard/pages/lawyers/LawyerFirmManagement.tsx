@@ -20,7 +20,6 @@ import { FaShareNodes } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import {
   useGetCitiesQuery,
-  // useGetCountriesQuery,
   useGetStatesQuery,
 } from "../../../../../redux/api/common/countryStateCitySlice";
 import TableLoader from "../../../../../components/loader/TableLoader";
@@ -121,7 +120,7 @@ const BrokerageData = () => {
     handleSubmit,
     watch,
     setValue,
-  } = useForm<DataType>({ defaultValues: { countryId: "39" } }); // Specify DataType for better type safety
+  } = useForm<DataType>({ defaultValues: { countryId: "39" } });
 
   const [validateLawyerFirmData] = useValidateLawyerFirmDataMutation();
   const [createLawyerFirmData] = useCreateLawyerFirmDataMutation();
@@ -167,7 +166,7 @@ const BrokerageData = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
 
     try {
       const response = await deleteLawyerFirmData(selectedUUID).unwrap();
@@ -192,7 +191,6 @@ const BrokerageData = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -238,17 +236,13 @@ const BrokerageData = () => {
   const selectedState = watch("stateId");
   const selectedCity = watch("cityId");
 
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [] } = useGetCitiesQuery(selectedState, {
-    skip: !selectedState, // Skip if no state is selected
+    skip: !selectedState,
   });
 
   const onSubmit = async () => {
@@ -351,7 +345,7 @@ const BrokerageData = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -359,7 +353,6 @@ const BrokerageData = () => {
       try {
         const response = await deleteMultipleBrokerageData(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -408,7 +401,7 @@ const BrokerageData = () => {
     },
     {
       title: "Address",
-      key: "address", // Use key instead of dataIndex since we're combining fields
+      key: "address",
       render: (_, record) => {
         const address = record.address || "--";
         const streetAddress = record.streetAddress
@@ -503,7 +496,6 @@ const BrokerageData = () => {
   };
 
   const showModal = () => setIsModalOpen(true);
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -516,7 +508,6 @@ const BrokerageData = () => {
   const [selectedLawyer, setSelectedLawyer] = useState<DataType | null>(null);
   const [selectedTab, setSelectedTab] = useState('details');
 
-  // Add Lawyer Modal State
   const [isAddLawyerModalOpen, setIsAddLawyerModalOpen] = useState(false);
   const [newLawyer, setNewLawyer] = useState({
     firstName: '',
@@ -528,7 +519,6 @@ const BrokerageData = () => {
   const [addLawyerErrors, setAddLawyerErrors] = useState<any>({});
   const [createLawyerData, { isLoading: isCreatingLawyer }] = useCreateLawyerDataMutation();
 
-  // Edit Lawyer Modal State
   const [isEditLawyerModalOpen, setIsEditLawyerModalOpen] = useState(false);
   const [editLawyer, setEditLawyer] = useState({
     uuid: '',
@@ -541,14 +531,12 @@ const BrokerageData = () => {
   const [editLawyerErrors, setEditLawyerErrors] = useState<any>({});
   const [updateLawyerData, { isLoading: isUpdatingLawyer }] = useUpdateLawyerDataMutation();
 
-  // Share Lawyer Modal State
   const [isShareLawyerModalOpen, setIsShareLawyerModalOpen] = useState(false);
   const [recipientEmail, setRecipientEmail] = useState<string>("");
   const [recipientNote, setRecipientNote] = useState<string>("");
   const lawyerShareRef = useRef<HTMLDivElement>(null);
   const [sendLawyerPDFEmail] = useSendLawyerPDFEmailMutation();
 
-  // Add Lawyer Handler
   const handleOpenAddLawyerModal = () => {
     setNewLawyer({
       firstName: '',
@@ -586,7 +574,6 @@ const BrokerageData = () => {
       await createLawyerData(newLawyer).unwrap();
       toast.success('Lawyer created successfully!');
       setIsAddLawyerModalOpen(false);
-      // Refresh selectedFirm data
       if (selectedFirm) {
         await refetch();
         const updated = data?.data?.lawyerFirm?.find((f: any) => f.id === selectedFirm.id);
@@ -597,7 +584,6 @@ const BrokerageData = () => {
     }
   };
 
-  // Edit Lawyer Handlers
   const handleOpenEditLawyerModal = () => {
     if (!selectedLawyer) return;
     setEditLawyer({
@@ -634,7 +620,6 @@ const BrokerageData = () => {
       await updateLawyerData({ uuid, data: editLawyerData }).unwrap();
       toast.success('Lawyer updated successfully!');
       setIsEditLawyerModalOpen(false);
-      // Refresh selectedFirm data and the currently-open lawyer panel
       if (selectedFirm) {
         const { data: refreshed } = await refetch();
         const updated = refreshed?.data?.lawyerFirm?.find((f: any) => f.id === selectedFirm.id);
@@ -649,7 +634,6 @@ const BrokerageData = () => {
     }
   };
 
-  // Share Lawyer Handlers
   const handleShareLawyer = () => {
     if (!selectedLawyer) return;
     setIsShareLawyerModalOpen(true);
@@ -682,26 +666,21 @@ const BrokerageData = () => {
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
 
-        // Define margins
         const margin = 20;
         const imgWidth = canvas.width;
         const imgHeight = canvas.height;
 
-        // Calculate the width and height of the image to fit within the margins
         let pdfImgWidth = pageWidth - 2 * margin;
         let pdfImgHeight = (imgHeight * pdfImgWidth) / imgWidth;
 
-        // If the calculated height exceeds the page height, scale it down
         if (pdfImgHeight > pageHeight - 2 * margin) {
           const scaleRatio = (pageHeight - 2 * margin) / pdfImgHeight;
           pdfImgWidth *= scaleRatio;
           pdfImgHeight *= scaleRatio;
         }
 
-        // Add the image to the PDF with margins
         pdf.addImage(imgData, "PNG", margin, margin, pdfImgWidth, pdfImgHeight);
 
-        // Create a Blob from the PDF
         const pdfBlob = pdf.output("blob");
         const pdfFile = new File([pdfBlob], "lawyer-details.pdf", {
           type: "application/pdf",
@@ -733,7 +712,6 @@ const BrokerageData = () => {
   return (
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        {/* Toolbar row */}
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
           <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Lawyer Firm List</h1>
           <div className="flex-1" />
@@ -812,9 +790,7 @@ const BrokerageData = () => {
         ]}
       >
         <form className="space-y-3">
-          {/* Lawyer Firm Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-            {/* Phone Number */}
             <div className="flex flex-col gap-2">
               <label>
                 Phone Number<span className="text-red-500 ml-1">*</span>
@@ -880,7 +856,6 @@ const BrokerageData = () => {
         ]}
       >
         <form className="space-y-3">
-          {/* Lawyer Firm Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
               <label>
@@ -901,7 +876,6 @@ const BrokerageData = () => {
               )}
             </div>
 
-            {/* Address */}
             <div className="flex flex-col gap-2">
               <label>
                 Address<span className="text-red-500 ml-1">*</span>
@@ -919,7 +893,6 @@ const BrokerageData = () => {
               )}
             </div>
 
-            {/* Street Address */}
             <div className="flex flex-col gap-2">
               <label>Street Address</label>
               <input
@@ -987,7 +960,6 @@ const BrokerageData = () => {
               )}
             </div>
 
-            {/* Postal/Zip Code */}
             <div className="flex flex-col gap-2">
               <label>
                 Postal Code<span className="text-red-500 ml-1">*</span>
@@ -1009,7 +981,6 @@ const BrokerageData = () => {
               )}
             </div>
 
-            {/* Phone Number */}
             <div className="flex flex-col gap-2">
               <label>
                 Phone Number<span className="text-red-500 ml-1">*</span>
@@ -1030,7 +1001,6 @@ const BrokerageData = () => {
               )}
             </div>
 
-            {/* Fax Number */}
             <div className="flex flex-col gap-2">
               <label>Fax Number</label>
               <input
@@ -1091,7 +1061,6 @@ const BrokerageData = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}
@@ -1132,7 +1101,6 @@ const BrokerageData = () => {
               </Tabs>
               <button className="primary-btn ml-4" onClick={handleOpenAddLawyerModal}>Add Lawyer</button>
             </div>
-            {/* Tab content rendering logic */}
             {selectedTab === 'details' && (
               <table className="min-w-full border ">
                 <thead>
@@ -1156,7 +1124,6 @@ const BrokerageData = () => {
               )}
             {selectedTab === 'lawyers' && (
               <div className="flex gap-6 w-full" style={{ minHeight: 400 }}>
-                {/* Sidebar */}
                 <div className="w-2/5 border-r pr-1">
                 <div className="max-h-[400px] overflow-y-auto">
                   <ul className="divide-y divide-gray-200">
@@ -1174,7 +1141,6 @@ const BrokerageData = () => {
                   </ul>
                 </div>
                 </div>
-                {/* Main Area */}
                 <div className="w-3/5">
                   {selectedLawyer ? (
                     <div>
@@ -1277,7 +1243,6 @@ const BrokerageData = () => {
     </table>
   </div>
 )}
-            {/* Add Lawyer Modal */}
             <Modal
               open={isAddLawyerModalOpen}
               onCancel={handleCloseAddLawyerModal}
@@ -1329,7 +1294,6 @@ const BrokerageData = () => {
               </form>
             </Modal>
 
-            {/* Edit Lawyer Modal */}
             <Modal
               open={isEditLawyerModalOpen}
               onCancel={handleCloseEditLawyerModal}
@@ -1382,7 +1346,6 @@ const BrokerageData = () => {
 
 
 
-            {/* Tradesheet Preview page */}
                   <Modal
                     title="Tradesheet Preview page"
                     open={isModalPreviewTradeSheetVisible}
@@ -1405,7 +1368,6 @@ const BrokerageData = () => {
         </div>
       )}
 
-      {/* Share Lawyer Modal */}
       <Modal
         onCancel={handleCancelShareLawyer}
         open={isShareLawyerModalOpen}

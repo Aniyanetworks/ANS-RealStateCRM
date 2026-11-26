@@ -33,7 +33,7 @@ interface DataType {
   role: any;
   userType: any;
   createdAt: any;
-  uuid: string; // Ensure uuid is included in DataType
+  uuid: string;
 }
 
 
@@ -73,11 +73,9 @@ const CreateAndUpdateUser = () => {
   const [sendInvitation] = useSendInvitationMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAppSelector((state) => state.user);
-  // filter
   const [filteredInfo, setFilteredInfo] = useState<Filters>({});
   const [sortedInfo, setSortedInfo] = useState<Sorts>({});
 
-  //Delete Multiple
   const [deleteMultipleUser] = useDeleteMultipleUserMutation();
   const [isDeleteMultipleModalVisible, setIsDeleteModalMultipleVisible] =
     useState(false);
@@ -91,14 +89,11 @@ const CreateAndUpdateUser = () => {
   const filteredData = tableData?.filter((record) => {
     const searchTerm = searchText?.toLowerCase();
 
-    /* const inProperties = Object.values(record.createdUser || {}).some((data) =>
-      String(data).toLowerCase().includes(searchTerm.toLowerCase())
-  ); */
 
     const inRecord = Object.values(record).some((value) =>
       String(value).toLowerCase().includes(searchTerm)
     );
-    return /* inProperties || */ inRecord;
+    return inRecord;
   });
 
   const [clientPriority, setclientPriority] = useState<string | null>(null);
@@ -127,7 +122,7 @@ const CreateAndUpdateUser = () => {
                 ? "MediumOrder"
                 : clientPriority === "Low"
                   ? "LowOrder"
-                  : "HighOrder"; // Default to HighOrder
+                  : "HighOrder";
           return a[orderKey] - b[orderKey];
         })
       : filteredData;
@@ -147,7 +142,6 @@ const CreateAndUpdateUser = () => {
     setIsModalVisible(true);
   };
 
-  //Delete Multiple
   const handleDeleteMultipleClick = () => {
     setIsDeleteModalMultipleVisible(true);
   };
@@ -157,7 +151,6 @@ const CreateAndUpdateUser = () => {
       try {
         const response = await deleteMultipleUser(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -215,8 +208,6 @@ const CreateAndUpdateUser = () => {
       setValue("agentId", user.agentAccount[0].agentAccountId);
     }
     const data = getValues();
-    // alert(data.agentId)
-    console.log("data for inviting client:-----------", data);
     try {
       const response = await sendInvitation({
         data
@@ -244,22 +235,12 @@ const CreateAndUpdateUser = () => {
 
   const cancelDelete = () => {
     setIsModalVisible(false);
-    setDeleteUuid(null); // Reset deleteUuid
+    setDeleteUuid(null);
     setIsDeleteModalMultipleVisible(false);
   };
 
-  /* const getUserTypeName = (userType) => {
-    const userTypeMap = {
-      superAdmin: "Super Admin",
-      admin: "Admin",
-      agent: "Agent",
-      accountant: "Accountant",
-    };
-    return userTypeMap[userType] || "Unknown User Type";
-  }; */
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -302,14 +283,12 @@ const CreateAndUpdateUser = () => {
   };
 
   const handleChange: OnChange = (pagination, filters, sorter) => {
-    console.log(pagination);
     setFilteredInfo(filters);
     setSortedInfo(sorter as Sorts);
   };
 
   const filterProps = filter ? nextFilteredData?.filter((record) => record.clientType?.toLowerCase() === filter) : nextFilteredData;
 
-  // serial number in the table
   const tableSourceData = filterProps?.map((item: any, index: number) => {
     return {
       ...item,
@@ -485,14 +464,11 @@ const CreateAndUpdateUser = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          {/* Title */}
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
             Client List
             <span className="ml-1 text-gray-400 font-normal text-[11px]">({tableSourceData?.length ?? 0})</span>
           </h1>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Filter tabs */}
           <div className="flex items-center gap-1">
             {tabs.map((tab) => (
               <button
@@ -509,9 +485,7 @@ const CreateAndUpdateUser = () => {
               </button>
             ))}
           </div>
-          {/* Spacer */}
           <div className="flex-1" />
-          {/* Search */}
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch
               className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -541,9 +515,7 @@ const CreateAndUpdateUser = () => {
               </button>
             )}
           </div>
-          {/* Divider */}
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-          {/* Actions */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <button onClick={showModal} className="primary-btn">
               Send Invitation
@@ -629,14 +601,12 @@ const CreateAndUpdateUser = () => {
 
               {(user.userType == "superAdmin" || user.userType == "admin") && (
                 <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mb-6 w-full ">
-                  {/* Select Agent */}
                   <div className="flex flex-col gap-2 ">
                     <div className="flex flex-col ">
                       <label htmlFor="">Select Agent From Existing One</label>
                       <Controller
                         name="agentId"
                         control={control}
-                        // rules={{ required: "Agent is required" }}
                         defaultValue={user.userType === "agent" ? user.id : ""}
                         render={({ field }) => (
                           <Select
@@ -676,7 +646,6 @@ const CreateAndUpdateUser = () => {
         </ModalMain>
       }
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

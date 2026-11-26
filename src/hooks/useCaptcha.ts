@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 
-// useCaptcha hook
 const useCaptcha = () => {
   const generateCaptcha = () => {
     let firstValue = Math.floor(Math.random() * 10);

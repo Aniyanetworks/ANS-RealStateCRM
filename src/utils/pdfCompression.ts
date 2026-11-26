@@ -22,8 +22,6 @@ export const formatFileSize = (bytes: number): string => {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
 };
 
-// Rasterizes each page to a canvas at a reduced scale/JPEG quality and
-// rebuilds a new PDF from the images. Trades text-selectability for size.
 export const compressPdf = async (file: File, level: CompressionLevel): Promise<File> => {
   const { scale, quality } = LEVEL_SETTINGS[level];
   const arrayBuffer = await file.arrayBuffer();

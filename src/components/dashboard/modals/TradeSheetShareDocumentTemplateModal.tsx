@@ -50,7 +50,6 @@ const TradeSheetShareDocumentTemplateModal: React.FC<TemplateModalProps> = ({ te
   const content = watch('content');
 
   useEffect(() => {
-    console.log('template', template)
     if (template) {
       reset({
         ...template,
@@ -104,27 +103,7 @@ const TradeSheetShareDocumentTemplateModal: React.FC<TemplateModalProps> = ({ te
           {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
         </div>
 
-        {/* <div className="form-group">
-          <label>Slug</label>
-          <input
-            type="text"
-            className="border p-2 w-full"
-            placeholder="Slug"
-            {...register("slug", { required: "Please enter a slug" })}
-          />
-          {errors.slug && <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>}
-        </div> */}
 
-        {/* <div className="form-group">
-          <label>Subject</label>
-          <input
-            type="text"
-            className="border p-2 w-full"
-            placeholder="Subject"
-            {...register("subject", { required: "Please enter a subject" })}
-          />
-          {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>}
-        </div> */}
 
         <div className="form-group mb-10">
           <label>Content</label>
@@ -157,22 +136,7 @@ const TradeSheetShareDocumentTemplateModal: React.FC<TemplateModalProps> = ({ te
           {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content.message}</p>}
         </div>
 
-        {/* <div className="form-group">
-          <label>Type</label>
-          <select className="border p-2 w-full" {...register("type", { required: true })}>
-            <option value="email">Email</option>
-            <option value="sms">SMS</option>
-            <option value="call">Call</option>
-          </select>
-        </div> */}
 
-        {/* <div className="form-group">
-          <label>Area</label>
-          <select className="border p-2 w-full" {...register("area", { required: true })}>
-            <option value="tradesheet_share_document">TradeSheet Share Document</option>
-            <option value="propertylisting">Property Listing</option>
-          </select>
-        </div> */}
 
         <div className="form-group">
           <label >Status</label>

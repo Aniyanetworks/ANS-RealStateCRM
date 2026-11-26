@@ -17,7 +17,6 @@ import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
 import {
   useGetCitiesQuery,
-  // useGetCountriesQuery,
   useGetStatesQuery,
 } from "../../../redux/api/common/countryStateCitySlice";
 import TableLoader from "../../../components/loader/TableLoader";
@@ -72,10 +71,10 @@ const CommissionCheque = () => {
     useState(false);
   const [deleteMultipleBrokerageData] =
     useDeleteBrokerageDataMultipleMutation();
-      const { data:bankAccountList, isLoading:bankAccountIsLoading, refetch:bankAccountRefetch} = useGetAccountingBankAccountsQuery(""); // Use the bank account data query
+      const { data:bankAccountList, isLoading:bankAccountIsLoading, refetch:bankAccountRefetch} = useGetAccountingBankAccountsQuery("");
 
   useEffect(() => {
-    setBankAccounts(bankAccountList?.data?.accounts); // Ensure correct data mapping
+    setBankAccounts(bankAccountList?.data?.accounts);
     if (data?.data?.chequePostings) {
       setTableData(data.data.chequePostings);
     }
@@ -111,7 +110,7 @@ const CommissionCheque = () => {
     handleSubmit,
     watch,
     setValue,
-  } = useForm<DataType>({ defaultValues: { countryId: "39" } }); // Specify DataType for better type safety
+  } = useForm<DataType>({ defaultValues: { countryId: "39" } });
 
   const [createBrokerageData] = useCreateBrokerageDataMutation();
   const [transferCommissionCheque] = useTransferCommissionChequeMutation();
@@ -153,7 +152,7 @@ const CommissionCheque = () => {
   };
 
   const confirmDelete = async () => {
-    if (!selectedUUID) return; // Add check to avoid undefined
+    if (!selectedUUID) return;
 
     try {
       const response = await deleteBrokerageData(selectedUUID).unwrap();
@@ -179,7 +178,6 @@ const CommissionCheque = () => {
   };
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
@@ -225,17 +223,13 @@ const CommissionCheque = () => {
   const selectedState = watch("stateId");
   const selectedCity = watch("cityId");
 
-  // Fetch countries
-  // const { data: countries } = useGetCountriesQuery({});
 
-  // Fetch states based on selected country
   const { data: states = [] } = useGetStatesQuery(selectedCountry, {
-    skip: !selectedCountry, // Skip if no country is selected
+    skip: !selectedCountry,
   });
 
-  // Fetch cities based on selected state
   const { data: cities = [] } = useGetCitiesQuery(selectedState, {
-    skip: !selectedState, // Skip if no state is selected
+    skip: !selectedState,
   });
 
   const [chequeTypes] = useState([
@@ -307,7 +301,7 @@ const CommissionCheque = () => {
   };
 
   const handleDeleteMultipleClick = () => {
-    setIsDeleteModalMultipleVisible(true); // Show delete confirmation modal
+    setIsDeleteModalMultipleVisible(true);
   };
 
   const handleDeleteConfirmMultiple = async () => {
@@ -315,7 +309,6 @@ const CommissionCheque = () => {
       try {
         const response = await deleteMultipleBrokerageData(selectedRowKeys);
         setIsDeleteModalMultipleVisible(false);
-        // Ensure the refetch waits for the data to be refreshed
         await refetch();
         if (response.data.status == true) {
           setSelectedRowKeys([]);
@@ -344,69 +337,61 @@ const CommissionCheque = () => {
         >
           {record?.tradeTransaction?.tradeSheet?.tradeSheetTypeId || "N/A"}
         </span>;
-        // return record?.tradeTransaction?.tradeSheet?.tradeSheetTypeId || "N/A"; 
       },
     },
     {
       title: "Tradesheet Address",
-      dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
-      key: "tradeSheetTypeId", // Keep key as is
+      dataIndex: "tradeSheetTypeId",
+      key: "tradeSheetTypeId",
       render: (text, record) => {
-        // Safely access the tradeSheet and its tradeSheetTypeId
         return (
           record?.tradeTransaction?.tradeSheet?.properties?.[0]
             ?.propertyAddress || "N/A"
-        ); // Default value if tradeSheetTypeId is not present
+        );
       },
     },
     
     {
       title: "Seeling Commission",
-      dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
-      key: "tradeSheetTypeId", // Keep key as is
+      dataIndex: "tradeSheetTypeId",
+      key: "tradeSheetTypeId",
       render: (text, record) => {
-        // Safely access the tradeSheet and its tradeSheetTypeId
         const formattedCommission = formatNumberWithCommasAndDecimals(record?.tradeTransaction?.agentCommissionSelling);
-        return formattedCommission ? `$${formattedCommission}` : "N/A"; // Default value if tradeSheetTypeId is not present
+        return formattedCommission ? `$${formattedCommission}` : "N/A";
       },
     },
     {
       title: "Listing Commission",
-      dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
-      key: "tradeSheetTypeId", // Keep key as is
+      dataIndex: "tradeSheetTypeId",
+      key: "tradeSheetTypeId",
       render: (text, record) => {
-        // Safely access the tradeSheet and its tradeSheetTypeId
         const formattedCommission = formatNumberWithCommasAndDecimals(record?.tradeTransaction?.agentCommissionListing);
-        return formattedCommission ? `$${formattedCommission}` : "N/A"; // Default value if tradeSheetTypeId is not present
+        return formattedCommission ? `$${formattedCommission}` : "N/A";
       },
     },
     {
       title: "Tax",
-      dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
-      key: "tradeSheetTypeId", // Keep key as is
+      dataIndex: "tradeSheetTypeId",
+      key: "tradeSheetTypeId",
       render: (text, record) => {
-        // Safely access the tradeSheet and its tradeSheetTypeId
         const formattedCommission = formatNumberWithCommasAndDecimals(record?.tradeTransaction?.agentCommissionTax);
-        return formattedCommission ? `$${formattedCommission}` : "N/A"; // Default value if tradeSheetTypeId is not present
+        return formattedCommission ? `$${formattedCommission}` : "N/A";
       },
     },
     {
       title: "Total Commission",
-      dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
-      key: "tradeSheetTypeId", // Keep key as is
+      dataIndex: "tradeSheetTypeId",
+      key: "tradeSheetTypeId",
       render: (text, record) => {
-        // Safely access the tradeSheet and its tradeSheetTypeId
         const formattedCommission = formatNumberWithCommasAndDecimals(record?.tradeTransaction?.agentCommissionTotal);
-        return formattedCommission ? `$${formattedCommission}` : "N/A"; // Default value if tradeSheetTypeId is not present
+        return formattedCommission ? `$${formattedCommission}` : "N/A";
       },
     },
     {
       title: "Transfer Status",
-      dataIndex: "transferStatus", // Keep dataIndex as is, unless you want to map it differently
-      key: "transferStatus", // Keep key as is
+      dataIndex: "transferStatus",
+      key: "transferStatus",
       render: (text, record) => {
-        // Safely access the tradeSheet and its tradeSheetTypeId
-        // return record?.tradeTransaction?.netCommissionStatus || "N/A"; // Default value if tradeSheetTypeId is not present
         const val = record?.tradeTransaction?.agentCommissionStatus || "N/A";
         return <span>{val.charAt(0).toUpperCase() + val.slice(1)}</span>;
       },
@@ -432,19 +417,7 @@ const CommissionCheque = () => {
                   </button>
                 ),
               },
-              // hasPermissionForSlug("delete-brokerage") && {
-              //   key: "delete",
 
-              //   label: (
-              //     <button
-              //       className="flex items-center gap-2 w-full"
-              //       onClick={() => handleDelete(uuid)}
-              //     >
-              //       <MdDelete size={17} />
-              //       Delete
-              //     </button>
-              //   ),
-              // },
             ],
           }}
         >
@@ -484,7 +457,6 @@ const CommissionCheque = () => {
   };
 
   const showModal = () => setIsModalOpen(true);
-  // serial number in the table
   const tableSourceData = filteredData?.map((item: any, index: number) => {
     return {
       ...item,
@@ -549,7 +521,6 @@ const CommissionCheque = () => {
         ]}
       >
         <form className="space-y-3">
-          {/* Brokerage Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
               <label>
@@ -689,7 +660,6 @@ const CommissionCheque = () => {
         <p>Are you sure you want to delete this item?</p>
       </Modal>
 
-      {/* Delete Multiple Confirmation Modal */}
       <Modal
         title="Confirm Deletion"
         open={isDeleteMultipleModalVisible}

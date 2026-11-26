@@ -1,5 +1,4 @@
 // @ts-nocheck
-// Personnel documents: versioned agent / employee documents with expiry tracking.
 import React, { useState } from "react";
 import { Checkbox, DatePicker, Drawer, Form, Input, Modal, Select, Space, Tag, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";

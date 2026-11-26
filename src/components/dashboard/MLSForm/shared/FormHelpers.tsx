@@ -1,7 +1,6 @@
 import { TFormSectionHeading } from "../../../../types/FreeHoldSale";
 import { cn } from "../../../../utils/cn";
 
-// for the blue and pink headers-----------------------
 export const FormSectionHeading = ({
   className,
   children,
@@ -20,7 +19,6 @@ export const FormSectionHeading = ({
   </p>
 );
 
-// pink header-----------------------
 export const SubSectionHeading = ({
   title,
   className,
@@ -41,7 +39,6 @@ export const SubSectionHeading = ({
   );
 };
 
-// input field-------------------
 export const InPutField = ({
   inputClass,
   boldBorder = false,

@@ -4,9 +4,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export type IUserState = {
   user: any | null;
   accessToken: string | null;
-  tradeSheetRepresentationData: any | null; // Add this line
-  tradeSheetRepresentationTypeData: any | null; // Add this line
-  tradeSheetData: any | null; // Add this line
+  tradeSheetRepresentationData: any | null;
+  tradeSheetRepresentationTypeData: any | null;
+  tradeSheetData: any | null;
 };
 
 const initialState: IUserState = {
@@ -16,32 +16,29 @@ const initialState: IUserState = {
   accessToken: localStorage.getItem("accessToken") || null,
   tradeSheetRepresentationTypeData: localStorage.getItem("tradeSheetRepresentationTypeData")
   ? JSON.parse(localStorage.getItem("tradeSheetRepresentationTypeData")!)
-  : null, // Add this line
+  : null,
   tradeSheetRepresentationData: localStorage.getItem("tradeSheetRepresentationData")
     ? JSON.parse(localStorage.getItem("tradeSheetRepresentationData")!)
-    : null, // Add this line
+    : null,
     tradeSheetData: localStorage.getItem("tradeSheetData")
   ? JSON.parse(localStorage.getItem("tradeSheetData")!)
-  : null, // Add this line
+  : null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // for login n hlding user state
     setUser: (state, action) => {
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
 
-    // for login n hlding user state
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
       localStorage.setItem("accessToken", action.payload);
     },
 
-    // logout
     clearUser: (state) => {
       state.user = null;
       state.accessToken = null;
@@ -51,15 +48,15 @@ const userSlice = createSlice({
     },
     setTradeSheetRepresentationType: (state, action) => {
       state.tradeSheetRepresentationTypeData = action.payload;
-      localStorage.setItem("tradeSheetRepresentationTypeData", JSON.stringify(action.payload)); // Store trade sheet data correctly
+      localStorage.setItem("tradeSheetRepresentationTypeData", JSON.stringify(action.payload));
     },
     setTradeSheetRepresentation: (state, action) => {
       state.tradeSheetRepresentationData = action.payload;
-      localStorage.setItem("tradeSheetRepresentationData", JSON.stringify(action.payload)); // Store trade sheet data correctly
+      localStorage.setItem("tradeSheetRepresentationData", JSON.stringify(action.payload));
     },
     setTradeSheetData: (state, action) => {
       state.tradeSheetData = action.payload;
-      localStorage.setItem("tradeSheetData", JSON.stringify(action.payload)); // Store trade sheet data correctly
+      localStorage.setItem("tradeSheetData", JSON.stringify(action.payload));
     },
   },
 });

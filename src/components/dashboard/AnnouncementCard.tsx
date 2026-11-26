@@ -23,7 +23,6 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formattedDate = format(new Date(announcement.date), 'MMMM dd, yyyy');
   
-  // Function to truncate description
   const truncateDescription = (text: string, maxLength: number = 150) => {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';

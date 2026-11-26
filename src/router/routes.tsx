@@ -271,7 +271,6 @@ export const router = createBrowserRouter([
             element: <Home />,
           },
 
-          // Treadesheet create,update,delete Route
           {
             path: "dashboard/agent/pages/form",
             children: [
@@ -470,7 +469,6 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // Client Section route
           {
             path: "dashboard",
             children: [
@@ -524,7 +522,6 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // Market Place Section route
           {
             path: "dashboard",
             children: [
@@ -550,7 +547,6 @@ export const router = createBrowserRouter([
                   </PermissonRoute>
                 ),
               },
-              // ANS Time Clock (rebuild of the dvclock app; access is checked by the API)
               {
                 path: "dv-time-clock",
                 element: (
@@ -562,7 +558,6 @@ export const router = createBrowserRouter([
                   </PermissonRoute>
                 ),
               },
-              // Trade Transactions (bodv Transactions screen on the existing trade accounting data)
               {
                 path: "trade-transactions",
                 element: (
@@ -574,7 +569,6 @@ export const router = createBrowserRouter([
                   </PermissonRoute>
                 ),
               },
-              // Brokerage accounting (merged from ANS Accounting)
               {
                 path: "brokerage-accounting/:section?",
                 element: (
@@ -693,7 +687,6 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // Super Admin Routes
           {
             path: "dashboard/super-admin",
             children: [
@@ -709,7 +702,6 @@ export const router = createBrowserRouter([
                 ),
               },
 
-              // Property Listing
               {
                 path: "property-listing/:filter?",
                 element: (
@@ -808,7 +800,6 @@ export const router = createBrowserRouter([
                 ),
               },
 
-              // Basic superadmin route
               {
                 path: "brokerage-managements",
                 element: (
@@ -1085,7 +1076,6 @@ export const router = createBrowserRouter([
                 ),
               },
 
-              //  Super admin Branch admin routes starts here!!!
               {
                 path: "branch-management/branches",
                 element: (
@@ -1120,9 +1110,7 @@ export const router = createBrowserRouter([
                 ),
               },
 
-              //  Super admin branch admin routes ends here!!
 
-              // Not using route
               {
                 path: "freehold-sale",
                 element: <FreeholdSale />,
@@ -1136,7 +1124,6 @@ export const router = createBrowserRouter([
                 element: <PdfExtrack />,
               },
 
-              // Agent manage Route
               {
                 path: "agent-management/:filter?",
                 element: (
@@ -1292,7 +1279,6 @@ export const router = createBrowserRouter([
                 ),
               },
 
-              // Role Permission route
               {
                 path: "role-permission/role-management",
                 element: (
@@ -1321,7 +1307,6 @@ export const router = createBrowserRouter([
             ],
           },
 
-          //  Agent Account Route
           {
             path: "agent",
             children: [
@@ -1455,7 +1440,6 @@ export const router = createBrowserRouter([
             ),
           },
 
-          // Support Section Route
 
           {
             path: "dashboard/support",
@@ -1507,7 +1491,6 @@ export const router = createBrowserRouter([
             ),
           },
 
-          // Accounting Section route
           {
             path: "dashboard",
             children: [
@@ -1575,7 +1558,6 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // Expense Section route
           {
             path: "dashboard",
             children: [
@@ -1594,7 +1576,6 @@ export const router = createBrowserRouter([
               },
             ],
           },
-          // Report Section route
           {
             path: "dashboard",
             children: [
@@ -1642,7 +1623,6 @@ export const router = createBrowserRouter([
             ],
           },
 
-          // Others route
           {
             path: "/profile",
             element: (
@@ -1674,7 +1654,6 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // Without login access route unprotected
       {
         path: "/login",
         element: <Login />,

@@ -157,7 +157,6 @@ const tradeSheetApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      // providesTags: ["getTradeSheetListDataTag"],
     }),
 
     getArchiveTradeSheetListData: builder.query({
@@ -187,7 +186,6 @@ const tradeSheetApi = api.injectEndpoints({
         const queryParams = new URLSearchParams();
         if (uuid) queryParams.append("uuid", uuid);
         
-        // Sending the rejectReason along with status and uuid in the request body as a JSON object
         return {
           url: `/agent/trade-sheet-management/change-trade-sheet-status?${queryParams.toString()}`,
           method: "POST",
@@ -205,7 +203,6 @@ const tradeSheetApi = api.injectEndpoints({
         const queryParams = new URLSearchParams();
         if (uuid) queryParams.append("uuid", uuid);
         
-        // Sending the rejectReason along with status and uuid in the request body as a JSON object
         return {
           url: `/agent/trade-sheet-management/change-trade-admin-status?${queryParams.toString()}`,
           method: "POST",
@@ -239,7 +236,7 @@ const tradeSheetApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"],
     }),
     deleteTradeSheetMultiple: builder.mutation({
       query: (uuids) => ({
@@ -250,31 +247,31 @@ const tradeSheetApi = api.injectEndpoints({
         },
         body:{ uuids }
       }),
-      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"],
     }),
 
     archiveSpecificTradeSheet: builder.mutation({
       query: (uuid) => ({
         url: `/agent/trade-sheet-management/archive-specific-trade-sheet`,
-        method: "POST", // Use PUT for archiving
+        method: "POST",
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
-        body: { uuid } // Include UUID in the body
+        body: { uuid }
       }),
-      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"],
     }),
     
     archiveMultipleTradeSheets: builder.mutation({
       query: (uuids) => ({
         url: `/agent/trade-sheet-management/archive-multiple-trade-sheets`,
-        method: "POST", // Use PUT for archiving
+        method: "POST",
         headers: {
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
-        body: { uuids } // Pass the array of UUIDs in the body
+        body: { uuids }
       }),
-      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getTradeSheetListDataTag","getArchiveTradeSheetListDataTag"],
     }),
     
 
@@ -368,7 +365,7 @@ const tradeSheetApi = api.injectEndpoints({
           authorization: `Bearer ${getEnvUrls().accessToken}`,
         },
       }),
-      invalidatesTags: ["getTradeSheetListDataTag","getSpacificTradeSheetListDataTag","getUploadFileCategoriesTag"], // Use invalidatesTags for cache invalidation
+      invalidatesTags: ["getTradeSheetListDataTag","getSpacificTradeSheetListDataTag","getUploadFileCategoriesTag"],
     }),
 
     uploadOtherDocument: builder.mutation({
@@ -415,7 +412,6 @@ const tradeSheetApi = api.injectEndpoints({
         const queryParams = new URLSearchParams();
         if (id) queryParams.append("id", id);
         
-        // Sending the rejectReason along with status and uuid in the request body as a JSON object
         return {
           url: `/agent/trade-sheet-management/change-change-trade-sheet-attachment-status?${queryParams.toString()}`,
           method: "POST",
@@ -432,7 +428,6 @@ const tradeSheetApi = api.injectEndpoints({
         const queryParams = new URLSearchParams();
         if (id) queryParams.append("id", id);
         
-        // Sending the rejectReason along with status and uuid in the request body as a JSON object
         return {
           url: `/agent/trade-sheet-management/change-change-trade-sheet-other-attachment-status?${queryParams.toString()}`,
           method: "POST",
@@ -445,7 +440,6 @@ const tradeSheetApi = api.injectEndpoints({
       invalidatesTags: ["getTradeSheetListDataTag", "getSpacificTradeSheetListDataTag","getAgentReportDataTag"],
     }),
     
-    // --- TradeSheet Note Endpoints ---
     getTradeSheetNote: builder.query({
       query: ({ tradeSheetId }) => {
         if (!tradeSheetId) throw new Error("tradeSheetId is required");
@@ -496,7 +490,6 @@ const tradeSheetApi = api.injectEndpoints({
       }),
       invalidatesTags: ["getTradeSheetNoteTag"],
     }),
-    // Shared Users API Endpoints
     addSharedUser: builder.mutation({
       query: ({ uuid, data }: { uuid: string; data: any }) => ({
         url: `/agent/trade-sheet-management/shared-users/add?uuid=${uuid}`,
@@ -578,7 +571,6 @@ export const {
   useCreateUpdateTradeSheetNoteMutation,
   useDeleteTradeSheetNoteMutation,
   useDeleteMultipleTradeSheetNoteMutation,
-  // Shared Users exports
   useAddSharedUserMutation,
   useRemoveSharedUserMutation,
   useUpdateSharedUserCommissionMutation,

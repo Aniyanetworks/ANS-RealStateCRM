@@ -39,7 +39,6 @@ import { BrokerageModal } from '../../brokerage/BrokerageModal';
 import { BrokerageSelector } from '../../brokerage/BrokerageSelector';
 import setCanvasPreview from '../../cropper/setCanvasPreview';
 
-// set ratio of crop image
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 
@@ -92,9 +91,7 @@ const AgentForm: React.FC<AgentFormProps> = ({
   const { user } = useSelector((state: any) => state.user);
   const isSuperAdmin = user?.roleId == 1;
 
-  // const profilePicture = watch?.("profilePicture");
 
-  // Brokerage dropdown state
   const [selectedBrokerage, setSelectedBrokerage] = useState(null);
   const { data: brokerageData, refetch: refetchBrokerages } = useGetBrokerageDataQuery("");
   const brokerageOptions =
@@ -104,7 +101,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
       ...brokerage,
     })) || [];
 
-  // Brokerage modal state
   const [isBrokerageModalOpen, setIsBrokerageModalOpen] = useState(false);
   const brokerageForm = useForm({ defaultValues: { countryId: '39' } });
   const [createBrokerage] = useCreateBrokerageDataMutation();
@@ -120,7 +116,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
       brokerageForm.reset({ countryId: '39' });
       refetchBrokerages();
     } catch {
-      // Optionally show error
     }
   };
 
@@ -172,35 +167,9 @@ const AgentForm: React.FC<AgentFormProps> = ({
 
   const safeWatch = typeof watch === 'function' ? watch : () => undefined;
 
-  // useEffect(() => {
-  //   if (isEditMode) {
-  //     const phoneValue = safeWatch('cellPhone');
-  //     const emergencyValue = safeWatch('emergencyContact');
 
-  //     if (phoneValue) {
-  //       setCellPhone(formatPhoneNumber(phoneValue));
-  //     }
-  //     if (emergencyValue) {
-  //       setEmergencyContact(formatPhoneNumber(emergencyValue));
-  //     }
-  //   }
-  // }, [isEditMode, safeWatch]);
 
-  /* const handleChangeCellPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = formatPhoneNumber(e.target.value);
-    setCellPhone(value);
-    setValue("cellPhone", value, { shouldValidate: true });
-  };
 
-  const handleChangeEmergencyContact = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = formatPhoneNumber(e.target.value);
-    setEmergencyContact(value);
-    setValue("emergencyContact", value, { shouldValidate: true });
-  }; */
-
-  // Set selectedBrokerage from form value in edit mode
   useEffect(() => {
     const currentId = safeWatch('brokerageId');
     if (currentId && brokerageOptions.length > 0) {
@@ -221,7 +190,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
   return (
     <div className="bg-white p-4 rounded-md">
       <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
-        {/* Profile Image Upload */}
         <div className="col-span-3 flex items-center">
           <div className="w-1/2">
           
@@ -287,7 +255,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           </div>
         </div>
 
-        {/* Image Cropper Modal */}
         {selectedImage && !imageFile && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -357,7 +324,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           />
         )}
 
-        {/* First Name */}
         <div className="flex flex-col gap-2">
           <label>
             First Name<span className="text-red-500 ml-1">*</span>
@@ -373,7 +339,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* Last Name */}
         <div className="flex flex-col gap-2 ">
           <label>
             Last Name<span className="text-red-500 ml-1">*</span>
@@ -389,7 +354,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* Email */}
         <div className="flex flex-col gap-2 ">
           <label>
             Email<span className="text-red-500 ml-1">*</span>
@@ -411,7 +375,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
         
-      {/*Add Brokarage */}
       <div className="flex flex-col gap-2">
         <BrokerageSelector
           label="Brokerage"
@@ -437,13 +400,11 @@ const AgentForm: React.FC<AgentFormProps> = ({
         />
       </div>
 
-        {/* PREC Name */}
         <div className="flex flex-col gap-2">
           <label>PREC Name (if any)</label>
           <input type="text" {...register("precName")} />
         </div>
 
-        {/* Address */}
         <div>
           <label>Address</label>
           <input
@@ -458,7 +419,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* Cell Phone */}
         <div>
           <label>Cell Phone</label>
           <input
@@ -475,22 +435,7 @@ const AgentForm: React.FC<AgentFormProps> = ({
           />
         </div>
 
-        {/* Phone Service Provider */}
-        {/* <div>
-          <label>Phone Service Provider</label>
-          <input
-            type="text"
-            {...register("phoneServiceProvider")}
-            className={`border p-2 w-full ${
-              errors.phoneServiceProvider ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.phoneServiceProvider && (
-            <p className="text-red-500">Phone service provider is required</p>
-          )}
-        </div> */}
 
-        {/* RECO Reg Number */}
         <div>
           <label>RECO Reg Number</label>
           <input
@@ -505,7 +450,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* RECO Expiry Date */}
         <div>
           <label>RECO Expiry Date</label>
           <input
@@ -515,8 +459,7 @@ const AgentForm: React.FC<AgentFormProps> = ({
           />
         </div>
 
-         {/* Agrement Expiry Date */}
-        <div /* className='hidden' */>
+        <div >
           <label>Agreement Expiry Date</label>
           <input
             type="date"
@@ -539,7 +482,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* SIN */}
         <div>
           <label>SIN</label>
           <input
@@ -552,7 +494,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           {errors.sin && <p className="text-red-500">SIN is required</p>}
         </div>
 
-        {/* Date of Birth */}
         <div>
           <label>Date of Birth</label>
           <input
@@ -567,7 +508,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* Emergency Contact */}
         <div>
             <label>Emergency Contact</label>
             <div className="flex">
@@ -592,7 +532,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
             </div>
           </div>
 
-        {/* HST Number */}
         <div>
           <label>HST Number</label>
           <input
@@ -607,7 +546,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* PREC HST Number */}
         <div>
           <label>PREC HST Number</label>
           <input
@@ -619,7 +557,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           />
         </div>
 
-        {/* Expected Gross */}
         <div>
           <label>Expected Gross</label>
           <input
@@ -655,7 +592,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
                       )}
                     </div>
 
-        {/* New Password */}
         <div>
           <label htmlFor="new-pass">
             New Password
@@ -672,7 +608,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* Confirm Password */}
         <div>
           <label htmlFor="confirm-pass">
             Confirm Password
@@ -689,7 +624,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* Select Branch */}
         {isSuperAdmin ? (
           <div>
             <label htmlFor="branchId">Select Branch (If any)</label>
@@ -732,7 +666,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
             </>
           )}
 
-        {/* Account Status */}
         <div className='hidden'>
           <label>Account Status:</label>
           <select {...register("status")} defaultValue={"approved"}>
@@ -747,7 +680,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
           )}
         </div>
 
-        {/* Agreement Status */}
         <div className='hidden'>
           <label>
             Agreement Status:{" "}
@@ -783,7 +715,6 @@ const AgentForm: React.FC<AgentFormProps> = ({
        
       </div>
 
-      {/* Special Note */}
       <div className="mt-4 ">
         <label>Special Note:</label>
         <ReactQuill

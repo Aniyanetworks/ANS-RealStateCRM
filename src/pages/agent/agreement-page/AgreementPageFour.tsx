@@ -23,7 +23,6 @@ const AgreementPageFour: React.FC = () => {
   return (
     <div className="max-w-[850px] mx-auto p-8 bg-white">
 
-      {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 border border-gray-300">
           <img
@@ -39,7 +38,6 @@ const AgreementPageFour: React.FC = () => {
       </div>
 
       <div className="space-y-6 text-sm">
-        {/* ARTICLE THIRTEEN - CORRESPONDENCE */}
         <div>
           <h3 className="font-bold mb-2">ARTICLE THIRTEEN - CORRESPONDENCE</h3>
           <p className="ml-8 mb-4">
@@ -50,7 +48,6 @@ const AgreementPageFour: React.FC = () => {
           </p>
         </div>
 
-        {/* ARTICLE FOURTEEN - INDEMNITY */}
         <div>
           <h3 className="font-bold mb-2">ARTICLE FOURTEEN - INDEMNITY</h3>
           <p className="ml-8 mb-4">
@@ -62,7 +59,6 @@ const AgreementPageFour: React.FC = () => {
           </p>
         </div>
 
-        {/* ARTICLE FIFTEEN - USE AND DISTRIBUTION OF PERSONAL INFORMATION */}
         <div>
           <h3 className="font-bold mb-2">ARTICLE FIFTEEN - USE AND DISTRIBUTION OF PERSONAL INFORMATION</h3>
           <p className="ml-8 mb-4">
@@ -114,7 +110,6 @@ const AgreementPageFour: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="flex justify-between items-center mt-12">
         <p className="text-sm">Page 4 of 5</p>
         <div className="flex gap-4">

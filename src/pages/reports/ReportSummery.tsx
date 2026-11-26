@@ -11,7 +11,6 @@ export default function SummaryReport() {
       <div className="w-full max-w-2xl">
         <h2 className="text-xl font-semibold text-center mb-4">Summary Report</h2>
 
-        {/* Date Picker Section */}
         <div className="relative">
           <label className="font-semibold block mb-1">Choose Your Date</label>
           <div className="flex">
@@ -25,7 +24,6 @@ export default function SummaryReport() {
             <button className="bg-[#0f766e] text-white px-4 rounded-r">Submit</button>
           </div>
 
-          {/* Date Picker Dropdown */}
           {showDropdown && (
             <div className="absolute left-0 mt-2 w-100 bg-white shadow-md border rounded-md p-4 z-10">
               <div className="flex gap-2 mb-4">
@@ -49,7 +47,6 @@ export default function SummaryReport() {
                   </button>
                 ))}
                 
-                {/* Custom Range */}
                 <div className="border p-2 rounded">
                   <label className="text-sm font-semibold">Custom Range</label>
                   <div className="flex gap-2 mt-1">

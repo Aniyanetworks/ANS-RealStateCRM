@@ -1,6 +1,3 @@
-// In-app confirm / prompt dialogs for ANS Time Clock (replace the browser's window.confirm / window.prompt).
-// Promise-based so callers keep the same flow:  if (!(await tcConfirm("Delete?"))) return;
-// <TcDialogHost /> is mounted once inside the .dvtc page so the dialog uses the console's modal styles.
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -12,13 +9,11 @@ type Request =
 
 let show: ((r: Request) => void) | null = null;
 
-/** Ask the user to confirm. Resolves true for the confirm button, false for cancel / Esc / backdrop. */
 export function tcConfirm(message: string, opts: ConfirmOpts = {}): Promise<boolean> {
-  if (!show) return Promise.resolve(window.confirm(message)); // host not mounted (should not happen inside the console)
+  if (!show) return Promise.resolve(window.confirm(message));
   return new Promise((resolve) => show!({ kind: "confirm", message, resolve, ...opts }));
 }
 
-/** Ask the user for text. Resolves the entered text, or null when cancelled. */
 export function tcPrompt(message: string, opts: PromptOpts = {}): Promise<string | null> {
   if (!show) return Promise.resolve(window.prompt(message, opts.defaultValue));
   return new Promise((resolve) => show!({ kind: "prompt", message, resolve, ...opts }));
@@ -67,7 +62,6 @@ export function TcDialogHost() {
   };
   const title = req.title || (req.kind === "prompt" ? "Enter details" : req.danger ? "Please confirm" : "Confirm");
 
-  // At <body> level (own .dvtc scope), above the console modal, the app sidebar and header.
   return createPortal(
     <div className="dvtc" style={{ height: 0, background: "transparent" }}>
     <div className="modal tc-dialog" style={{ zIndex: 3100 }} onMouseDown={(e) => e.target === e.currentTarget && close(false)} onKeyDown={onKey}>

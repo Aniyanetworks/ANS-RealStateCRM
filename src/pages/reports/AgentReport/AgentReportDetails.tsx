@@ -21,12 +21,11 @@ export default function SummaryReport() {
   const [customEnd, setCustomEnd] = useState("");
   const [searchText, setSearchText] = useState("");
   const [reportType, setReportType] = useState("commissions");
-  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]); // State for search suggestions
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
 
   const { agentId } = useParams<{ agentId?: string }>();
   const { data } = useGetAgentDetailsDataQuery(agentId);
 
-  // Function to set predefined date ranges
   const handlePeriodFilter = (period: string) => {
     const now = new Date();
     let startDate = new Date();
@@ -77,7 +76,6 @@ export default function SummaryReport() {
     }
   };
 
-  // Memoized logic for filtering data
   const filteredData = useMemo(() => {
     if (!data?.data?.userData?.user) return [];
 
@@ -115,7 +113,6 @@ export default function SummaryReport() {
         return [];
     }
 
-    // **Filter by Date Range**
     if (dateRange) {
       const [startStr, endStr] = dateRange;
       if (!startStr || !endStr) return [];
@@ -139,7 +136,6 @@ export default function SummaryReport() {
       });
     }
 
-    // **Search Filter (Handles Nested Objects)**
     if (searchText) {
       const searchTerm = searchText.toLowerCase();
 
@@ -165,7 +161,6 @@ export default function SummaryReport() {
     return reportData;
   }, [data, dateRange, reportType, searchText]);
 
-  // Function to handle search input changes
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
@@ -221,25 +216,23 @@ export default function SummaryReport() {
   
           return values;
         })
-        .filter((field) => typeof field === "string" && field.toLowerCase().includes(value.toLowerCase())) // Ensure it's a string before calling toLowerCase()
-        .slice(0, 5); // Limit to 5 suggestions
+        .filter((field) => typeof field === "string" && field.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 5);
   
       setSearchSuggestions(suggestions as string[]);
     }
   };
   
 
-  // Function to handle suggestion selection
   const handleSuggestionClick = (suggestion: string) => {
     setSearchText(suggestion);
-    setSearchSuggestions([]); // Clear suggestions
+    setSearchSuggestions([]);
   };
 
   return (
     <div className="p-3 flex justify-center min-h-screen">
       <div className="w-full max-full">
         <div className="flex flex-col gap-4 px-4 md:px-6">
-          {/* Header Section */}
                     <div className="text-center">
                       <h2 className="text-xl font-semibold">
                         {data?.data?.userData?.name}'s Agent Report
@@ -248,9 +241,7 @@ export default function SummaryReport() {
                         )}
                       </h2>
                     </div>
-          {/* Controls Section */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            {/* Report Type Selector */}
             <div className="w-full sm:w-64">
               <select
                 className="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -266,7 +257,6 @@ export default function SummaryReport() {
               </select>
             </div>
 
-            {/* Search and Filter */}
             <div className="w-full sm:w-auto flex-1 max-w-2xl relative">
               <div className="flex">
                 <input
@@ -284,7 +274,6 @@ export default function SummaryReport() {
                 </button>
               </div>
 
-              {/* Search Suggestions Dropdown */}
               {searchSuggestions.length > 0 && (
                 <div className="absolute left-0 mt-1 w-full bg-white shadow-md border rounded-md z-10">
                   {searchSuggestions.map((suggestion, index) => (
@@ -299,7 +288,6 @@ export default function SummaryReport() {
                 </div>
               )}
 
-              {/* Filter Dropdown */}
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-full md:w-[450px] bg-white shadow-md border rounded-md p-4 z-10">
                   <div className="flex gap-2 mb-4 flex-wrap">
@@ -375,7 +363,6 @@ export default function SummaryReport() {
               )}
             </div>
 
-            {/* Go Back Button */}
             <NavLink
               to={`/dashboard/reports/agent-report`}
               className="bg-[#0f766e] text-white py-2 px-4 rounded-md text-center min-w-[100px] transition duration-200 hover:bg-[#1F2A3D]"
@@ -385,7 +372,6 @@ export default function SummaryReport() {
           </div>
         </div>
 
-        {/* Display Reports */}
         <div className="w-full">
           {reportType === 'marketplace' && (<AgentMarketplaceReport filteredData={filteredData} />)}
           {reportType === 'support' && (<AgentSupportReport filteredData={filteredData} />)}

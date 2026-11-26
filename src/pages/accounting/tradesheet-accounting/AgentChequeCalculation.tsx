@@ -29,10 +29,10 @@ import ButtonLoader from '../../../components/loader/buttonLoader';
 
 const AgentChequeCalculation = () => {
   const navigate = useNavigate();
-  const { uuid } = useParams<{ uuid?: string }>(); // uuid is optional
-  const { agentAccountId } = useParams<{ agentAccountId?: string }>(); // uuid is optional
+  const { uuid } = useParams<{ uuid?: string }>();
+  const { agentAccountId } = useParams<{ agentAccountId?: string }>();
   const { data:tradeAgentCommissionResponse, isLoading:isLoadingtradeAgentCommissionData } = useGetSpecificTradeAgentCommissionQuery({uuid,agentAccountId});
-  const { data:bankAccountList, isLoading:bankAccountIsLoading, refetch:bankAccountRefetch} = useGetAccountingBankAccountsQuery(""); // Use the bank account data query
+  const { data:bankAccountList, isLoading:bankAccountIsLoading, refetch:bankAccountRefetch} = useGetAccountingBankAccountsQuery("");
   const [bankAccounts, setBankAccounts] = useState<DataType[]>([]);
   const { register, handleSubmit, setValue, formState: { errors }, watch,getValues } = useForm();
   const [tradeAgentCommissionData, setTradeAgentCommissionData] = useState("");
@@ -44,7 +44,6 @@ const AgentChequeCalculation = () => {
   const [tradesheetData, setTradeSheetData] = useState<any>([]);
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
 
-  // Define allowed items array at component level
   const allowedItems = [
     "Yearly Desk Fee",
     "Commission Split",
@@ -53,7 +52,7 @@ const AgentChequeCalculation = () => {
   ];
 
   useEffect(() => {
-    setBankAccounts(bankAccountList?.data?.accounts); // Ensure correct data mapping
+    setBankAccounts(bankAccountList?.data?.accounts);
     setTradeAgentCommissionData(tradeAgentCommissionResponse?.data?.tradeAgentCommission)
     setTradeSheetData(tradeAgentCommissionResponse?.data?.tradeAgentCommission?.tradeSheet)
     setTradeAgentData(tradeAgentCommissionResponse?.data?.agentDetails)
@@ -72,15 +71,12 @@ const AgentChequeCalculation = () => {
 
     setTotalAgentCommission((parseFloat(tradeAgentCommissionData?.agentCommissionTotal)).toFixed(2));
     
-    console.log('tradeAgentCommissionData?.baseOfficeCommissionTotal',tradeAgentCommissionData)
   }, [bankAccountList,tradeAgentCommissionResponse,tradeAgentCommissionData, setTotalAgentCommission,tradeAgentData,finalAmount]);
 
   useEffect(() => {
     let total = parseFloat(totalAgentCommission);
     
-    // Loop through all plan items and their subitems
     tradeAgentData?.plan?.planItems?.forEach(item => {
-      // Check main item
       if (selectedFees[item.name]) {
         const discountItem = tradeAgentData?.discount?.discountItems?.find(
           d => d.discountItem === item.name
@@ -90,7 +86,6 @@ const AgentChequeCalculation = () => {
         total -= discountedAmount;
       }
 
-      // Check subitems
       item.planSubItems?.forEach(subItem => {
         if (selectedFees[subItem.name]) {
           const subItemDiscountItem = tradeAgentData?.discount?.discountItems?.find(
@@ -103,7 +98,6 @@ const AgentChequeCalculation = () => {
       });
     });
 
-    // Add cheque processing fee if applicable
     if (watch("chequeType") === "cheque") {
       total -= 25;
     }
@@ -112,10 +106,8 @@ const AgentChequeCalculation = () => {
   }, [selectedFees, totalAgentCommission, tradeAgentData, watch("chequeType")]);
 
   useEffect(() => {
-    // Transform deductions array into selectedFees object format
     if (tradeAgentCommissionResponse?.data?.tradeAgentCommission?.invoiceDetails?.deductions) {
       const selectedFeesObj = tradeAgentCommissionResponse.data.tradeAgentCommission.invoiceDetails.deductions.reduce((acc, deduction) => {
-        // Set true for each deducted item
         acc[deduction.itemName] = true;
         return acc;
       }, {});
@@ -124,11 +116,6 @@ const AgentChequeCalculation = () => {
     }
   }, [tradeAgentCommissionResponse]);
 
-  // const [bankAccounts] = useState([
-  //   { label: "Bank A - 1234", value: "bank_a" },
-  //   { label: "Bank B - 5678", value: "bank_b" },
-  //   { label: "Bank C - 9012", value: "bank_c" },
-  // ]);
 
   const [chequeReceiptsFrom] = useState([
     { label: "Customer A", value: "customer_a" },
@@ -144,7 +131,6 @@ const AgentChequeCalculation = () => {
   const onSubmit = async (data: any) => {
     setBtnLoading(true);
     try {
-      // Prepare deductions data in a clean format for invoice
       const deductionsData = tradeAgentData?.plan?.planItems
         ?.filter(item => 
           (selectedFees[item.name] && allowedItems.includes(item.name)) || 
@@ -153,7 +139,6 @@ const AgentChequeCalculation = () => {
         .flatMap(item => {
           const deductions = [];
 
-          // Add main item if selected
           if (selectedFees[item.name] && allowedItems.includes(item.name)) {
             const discountItem = tradeAgentData?.discount?.discountItems?.find(
               d => d.discountItem === item.name
@@ -171,7 +156,6 @@ const AgentChequeCalculation = () => {
             });
           }
 
-          // Add subitems if selected
           item.planSubItems?.forEach(subItem => {
             if (selectedFees[subItem.name] && allowedItems.includes(subItem.name)) {
               const subItemDiscountItem = tradeAgentData?.discount?.discountItems?.find(
@@ -194,7 +178,6 @@ const AgentChequeCalculation = () => {
           return deductions;
         });
 
-      // Prepare the final payload
       const payload = {
         ...data,
         invoiceDetails: {
@@ -209,7 +192,6 @@ const AgentChequeCalculation = () => {
           }
         }
       };
-      console.log('payload',payload)
 
       const response = await transferCommissionAgent(payload).unwrap();
       setBtnLoading(false);
@@ -224,7 +206,6 @@ const AgentChequeCalculation = () => {
      
       navigate('/dashboard/accounting/issue-agent-cheque');
     } catch (error) {
-      // toast.error(`Error: ${error?.data?.message || "Something went wrong"}`);
     }
   };
 
@@ -233,7 +214,6 @@ const AgentChequeCalculation = () => {
       <div className=" rounded-md">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-          {/* Tradesheet Info */}
           <div className="flex items-center text-xs gap-2">
             <span className="font-medium">Tradesheet:</span>
             <span className="font-semibold text-black">
@@ -262,7 +242,6 @@ const AgentChequeCalculation = () => {
             </span>
           </div>
 
-          {/* Prices based on representation */}
           {tradesheetData?.representation == "buyer" ? (
             <div className="flex items-center text-xs gap-2">
               <span className="font-medium">Sold Price:</span>
@@ -302,7 +281,6 @@ const AgentChequeCalculation = () => {
         <div className="p-6 rounded-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-            {/* Seller Info Section */}
             <div className="border rounded-lg shadow-lg bg-gray-50 hover:bg-gray-100 transition-colors p-4 rounded-md">
               <h3 className="font-semibold text-lg mb-3">Seller Information</h3>
               <div className="flex items-center text-xs gap-2">
@@ -338,7 +316,6 @@ const AgentChequeCalculation = () => {
               </div>
             </div>
 
-            {/* Buyer Info Section */}
             <div className="border rounded-lg shadow-lg bg-gray-50 hover:bg-gray-100 transition-colors p-4 rounded-md">
               <h3 className="font-semibold text-lg mb-3">Buyer Information</h3>
               <div className="flex items-center text-xs gap-2">
@@ -382,7 +359,6 @@ const AgentChequeCalculation = () => {
         Agent Comission Transfer
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Cheque Type */}
         <div>
           <label htmlFor="chequeType" className="font-semibold text-gray-700">
             Cheque Type:
@@ -406,7 +382,6 @@ const AgentChequeCalculation = () => {
           )}
         </div>
 
-        {/* Amount */}
         <div className="space-y-4">
           <div className="border border-gray-300 rounded-md p-4">
             <h3 className="font-semibold text-lg mb-4">
@@ -420,7 +395,6 @@ const AgentChequeCalculation = () => {
               </div>
 
               {tradeAgentData?.plan?.planItems?.flatMap((item) => {
-                // Define allowed items
                 const allowedItems = [
                   "Yearly Desk Fee",
                   "Commission Split",
@@ -435,7 +409,6 @@ const AgentChequeCalculation = () => {
 
                 const allItems = [];
 
-                // Add main item only if it's in the allowed list
                 if (allowedItems.includes(item.name)) {
                   const discountItem = tradeAgentData?.discount?.discountItems?.find(
                     (d) => d.discountItem === item.name
@@ -488,7 +461,6 @@ const AgentChequeCalculation = () => {
                   );
                 }
 
-                // Add Buy/Sale Admin Fees from subitems if present
                 if (item.planSubItems?.length > 0) {
                   item.planSubItems.forEach((subItem) => {
                     if (allowedItems.includes(subItem.name)) {
@@ -548,7 +520,6 @@ const AgentChequeCalculation = () => {
                 return allItems;
               })}
 
-              {/* Show cheque fee if cheque type is selected */}
               {watch("chequeType") === "cheque" && (
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Cheque Processing Fee:</span>
@@ -591,7 +562,6 @@ const AgentChequeCalculation = () => {
           )}
         </div>
 
-        {/* Date of Receipt */}
         <div>
           <label
             htmlFor="dateOfReceipt"
@@ -613,7 +583,6 @@ const AgentChequeCalculation = () => {
           )}
         </div>
 
-        {/* Bank Account */}
         <div>
           <label htmlFor="bankAccount" className="font-semibold text-gray-700">
             Transfer From:
@@ -657,7 +626,6 @@ const AgentChequeCalculation = () => {
         </div>
 
 
-        {/* Submit Button */}
         <div className="flex justify-end mt-4">
           {tradeAgentCommissionData?.acknowledgementStatus !== "accepted" && (
             <button
@@ -672,7 +640,6 @@ const AgentChequeCalculation = () => {
           )}
 
           {tradeAgentCommissionData && tradeAgentCommissionData.status === "completed" ? (
-            // <p className='mt-2 font-bold text-red-600'>You have already transferred this commission</p>
             <p className='mt-2 font-bold text-red-600'>Transfer successful</p>
           ) : (tradeAgentCommissionData?.acknowledgementStatus === "accepted" && (
             <button

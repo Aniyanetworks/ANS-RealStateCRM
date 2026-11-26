@@ -78,7 +78,6 @@ type Table2Type = {
 }[];
 
 const PdfExtrack = () => {
-  // state definition
 
   const [basicInfoData, setBasicInfoData] = useState<InfoType>([]);
   const [propertyDetailsData, setPropertyDetailsData] = useState<InfoType>([]);
@@ -149,7 +148,6 @@ const PdfExtrack = () => {
         sellerInfo
       );
 
-      //plain texts
       const clientRemarks = getTable2Data(
         extractedData,
         "Client Remks:",
@@ -265,9 +263,7 @@ const PdfExtrack = () => {
 
       const spis = searchSingleString(extractedData, "SPIS:");
 
-      console.log(spis);
 
-      //first table data
       const kitchen = getTable2Data(extractedData, "Kitchens:", "Exterior:");
       const kitchenData = kitchen.map((obj) => obj?.Text).join(" ");
 
@@ -362,7 +358,6 @@ const PdfExtrack = () => {
       const farmAgr = getTable2Data(extractedData, "Farm/Agr:", "Apx Sqft:");
       const farmAgrData = farmAgr.map((obj) => obj?.Text).join(" ");
 
-      console.log(extractedData);
 
       const table1Data = {
         kitchen: kitchenData,
@@ -402,7 +397,6 @@ const PdfExtrack = () => {
       setPropertyDetailsData(propertyDetailsData);
       setSellerInfoData(sellerInfoData);
     } catch (err) {
-      console.log(err);
       setIsLoading(false);
     }
   };
@@ -411,16 +405,16 @@ const PdfExtrack = () => {
     blocks: { BlockType: string; Text: string }[],
     predefinedNames: string[]
   ) => {
-    let nameIndex = 0; // Keep track of the name assignment
+    let nameIndex = 0;
     return blocks
       .filter(
         (block: { BlockType: string; Text: string }) =>
           block.BlockType === "LINE"
-      ) // Focus on LINE blocks
+      )
       .map((block: { BlockType: string; Text: string }) => {
-        const text = block.Text || "Unnamed"; // Use block.Text or fallback to "Unnamed"
-        const name = predefinedNames[nameIndex] || "Unnamed"; // Use predefined name or fallback
-        nameIndex++; // Increment index for the next name
+        const text = block.Text || "Unnamed";
+        const name = predefinedNames[nameIndex] || "Unnamed";
+        nameIndex++;
         return {
           name: name,
           text: text,
@@ -457,8 +451,6 @@ const PdfExtrack = () => {
         <TableLoader />
       ) : (
         <div className="bg-white w-full max-w-[1500px] mx-auto p-10 my-5 rounded-2xl">
-          {/* bacic info
-           */}
           <div>
             <BasicInfo basicInfo={basicInfoData} data={pdfData} />
             <PropertyDetails
