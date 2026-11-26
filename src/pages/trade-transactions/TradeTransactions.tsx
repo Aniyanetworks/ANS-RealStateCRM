@@ -68,7 +68,7 @@ function RowActions({ r, onOpen, onRecord }: { r: Row; onOpen: (tab: number) => 
 
 export default function TradeTransactions() {
   const { user } = useAppSelector((state) => state.user);
-  const allowed = user?.roleId == 1 || user?.userType === "superAdmin" || user?.userType === "accountant";
+  const allowed = user?.roleId == 1 || user?.userType === "superAdmin" || user?.userType === "accountant" || user?.userType === "admin";
   const list = useAcct(allowed ? "/transactions" : null);
   const rows = (list.rows || []) as Row[];
   const [q, setQ] = useState("");
@@ -112,7 +112,7 @@ export default function TradeTransactions() {
   if (!allowed) {
     return (
       <div className="dvac"><div className="content">
-        <PageHead title="Trade Transactions" desc="Trade accounting is limited to Super Admin and Accountant users." />
+        <PageHead title="Trade Transactions" desc="Trade accounting is limited to Super Admin, Branch Admin and Accountant users." />
       </div></div>
     );
   }
