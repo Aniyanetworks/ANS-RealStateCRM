@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-nocheck
 // eslint-disable @typescript-eslint/no-explicit-any
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 import ClosingDatePopup from "../../components/ClosingDatePopup";
@@ -97,7 +97,9 @@ const RootLayout = () => {
 
         <div className="p-5 flex-1 min-h-0 overflow-y-auto">
           <div className="pb-10">
-            <Outlet />
+            <Suspense fallback={<div className="flex h-64 items-center justify-center text-[13px] text-gray-400">Loading...</div>}>
+              <Outlet />
+            </Suspense>
           </div>
         </div>
 

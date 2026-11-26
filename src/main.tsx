@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider } from "react-router-dom";
@@ -13,7 +13,9 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <AntdConfigProvider>
         <ErrorBoundary>
-          <RouterProvider router={router} />
+          <Suspense fallback={<div style={{ minHeight: "100vh", background: "#e9f3f1" }} />}>
+            <RouterProvider router={router} />
+          </Suspense>
         </ErrorBoundary>
       </AntdConfigProvider>
     </Provider>

@@ -1,255 +1,153 @@
 // @ts-nocheck
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from '../App';
-import CalendarList from '../components/dashboard/Calendar/CalendarList';
+const CalendarList = lazy(() => import('../components/dashboard/Calendar/CalendarList'));
 import RootLayout from '../layouts/RootLayout/RootLayout';
-import BankAccountLog
-  from '../pages/accounting/accounting-bank-account/BankAccountLog';
-import BankAccountManagement
-  from '../pages/accounting/accounting-bank-account/BankAccountManagement';
-import AccountChequePosting
-  from '../pages/accounting/tradesheet-accounting/AccountChequePosting';
-import AcknowledgementlList
-  from '../pages/accounting/tradesheet-accounting/AcknowledgementlList';
-import AgentChequeAcknowledgement
-  from '../pages/accounting/tradesheet-accounting/AgentChequeAcknowledgement';
-import AgentChequeCalculation
-  from '../pages/accounting/tradesheet-accounting/AgentChequeCalculation';
-import AgentCommissionCheque
-  from '../pages/accounting/tradesheet-accounting/AgentCommissionCheque';
-import AgentCommissionTransferHistory
-  from '../pages/accounting/tradesheet-accounting/AgentCommissionTransferHistory';
-import BaseCommissionCheque
-  from '../pages/accounting/tradesheet-accounting/BaseCommissionCheque';
-import CommissionCheque
-  from '../pages/accounting/tradesheet-accounting/CommissionCheque';
-import FinalizeTrade
-  from '../pages/accounting/tradesheet-accounting/FinalizeTrade';
-import IssueAgentCheque
-  from '../pages/accounting/tradesheet-accounting/IssueAgentCheque';
-import TradeList from '../pages/accounting/tradesheet-accounting/TradeList';
-import TradesheetInvoicing
-  from '../pages/accounting/tradesheet-accounting/TradesheetInvoicing';
-import AgentInformationSubmit from '../pages/agent/AgentInformationSubmit';
-import AgreementPageFive from '../pages/agent/agreement-page/AgreementPageFive';
-import AgreementPageFour from '../pages/agent/agreement-page/AgreementPageFour';
-import AgreementPageOne from '../pages/agent/agreement-page/AgreementPageOne';
-import AgreementPageSevent
-  from '../pages/agent/agreement-page/AgreementPageSeven';
-import AgreementPageSix from '../pages/agent/agreement-page/AgreementPageSix';
-import AgreementPageThree
-  from '../pages/agent/agreement-page/AgreementPageThree';
-import AgreementPageTwo from '../pages/agent/agreement-page/AgreementPageTwo';
-import AgreementPreview from '../pages/agent/AgreementPreview';
-import CreatePassword from '../pages/agent/CreatePassword';
-import ClientDocument
-  from '../pages/agent/dashboard/manage-clients/ClientDocument';
-import ClientManagement
-  from '../pages/agent/dashboard/manage-clients/ClientManagement';
-import ClientNote from '../pages/agent/dashboard/manage-clients/ClientNote';
-import ClientProfile
-  from '../pages/agent/dashboard/manage-clients/ClientProfile';
-import ClientProperty
-  from '../pages/agent/dashboard/manage-clients/ClientProperty';
-import ClientPropertyNote
-  from '../pages/agent/dashboard/manage-clients/ClientPropertyNote';
-import CreateAndUpdateClient
-  from '../pages/agent/dashboard/manage-clients/CreateAndUpdateClient';
-import MySubmissionsArchiveTradeList
-  from '../pages/agent/dashboard/pages/form/trade-sheet/MySubmissionsArchiveTradeList';
-import MySubmissionsTradeList
-  from '../pages/agent/dashboard/pages/form/trade-sheet/MySubmissionsTradeList';
-import TradeSheetAdditionalDocumentUpload
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetAdditionalDocumentUpload';
-import TradeSheetAgentBasicInfo
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetAgentBasicInfo';
-import TradeSheetAgentDetails
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetAgentDetails';
-import TradeSheetBuyerInformation
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetBuyerInformation';
-import TradeSheetLawyerDetails
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetLawyerDetails';
-import TradeSheetPaperworkAttachmentUpload
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkAttachmentUpload';
-import TradeSheetPaperworkAttachmentUploadMultipleRepresentation
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkAttachmentUploadMultipleRepresentation';
-import TradeSheetPaperworkFileManager
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkFileManager';
-import TradeSheetPaperworkFileManagerMultipleRepresentation
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkFileManagerMultipleRepresentation';
-import TradeSheetPreviewPage
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPreviewPage';
-import TradeSheetPreviewPageWithoutStep
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPreviewPageWithoutStep';
-import TradeSheetPropertyDetails
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPropertyDetails';
-import TradeSheetPropertyDetailsMultipleRepresentation
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPropertyDetailsMultipleRepresentation';
-import TradeSheetPropertyDetailsSeller
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPropertyDetailsSeller';
-import TradeSheetSellerInformation
-  from '../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetSellerInformation';
-import EventJoin from '../pages/event/EventJoin';
-import EventJoinSuccess from '../pages/event/EventJoinSuccess';
-import EexpenceList from '../pages/expences/Eexpence';
-import EexpenceCategory from '../pages/expences/EexpenceCategory';
-import FileManager from '../pages/file-manager/FileManager';
-import ClockInOut from '../pages/common/ClockInOut';
-import BrokerageAccounting from '../pages/brokerage-accounting/BrokerageAccounting';
-import MyAccounting from '../pages/brokerage-accounting/MyAccounting';
-import DvTimeClock from '../pages/dv-time-clock/DvTimeClock';
-import TradeTransactions from '../pages/trade-transactions/TradeTransactions';
-import Home from '../pages/home/Home';
-import ChangePassword from '../pages/login/ChangePassword';
-import ForgotPassword from '../pages/login/ForgotPassword';
+const BankAccountLog = lazy(() => import('../pages/accounting/accounting-bank-account/BankAccountLog'));
+const BankAccountManagement = lazy(() => import('../pages/accounting/accounting-bank-account/BankAccountManagement'));
+const AccountChequePosting = lazy(() => import('../pages/accounting/tradesheet-accounting/AccountChequePosting'));
+const AcknowledgementlList = lazy(() => import('../pages/accounting/tradesheet-accounting/AcknowledgementlList'));
+const AgentChequeAcknowledgement = lazy(() => import('../pages/accounting/tradesheet-accounting/AgentChequeAcknowledgement'));
+const AgentChequeCalculation = lazy(() => import('../pages/accounting/tradesheet-accounting/AgentChequeCalculation'));
+const AgentCommissionCheque = lazy(() => import('../pages/accounting/tradesheet-accounting/AgentCommissionCheque'));
+const AgentCommissionTransferHistory = lazy(() => import('../pages/accounting/tradesheet-accounting/AgentCommissionTransferHistory'));
+const BaseCommissionCheque = lazy(() => import('../pages/accounting/tradesheet-accounting/BaseCommissionCheque'));
+const CommissionCheque = lazy(() => import('../pages/accounting/tradesheet-accounting/CommissionCheque'));
+const FinalizeTrade = lazy(() => import('../pages/accounting/tradesheet-accounting/FinalizeTrade'));
+const IssueAgentCheque = lazy(() => import('../pages/accounting/tradesheet-accounting/IssueAgentCheque'));
+const TradeList = lazy(() => import('../pages/accounting/tradesheet-accounting/TradeList'));
+const TradesheetInvoicing = lazy(() => import('../pages/accounting/tradesheet-accounting/TradesheetInvoicing'));
+const AgentInformationSubmit = lazy(() => import('../pages/agent/AgentInformationSubmit'));
+const AgreementPageFive = lazy(() => import('../pages/agent/agreement-page/AgreementPageFive'));
+const AgreementPageFour = lazy(() => import('../pages/agent/agreement-page/AgreementPageFour'));
+const AgreementPageOne = lazy(() => import('../pages/agent/agreement-page/AgreementPageOne'));
+const AgreementPageSevent = lazy(() => import('../pages/agent/agreement-page/AgreementPageSeven'));
+const AgreementPageSix = lazy(() => import('../pages/agent/agreement-page/AgreementPageSix'));
+const AgreementPageThree = lazy(() => import('../pages/agent/agreement-page/AgreementPageThree'));
+const AgreementPageTwo = lazy(() => import('../pages/agent/agreement-page/AgreementPageTwo'));
+const AgreementPreview = lazy(() => import('../pages/agent/AgreementPreview'));
+const CreatePassword = lazy(() => import('../pages/agent/CreatePassword'));
+const ClientDocument = lazy(() => import('../pages/agent/dashboard/manage-clients/ClientDocument'));
+const ClientManagement = lazy(() => import('../pages/agent/dashboard/manage-clients/ClientManagement'));
+const ClientNote = lazy(() => import('../pages/agent/dashboard/manage-clients/ClientNote'));
+const ClientProfile = lazy(() => import('../pages/agent/dashboard/manage-clients/ClientProfile'));
+const ClientProperty = lazy(() => import('../pages/agent/dashboard/manage-clients/ClientProperty'));
+const ClientPropertyNote = lazy(() => import('../pages/agent/dashboard/manage-clients/ClientPropertyNote'));
+const CreateAndUpdateClient = lazy(() => import('../pages/agent/dashboard/manage-clients/CreateAndUpdateClient'));
+const MySubmissionsArchiveTradeList = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/MySubmissionsArchiveTradeList'));
+const MySubmissionsTradeList = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/MySubmissionsTradeList'));
+const TradeSheetAdditionalDocumentUpload = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetAdditionalDocumentUpload'));
+const TradeSheetAgentBasicInfo = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetAgentBasicInfo'));
+const TradeSheetAgentDetails = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetAgentDetails'));
+const TradeSheetBuyerInformation = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetBuyerInformation'));
+const TradeSheetLawyerDetails = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetLawyerDetails'));
+const TradeSheetPaperworkAttachmentUpload = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkAttachmentUpload'));
+const TradeSheetPaperworkAttachmentUploadMultipleRepresentation = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkAttachmentUploadMultipleRepresentation'));
+const TradeSheetPaperworkFileManager = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkFileManager'));
+const TradeSheetPaperworkFileManagerMultipleRepresentation = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPaperworkFileManagerMultipleRepresentation'));
+const TradeSheetPreviewPage = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPreviewPage'));
+const TradeSheetPreviewPageWithoutStep = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPreviewPageWithoutStep'));
+const TradeSheetPropertyDetails = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPropertyDetails'));
+const TradeSheetPropertyDetailsMultipleRepresentation = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPropertyDetailsMultipleRepresentation'));
+const TradeSheetPropertyDetailsSeller = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetPropertyDetailsSeller'));
+const TradeSheetSellerInformation = lazy(() => import('../pages/agent/dashboard/pages/form/trade-sheet/TradeSheetSellerInformation'));
+const EventJoin = lazy(() => import('../pages/event/EventJoin'));
+const EventJoinSuccess = lazy(() => import('../pages/event/EventJoinSuccess'));
+const EexpenceList = lazy(() => import('../pages/expences/Eexpence'));
+const EexpenceCategory = lazy(() => import('../pages/expences/EexpenceCategory'));
+const FileManager = lazy(() => import('../pages/file-manager/FileManager'));
+const ClockInOut = lazy(() => import('../pages/common/ClockInOut'));
+const BrokerageAccounting = lazy(() => import('../pages/brokerage-accounting/BrokerageAccounting'));
+const MyAccounting = lazy(() => import('../pages/brokerage-accounting/MyAccounting'));
+const DvTimeClock = lazy(() => import('../pages/dv-time-clock/DvTimeClock'));
+const TradeTransactions = lazy(() => import('../pages/trade-transactions/TradeTransactions'));
+const Home = lazy(() => import('../pages/home/Home'));
+const ChangePassword = lazy(() => import('../pages/login/ChangePassword'));
+const ForgotPassword = lazy(() => import('../pages/login/ForgotPassword'));
 import Login from '../pages/login/Login';
-import FreeholdLease from '../pages/MLSForm/FreeholdLease';
-import FreeholdSale from '../pages/MLSForm/FreeholdSale';
-import PdfExtrack from '../pages/MLSForm/PdfExtrack';
-import Profile from '../pages/profile/Profile';
-import AgentReport from '../pages/reports/AgentReport/AgentReport';
-import AgentReportDetails
-  from '../pages/reports/AgentReport/AgentReportDetails';
-import BalanceSheet from '../pages/reports/BalanceSheet';
-import DynamicReport from '../pages/reports/DynamicReport/DynamicReport';
-import HstDetails from '../pages/reports/HstDetails';
-import HstSummery from '../pages/reports/HstSummery';
-import ReportSummery from '../pages/reports/ReportSummery';
-import TopReport from '../pages/reports/TopReport/TopReport';
-import TradeReport from '../pages/reports/TradeReport/TradeReport';
-import SharedDocument from '../pages/share-documents/SharedDocument';
-import ShareTradeSheetDocument
-  from '../pages/share-documents/ShareTradeSheetDocument';
-import Signup from '../pages/signup/Signup';
-import BorrowOrderHistory
-  from '../pages/super-admin/dashboard/invoice-management/BorrowOrderHistory';
-import BorrowProductList
-  from '../pages/super-admin/dashboard/invoice-management/BorrowProductList';
-import BorrowProducts
-  from '../pages/super-admin/dashboard/invoice-management/BorrowProducts';
-import DiscountCoupon
-  from '../pages/super-admin/dashboard/invoice-management/DiscountCoupon';
-import InvoiceProduct
-  from '../pages/super-admin/dashboard/invoice-management/InvoiceProduct';
-import InventoryList
-  from '../pages/super-admin/dashboard/invoice-management/InventoryList';
-import InventoryTransactions
-  from '../pages/super-admin/dashboard/invoice-management/InventoryTransactions';
-import OrderHistory
-  from '../pages/super-admin/dashboard/invoice-management/OrderHistory';
-import AgentFileUpload
-  from '../pages/super-admin/dashboard/pages/agent-management/AgentFileUpload';
-import AgentManagement
-  from '../pages/super-admin/dashboard/pages/agent-management/AgentManagement';
-import AgentPlan
-  from '../pages/super-admin/dashboard/pages/agent-management/AgentPlan';
-import CreateNewAgent
-  from '../pages/super-admin/dashboard/pages/agent-management/CreateNewAgent';
-import EditAgent
-  from '../pages/super-admin/dashboard/pages/agent-management/EditAgent';
-import ExternalAgentManagement
-  from '../pages/super-admin/dashboard/pages/agent-management/ExternalAgentManagement';
-import AnnouncementManagement
-  from '../pages/super-admin/dashboard/pages/announcement/AnnouncementManagement';
-import BranchList
-  from '../pages/super-admin/dashboard/pages/branch management/BranchList';
-import CreateAndUpdateBranch
-  from '../pages/super-admin/dashboard/pages/branch management/CreateAndUpdateBranch';
-import BrokerageManagement
-  from '../pages/super-admin/dashboard/pages/brokerage/BrokerageManagement';
-import Attendees from '../pages/super-admin/dashboard/pages/calendar/Attendees';
-import CalendarEventManagement
-  from '../pages/super-admin/dashboard/pages/calendar/CalendarEventManagement';
-import CalendarNoteManagement
-  from '../pages/super-admin/dashboard/pages/calendar/CalendarNoteManagement';
-import ConditionManagement
-  from '../pages/super-admin/dashboard/pages/conditions/ConditionManagement';
-import FileActivity
-  from '../pages/super-admin/dashboard/pages/file-activity/FileActivity';
-import FileManagerActivity
-  from '../pages/super-admin/dashboard/pages/file-activity/FileManagerActivity';
-import SystemLog
-  from '../pages/super-admin/dashboard/pages/system-log/SystemLog';
-import KnowledgeBaseAgentView
-  from '../pages/super-admin/dashboard/pages/knowledge-base/KnowledgeBaseAgentView';
-import KnowledgeBaseList
-  from '../pages/super-admin/dashboard/pages/knowledge-base/KnowledgeBaseList';
-import LawyerFirmManagement
-  from '../pages/super-admin/dashboard/pages/lawyers/LawyerFirmManagement';
-import LawyersDataManagement
-  from '../pages/super-admin/dashboard/pages/lawyers/LawyerManagement';
-import LeadsManagementPage
-  from '../pages/super-admin/dashboard/pages/leads/AllLeads';
-import CampaignManagement
-  from '../pages/super-admin/dashboard/pages/leads/CampaignManagement';
-import LeadsListByAgent
-  from '../pages/super-admin/dashboard/pages/leads/LeadsListByAgent';
-import LeadsList
-  from '../pages/super-admin/dashboard/pages/leads/LeadsListByAgentCopy';
-import ValidationLogsList
-  from '../pages/super-admin/dashboard/pages/leads/ValidationLogsList';
-import FileUploadNames
-  from '../pages/super-admin/dashboard/pages/paperworks-document-names/PaperworksDocumentNames';
-import PickupReceiptManagement
-  from '../pages/super-admin/dashboard/pages/pickup-receipt/PickupReceiptManagement';
-import CreateCustomDiscount
-  from '../pages/super-admin/dashboard/pages/plan-management/CreateCustomDiscount';
-import CreateCustomPlan
-  from '../pages/super-admin/dashboard/pages/plan-management/CreateCustomPlan';
-import CreatePlan
-  from '../pages/super-admin/dashboard/pages/plan-management/CreatePlan';
-import DiscountManagement
-  from '../pages/super-admin/dashboard/pages/plan-management/DiscountManagement';
-import EditDiscount
-  from '../pages/super-admin/dashboard/pages/plan-management/EditDiscount';
-import EditPlan
-  from '../pages/super-admin/dashboard/pages/plan-management/EditPlan';
-import PlanManagement
-  from '../pages/super-admin/dashboard/pages/plan-management/PlanManagement';
-import CreateUpdatePropertyListing
-  from '../pages/super-admin/dashboard/pages/property-listing/CreateUpdatePropertyListing';
-import CreateUpdatePropertyMereListing
-  from '../pages/super-admin/dashboard/pages/property-listing/CreateUpdatePropertyMereListing';
-import PropertyListingManagement
-  from '../pages/super-admin/dashboard/pages/property-listing/PropertyListingManagement';
-import PropertyListingPaperworkAttachmentUpload
-  from '../pages/super-admin/dashboard/pages/property-listing/PropertyListingPaperworkAttachmentUpload';
-import PropertyListingPaperworkFileManager
-  from '../pages/super-admin/dashboard/pages/property-listing/PropertyListingPaperworkFileManager';
-import PropertyMereListingManagement
-  from '../pages/super-admin/dashboard/pages/property-listing/PropertyMereListingManagement';
-import RealtorPropertyListingManagement
-  from '../pages/super-admin/dashboard/pages/property-listing/RealtorPropertyListingManagement';
-import ViewPropertyListing
-  from '../pages/super-admin/dashboard/pages/property-listing/ViewPropertyListing';
-import ReceiptManagement
-  from '../pages/super-admin/dashboard/pages/receipt/ReceiptManagement';
-import PermissionManagement
-  from '../pages/super-admin/dashboard/pages/role-permission/PermissionManagement';
-import RoleManagement
-  from '../pages/super-admin/dashboard/pages/role-permission/RoleManagement';
-import ArtWorkRequest
-  from '../pages/super-admin/dashboard/pages/support/ArtWorkRequest';
-import ArtWorks from '../pages/super-admin/dashboard/pages/support/ArtWorks';
-import SupportRequestDetail
-  from '../pages/super-admin/dashboard/pages/support/SupportRequestDetail';
-import SupportRequestList
-  from '../pages/super-admin/dashboard/pages/support/SupportRequestList';
-import TradeSheetShareDocumentTemplate
-  from '../pages/super-admin/dashboard/pages/template-builder/TradeSheetShareDocumentTemplate';
-import CreateAndUpdateUser
-  from '../pages/super-admin/dashboard/pages/user-management/CreateAndUpdateUser';
-import ResetPassword
-  from '../pages/super-admin/dashboard/pages/user-management/ResetPassword';
-import UserManagement
-  from '../pages/super-admin/dashboard/pages/user-management/UserManagement';
-import VendorCategoryManagement
-  from '../pages/super-admin/dashboard/pages/vendor-category/VendorCategoryManagement';
-import CompanyManagement
-  from '../pages/super-admin/dashboard/pages/vendor-list/CompanyManagement';
-import VendorManagement
-  from '../pages/super-admin/dashboard/pages/vendor-list/VendorManagement';
+const FreeholdLease = lazy(() => import('../pages/MLSForm/FreeholdLease'));
+const FreeholdSale = lazy(() => import('../pages/MLSForm/FreeholdSale'));
+const PdfExtrack = lazy(() => import('../pages/MLSForm/PdfExtrack'));
+const Profile = lazy(() => import('../pages/profile/Profile'));
+const AgentReport = lazy(() => import('../pages/reports/AgentReport/AgentReport'));
+const AgentReportDetails = lazy(() => import('../pages/reports/AgentReport/AgentReportDetails'));
+const BalanceSheet = lazy(() => import('../pages/reports/BalanceSheet'));
+const DynamicReport = lazy(() => import('../pages/reports/DynamicReport/DynamicReport'));
+const HstDetails = lazy(() => import('../pages/reports/HstDetails'));
+const HstSummery = lazy(() => import('../pages/reports/HstSummery'));
+const ReportSummery = lazy(() => import('../pages/reports/ReportSummery'));
+const TopReport = lazy(() => import('../pages/reports/TopReport/TopReport'));
+const TradeReport = lazy(() => import('../pages/reports/TradeReport/TradeReport'));
+const SharedDocument = lazy(() => import('../pages/share-documents/SharedDocument'));
+const ShareTradeSheetDocument = lazy(() => import('../pages/share-documents/ShareTradeSheetDocument'));
+const Signup = lazy(() => import('../pages/signup/Signup'));
+const BorrowOrderHistory = lazy(() => import('../pages/super-admin/dashboard/invoice-management/BorrowOrderHistory'));
+const BorrowProductList = lazy(() => import('../pages/super-admin/dashboard/invoice-management/BorrowProductList'));
+const BorrowProducts = lazy(() => import('../pages/super-admin/dashboard/invoice-management/BorrowProducts'));
+const DiscountCoupon = lazy(() => import('../pages/super-admin/dashboard/invoice-management/DiscountCoupon'));
+const InvoiceProduct = lazy(() => import('../pages/super-admin/dashboard/invoice-management/InvoiceProduct'));
+const InventoryList = lazy(() => import('../pages/super-admin/dashboard/invoice-management/InventoryList'));
+const InventoryTransactions = lazy(() => import('../pages/super-admin/dashboard/invoice-management/InventoryTransactions'));
+const OrderHistory = lazy(() => import('../pages/super-admin/dashboard/invoice-management/OrderHistory'));
+const AgentFileUpload = lazy(() => import('../pages/super-admin/dashboard/pages/agent-management/AgentFileUpload'));
+const AgentManagement = lazy(() => import('../pages/super-admin/dashboard/pages/agent-management/AgentManagement'));
+const AgentPlan = lazy(() => import('../pages/super-admin/dashboard/pages/agent-management/AgentPlan'));
+const CreateNewAgent = lazy(() => import('../pages/super-admin/dashboard/pages/agent-management/CreateNewAgent'));
+const EditAgent = lazy(() => import('../pages/super-admin/dashboard/pages/agent-management/EditAgent'));
+const ExternalAgentManagement = lazy(() => import('../pages/super-admin/dashboard/pages/agent-management/ExternalAgentManagement'));
+const AnnouncementManagement = lazy(() => import('../pages/super-admin/dashboard/pages/announcement/AnnouncementManagement'));
+const BranchList = lazy(() => import('../pages/super-admin/dashboard/pages/branch management/BranchList'));
+const CreateAndUpdateBranch = lazy(() => import('../pages/super-admin/dashboard/pages/branch management/CreateAndUpdateBranch'));
+const BrokerageManagement = lazy(() => import('../pages/super-admin/dashboard/pages/brokerage/BrokerageManagement'));
+const Attendees = lazy(() => import('../pages/super-admin/dashboard/pages/calendar/Attendees'));
+const CalendarEventManagement = lazy(() => import('../pages/super-admin/dashboard/pages/calendar/CalendarEventManagement'));
+const CalendarNoteManagement = lazy(() => import('../pages/super-admin/dashboard/pages/calendar/CalendarNoteManagement'));
+const ConditionManagement = lazy(() => import('../pages/super-admin/dashboard/pages/conditions/ConditionManagement'));
+const FileActivity = lazy(() => import('../pages/super-admin/dashboard/pages/file-activity/FileActivity'));
+const FileManagerActivity = lazy(() => import('../pages/super-admin/dashboard/pages/file-activity/FileManagerActivity'));
+const SystemLog = lazy(() => import('../pages/super-admin/dashboard/pages/system-log/SystemLog'));
+const KnowledgeBaseAgentView = lazy(() => import('../pages/super-admin/dashboard/pages/knowledge-base/KnowledgeBaseAgentView'));
+const KnowledgeBaseList = lazy(() => import('../pages/super-admin/dashboard/pages/knowledge-base/KnowledgeBaseList'));
+const LawyerFirmManagement = lazy(() => import('../pages/super-admin/dashboard/pages/lawyers/LawyerFirmManagement'));
+const LawyersDataManagement = lazy(() => import('../pages/super-admin/dashboard/pages/lawyers/LawyerManagement'));
+const LeadsManagementPage = lazy(() => import('../pages/super-admin/dashboard/pages/leads/AllLeads'));
+const CampaignManagement = lazy(() => import('../pages/super-admin/dashboard/pages/leads/CampaignManagement'));
+const LeadsListByAgent = lazy(() => import('../pages/super-admin/dashboard/pages/leads/LeadsListByAgent'));
+const LeadsList = lazy(() => import('../pages/super-admin/dashboard/pages/leads/LeadsListByAgentCopy'));
+const ValidationLogsList = lazy(() => import('../pages/super-admin/dashboard/pages/leads/ValidationLogsList'));
+const FileUploadNames = lazy(() => import('../pages/super-admin/dashboard/pages/paperworks-document-names/PaperworksDocumentNames'));
+const PickupReceiptManagement = lazy(() => import('../pages/super-admin/dashboard/pages/pickup-receipt/PickupReceiptManagement'));
+const CreateCustomDiscount = lazy(() => import('../pages/super-admin/dashboard/pages/plan-management/CreateCustomDiscount'));
+const CreateCustomPlan = lazy(() => import('../pages/super-admin/dashboard/pages/plan-management/CreateCustomPlan'));
+const CreatePlan = lazy(() => import('../pages/super-admin/dashboard/pages/plan-management/CreatePlan'));
+const DiscountManagement = lazy(() => import('../pages/super-admin/dashboard/pages/plan-management/DiscountManagement'));
+const EditDiscount = lazy(() => import('../pages/super-admin/dashboard/pages/plan-management/EditDiscount'));
+const EditPlan = lazy(() => import('../pages/super-admin/dashboard/pages/plan-management/EditPlan'));
+const PlanManagement = lazy(() => import('../pages/super-admin/dashboard/pages/plan-management/PlanManagement'));
+const CreateUpdatePropertyListing = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/CreateUpdatePropertyListing'));
+const CreateUpdatePropertyMereListing = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/CreateUpdatePropertyMereListing'));
+const PropertyListingManagement = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/PropertyListingManagement'));
+const PropertyListingPaperworkAttachmentUpload = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/PropertyListingPaperworkAttachmentUpload'));
+const PropertyListingPaperworkFileManager = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/PropertyListingPaperworkFileManager'));
+const PropertyMereListingManagement = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/PropertyMereListingManagement'));
+const RealtorPropertyListingManagement = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/RealtorPropertyListingManagement'));
+const ViewPropertyListing = lazy(() => import('../pages/super-admin/dashboard/pages/property-listing/ViewPropertyListing'));
+const ReceiptManagement = lazy(() => import('../pages/super-admin/dashboard/pages/receipt/ReceiptManagement'));
+const PermissionManagement = lazy(() => import('../pages/super-admin/dashboard/pages/role-permission/PermissionManagement'));
+const RoleManagement = lazy(() => import('../pages/super-admin/dashboard/pages/role-permission/RoleManagement'));
+const ArtWorkRequest = lazy(() => import('../pages/super-admin/dashboard/pages/support/ArtWorkRequest'));
+const ArtWorks = lazy(() => import('../pages/super-admin/dashboard/pages/support/ArtWorks'));
+const SupportRequestDetail = lazy(() => import('../pages/super-admin/dashboard/pages/support/SupportRequestDetail'));
+const SupportRequestList = lazy(() => import('../pages/super-admin/dashboard/pages/support/SupportRequestList'));
+const TradeSheetShareDocumentTemplate = lazy(() => import('../pages/super-admin/dashboard/pages/template-builder/TradeSheetShareDocumentTemplate'));
+const CreateAndUpdateUser = lazy(() => import('../pages/super-admin/dashboard/pages/user-management/CreateAndUpdateUser'));
+const ResetPassword = lazy(() => import('../pages/super-admin/dashboard/pages/user-management/ResetPassword'));
+const UserManagement = lazy(() => import('../pages/super-admin/dashboard/pages/user-management/UserManagement'));
+const VendorCategoryManagement = lazy(() => import('../pages/super-admin/dashboard/pages/vendor-category/VendorCategoryManagement'));
+const CompanyManagement = lazy(() => import('../pages/super-admin/dashboard/pages/vendor-list/CompanyManagement'));
+const VendorManagement = lazy(() => import('../pages/super-admin/dashboard/pages/vendor-list/VendorManagement'));
 import PermissonRoute from './PermissonRoute';
 import PrivateRoute from './PrivateRoute';
 

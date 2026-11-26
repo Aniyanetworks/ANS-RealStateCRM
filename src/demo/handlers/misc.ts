@@ -373,6 +373,11 @@ export const miscRoutes = [
     return { status: true, data: { campaigns: Number.isNaN(b) ? campaigns : campaigns.filter((c) => c.branchId === b) } };
   }),
   route('GET', 'superadmin/allLeads', () => ({ status: true, data: { leads: allLeads, total: allLeads.length } })),
+  route('GET', 'superadmin/leads/list-agent/(?<agentId>[^/]+)', ({ params }) => {
+    // leads assigned to this agent (demo: a slice of the lead pool, re-assigned to the signed-in agent)
+    const mine = allLeads.slice(0, 12).map((l) => ({ ...l, agentAssigned: Number(params.agentId) || l.agentAssigned }));
+    return { status: true, data: { leads: mine, campaign: campaigns[0] } };
+  }),
   route('GET', 'superadmin/leads/list/(?<campaignUuid>[^/]+)', ({ params }) => {
     const campaign = campaigns.find((c) => c.uuid === params.campaignUuid) || campaigns[0];
     const leads = allLeads.filter((l) => l.campaignId === campaign.id);
