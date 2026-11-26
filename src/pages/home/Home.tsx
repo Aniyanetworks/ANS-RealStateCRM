@@ -375,7 +375,7 @@ const loadingIcon = (
 const Home = () => {
   const { user } = useAppSelector((state) => state.user);
   const isSuperAdmin = user?.roleId == 1 || user?.userType === 'superAdmin';
-  const PRIVILEGED_ADMIN_EMAILS = ['admin@dvrealty.ca', 'nabaa@dvrealty.ca', 'superadmin@nomail.com'];
+  const PRIVILEGED_ADMIN_EMAILS = ['admin@dvrealty.ca', 'nabaa@dvrealty.ca', 'superadmin@nomail.com', 'superadmin@ans.demo', 'admin@ans.demo'];
   const isPrivilegedAdmin = isSuperAdmin && PRIVILEGED_ADMIN_EMAILS.includes(user?.email);
 
   const { data: newAgentsData, isLoading: newAgentsLoading } =

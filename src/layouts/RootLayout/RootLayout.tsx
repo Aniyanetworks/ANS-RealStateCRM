@@ -64,7 +64,7 @@ const RootLayout = () => {
       />
 
       <div
-        className={`absolute lg:relative z-[999] w-[300px] h-[calc(100vh)] overflow-hidden bg-[#0b3b38] ${sidebarCollapsed
+        className={`absolute lg:relative z-[999] w-[300px] h-[100dvh] overflow-hidden bg-[#0b3b38] ${sidebarCollapsed
           ? sidebarCollapsed && windowWidth < 1024
             ? "block"
             : "hidden"
@@ -87,7 +87,7 @@ const RootLayout = () => {
             ? "w-[calc(100vw)]"
             : "lg:ml-[85px] w-[calc(100vw)]"
           : "w-full"
-          } h-[calc(100vh)] overflow-hidden`}
+          } h-[100dvh] flex flex-col overflow-hidden [&>header]:shrink-0`}
       >
         <TopNav
           setIsModalOpen={setIsModalOpen}
@@ -95,7 +95,7 @@ const RootLayout = () => {
           setSidebarCollapsed={setSidebarCollapsed}
         />
 
-        <div className="p-5 h-[calc(100vh)] overflow-y-auto">
+        <div className="p-5 flex-1 min-h-0 overflow-y-auto">
           <div className="pb-10">
             <Outlet />
           </div>

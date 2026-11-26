@@ -52,7 +52,7 @@ interface ClockHistoryTabProps {
   user: any;
 }
 
-const PRIVILEGED_ADMIN_EMAILS = ['admin@dvrealty.ca', 'nabaa@dvrealty.ca', 'superadmin@nomail.com'];
+const PRIVILEGED_ADMIN_EMAILS = ['admin@dvrealty.ca', 'nabaa@dvrealty.ca', 'superadmin@nomail.com', 'superadmin@ans.demo', 'admin@ans.demo'];
 
 const ClockHistoryTab: React.FC<ClockHistoryTabProps> = ({
   branchList,

@@ -2849,9 +2849,9 @@ const Sidebar = ({
   };
 
   return (
-    <div className={`  z-[500] `}>
-      <div>
-        <div>
+    <div className={`  z-[500] h-full relative `}>
+      <div className="flex h-full flex-col">
+        <div className="shrink-0">
           <div className={`demo-logo-vertical my-5  relative`}>
             <div className=" flex flex-col items-center gap-2  ">
               <img
@@ -2877,10 +2877,12 @@ const Sidebar = ({
         </div>
 
         {!collapsed && (
-          <SidebarSearch menuItems={sidebarItems()} onNavigate={navigate} />
+          <div className="shrink-0">
+            <SidebarSearch menuItems={sidebarItems()} onNavigate={navigate} />
+          </div>
         )}
 
-        <div className=" h-[calc(100vh-120px)] overflow-auto   ">
+        <div className=" flex-1 min-h-0 overflow-auto pb-16">
           <Menu
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
@@ -2891,10 +2893,10 @@ const Sidebar = ({
           />
         </div>
       </div>
-      <div className="relative">
-        <div className="absolute bottom-0 left-0 w-full flex justify-center items-center">
+      <div className="absolute bottom-3 left-0 w-full z-10 pointer-events-none">
+        <div className="relative w-full flex justify-center items-center">
 
-          <div className="absolute right-4">
+          <div className="absolute right-4 bottom-0 pointer-events-auto">
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               className="p-2 border-2 border-gray-300 hover:bg-gray-600 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 hover:border-gray-400"

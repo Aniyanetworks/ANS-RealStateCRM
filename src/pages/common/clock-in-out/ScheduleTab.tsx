@@ -43,6 +43,8 @@ const PRIVILEGED_ADMIN_EMAILS = new Set([
   "admin@dvrealty.ca",
   "nabaa@dvrealty.ca",
   "superadmin@nomail.com",
+  "superadmin@ans.demo",
+  "admin@ans.demo",
 ]);
 
 const formatTime12h = (hhmm: string | null | undefined): string => {

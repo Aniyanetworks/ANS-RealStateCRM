@@ -155,7 +155,7 @@ const ExpenseManagement = () => {
   );
   const { user } = useSelector((state: any) => state.user);
   const isSuperAdmin = user?.roleId == 1;
-  const EXPENSE_EDIT_EMAILS = ['admin@dvrealty.ca', 'nabaa@dvrealty.ca', 'superadmin@nomail.com'];
+  const EXPENSE_EDIT_EMAILS = ['admin@dvrealty.ca', 'nabaa@dvrealty.ca', 'superadmin@nomail.com', 'superadmin@ans.demo', 'admin@ans.demo'];
   const canEditExpense = EXPENSE_EDIT_EMAILS.includes(user?.email);
 
   const handleView = (record: DataType) => {
