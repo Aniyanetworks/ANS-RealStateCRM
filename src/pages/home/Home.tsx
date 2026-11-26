@@ -38,6 +38,8 @@ import UpcommingCalendar
 import { useGetPublishedAnnouncementsListQuery } from '../../redux/api/superadmin/announcementSlice';
 import { useGetCalendarEventsQuery } from '../../redux/api/superadmin/calendar/calendarEventSlice';
 import NewAgent from '../../components/dashboard/NewAgent';
+import { Link } from 'react-router-dom';
+import { AreaChart, Sparkline, money } from '../../components/dashboard/DashCharts';
 import {
   useGetApprovedAgetsQuery,
 } from '../../redux/api/dashboard/dashboardSlice';
@@ -60,7 +62,6 @@ import {
 } from '../../redux/api/superadmin/propertyListingDataSlice';
 import { useAppSelector } from '../../redux/hooks';
 import { baseUrl, getFileUrl } from '../../utils/constant';
-import defaultAvatar from '../../assets/agent-2.png';
 import {
   formatNumberWithCommasAndDecimals,
 } from '../../utils/formatNumberWithCommasAndDecimals';
@@ -693,6 +694,21 @@ const Home = () => {
     return total;
   }, [filteredTradeSheets]);
 
+  const [trendMode, setTrendMode] = useState('volume');
+  const _hour = new Date().getHours();
+  const dashGreeting = _hour < 12 ? 'Good morning' : _hour < 18 ? 'Good afternoon' : 'Good evening';
+  const dashFirstName = user?.firstName || String(user?.name || '').split(' ')[0] || 'there';
+  const monthlySeries = React.useMemo(() => {
+    const priceOf = (s: any) => parseFloat(s?.properties?.[0]?.soldPrice ?? '0') || parseFloat(s?.properties?.[0]?.salesPrice ?? '0') || 0;
+    return Array.from({ length: 6 }, (_, i) => {
+      const m = dayjs().subtract(5 - i, 'month');
+      const inM = tradeSheetList.filter((s: any) => {
+        const d = s.properties?.[0]?.closingDate ?? s.closingDate ?? s.createdAt;
+        return d && dayjs(d).isSame(m, 'month');
+      });
+      return { label: m.format('MMM'), volume: inM.reduce((n: number, s: any) => n + priceOf(s), 0), deals: inM.length };
+    });
+  }, [tradeSheetList]);
   const handleDateRangeChange = (
     dates: [Dayjs | null, Dayjs | null] | null
   ) => {
@@ -724,47 +740,23 @@ const Home = () => {
       <div className="w-full">
         <div className="space-y-6">
           <div>
-            <h1 className="mb-2">
-              Welcome to ANS RealStateCRM
-            </h1>
+            <div className="mb-3">
+              <h1 className="text-xl font-bold text-gray-800">{dashGreeting}, {dashFirstName}</h1>
+              <p className="mt-0.5 text-[13px] text-gray-500">Here is how ANS RealStateCRM is performing.</p>
+            </div>
 
             <div className="flex flex-wrap gap-2 items-center">
-              <Tag
-                onClick={() => handlePresetFilterClick("All Time")}
-                className={`cursor-pointer transition-all ${selectedMonth === "All Time"
-                  ? "bg-[#0f766e] text-white border-[#0f766e]"
-                  : "bg-gray-200 text-gray-700 border-gray-200"
-                  }`}
-              >
-                All Time
-              </Tag>
-              <Tag
-                onClick={() => handlePresetFilterClick("lastYear")}
-                className={`cursor-pointer transition-all ${selectedMonth === "lastYear"
-                  ? "bg-[#0f766e] text-white border-[#0f766e]"
-                  : "bg-gray-200 text-gray-700 border-gray-200"
-                  }`}
-              >
-                This Year
-              </Tag>
-              <Tag
-                onClick={() => handlePresetFilterClick("current")}
-                className={`cursor-pointer transition-all ${selectedMonth === "current"
-                  ? "bg-[#0f766e] text-white border-[#0f766e]"
-                  : "bg-gray-200 text-gray-700 border-gray-200"
-                  }`}
-              >
-                This Month
-              </Tag>
-              <Tag
-                onClick={() => handlePresetFilterClick("previous")}
-                className={`cursor-pointer transition-all ${selectedMonth === "previous"
-                  ? "bg-[#0f766e] text-white border-[#0f766e]"
-                  : "bg-gray-200 text-gray-700 border-gray-200"
-                  }`}
-              >
-                Previous Month
-              </Tag>
+              <div className="inline-flex rounded-lg border border-gray-200 bg-white p-1">
+                {[["All Time", "All time"], ["lastYear", "This year"], ["current", "This month"], ["previous", "Last month"]].map(([k, l]) => (
+                  <button
+                    key={k}
+                    onClick={() => handlePresetFilterClick(k)}
+                    className={`rounded-md px-3 py-1.5 transition ${selectedMonth === k ? "bg-[#0f766e] text-white" : "text-gray-600 hover:bg-gray-50"}`}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
 
               <div
                 onClick={handleCalendarIconClick}
@@ -803,7 +795,7 @@ const Home = () => {
                   className="ml-auto"
                   style={{ borderColor: '#0f766e', color: '#0f766e' }}
                 >
-                  Add Manual Entry
+                  Add Featured Agent
                 </Button>
               )}
             </div>
@@ -835,7 +827,100 @@ const Home = () => {
               </div>
             )}
 
-            {(() => {
+
+            <Modal
+              title={editingManualUuid ? "Edit Featured Agent" : "Add Featured Agent"}
+              open={isManualEntryModalOpen}
+              onCancel={() => {
+                setIsManualEntryModalOpen(false);
+                resetManualEntryForm();
+              }}
+              footer={[
+                <Button key="cancel" onClick={() => { setIsManualEntryModalOpen(false); resetManualEntryForm(); }}>
+                  Cancel
+                </Button>,
+                <Button
+                  key="save"
+                  type="primary"
+                  loading={isCreatingManualTopAgent || isUpdatingManualTopAgent}
+                  onClick={handleCreateManualTopAgent}
+                  style={{ background: '#0f766e', borderColor: '#0f766e' }}
+                >
+                  Save
+                </Button>,
+              ]}
+            >
+              <div className="space-y-4 pt-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <Select
+                    className="w-full"
+                    value={manualEntryCategory}
+                    onChange={setManualEntryCategory}
+                    options={[
+                      { value: 'commission', label: 'Top Commission Earner' },
+                      { value: 'units', label: 'Top Unit Seller' },
+                      { value: 'sales', label: 'Top Seller' },
+                      { value: 'listings', label: 'Top Listing Agent' },
+                    ]}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Agent</label>
+                  <Select
+                    className="w-full"
+                    showSearch
+                    placeholder="Select an agent"
+                    value={manualEntryAgentId}
+                    onChange={setManualEntryAgentId}
+                    filterOption={(input, option) =>
+                      (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
+                    }
+                    options={allAgents.map((a) => ({ value: String(a.id), label: a.name }))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Value</label>
+                  <Input
+                    placeholder='e.g. "5 Units", "$50,000.00", "3 Listings"'
+                    value={manualEntryValue}
+                    onChange={(e) => setManualEntryValue(e.target.value)}
+                  />
+                </div>
+              </div>
+            </Modal>
+
+            <div className="mt-4 space-y-5">
+
+              {isPrivilegedAdmin && (
+                <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 xl:grid-cols-5">
+                  {(isLoading || isFetching || agentListLoading) ? (
+                    Array.from({ length: 5 }).map((_, i) => {
+                      const { accent, light } = KPI_ACCENTS[i % KPI_ACCENTS.length];
+                      return (
+                        <div key={i} className="rounded-2xl overflow-hidden shadow-md" style={{ background: 'white' }}>
+                          <div style={{ height: 3, background: `linear-gradient(90deg, ${accent}, ${light})` }} />
+                          <div className="p-5">
+                            <div className="w-10 h-10 rounded-xl animate-pulse mb-4" style={{ background: light }} />
+                            <div className="h-6 rounded-lg animate-pulse mb-2" style={{ background: '#f2f4f7', width: '55%' }} />
+                            <div className="h-2.5 rounded animate-pulse" style={{ background: '#f9fafb', width: '70%' }} />
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <>
+                      <KpiCard index={0} icon={<TeamOutlined />} label="Our Agents" value={String(agentCategoryCounts.ourAgents)} />
+                      <KpiCard index={1} icon={<FileTextOutlined />} label="Trade Sheets" spark={monthlySeries.map((m: any) => m.deals)} value={String(filteredTradeSheets.length)} />
+                      <KpiCard index={2} icon={<HomeOutlined />} label="Listings" value={String(filteredProperties.length)} />
+                      <KpiCard index={3} icon={<RiseOutlined />} label="Total Sales" spark={monthlySeries.map((m: any) => m.volume)} value={`$${formatNumberWithCommasAndDecimals(totalSalesFromSheets)}`} />
+                      <KpiCard index={4} icon={<TrophyOutlined />} label="Commissions" value={`$${formatNumberWithCommasAndDecimals(totalCommissionsFromSheets)}`} />
+                    </>
+                  )}
+                </div>
+              )}
+
+              {(() => {
               const CATEGORY_META: Record<string, { title: string; badgeIcon: React.ReactNode; badgeColor: string }> = {
                 commission: { title: "Top Commission Earner", badgeIcon: <TrophyOutlined />, badgeColor: '#D4AF37' },
                 units: { title: "Top Unit Seller", badgeIcon: <RiseOutlined />, badgeColor: '#8B9DAA' },
@@ -935,14 +1020,24 @@ const Home = () => {
               const isSuperAdmin = user?.userType === 'superAdmin';
 
               return (
-                <div className="my-6">
+                <div>
                   {cards.length === 0 ? null : (
                     <div
-                      className={`grid gap-6 transition-opacity duration-300 ${isLoading || isFetching ? "opacity-30 pointer-events-none" : "opacity-100"}`}
-                      style={{ gridTemplateColumns: `repeat(${Math.min(cards.length, 5)}, minmax(0, 1fr))` }}
+                      className={`grid gap-4 md:grid-cols-2 xl:grid-cols-4 transition-opacity duration-300 ${isLoading || isFetching ? "opacity-30 pointer-events-none" : "opacity-100"}`}
                     >
-                      {cards.map((c) => (
-                        <StatCard
+                      {["Top Commission Earner", "Top Unit Seller", "Top Seller", "Top Listing Agent"].map((groupTitle) => {
+                        const group = cards.filter((c) => c.title === groupTitle);
+                        if (!group.length) return null;
+                        return (
+                          <div key={groupTitle} className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+                            <div className="mb-1 flex items-center gap-2">
+                              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-[#0f766e]">{group[0].badgeIcon}</div>
+                              <h3 className="text-[13px] font-semibold text-gray-800">{groupTitle}</h3>
+                              <div className="ml-auto text-[11px] text-gray-400">{group.length}</div>
+                            </div>
+                            <div className="divide-y divide-gray-50">
+                              {group.map((c, i) => (
+                                <StatCard variant="row" rank={i + 1}
                           key={c.key}
                           title={c.title}
                           borderColor="border-[#0f766e]"
@@ -957,109 +1052,68 @@ const Home = () => {
                           onDelete={isSuperAdmin ? (c as any).onDelete : undefined}
                           onEdit={isSuperAdmin ? (c as any).onEdit : undefined}
                         />
-                      ))}
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
               );
             })()}
 
-            <Modal
-              title={editingManualUuid ? "Edit Manual Top Agent Entry" : "Add Manual Top Agent Entry"}
-              open={isManualEntryModalOpen}
-              onCancel={() => {
-                setIsManualEntryModalOpen(false);
-                resetManualEntryForm();
-              }}
-              footer={[
-                <Button key="cancel" onClick={() => { setIsManualEntryModalOpen(false); resetManualEntryForm(); }}>
-                  Cancel
-                </Button>,
-                <Button
-                  key="save"
-                  type="primary"
-                  loading={isCreatingManualTopAgent || isUpdatingManualTopAgent}
-                  onClick={handleCreateManualTopAgent}
-                  style={{ background: '#0f766e', borderColor: '#0f766e' }}
-                >
-                  Save
-                </Button>,
-              ]}
-            >
-              <div className="space-y-4 pt-2">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                  <Select
-                    className="w-full"
-                    value={manualEntryCategory}
-                    onChange={setManualEntryCategory}
-                    options={[
-                      { value: 'commission', label: 'Top Commission Earner' },
-                      { value: 'units', label: 'Top Unit Seller' },
-                      { value: 'sales', label: 'Top Seller' },
-                      { value: 'listings', label: 'Top Listing Agent' },
-                    ]}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Agent</label>
-                  <Select
-                    className="w-full"
-                    showSearch
-                    placeholder="Select an agent"
-                    value={manualEntryAgentId}
-                    onChange={setManualEntryAgentId}
-                    filterOption={(input, option) =>
-                      (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
-                    }
-                    options={allAgents.map((a) => ({ value: String(a.id), label: a.name }))}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Value</label>
-                  <Input
-                    placeholder='e.g. "5 Units", "$50,000.00", "3 Listings"'
-                    value={manualEntryValue}
-                    onChange={(e) => setManualEntryValue(e.target.value)}
-                  />
-                </div>
-              </div>
-            </Modal>
-
-            <div className="mt-4 space-y-5">
-
-              {isPrivilegedAdmin && (
-                <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 xl:grid-cols-5">
-                  {(isLoading || isFetching || agentListLoading) ? (
-                    Array.from({ length: 5 }).map((_, i) => {
-                      const { accent, light } = KPI_ACCENTS[i % KPI_ACCENTS.length];
-                      return (
-                        <div key={i} className="rounded-2xl overflow-hidden shadow-md" style={{ background: 'white' }}>
-                          <div style={{ height: 3, background: `linear-gradient(90deg, ${accent}, ${light})` }} />
-                          <div className="p-5">
-                            <div className="w-10 h-10 rounded-xl animate-pulse mb-4" style={{ background: light }} />
-                            <div className="h-6 rounded-lg animate-pulse mb-2" style={{ background: '#F3EDE8', width: '55%' }} />
-                            <div className="h-2.5 rounded animate-pulse" style={{ background: '#F8F4F1', width: '70%' }} />
-                          </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <>
-                      <KpiCard index={0} icon={<TeamOutlined />} label="Our Agents" value={String(agentCategoryCounts.ourAgents)} />
-                      <KpiCard index={1} icon={<FileTextOutlined />} label="Trade Sheets" value={String(filteredTradeSheets.length)} />
-                      <KpiCard index={2} icon={<HomeOutlined />} label="Listings" value={String(filteredProperties.length)} />
-                      <KpiCard index={3} icon={<RiseOutlined />} label="Total Sales" value={`$${formatNumberWithCommasAndDecimals(totalSalesFromSheets)}`} />
-                      <KpiCard index={4} icon={<TrophyOutlined />} label="Commissions" value={`$${formatNumberWithCommasAndDecimals(totalCommissionsFromSheets)}`} />
-                    </>
-                  )}
+              {isSuperAdmin && (
+                <div className="grid gap-4 lg:grid-cols-3">
+                  <div className="lg:col-span-2 rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <div>
+                        <h3 className="text-[14px] font-semibold text-gray-800">Sales performance</h3>
+                        <p className="mt-0.5 text-[12px] text-gray-500">Closed deals over the last 6 months</p>
+                      </div>
+                      <div className="inline-flex rounded-md bg-gray-100 p-0.5">
+                        {['volume', 'deals'].map((t) => (
+                          <button key={t} onClick={() => setTrendMode(t)} className={`rounded px-3 py-1 capitalize ${trendMode === t ? 'bg-white text-[#0f766e] shadow-sm' : 'text-gray-500'}`}>
+                            {t}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <AreaChart
+                      data={monthlySeries.map((m: any) => ({ label: m.label, value: trendMode === 'volume' ? m.volume : m.deals }))}
+                      format={trendMode === 'volume' ? money : (n: number) => String(Math.round(n))}
+                    />
+                  </div>
+                  <div className="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
+                    <h3 className="text-[14px] font-semibold text-gray-800">Quick actions</h3>
+                    <p className="mt-0.5 text-[12px] text-gray-500">Jump straight into common tasks</p>
+                    <div className="mt-4 space-y-2">
+                      {[
+                        ['New trade sheet', '/dashboard/agent/pages/form/trade-sheet/agent-basic-info', <FileTextOutlined key="a" />],
+                        ['Add property listing', '/dashboard/super-admin/create-update-property-listing', <HomeOutlined key="b" />],
+                        ['Add agent', '/dashboard/super-admin/agent-create', <TeamOutlined key="c" />],
+                        ['Post announcement', '/dashboard/super-admin/announcements', <TrophyOutlined key="d" />],
+                        ['Open calendar', '/dashboard/super-admin/calendar-events', <CalendarOutlined key="e" />],
+                      ].map(([label, to, icon]) => (
+                        <Link
+                          key={label}
+                          to={to}
+                          className="group flex items-center gap-3 rounded-lg border border-gray-100 px-3 py-2.5 text-gray-700 transition hover:border-[#0f766e] hover:bg-teal-50"
+                        >
+                          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-teal-50 text-[#0f766e] transition group-hover:bg-[#0f766e] group-hover:text-white">{icon}</div>
+                          <div className="flex-1 text-[13px] font-medium">{label}</div>
+                          <div className="text-gray-300 transition group-hover:text-[#0f766e]">›</div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
 
               <div className={`grid gap-5 ${isSuperAdmin ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1 md:grid-cols-2'}`}>
                 {isSuperAdmin && (
                   agentListLoading ? (
-                    <div className="bg-white rounded-2xl shadow-md p-5">
+                    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                       <Skeleton active title={{ width: '40%' }} paragraph={false} />
                       <div className="flex items-end gap-4 mt-6" style={{ height: 130 }}>
                         {Array.from({ length: 4 }).map((_, i) => (
@@ -1082,7 +1136,7 @@ const Home = () => {
                 {tsLoading ? (
                   <DonutSkeleton />
                 ) : tradeSheetList.length > 0 ? (
-                  <div className="bg-white rounded-2xl shadow-md p-5">
+                  <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <p className="font-semibold text-gray-800 text-[13px]">Tradesheet Overview</p>
@@ -1099,7 +1153,7 @@ const Home = () => {
                 {propertyLoading ? (
                   <DonutSkeleton />
                 ) : allProperties.length > 0 ? (
-                  <div className="bg-white rounded-2xl shadow-md p-5">
+                  <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <p className="font-semibold text-gray-800 text-[13px]">Property Overview</p>
@@ -1115,7 +1169,7 @@ const Home = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
+                <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
                   <div className="flex items-center gap-3 px-6 py-4 shrink-0" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fffbeb' }}>
                       <CalendarOutlined style={{ color: '#0f766e', fontSize: 15 }} />
@@ -1129,7 +1183,7 @@ const Home = () => {
                     <Announcement />
                   </div>
                 </div>
-                <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
+                <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
                   <div className="flex items-center gap-3 px-6 py-4 shrink-0" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fffbeb' }}>
                       <CalendarOutlined style={{ color: '#0f766e', fontSize: 15 }} />
@@ -1143,7 +1197,7 @@ const Home = () => {
                     <UpcommingCalendar />
                   </div>
                 </div>
-                <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
+                <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
                   <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-6 py-4 shrink-0" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fffbeb' }}>
@@ -1211,13 +1265,16 @@ const Home = () => {
                           className={`flex items-center gap-3 px-5 py-3 ${i !== 0 ? 'border-t' : ''}`}
                           style={{ borderColor: '#F5EFE8' }}
                         >
-                          <div className="w-9 h-9 rounded-full bg-gray-50 shrink-0 overflow-hidden">
-                            <img
-                              className="h-full w-full object-cover"
-                              src={b.profilePicture ? getFileUrl(b.profilePicture) : defaultAvatar}
-                              alt={b.name}
-                            />
-                          </div>
+                          {b.profilePicture ? (
+                            <img className="h-9 w-9 shrink-0 rounded-full object-cover" src={getFileUrl(b.profilePicture)} alt={b.name} />
+                          ) : (
+                            <div
+                              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold text-white"
+                              style={{ background: 'linear-gradient(135deg,#0f766e,#14b8a6)' }}
+                            >
+                              {String(b.name || '?').split(' ').map((w) => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()}
+                            </div>
+                          )}
                           <div className="flex-1 min-w-0">
                             <p className="text-[13px] font-medium text-gray-800 truncate">{b.name}</p>
                             <p className="text-[11px] text-gray-400">{b.dateLabel}</p>
@@ -1250,7 +1307,7 @@ const Home = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
-                <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+                <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
                   <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#fffbeb' }}>
@@ -1343,7 +1400,7 @@ const Home = () => {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+                <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
                   <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#fffbeb' }}>
@@ -1473,6 +1530,8 @@ interface StatCardProps {
   isManual?: boolean;
   onDelete?: () => void;
   onEdit?: () => void;
+  variant?: "card" | "row";
+  rank?: number;
 }
 
 const StatCard: React.FC<StatCardProps> = ({
@@ -1488,6 +1547,8 @@ const StatCard: React.FC<StatCardProps> = ({
   isManual,
   onDelete,
   onEdit,
+  variant = "card",
+  rank,
 }) => {
   const { user } = useAppSelector((state) => state.user);
 
@@ -1828,23 +1889,23 @@ const StatCard: React.FC<StatCardProps> = ({
     return null;
   };
 
-  const cardContent = (
+  const cardContentCard = (
     <div
-      className={`relative bg-white rounded-lg shadow-md p-5 border-l-8 ${borderColor} hover:shadow-lg transition-all cursor-pointer`}
+      className={`relative bg-white rounded-xl border border-gray-100 shadow-sm p-4 border-l-4 ${borderColor} hover:shadow-md transition-all cursor-pointer`}
     >
       {onEdit && (
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onEdit(); }}
           className={`absolute top-2 ${onDelete ? 'right-8' : 'right-2'} w-5 h-5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#0f766e] transition-colors z-10`}
-          title="Edit manual entry"
+          title="Edit featured agent"
         >
           <EditOutlined style={{ fontSize: 10 }} />
         </button>
       )}
       {onDelete && (
         <Popconfirm
-          title="Remove this manual entry?"
+          title="Remove this featured agent?"
           onConfirm={(e) => { e?.stopPropagation(); onDelete(); }}
           onCancel={(e) => e?.stopPropagation()}
           okText="Remove"
@@ -1854,7 +1915,7 @@ const StatCard: React.FC<StatCardProps> = ({
             type="button"
             onClick={(e) => e.stopPropagation()}
             className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-400 transition-colors z-10"
-            title="Remove manual entry"
+            title="Remove featured agent"
           >
             <CloseOutlined style={{ fontSize: 10 }} />
           </button>
@@ -1903,6 +1964,57 @@ const StatCard: React.FC<StatCardProps> = ({
     </div>
   );
 
+  const isAdminView = user.role === "superadmin" || user.userType === "superAdmin";
+  const rowContent = (
+    <div className="group relative flex cursor-pointer items-center gap-3 rounded-lg px-1 py-2.5 transition hover:bg-gray-50">
+      <div className="w-4 text-center text-[11px] font-semibold text-gray-400">{rank}</div>
+      {profilePicture ? (
+        <img src={getFileUrl(profilePicture)} alt={name} className="h-8 w-8 shrink-0 rounded-full object-cover" />
+      ) : (
+        <div
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-white"
+          style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)" }}
+        >
+          {String(name || "?").split(" ").map((w) => w[0]).filter(Boolean).slice(0, 2).join("").toUpperCase()}
+        </div>
+      )}
+      <div className="min-w-0 flex-1 truncate text-[13px] font-medium text-gray-800">
+        {name}
+        {isManual && <span className="ml-1.5 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] text-amber-700">Featured</span>}
+      </div>
+      {isAdminView && <div className="shrink-0 text-[13px] font-semibold text-gray-800">{value}</div>}
+      {onEdit && (
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onEdit(); }}
+          className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-[#0f766e] hover:text-white"
+          title="Edit featured agent"
+        >
+          <EditOutlined style={{ fontSize: 10 }} />
+        </button>
+      )}
+      {onDelete && (
+        <Popconfirm
+          title="Remove this featured agent?"
+          onConfirm={(e) => { e?.stopPropagation(); onDelete(); }}
+          onCancel={(e) => e?.stopPropagation()}
+          okText="Remove"
+          cancelText="Cancel"
+        >
+          <button
+            type="button"
+            onClick={(e) => e.stopPropagation()}
+            className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-red-400 hover:text-white"
+            title="Remove featured agent"
+          >
+            <CloseOutlined style={{ fontSize: 10 }} />
+          </button>
+        </Popconfirm>
+      )}
+    </div>
+  );
+  const cardContent = variant === "row" ? rowContent : cardContentCard;
+
   if (breakdownData && breakdownData.details.length > 0) {
     return (
       <Popover
@@ -1928,14 +2040,14 @@ const AGENT_BARS = [
   { key: 'terminate', label: 'Terminate' },
 ] as const;
 
-const CHART_H = 130;
+const CHART_H = 190;
 
 const AgentCategoryChart: React.FC<{ counts: Record<string, number> }> = ({ counts }) => {
   const max = Math.max(...AGENT_BARS.map(b => counts[b.key] ?? 0), 1);
   const total = (counts.ourAgents ?? 0) + (counts.otherAgents ?? 0);
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-5">
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
       <div className="flex items-center justify-between mb-5">
         <div>
           <p className="font-semibold text-gray-800 text-[13px]">Agent Overview</p>
@@ -2049,7 +2161,7 @@ const TradeStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: 
 };
 
 const DonutSkeleton: React.FC = () => (
-  <div className="bg-white rounded-2xl shadow-md p-5">
+  <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
     <Skeleton active title={{ width: '40%' }} paragraph={false} />
     <div className="flex items-center gap-5 mt-5">
       <div className="shrink-0 rounded-full animate-pulse bg-gray-200" style={{ width: 130, height: 130 }} />
@@ -2134,11 +2246,7 @@ const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; tota
 };
 
 const KPI_ACCENTS = [
-  { accent: '#134e4a', bg: '#F2EAE4', light: '#FAF5F1' },
-  { accent: '#0f766e', bg: '#F5EDE1', light: '#FDF8F3' },
-  { accent: '#7A6655', bg: '#EEE5DC', light: '#F8F3EE' },
-  { accent: '#8B7355', bg: '#F0E8DC', light: '#FAF6F1' },
-  { accent: '#5C4A3A', bg: '#EBE1D8', light: '#F7F3EF' },
+  { accent: '#0f766e', bg: '#ccfbf1', light: '#f0fdfa' },
 ];
 
 interface KpiCardProps {
@@ -2146,44 +2254,20 @@ interface KpiCardProps {
   label: string;
   value: string;
   index?: number;
+  spark?: number[];
+  note?: string;
 }
 
-const KpiCard: React.FC<KpiCardProps> = ({ icon, label, value, index = 0 }) => {
-  const { accent, bg, light } = KPI_ACCENTS[index % KPI_ACCENTS.length];
-  return (
-    <div
-      className="rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 cursor-default"
-      style={{ background: 'white' }}
-    >
-      <div style={{ height: 3, background: `linear-gradient(90deg, ${accent} 0%, ${bg} 100%)` }} />
-      <div className="p-5">
-        <div className="flex items-center justify-between mb-4">
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: light }}
-          >
-            <span style={{ color: accent, fontSize: 18 }}>{icon}</span>
-          </div>
-          <div className="flex gap-1">
-            <div className="w-1.5 h-1.5 rounded-full" style={{ background: bg }} />
-            <div className="w-1.5 h-1.5 rounded-full" style={{ background: accent, opacity: 0.4 }} />
-          </div>
-        </div>
-        <div
-          className="text-[24px] font-extrabold leading-tight truncate mb-1"
-          style={{ color: '#1A1A2E' }}
-        >
-          {value}
-        </div>
-        <div
-          className="text-[10px] font-bold uppercase tracking-widest"
-          style={{ color: accent }}
-        >
-          {label}
-        </div>
-      </div>
+const KpiCard: React.FC<KpiCardProps> = ({ icon, label, value, spark, note }) => (
+  <div className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md">
+    <div className="flex items-center justify-between">
+      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-[#0f766e]">{icon}</div>
+      {spark && <Sparkline values={spark} />}
     </div>
-  );
-};
+    <div className="mt-3 truncate text-2xl font-bold leading-none text-gray-800">{value}</div>
+    <div className="mt-1.5 text-[12px] font-medium text-gray-600">{label}</div>
+    {note && <div className="mt-0.5 text-[11px] text-gray-400">{note}</div>}
+  </div>
+);
 
 export default Home;

@@ -30,11 +30,11 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
 
   return (
     <div>
-      <div className={`p-5 ${index !== 0 && "border-t"} space-y-3`}>
-        <h3 className="font-medium">{announcement.title}</h3>
-        <p>{formattedDate}</p>
+      <div className={`px-5 py-4 ${index !== 0 && "border-t border-gray-100"} space-y-1.5`}>
+        <h3 className="text-[13px] font-semibold text-gray-800">{announcement.title}</h3>
+        <p className="text-[11px] text-gray-400">{formattedDate}</p>
         <div className="flex items-center gap-2">
-          <div>
+          <div className="text-[12px] leading-relaxed text-gray-600">
             <div 
               dangerouslySetInnerHTML={{ 
                 __html: truncateDescription(announcement.description) 
@@ -43,7 +43,7 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
             {announcement.description.length > 150 && (
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="text-blue-600 hover:text-blue-800 mt-2"
+                className="mt-2 text-[#0f766e] hover:underline"
               >
                 View Details
               </button>

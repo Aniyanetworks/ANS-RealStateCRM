@@ -44,8 +44,8 @@ const UpcommingCalendarCard = ({ index, calendarEvent }: UpcommingCalendarCardPr
 
   return (
     <div>
-    <div className={`p-5 ${index !== 0 && "border-t"} space-y-3`}>
-      <h3 className="font-medium">{calendarEvent.title}</h3>
+    <div className={`px-5 py-4 ${index !== 0 && "border-t border-gray-100"} space-y-2 text-[12px] text-gray-600`}>
+      <h3 className="text-[13px] font-semibold text-gray-800">{calendarEvent.title}</h3>
       <p>From {formattedDate} to {formattedDateEnd}</p>
       <p className="break-words"><b>Location:</b> {calendarEvent.location && /^https?:\/\//i.test(calendarEvent.location) ? (
                     <a
