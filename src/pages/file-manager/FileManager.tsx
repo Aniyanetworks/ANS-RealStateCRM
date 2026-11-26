@@ -1247,7 +1247,7 @@ const handleBulkShareConfirm = async () => {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: node.isFolder ? "pointer" : "default" }} onClick={() => handleOpen(node)}>
-                    {node.isFolder ? <FolderFilled style={{ color: "#9E8566" }} /> : <FileOutlined />}
+                    {node.isFolder ? <FolderFilled style={{ color: "#0d9488" }} /> : <FileOutlined />}
                     <span style={{ fontWeight: node.isFolder ? 600 : 400 }}>{node.name}</span>
                   </div>
                   {!(showShared && node.isFolder) && (

@@ -137,7 +137,7 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
             size="small"
             type="primary"
             onClick={() => handleReminderSet(3)}
-            className="bg-[#0C1A34] hover:!bg-[#1d3e7c] text-xs"
+            className="bg-[#082624] hover:!bg-[#1d3e7c] text-xs"
           >
             Remind in 3 days
           </Button>
@@ -145,7 +145,7 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
             size="small"
             type="primary"
             onClick={() => handleReminderSet(7)}
-            className="bg-[#0C1A34] hover:!bg-[#1d3e7c] text-xs"
+            className="bg-[#082624] hover:!bg-[#1d3e7c] text-xs"
           >
             Remind in 7 days
           </Button>
@@ -153,7 +153,7 @@ const ClosingDatePopup: FC<ClosingDatePopupProps> = ({
             size="small"
             type="primary"
             onClick={() => handleReminderSet(15)}
-            className="bg-[#0C1A34] hover:!bg-[#1d3e7c] text-xs"
+            className="bg-[#082624] hover:!bg-[#1d3e7c] text-xs"
           >
             Remind in 15 days
           </Button>

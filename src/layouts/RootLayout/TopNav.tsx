@@ -162,7 +162,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
         {
-          headers: { 'User-Agent': 'AgentHub-App' },
+          headers: { 'User-Agent': 'ANS RealStateCRM-App' },
         }
       );
       if (!response.ok) return null;
@@ -346,7 +346,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
           <h2 className="flex items-center gap-1 !m-0">
             Welcome,
             <h2 className="!m-0"> {user.name} </h2> to
-            <h2 className="text-[#243451] font-bold !m-0">
+            <h2 className="text-[#0b3b38] font-bold !m-0">
               {user.userType === "agent" && " Agent"}
               {user.userType === "client" && " Client"}
               {user.userType === "admin" && " Admin"}
@@ -371,7 +371,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
                 onClick={() =>
                   (window.location.href = "http://hub.dvrealty.ca/")
                 }
-                className="text-[#243451] ml-2 cursor-pointer hover:underline"
+                className="text-[#0b3b38] ml-2 cursor-pointer hover:underline"
               >
                 Switch to hub.dvrealty.ca
               </span>
@@ -408,7 +408,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         {localStorage.getItem("originalUser") && (
           <button
             onClick={handleSwitchPortal}
-            className="flex items-center gap-2 px-4 py-2 bg-[#0B1D3D] text-white rounded-lg hover:bg-[#182843]"
+            className="flex items-center gap-2 px-4 py-2 bg-[#072f2d] text-white rounded-lg hover:bg-[#182843]"
           >
             <FaExchangeAlt />
             Switch to Super Admin

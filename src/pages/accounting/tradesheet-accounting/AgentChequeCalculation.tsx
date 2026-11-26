@@ -430,7 +430,7 @@ const AgentChequeCalculation = () => {
                   "Authentisign",
                   "DVREALTY Email",
                   "500 Business Cards",
-                  "1 DV Lock Box"
+                  "1 ANS Lock Box"
                 ];
 
                 const allItems = [];
@@ -665,7 +665,7 @@ const AgentChequeCalculation = () => {
                 setValue('acknowledgementEmail', 'yes');
                 onSubmit();
               }}
-              className="bg-[#243451] text-white px-6 py-2 mr-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-[#0b3b38] text-white px-6 py-2 mr-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {btnLoading ? <ButtonLoader /> : 'Click here to send an acknowledgement email to the agent'}
             </button>
@@ -677,7 +677,7 @@ const AgentChequeCalculation = () => {
           ) : (tradeAgentCommissionData?.acknowledgementStatus === "accepted" && (
             <button
               type="submit"
-              className="bg-[#243451] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-[#0b3b38] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {btnLoading ? <ButtonLoader /> : 'Transfer Amount'}
             </button>
@@ -686,7 +686,7 @@ const AgentChequeCalculation = () => {
 
           <NavLink
             to="/dashboard/accounting/issue-agent-cheque"
-            className="ml-4 bg-[#243451] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="ml-4 bg-[#0b3b38] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Go Back
           </NavLink>

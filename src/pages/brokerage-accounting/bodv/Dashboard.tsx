@@ -1,5 +1,5 @@
-// Admin Dashboard — the original DV Accounting dashboard (layout, panels, per-panel date ranges, Top Agents,
-// RECO renewal status, Brokerage Income for Super Admin), using AgentHub agents, trade sheets and accounting.
+// Admin Dashboard — the original ANS Accounting dashboard (layout, panels, per-panel date ranges, Top Agents,
+// RECO renewal status, Brokerage Income for Super Admin), using ANS RealStateCRM agents, trade sheets and accounting.
 import { useEffect, useMemo, useState } from "react";
 import { LuLandmark, LuPlus, LuReceipt, LuSettings, LuWallet } from "./icons";
 import { useAcct, useAcctAction } from "../acctShared";
@@ -203,7 +203,7 @@ export default function Dashboard({ onNavigate }: { onNavigate: (key: string) =>
       </PageHead>
 
       {data?.isSuperAdmin && (
-        <Panel title="Brokerage Income" hint="Trade Record brokerage share plus separately recorded general income, excluding HST. Each entry is counted once." right={<span className="pill">Super Admin</span>} style={{ marginBottom: 18, borderTop: "3px solid var(--gold, #9e8556)" }}>
+        <Panel title="Brokerage Income" hint="Trade Record brokerage share plus separately recorded general income, excluding HST. Each entry is counted once." right={<span className="pill">Super Admin</span>} style={{ marginBottom: 18, borderTop: "3px solid var(--gold, #0d6b64)" }}>
           <div className="grid4">
             <IncomeCard label="Year to Date" value={totalIncome(yearStart, ymd(now))} sub="Trade and general income dated this year, before HST" />
             <IncomeCard label="Last Month" value={totalIncome(ymd(lastStart), ymd(lastEnd))} sub={`Trade and general income for ${lastStart.toLocaleDateString("en-CA", { month: "long" })}`} />
@@ -228,7 +228,7 @@ export default function Dashboard({ onNavigate }: { onNavigate: (key: string) =>
               <label>From<input type="date" value={income.start} onChange={(e) => setIncome((r) => ({ ...r, start: e.target.value }))} /></label>
               <label>To<input type="date" value={income.end} onChange={(e) => setIncome((r) => ({ ...r, end: e.target.value }))} /></label>
             </div>
-            <div className="notice" style={{ marginTop: 12 }}>Trade income uses each trade's net commission to the office before HST (AgentHub trade accounting). Paid agent charges are included as general income, with HST removed. Each entry is counted once.</div>
+            <div className="notice" style={{ marginTop: 12 }}>Trade income uses each trade's net commission to the office before HST (ANS RealStateCRM trade accounting). Paid agent charges are included as general income, with HST removed. Each entry is counted once.</div>
           </div>
         </Panel>
       )}

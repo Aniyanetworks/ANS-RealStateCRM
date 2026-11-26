@@ -550,7 +550,7 @@ export const router = createBrowserRouter([
                   </PermissonRoute>
                 ),
               },
-              // DV Time Clock (rebuild of the dvclock app; access is checked by the API)
+              // ANS Time Clock (rebuild of the dvclock app; access is checked by the API)
               {
                 path: "dv-time-clock",
                 element: (
@@ -574,7 +574,7 @@ export const router = createBrowserRouter([
                   </PermissonRoute>
                 ),
               },
-              // Brokerage accounting (merged from DV Accounting)
+              // Brokerage accounting (merged from ANS Accounting)
               {
                 path: "brokerage-accounting/:section?",
                 element: (

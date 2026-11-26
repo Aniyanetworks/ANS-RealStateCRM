@@ -91,7 +91,7 @@ export function PayrollSection() {
 
   return (
     <div className="panel">
-      <div className="print-brand"><img src={logo} alt="Dream Valley Realty" /><h2>Dream Valley Realty — Payroll Summary</h2></div>
+      <div className="print-brand"><img src={logo} alt="ANS RealStateCRM" /><h2>ANS RealStateCRM — Payroll Summary</h2></div>
       <div className="actions" style={{ justifyContent: "space-between" }}>
         <div><h2>Payroll &amp; Labour Cost</h2><p className="muted">Gross payroll is calculated from recorded hours and employee compensation. This does not file or remit payroll taxes.</p></div>
         <div className="actions">

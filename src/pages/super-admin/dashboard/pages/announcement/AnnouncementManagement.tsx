@@ -521,7 +521,7 @@ const logRowSelection: TableRowSelection<any> = {
                 type="button"
                 onClick={() => { setActiveTab(tab.id); setSearchText(""); }}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                  activeTab === tab.id ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  activeTab === tab.id ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
                 {tab.name}

@@ -207,13 +207,13 @@ const AgentManagement: React.FC = () => {
             <div className="flex">
               <input
                 type="text"
-                className="w-full border p-1.5 text-sm rounded-l focus:ring focus:#141D2C"
+                className="w-full border p-1.5 text-sm rounded-l focus:ring focus:#0a2a28"
                 placeholder="Search by Agent Name or ID..."
                 value={searchText}
                 onChange={handleSearch}
               />
               <button
-                className="bg-[#141D2C] text-white px-3 py-1.5 rounded-r-md flex items-center gap-1.5 text-xs transition duration-200 hover:bg-[#1F2A3D]"
+                className="bg-[#0a2a28] text-white px-3 py-1.5 rounded-r-md flex items-center gap-1.5 text-xs transition duration-200 hover:bg-[#1F2A3D]"
                 onClick={() => setShowDropdown(!showDropdown)}
               >
                 <FaFilter /> Filter
@@ -292,7 +292,7 @@ const AgentManagement: React.FC = () => {
 
                   <div className="flex gap-2 mt-4">
                     <button
-                      className="w-1/2 bg-[#141D2C] text-white p-2 rounded"
+                      className="w-1/2 bg-[#0a2a28] text-white p-2 rounded"
                       onClick={() => {
                         handleCustomDateRange();
                         setShowDropdown(false);

@@ -55,7 +55,7 @@ const SettingsSection = () => {
           <p className="text-xs text-gray-500">{rows?.glAccountCount ?? 0} general ledger accounts configured.</p>
         </Card>
         <Card size="small" title="System account mapping">
-          <Alert className="mb-2" type="info" showIcon message="Automatic postings use these GL codes. Leave blank to use the Dream Valley default shown." />
+          <Alert className="mb-2" type="info" showIcon message="Automatic postings use these GL codes. Leave blank to use the ANS default shown." />
           <div className="grid grid-cols-2 gap-x-3">
             {SYSTEM_ROLES.map(([key, label, def]) => (
               <Form.Item key={key} name={["glMap", key]} label={label} className="mb-2"><Input placeholder={def} /></Form.Item>

@@ -222,7 +222,7 @@ const MySubmissionsArchiveTradeList = () => {
               record.status === "rejected"
                 ? "red"
                 : record.status === "underReview"
-                ? "#eb9715"
+                ? "#f59e0b"
                 : "inherit", // Apply blue color if status is 'underReview'
           }}
           className={
@@ -516,8 +516,8 @@ const MySubmissionsArchiveTradeList = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#0B1D3D", // Custom background color
-              borderColor: "#0B1D3D", // Custom border color
+              backgroundColor: "#072f2d", // Custom background color
+              borderColor: "#072f2d", // Custom border color
               color: "#fff", // Text color to ensure contrast
             }}
           >

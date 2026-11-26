@@ -8,7 +8,7 @@ import type { TableColumnsType, TableProps } from "antd";
 import toast from "react-hot-toast";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import {
   useGetClockHistoryQuery,
   useDeleteClockRecordMutation,
@@ -439,7 +439,7 @@ const ClockHistoryTab: React.FC<ClockHistoryTabProps> = ({
       doc.addImage(logo, "PNG", logoX, logoY, logoWidth, logoHeight);
       doc.setFontSize(10);
       doc.setTextColor(90, 90, 90);
-      doc.text("Dream Valley Realty Inc.", tableRightX, 42, { align: "right" });
+      doc.text("ANS RealStateCRM Inc.", tableRightX, 42, { align: "right" });
       doc.setFontSize(12);
       doc.setTextColor(20, 20, 20);
       doc.text(`Timesheets - ${dateRangeText}`, tableLeftX, 38);

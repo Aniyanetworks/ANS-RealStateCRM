@@ -8,7 +8,7 @@ import { FaFileExcel, FaFilePdf  } from "react-icons/fa";
 import TicketStatusSummary from './TicketStatusSummery';
 import jsPDF from 'jspdf';
 import { useRef } from "react";
-import logo1 from "/logo.png";
+import logo1 from "/logo.svg";
 
 
 interface SupportItem {

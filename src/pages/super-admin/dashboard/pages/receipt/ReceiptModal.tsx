@@ -5,7 +5,7 @@ import html2canvas from "html2canvas";
 import html2pdf from "html2pdf.js";
 import jsPDF from "jspdf";
 import { pdf } from "@react-pdf/renderer";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import moment from "moment-timezone";
 import { useForm } from "react-hook-form";
 import ReactQuill from "react-quill-new";
@@ -118,7 +118,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
   const generateReceiptEmailBody = (d: any): string => {
     const row = (label: string, value: string) => `
       <tr>
-        <td style="padding:10px 16px;font-weight:700;color:#243451;width:40%;border-bottom:1px solid #e8e8e8;vertical-align:top;white-space:nowrap;">${label}</td>
+        <td style="padding:10px 16px;font-weight:700;color:#0b3b38;width:40%;border-bottom:1px solid #e8e8e8;vertical-align:top;white-space:nowrap;">${label}</td>
         <td style="padding:10px 16px;border-bottom:1px solid #e8e8e8;vertical-align:top;color:#333;">${value}</td>
       </tr>`;
 
@@ -129,7 +129,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
     return `
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;font-family:Arial,sans-serif;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;margin-top:8px;">
         <tr>
-          <td colspan="2" style="background-color:#243451;color:#fff;padding:12px 16px;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">
+          <td colspan="2" style="background-color:#0b3b38;color:#fff;padding:12px 16px;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">
             Deposit Receipt
           </td>
         </tr>
@@ -401,7 +401,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
         </Button>,
         <Button
           key="cancel"
-          className="!bg-[#141D2C] !text-white"
+          className="!bg-[#0a2a28] !text-white"
           onClick={() => printPdf()}
           disabled={bankImagesLoading}
         >
@@ -410,7 +410,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
 
         <Button
           key="cancel"
-          className="!bg-[#141D2C] !text-white"
+          className="!bg-[#0a2a28] !text-white"
           onClick={() => downloadPDF()}
           disabled={bankImagesLoading}
         >
@@ -422,7 +422,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
       <div className="flex justify-around mb-4">
         <button
           className={`py-2 px-4 ${
-            activeTab === "deposit" ? "bg-[#0B1D3D] text-white" : "bg-gray-200"
+            activeTab === "deposit" ? "bg-[#072f2d] text-white" : "bg-gray-200"
           }`}
           onClick={() => setActiveTab("deposit")}
         >
@@ -430,7 +430,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
         </button>
         <button
           className={`py-2 px-4 ${
-            activeTab === "email" ? "bg-[#0B1D3D] text-white" : "bg-gray-200"
+            activeTab === "email" ? "bg-[#072f2d] text-white" : "bg-gray-200"
           }`}
           onClick={() => setActiveTab("email")}
         >
@@ -445,14 +445,14 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
           <div className=" flex flex-col items-center gap-2  ">
             <img src={logo} alt="" className={`w-[50px]`} />
             <h2
-              className={`tracking-widest text-base playfair-display-sc-bold text-[#9F8667]`}
+              className={`tracking-widest text-base playfair-display-sc-bold text-[#0f766e]`}
             >
-              DREAM VALLEY REALTY
+              ANS REALSTATECRM
             </h2>
           </div>
 
           <div className="text-center">
-            <h2 className="font-semibold text-[#243451] text-xl">
+            <h2 className="font-semibold text-[#0b3b38] text-xl">
               DEPOSIT RECEIPT
             </h2>
           </div>
@@ -688,7 +688,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
             {/* Submit Button */}
             <div>
               <button
-                className="bg-[#0B1D3D] text-white p-2 rounded-md flex gap-2 items-center"
+                className="bg-[#072f2d] text-white p-2 rounded-md flex gap-2 items-center"
                 onClick={onSubmitEmail}
                 disabled={isEmailSend || imagesLoading || bankImagesLoading}
               >

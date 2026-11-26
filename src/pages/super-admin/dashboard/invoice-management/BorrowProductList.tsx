@@ -43,7 +43,7 @@ import { RiDeleteBack2Fill } from "react-icons/ri";
 import { FaRegEdit, FaShoppingCart, FaEye, FaCrop, FaSearch, FaTimes } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import TableLoader from "../../../../components/loader/TableLoader";
 import { UploadOutlined } from "@ant-design/icons";
 import {
@@ -1242,7 +1242,7 @@ const BorrowProductList = () => {
                 to={tab.link}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap no-underline ${
                   location.pathname === tab.link
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
@@ -1379,7 +1379,7 @@ const BorrowProductList = () => {
                               />
                             </ReactCrop>
                             <button
-                              className="text-white font-mono text-xs py-2 px-4 rounded-2xl mt-4 cursor-pointer bg-[#243451] w-[200px] text-center hover:bg-[#243451]"
+                              className="text-white font-mono text-xs py-2 px-4 rounded-2xl mt-4 cursor-pointer bg-[#0b3b38] w-[200px] text-center hover:bg-[#0b3b38]"
                               onClick={() => {
                                 if (
                                   imgRef.current &&
@@ -1863,7 +1863,7 @@ const BorrowProductList = () => {
                           buttonProps={{
                             css: {
                               padding: "8px",
-                              backgroundColor: "#0C1A34",
+                              backgroundColor: "#082624",
                               fontSize: "14px",
                               color: "#fff",
                               "&:hover": {
@@ -1969,9 +1969,9 @@ item's FULL unit value
           <div className=" flex flex-col  gap-2 ">
             <img src={logo} alt="" className={`w-[50px] mx-auto`} />
             <h2
-              className={`tracking-widest text-center text-base playfair-display-sc-bold text-[#9F8667]`}
+              className={`tracking-widest text-center text-base playfair-display-sc-bold text-[#0f766e]`}
             >
-              DREAM VALLEY REALTY
+              ANS REALSTATECRM
             </h2>
 
             <div className="  mt-8  ">
@@ -2032,7 +2032,7 @@ item's FULL unit value
                       <span className="text-sm text-gray-700 font-medium">
                         Available Quantity:
                       </span>
-                      <span className="font-medium bg-[#9F8667]/15 py-1 rounded-3xl px-3">
+                      <span className="font-medium bg-[#0f766e]/15 py-1 rounded-3xl px-3">
                         {selectedRecord.quantity} available
                       </span>
                     </div>
@@ -2047,7 +2047,7 @@ item's FULL unit value
                             <a
                               key={file.id}
                               href={`${file.filePath}`} // Linking to the file path
-                              className="text-sm text-[#9F8667] font-medium bg-[#9F8667]/10 py-1 px-3 rounded-3xl hover:bg-[#9F8667]/20 hover:text-white transition duration-200"
+                              className="text-sm text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-white transition duration-200"
                               target="_blank"
                               rel="noopener noreferrer"
                             >

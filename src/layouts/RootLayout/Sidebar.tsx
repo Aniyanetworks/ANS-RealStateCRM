@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 
-import logo from '/logo.png';
+import logo from '/logo-icon.svg';
 import {
   Input,
   Menu,
@@ -73,7 +73,7 @@ const NewBadge = () => (
   <span
     style={{
       position: "absolute", top: "50%", right: 8, transform: "translateY(-50%)",
-      background: "#9e8556", color: "#fff", fontSize: 9, fontWeight: 700, lineHeight: 1,
+      background: "#0d6b64", color: "#fff", fontSize: 9, fontWeight: 700, lineHeight: 1,
       padding: "3px 6px", borderRadius: 999, letterSpacing: 0.3, textTransform: "uppercase", pointerEvents: "none",
     }}
   >
@@ -81,13 +81,13 @@ const NewBadge = () => (
   </span>
 );
 
-// DV Time Clock (rebuild of the dvclock app; separate from Clock In/Out).
+// ANS Time Clock (rebuild of the dvclock app; separate from Clock In/Out).
 const dvTimeClockItem = (key: string) => ({
   key,
   icon: <ClockCircleOutlined />,
   label: (
     <NavLink className="flex items-center" to={"/dashboard/dv-time-clock"} style={{ position: "relative", width: "100%", paddingRight: 44 }}>
-      DV Time Clock
+      ANS Time Clock
       <NewBadge />
     </NavLink>
   ),
@@ -3043,13 +3043,13 @@ const Sidebar = ({
               <img
                 src={logo}
                 alt=""
-                className={`${collapsed ? "w-[30px]" : "w-[30px]"}`}
+                className={`${collapsed ? "w-[40px]" : "w-[48px]"}`}
               />
               <h2
                 className={`${collapsed ? "hidden" : ""
-                  } tracking-widest text-[14px] 2xl:[15px] text-center playfair-display-sc-bold text-[#9F8667]`}
+                  } tracking-widest text-[14px] 2xl:[15px] text-center playfair-display-sc-bold text-white`}
               >
-                DREAM VALLEY REALTY
+                ANS REALSTATECRM
               </h2>
             </div>
             <button
@@ -3073,7 +3073,7 @@ const Sidebar = ({
             mode="inline"
             inlineCollapsed={collapsed}
             items={sidebarItems()}
-            style={{ backgroundColor: "#243451" }}
+            style={{ backgroundColor: "#0b3b38" }}
           />
         </div>
       </div>

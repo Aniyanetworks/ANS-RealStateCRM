@@ -1,26 +1,26 @@
 export const getEnvUrls = () => {
   // Local URLs for development
-  /* const localApiUrl = "https://api.dvrealty.ca/api/v1";
-  const localBaseUrl = "https://api.dvrealty.ca/"; */
+  /* const localApiUrl = "https://demo.invalid/api/v1";
+  const localBaseUrl = "https://demo.invalid/"; */
 
   const localApiUrl = "http://localhost:4000/api/v1";
   const localBaseUrl = "http://localhost:4000/";
 
-  /* const localApiUrl = "https://devapi.dvrealty.ca/api/v1";
-  const localBaseUrl = "https://devapi.dvrealty.ca/"; */
+  /* const localApiUrl = "https://demo.invalid/api/v1";
+  const localBaseUrl = "https://demo.invalid/"; */
 
   const UrlLocal = "http://localhost:3000";
   const accessToken = localStorage.getItem("accessToken");
 
   // Production URLs
-  const productionApiUrl = "https://api.dvrealty.ca/api/v1";
-  const productionBaseUrl = "https://api.dvrealty.ca/";
-  const UrlProd = "https://hub.dvrealty.ca";
+  const productionApiUrl = "https://demo.invalid/api/v1";
+  const productionBaseUrl = "https://demo.invalid/";
+  const UrlProd = "https://demo.invalid";
 
   // Production Dev URLs
-  const productionDevApiUrl = "https://devapi.dvrealty.ca/api/v1";
-  const productionDevBaseUrl = "https://devapi.dvrealty.ca/";
-  const UrlDev = "https://dev.dvrealty.ca";
+  const productionDevApiUrl = "https://demo.invalid/api/v1";
+  const productionDevBaseUrl = "https://demo.invalid/";
+  const UrlDev = "https://demo.invalid";
 
   // Check the environment mode and hostname
 

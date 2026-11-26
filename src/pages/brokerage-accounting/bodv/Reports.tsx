@@ -1,5 +1,5 @@
-// Reports — the original DV Accounting report centre: choose one of 14 reports, filter (dates, status, agent,
-// search), preview, export CSV or PDF; live ledger summary. Data comes from the accounting ledger and AgentHub.
+// Reports — the original ANS Accounting report centre: choose one of 14 reports, filter (dates, status, agent,
+// search), preview, export CSV or PDF; live ledger summary. Data comes from the accounting ledger and ANS RealStateCRM.
 import { useState } from "react";
 import jsPDF from "jspdf";
 import { useLazyAcctGetQuery } from "../../../redux/api/accounting/brokerageAccountingSlice";

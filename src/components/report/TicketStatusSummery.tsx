@@ -68,10 +68,10 @@ interface Ticket {
         </div>
 
         {/* In Progress Tickets */}
-        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">In Progress</span>
-            <span className="text-lg font-semibold text-purple-600">
+            <span className="text-lg font-semibold text-teal-600">
               {statusCounts.inprogress || 0}
             </span>
           </div>

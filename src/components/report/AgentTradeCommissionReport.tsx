@@ -8,7 +8,7 @@ import type { TableColumnsType, TableProps } from "antd";
 import * as XLSX from "xlsx";
 import { FaFileExcel, FaFilePdf } from "react-icons/fa";
 import jsPDF from "jspdf";
-import logo1 from "/logo.png";
+import logo1 from "/logo.svg";
 import { formatNumberWithCommasAndDecimals } from "../../utils/formatNumberWithCommasAndDecimals";
 
 interface TradeCommissionItem {
@@ -413,10 +413,10 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
           </div>
         </div>
         {/* Average Tax Rate */}
-        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Average Tax Rate</span>
-            <span className="text-lg font-semibold text-purple-600">
+            <span className="text-lg font-semibold text-teal-600">
               {formatNumberWithCommasAndDecimals(calculateAverageTax())}%
             </span>
           </div>

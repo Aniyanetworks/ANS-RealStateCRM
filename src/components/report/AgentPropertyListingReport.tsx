@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import { FaFileExcel, FaFilePdf  } from "react-icons/fa";
 import jsPDF from 'jspdf';
 import { useRef } from "react";
-import logo1 from "/logo.png";
+import logo1 from "/logo.svg";
 
 interface PropertyListing {
   id: string;
@@ -340,10 +340,10 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
         </div>
 
         {/* Under Review */}
-        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Under Review</span>
-            <span className="text-lg font-semibold text-purple-600">
+            <span className="text-lg font-semibold text-teal-600">
               {statusCounts.underreview || 0}
             </span>
           </div>

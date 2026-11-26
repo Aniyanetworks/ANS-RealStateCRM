@@ -367,19 +367,19 @@ const BuyerCommissionInvoice = ({ uuid }) => {
               {isDownloading && <ButtonLoader />}Download
             </button>
           </div>
-          <div ref={sectionRef} className="bg-[#0F2141] h-[1030px] ">
-            <div className="ml-16 pl-10 py-10 border-[#0F2141] border-y-8 h-full  bg-white ">
+          <div ref={sectionRef} className="bg-[#0b3331] h-[1030px] ">
+            <div className="ml-16 pl-10 py-10 border-[#0b3331] border-y-8 h-full  bg-white ">
               {/* Header */}
               <div className="flex gap-10 items-start  pb-4">
                 <div className="flex gap-3 w-[50%] items-end">
                   <img
-                    src="/logo.png"
-                    alt="Dream Valley Realty"
+                    src="/logo.svg"
+                    alt="ANS RealStateCRM"
                     className="h-24"
                   />
                   <div>
                     <h6 className="text-2xl leading-6 tracking-wider font-semibold">
-                      DREAM VALLEY REALTY INC.
+                      ANS REALSTATECRM INC.
                     </h6>
                     <h6 className="text-lg leading-6 tracking-wider">
                       BROKERAGE
@@ -484,7 +484,7 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                 </div>
 
                 <h3 className="mt-2 text-lg font-bold grid grid-cols-2 gap-5">
-                  <span>Balance due to Dream Valley Realty Inc.: </span>
+                  <span>Balance due to ANS RealStateCRM Inc.: </span>
                   <span className="flex gap-5">
                     <span>$</span>
                     {formatNumberWithCommasAndDecimals(
@@ -498,7 +498,7 @@ const BuyerCommissionInvoice = ({ uuid }) => {
               <div className="mt-4">
                 <p>
                   Please make cheque payable to{" "}
-                  <strong>Dream Valley Realty Inc.</strong>
+                  <strong>ANS RealStateCRM Inc.</strong>
                 </p>
                 <p className="text-sm">
                   Our trade reference number is{" "}
@@ -567,11 +567,11 @@ const BuyerCommissionInvoice = ({ uuid }) => {
                   any questions.
                 </p>
                 <p className="font-bold  mt-5">Tamanna Khan</p>
-                <p>Tamanna Khan, Dream Valley Realty Inc.</p>
+                <p>Tamanna Khan, ANS RealStateCRM Inc.</p>
                 <p>Tel: 416-951-9929, Ext. 1002</p>
                 <div className="flex gap-32 mt-4">
                   <p>www.dreamvalleyrealty.ca</p>
-                  <div className="bg-[#9F8667] h-[20px] w-full">.</div>
+                  <div className="bg-[#0f766e] h-[20px] w-full">.</div>
                 </div>
               </div>
             </div>
@@ -648,7 +648,7 @@ const BuyerCommissionInvoice = ({ uuid }) => {
               {/* Submit Button */}
               <div>
                 <button
-                  className="bg-[#0B1D3D] text-white p-2 rounded-md flex gap-2 items-center"
+                  className="bg-[#072f2d] text-white p-2 rounded-md flex gap-2 items-center"
                   onClick={onSubmitEmail} // Hook form submit
                   disabled={isEmailSend}
                 >

@@ -26,7 +26,7 @@ const FooterInfo: React.FC<FooterInfoProps> = ({ data, pdfData }) => {
             type="text"
             name=""
             id=""
-            placeholder="e.g. DREAM VALLEY REALTY INC."
+            placeholder="e.g. ANS REALSTATECRM INC."
             className="border-none bg-transparent block"
           />
         </div>

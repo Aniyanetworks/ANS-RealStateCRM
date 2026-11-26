@@ -284,11 +284,11 @@ const FileActivity: React.FC = () => {
               <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
               <button
                 onClick={() => setSelectedOperation(null)}
-                className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === null ? 'ring-1 ring-[#9F8667]' : ''}`}
-                style={{ borderLeft: "2px solid #9F8667", background: "#f9f6f3" }}
+                className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === null ? 'ring-1 ring-[#0f766e]' : ''}`}
+                style={{ borderLeft: "2px solid #0f766e", background: "#f9f6f3" }}
               >
                 <span className="text-xs text-gray-500 whitespace-nowrap">Total:</span>
-                <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#9F8667" }}>{allLogs.length}</span>
+                <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#0f766e" }}>{allLogs.length}</span>
               </button>
               <button
                 onClick={() => setSelectedOperation(selectedOperation === 'upload_file' ? null : 'upload_file')}
@@ -316,11 +316,11 @@ const FileActivity: React.FC = () => {
               </button>
               <button
                 onClick={() => setSelectedOperation(selectedOperation === 'move_file' ? null : 'move_file')}
-                className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === 'move_file' ? 'ring-1 ring-purple-500' : ''}`}
+                className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === 'move_file' ? 'ring-1 ring-teal-500' : ''}`}
                 style={{ borderLeft: "2px solid #a855f7", background: "#faf5ff" }}
               >
                 <span className="text-xs text-gray-500 whitespace-nowrap">Moves:</span>
-                <span className="text-xs font-semibold text-purple-600 whitespace-nowrap">{filteredSummary.moves}</span>
+                <span className="text-xs font-semibold text-teal-600 whitespace-nowrap">{filteredSummary.moves}</span>
               </button>
               <button
                 onClick={() => setSelectedOperation(selectedOperation === 'share_file' ? null : 'share_file')}

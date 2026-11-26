@@ -26,7 +26,7 @@ import { BsPeople, BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { usePermissions } from "../../../../../utils/permissionUtils";
 
-// "Our Agents" = agents under our own brokerage (Dream Valley Realty Inc.,
+// "Our Agents" = agents under our own brokerage (ANS RealStateCRM Inc.,
 // brokerageId 24) who aren't terminated — same rule as the Agent List page's
 // "Our Agents" tab. Co-op/other-brokerage agents are excluded.
 const OUR_BROKERAGE_ID = 24;
@@ -160,11 +160,11 @@ const CalendarEventManagement = () => {
           return (
             <Tooltip
               key={event.id}
-              color="#0C1A34"
+              color="#082624"
               rootClassName="event-tooltip-overlay"
               styles={{
                 body: {
-                  backgroundColor: "#0C1A34",
+                  backgroundColor: "#082624",
                   padding: "10px 12px",
                   borderRadius: 8,
                   boxShadow: "0 6px 16px rgba(0,0,0,0.3)",
@@ -212,7 +212,7 @@ const CalendarEventManagement = () => {
               }
             >
               <Tag
-                color="#243451"
+                color="#0b3b38"
                 className="m-0 truncate cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -599,13 +599,13 @@ const CalendarEventManagement = () => {
           <style>{`
             .brand-segmented .ant-segmented-item-selected,
             .brand-segmented .ant-segmented-thumb {
-              background-color: #0C1A34 !important;
+              background-color: #082624 !important;
             }
             .brand-segmented .ant-segmented-item-selected {
               color: #fff !important;
             }
             .event-tooltip-overlay .ant-tooltip-inner {
-              background-color: #0C1A34 !important;
+              background-color: #082624 !important;
               color: #ffffff !important;
               display: block !important;
               -webkit-line-clamp: unset !important;
@@ -614,7 +614,7 @@ const CalendarEventManagement = () => {
               max-width: 280px !important;
             }
             .event-tooltip-overlay .ant-tooltip-arrow::before {
-              background-color: #0C1A34 !important;
+              background-color: #082624 !important;
             }
           `}</style>
           {hasPermissionForSlug("create-calendar-events") && (

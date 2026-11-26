@@ -263,7 +263,7 @@ const ChartOfAccounts = () => {
         pagination={{ pageSize: 50 }}
         extra={
           <>
-            <button type="button" className="primary-btn-ghost text-xs py-1 px-3" disabled={loading} onClick={() => run("/gl-accounts/import-default")}>Import Dream Valley chart</button>
+            <button type="button" className="primary-btn-ghost text-xs py-1 px-3" disabled={loading} onClick={() => run("/gl-accounts/import-default")}>Import ANS chart</button>
             <button type="button" className="primary-btn text-xs py-1 px-3" onClick={() => open(null)}>Add Account</button>
           </>
         }

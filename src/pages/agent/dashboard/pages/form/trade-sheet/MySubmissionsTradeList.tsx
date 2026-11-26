@@ -701,7 +701,7 @@ const MySubmissionsTradeList = () => {
               record.status === "rejected"
                 ? "red"
                 : record.status === "underReview"
-                ? "#eb9715"
+                ? "#f59e0b"
                 : "",
           }}
           className={`
@@ -1494,7 +1494,7 @@ const MySubmissionsTradeList = () => {
         onChange={handleChange}
         rowClassName={(record) =>
           record.tradeSheetTypeId === selectedTradeSheetId
-            ? "bg-blue-50 border-l-2 border-[#9F8667]"
+            ? "bg-blue-50 border-l-2 border-[#0f766e]"
             : ""
         }
       />
@@ -1546,7 +1546,7 @@ const MySubmissionsTradeList = () => {
                 onClick={() => setActiveTab(tab.key)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all duration-150 whitespace-nowrap ${
                   activeTab === tab.key
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
@@ -1707,8 +1707,8 @@ const MySubmissionsTradeList = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#0B1D3D",
-              borderColor: "#0B1D3D",
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
               color: "#fff",
             }}
           >
@@ -1742,7 +1742,7 @@ const MySubmissionsTradeList = () => {
                 setUploadedInModal(new Set());
                 await changeStatusApi("approved", changeUuid || "");
               }}
-              style={{ backgroundColor: "#0B1D3D", borderColor: "#0B1D3D" }}
+              style={{ backgroundColor: "#072f2d", borderColor: "#072f2d" }}
             >
               Approve Now
             </Button>
@@ -2020,7 +2020,7 @@ const MySubmissionsTradeList = () => {
         <div className="space-y-3">
           <div ref={lawyerInfoRef}>
             {/* Trade Info Box */}
-            <h2 className="border-t border-gray-400 bg-[#9F8667] text-white border-x text-center text-sm font-bold py-1">
+            <h2 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               Trade Information
             </h2>
             <table className="w-full text-xs border-collapse border border-gray-400 px-2 w-[50%] py-1 mb-4">
@@ -2096,7 +2096,7 @@ const MySubmissionsTradeList = () => {
             {(lawyerType === "" || lawyerType === "seller") && (
               <>
                 {/* Seller Lawyer Info Table */}
-                <h2 className="border-t border-gray-400 bg-[#9F8667] text-white border-x text-center text-sm font-bold py-1">
+                <h2 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                   Seller Lawyer Information
                 </h2>
                 <table className="w-full text-xs border-collapse border border-gray-400 px-2 w-[50%] py-1 mb-4">
@@ -2165,7 +2165,7 @@ const MySubmissionsTradeList = () => {
             {(lawyerType === "" || lawyerType === "buyer") && (
               <>
                 {/* Buyer Lawyer Info Table */}
-                <h2 className="border-t border-gray-400 bg-[#9F8667] text-white border-x text-center text-sm font-bold py-1">
+                <h2 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                   Buyer Lawyer Information
                 </h2>
                 <table className="w-full text-xs border-collapse border border-gray-400 px-2 w-[50%] py-1 mb-4">

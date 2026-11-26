@@ -23,3 +23,8 @@ node_modules
 *.sln
 *.sw?
 .env
+
+dist
+.env
+.env.*
+!.env.example

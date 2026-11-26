@@ -1,6 +1,6 @@
 // @ts-nocheck
 // eslint-disable @typescript-eslint/no-explicit-any
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import {
   useGetSpacificPropertyListingQuery,
   useChangePropertyListingAttachmentStatusMutation,
@@ -154,7 +154,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
       case "Approved":
         return "green";
       case "Under Review":
-        return "#9F8667";
+        return "#0f766e";
       case "Rejected":
         return "red";
       default:
@@ -351,7 +351,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
   return (
     <div className=" relative">
       {showHeader && propertyListingData && (
-        <h2 className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 uppercase mb-3">
+        <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 uppercase mb-3">
           {propertyListingData?.propertyListingTypeId} - {propertyListingData?.propertyAddress}
         </h2>
       )}
@@ -449,9 +449,9 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                               setCategoryId(file.id),
                               handleViewClick(uploadFile),
                             ]}
-                            className={`relative flex px-5 text-[#243451] py-2 hover:bg-[#F6F4F0] ${
+                            className={`relative flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${
                               uploadFile.filePath == pdfToView.filePath &&
-                              "bg-[#F6F4F0]"
+                              "bg-[#f0f7f6]"
                             } items-center   cursor-pointer gap-3`}
                           >
                             <Tooltip
@@ -470,7 +470,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                                   >
                                     <path
                                       d="M0 1H6L9 4H16V14H0V1Z"
-                                      fill="#9F8667"
+                                      fill="#0f766e"
                                     />
                                   </svg>
                                 ) : (
@@ -494,7 +494,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                                       uploadFile.status === "rejected"
                                         ? "red"
                                         : uploadFile.status === "underReview"
-                                        ? "#eb9715"
+                                        ? "#f59e0b"
                                         : "green", // Apply color based on status
                                   }}
                                   className={
@@ -519,7 +519,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                         ))
                     ) : (
                       <div
-                        className={`px-5 py-2 hover:bg-[#F6F4F0]   text-[#243451]  `}
+                        className={`px-5 py-2 hover:bg-[#f0f7f6]   text-[#0b3b38]  `}
                       >
                         <div>
                           <div
@@ -613,7 +613,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                                               ? "red"
                                               : uploadFile.status ===
                                                 "underReview"
-                                              ? "#eb9715"
+                                              ? "#f59e0b"
                                               : "green", // Apply color based on status
                                         }}
                                         className={
@@ -653,9 +653,9 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                       setCategoryId("someId"), // Use the appropriate category ID if needed
                       handleViewClick(uploadFile, true),
                     ]}
-                    className={`flex px-5 text-[#243451] py-2 hover:bg-[#F6F4F0] ${
+                    className={`flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${
                       uploadFile.filePath === pdfToView.filePath &&
-                      "bg-[#F6F4F0]"
+                      "bg-[#f0f7f6]"
                     } items-center cursor-pointer gap-3`}
                   >
                     <Tooltip placement="right" color="#fff" title="Others">
@@ -675,7 +675,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
                   </ul>
                 ))
               ) : (
-                <div className={`px-5 py-2 hover:bg-[#F6F4F0] text-[#243451]`}>
+                <div className={`px-5 py-2 hover:bg-[#f0f7f6] text-[#0b3b38]`}>
                   <div>
                     <div
                       onClick={
@@ -750,7 +750,7 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
           ></div>
           <div className=" w-full   bg-white rounded-r-lg shadow-md p-4">
             <div className="flex justify-between pb-4 items-center border-b mb-2">
-              <h3 className=" font-medium flex items-center gap-2 text-[#243451]">
+              <h3 className=" font-medium flex items-center gap-2 text-[#0b3b38]">
                 <div onClick={() => setCollapsed(!collapsed)}>
                   <AlignLeftOutlined></AlignLeftOutlined>
                 </div>
@@ -900,9 +900,9 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
               <div className="h-[calc(100vh-14rem)] flex flex-col justify-center items-center gap-2  ">
                 <img src={logo} alt="" className={`w-[70px]`} />
                 <h2
-                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#9F8667]`}
+                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#0f766e]`}
                 >
-                  DREAM VALLEY REALTY
+                  ANS REALSTATECRM
                 </h2>
               </div>
             )}
@@ -923,8 +923,8 @@ const PropertyListingPaperworkFileManager: React.FC = ({ uuid, showHeader = true
             onClick={() => changeStatusApi(selectedStatus, changeFileId)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#0B1D3D", // Custom background color
-              borderColor: "#0B1D3D", // Custom border color
+              backgroundColor: "#072f2d", // Custom background color
+              borderColor: "#072f2d", // Custom border color
               color: "#fff", // Text color to ensure contrast
             }}
           >

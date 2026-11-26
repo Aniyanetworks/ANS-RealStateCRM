@@ -1,4 +1,4 @@
-// Agent Rankings & Top Producers — the original DV Accounting screen, using AgentHub agents, approved trade sheets
+// Agent Rankings & Top Producers — the original ANS Accounting screen, using ANS RealStateCRM agents, approved trade sheets
 // (with their trade accounting) and property listings.
 import { useMemo, useState } from "react";
 import { useAcct } from "../acctShared";

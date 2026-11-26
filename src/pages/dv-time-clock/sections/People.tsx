@@ -29,7 +29,7 @@ function AddEmployeeForm() {
   );
   return (
     <>
-      <div className="notice">Create the employee account directly here. Assign a branch so GPS geofencing can be used for clock-in. If the email already has an AgentHub login, that login is added as an employee and keeps its password.</div>
+      <div className="notice">Create the employee account directly here. Assign a branch so GPS geofencing can be used for clock-in. If the email already has an ANS RealStateCRM login, that login is added as an employee and keeps its password.</div>
       <div className="formgrid">
         {field("Full Name *", "fullName", { autoComplete: "name" })}
         {field("Email *", "email", { type: "email", autoComplete: "email" })}
@@ -90,7 +90,7 @@ function EditEmployeeForm({ e }: { e: Member }) {
   const section = (title: string) => <div className="span3" style={{ fontSize: 11, fontWeight: 800, letterSpacing: 0.4, textTransform: "uppercase", color: "var(--muted)", borderTop: "1px solid var(--line)", paddingTop: 12, marginTop: 2 }}>{title}</div>;
   return (
     <>
-      {/* Who is being edited: name, email and type come from the AgentHub user / agent record */}
+      {/* Who is being edited: name, email and type come from the ANS RealStateCRM user / agent record */}
       <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, border: "1px solid var(--line)", borderRadius: 12, background: "#f8f9fb", marginBottom: 16 }}>
         <span style={{ display: "grid", placeItems: "center", width: 42, height: 42, borderRadius: "50%", background: "var(--navy)", color: "#fff", fontWeight: 800, flex: "0 0 auto" }}>{initials}</span>
         <div style={{ minWidth: 0 }}>
@@ -101,7 +101,7 @@ function EditEmployeeForm({ e }: { e: Member }) {
       </div>
       <div className="formgrid">
         {section("Contact & ID")}
-        <div className="field"><label>Phone Number</label><input type="tel" placeholder="Not on file in AgentHub" value={f.phone} onChange={(x) => setF({ ...f, phone: x.target.value })} /></div>
+        <div className="field"><label>Phone Number</label><input type="tel" placeholder="Not on file in ANS RealStateCRM" value={f.phone} onChange={(x) => setF({ ...f, phone: x.target.value })} /></div>
         <div className="field"><label>Employee ID</label><input value={f.employeeCode} onChange={(x) => setF({ ...f, employeeCode: x.target.value })} /></div>
         <div className="field"><label>Username <span style={{ fontWeight: 500 }}>(optional)</span></label><input autoComplete="off" name="tc-employee-username" placeholder="Not set" value={f.username} onChange={(x) => setF({ ...f, username: x.target.value })} /></div>
 
@@ -204,7 +204,7 @@ function BranchForm({ b }: { b?: Branch }) {
   return (
     <>
       <div className="formgrid">
-        <div className="field"><label>Name</label><input value={f.name} disabled={Boolean(b)} title={b ? "Branch names are managed in AgentHub branch management." : undefined} onChange={(e) => setF({ ...f, name: e.target.value })} /></div>
+        <div className="field"><label>Name</label><input value={f.name} disabled={Boolean(b)} title={b ? "Branch names are managed in ANS RealStateCRM branch management." : undefined} onChange={(e) => setF({ ...f, name: e.target.value })} /></div>
         <div className="field"><label>Address</label><input value={f.address} onChange={(e) => setF({ ...f, address: e.target.value })} /></div>
         <div className="field"><label>Latitude</label><input type="number" step="0.0000001" value={f.latitude} onChange={(e) => setF({ ...f, latitude: e.target.value })} /></div>
         <div className="field"><label>Longitude</label><input type="number" step="0.0000001" value={f.longitude} onChange={(e) => setF({ ...f, longitude: e.target.value })} /></div>
@@ -278,7 +278,7 @@ export function AccessSection() {
   return (
     <div className="panel">
       <h2>Management Access &amp; Permissions</h2>
-      <p className="notice">Select an existing account, set its role, and choose exact permissions. Superadmin retains full access. AgentHub Super Admins always have Superadmin access to the time clock.</p>
+      <p className="notice">Select an existing account, set its role, and choose exact permissions. Superadmin retains full access. ANS RealStateCRM Super Admins always have Superadmin access to the time clock.</p>
       <div className="formgrid">
         <div className="field"><label>Account</label>
           <select value={userId} onChange={(e) => setUserId(e.target.value)}>
@@ -416,17 +416,17 @@ export function SettingsSection() {
 }
 
 // ---------- Calendar Settings / My Profile ----------
-// (Passwords are managed by the AgentHub login, so the time clock no longer offers a password change here.)
+// (Passwords are managed by the ANS RealStateCRM login, so the time clock no longer offers a password change here.)
 
 export function AccountSection() {
   return (
     <>
       <div className="panel">
         <h2>Calendar Integration</h2>
-        <p className="muted">Connect your own Google Calendar account. Your DV Appointments Calendar continues to work independently.</p>
-        <div className="notice">Not connected. Google Calendar sync isn't available in the AgentHub time clock yet.</div>
+        <p className="muted">Connect your own Google Calendar account. Your ANS Appointments Calendar continues to work independently.</p>
+        <div className="notice">Not connected. Google Calendar sync isn't available in the ANS RealStateCRM time clock yet.</div>
         <div className="actions"><button className="secondary" disabled>Connect Google Calendar</button></div>
-        <p className="muted">Google authorization is handled securely by the server. Never enter your Google password or client secret into DV TimeClock.</p>
+        <p className="muted">Google authorization is handled securely by the server. Never enter your Google password or client secret into ANS Time Clock.</p>
       </div>
     </>
   );

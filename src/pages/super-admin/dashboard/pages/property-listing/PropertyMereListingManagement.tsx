@@ -840,7 +840,7 @@ const PropertyListingManagement = () => {
                 key={tab.id}
                 onClick={() => setListingFilter(tab.id as 'current' | 'previous' | 'all')}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                  listingFilter === tab.id ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  listingFilter === tab.id ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
                 {tab.name}
@@ -1057,8 +1057,8 @@ const PropertyListingManagement = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#0B1D3D", // Custom background color
-              borderColor: "#0B1D3D", // Custom border color
+              backgroundColor: "#072f2d", // Custom background color
+              borderColor: "#072f2d", // Custom border color
               color: "#fff", // Text color to ensure contrast
             }}
           >

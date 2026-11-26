@@ -1,4 +1,4 @@
-// Banking & Reconciliation — the original DV Accounting screen: Trust Banking (account tabs with book balance and
+// Banking & Reconciliation — the original ANS Accounting screen: Trust Banking (account tabs with book balance and
 // bank entries, trust controls, trust ledger, client/matter liabilities, reconciliation history) and Journal Entries
 // (manual journals; Super Admin can edit/delete manual journals in open periods). Trust activity posts to the ledger.
 import { Fragment, useMemo, useState } from "react";
@@ -14,7 +14,7 @@ const TRUST = ["REAL_ESTATE_TRUST", "COMMISSION_TRUST"];
 const label = (v?: string | null) => String(v || "").replace(/_/g, " ");
 const d10 = (v?: string | null) => (v ? String(v).slice(0, 10) : "—");
 
-// Trust activity types: the original's deposit/disbursement plus AgentHub's commission flows.
+// Trust activity types: the original's deposit/disbursement plus ANS RealStateCRM's commission flows.
 const ACTIVITY: Record<string, { label: string; path: string; account: string[]; trade?: boolean; party: "received" | "payee" | null; hst?: boolean; transfer?: "ret-ct" | "ct-op" }> = {
   DEPOSIT: { label: "DEPOSIT", path: "/trust/deposit", account: ["REAL_ESTATE_TRUST"], party: "received" },
   COMMISSION_RECEIPT: { label: "DEPOSIT — commission receipt (Commission Trust)", path: "/trust/commission-receipt", account: ["COMMISSION_TRUST"], trade: true, party: "received", hst: true },

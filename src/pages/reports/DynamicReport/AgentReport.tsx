@@ -11,7 +11,7 @@ import {
   useState,
 } from 'react';
 
-import logo1 from '/logo.png';
+import logo1 from '/logo.svg';
 import type { TableColumnsType } from 'antd';
 import {
   Select,
@@ -480,10 +480,10 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                         <span className="text-lg font-semibold text-red-600">{summary.rejectedAgent}</span>
                     </div>
                 </div>
-                <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500">
+                <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500">
                     <div className="flex flex-col">
                         <span className="text-sm text-gray-500 mb-1">Terminated Agent</span>
-                        <span className="text-lg font-semibold text-purple-600">{summary.terminatedAgent}</span>
+                        <span className="text-lg font-semibold text-teal-600">{summary.terminatedAgent}</span>
                     </div>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-gray-500">
@@ -540,7 +540,7 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                     <div className="flex">
                         <input
                             type="text"
-                            className="w-full border p-2 rounded-l focus:ring focus:#141D2C"
+                            className="w-full border p-2 rounded-l focus:ring focus:#0a2a28"
                             placeholder="Search agents..."
                             value={searchText}
                             onChange={(e) => {
@@ -562,7 +562,7 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                             </button>
                         )}
                         <button
-                            className="bg-[#141D2C] text-white px-4 py-2 rounded-r-md flex items-center gap-2"
+                            className="bg-[#0a2a28] text-white px-4 py-2 rounded-r-md flex items-center gap-2"
                             onClick={() => setShowDropdown(!showDropdown)}
                         >
                             <FaFilter /> Filter
@@ -624,7 +624,7 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
 
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b bg-[#141D2C] text-white">
+                    <div className="flex items-center justify-between p-4 border-b bg-[#0a2a28] text-white">
                         <h3 className="text-lg font-semibold">Filter Options</h3>
                         <button
                             onClick={() => setShowDropdown(false)}
@@ -835,7 +835,7 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                     {/* Fixed Footer with Action Buttons */}
                     <div className="flex gap-2 p-4 border-t bg-white">
                         <button
-                            className="w-1/2 bg-[#141D2C] text-white p-2 rounded hover:bg-[#1a2533] transition-colors"
+                            className="w-1/2 bg-[#0a2a28] text-white p-2 rounded hover:bg-[#1a2533] transition-colors"
                             onClick={() => {
                                 handleCustomDateRange();
                                 setShowDropdown(false);

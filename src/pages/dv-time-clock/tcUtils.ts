@@ -1,4 +1,4 @@
-// DV Time Clock helpers — ported from the dvclock app (dates, pay periods, Ontario holidays,
+// ANS Time Clock helpers — ported from the dvclock app (dates, pay periods, Ontario holidays,
 // shift maths and conflict checks). Kept as plain functions so the screens behave exactly the same.
 
 export type Holiday = { name: string; start_date?: string; end_date?: string; date?: string };

@@ -1,4 +1,4 @@
-// Tax Documents — the original DV Accounting screen: per tax year and type (T4A agents / T4 employees),
+// Tax Documents — the original ANS Accounting screen: per tax year and type (T4A agents / T4 employees),
 // add recipient drafts, upload a PDF beside each recipient (releases it to their portal), replace or remove it.
 import { useState } from "react";
 import { useAcct, useAcctAction } from "../acctShared";

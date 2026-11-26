@@ -150,7 +150,7 @@ const CreateCustomDiscount = () => {
                     <option value="Authentisign">Authentisign</option>
                     <option value="DVREALTY Email">DVREALTY Email</option>
                     <option value="500 Business Cards">500 Business Cards</option>
-                    <option value="1 DV Lock Box">1 DV Lock Box</option>
+                    <option value="1 ANS Lock Box">1 ANS Lock Box</option>
                     <option value="Transection Cap Fee">Transection Cap Fee</option>
                   </select>
                 </div>

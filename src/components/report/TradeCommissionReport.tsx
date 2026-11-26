@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 
-import logo1 from '/logo.png';
+import logo1 from '/logo.svg';
 import type {
   TableColumnsType,
   TableProps,

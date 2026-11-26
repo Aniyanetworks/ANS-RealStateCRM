@@ -45,7 +45,7 @@ const AgentCard: React.FC<AgentCardProps> = ({ agentData }) => {
         <div>
           <button
             onClick={showLoading}
-            className="bg-gray-100 px-3 2xl:px-5 py-1 2xl:py-2 rounded-md hover:bg-[#9E8566] hover:text-white duration-300 transition"
+            className="bg-gray-100 px-3 2xl:px-5 py-1 2xl:py-2 rounded-md hover:bg-[#0d9488] hover:text-white duration-300 transition"
           >
             Details
           </button>

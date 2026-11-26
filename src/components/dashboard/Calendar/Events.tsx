@@ -23,7 +23,7 @@ const Events = ({ events }: { events: any[] }) => {
     if (dayEvents.length > 0) {
       return (
         <div className="flex items-center   justify-end h-full">
-          <Tag color="#243451" className="m-0 mt-2">
+          <Tag color="#0b3b38" className="m-0 mt-2">
             <span className="max-md:hidden"> {dayEvents.length} Events</span>
           </Tag>
         </div>

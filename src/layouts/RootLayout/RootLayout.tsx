@@ -67,7 +67,7 @@ const RootLayout = () => {
       />
 
       <div
-        className={`absolute lg:relative z-[999] w-[300px] h-[calc(100vh)] overflow-hidden bg-[#243451] ${sidebarCollapsed
+        className={`absolute lg:relative z-[999] w-[300px] h-[calc(100vh)] overflow-hidden bg-[#0b3b38] ${sidebarCollapsed
           ? sidebarCollapsed && windowWidth < 1024
             ? "block"
             : "hidden"

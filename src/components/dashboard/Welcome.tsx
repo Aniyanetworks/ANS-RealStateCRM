@@ -10,10 +10,10 @@ const Welcome = () => {
 
       <div className="p-5">
         <h2 className=" font-medium">
-          Welcome to Dream Valley Realty's Agent's Hub,
+          Welcome to ANS RealStateCRM's ANS RealStateCRM,
         </h2>
         <p className="mt-3">
-          Welcome to Dream Valley Realty's Agent's Hub, your go-to resource for
+          Welcome to ANS RealStateCRM's ANS RealStateCRM, your go-to resource for
           everything you need to succeed. Easily access and manage essential
           documents, upload trade sheets, and explore a rich library of training
           materials and videos. Our intuitive platform ensures you have the

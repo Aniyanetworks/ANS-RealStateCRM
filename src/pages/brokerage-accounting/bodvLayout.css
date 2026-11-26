@@ -1,4 +1,4 @@
-/* Brokerage Accounting inside AgentHub: bodv's sidebar sits inside the page (next to the AgentHub sidebar)
+/* Brokerage Accounting inside ANS RealStateCRM: bodv's sidebar sits inside the page (next to the ANS RealStateCRM sidebar)
    instead of being fixed to the window, and there is no separate top bar. Loaded after bodv.css. */
 .dvac { border-radius: 14px; }
 /* No overflow:hidden here — it would stop the sidebar from staying in view (position: sticky). */
@@ -27,7 +27,7 @@
   .dvac .content { padding: 18px 14px 32px; }
 }
 
-/* Screens that still use AgentHub (antd) components while they are being rebuilt. */
+/* Screens that still use ANS RealStateCRM (antd) components while they are being rebuilt. */
 .dvac .legacy-panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
 .dvac .legacy-panel table { min-width: 0; }
 .dvac .tabs.bodv-tabs { display: flex; gap: 8px; margin: 0 0 18px; flex-wrap: wrap; }

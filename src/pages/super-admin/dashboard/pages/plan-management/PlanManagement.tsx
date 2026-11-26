@@ -190,7 +190,7 @@ const PlanManagement = () => {
               type="button"
               onClick={() => switchTab("plan")}
               className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                activeTab === "plan" ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                activeTab === "plan" ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               }`}
             >
               Regular Plans
@@ -199,7 +199,7 @@ const PlanManagement = () => {
               type="button"
               onClick={() => switchTab("optionalPlan")}
               className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                activeTab === "optionalPlan" ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                activeTab === "optionalPlan" ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               }`}
             >
               Addon Plans

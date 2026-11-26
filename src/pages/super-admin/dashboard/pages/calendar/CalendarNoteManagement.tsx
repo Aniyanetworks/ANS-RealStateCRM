@@ -178,11 +178,11 @@ const CalendarNoteManagement = () => {
         {dayNotes.map((note) => (
           <Tooltip
             key={note.uuid}
-            color="#9F8667"
+            color="#0f766e"
             rootClassName="note-tooltip-overlay"
             styles={{
               body: {
-                backgroundColor: "#9F8667",
+                backgroundColor: "#0f766e",
                 padding: "10px 12px",
                 borderRadius: 8,
                 boxShadow: "0 6px 16px rgba(0,0,0,0.3)",
@@ -195,7 +195,7 @@ const CalendarNoteManagement = () => {
             }
           >
             <Tag
-              color="#9F8667"
+              color="#0f766e"
               className="m-0 truncate cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
@@ -246,7 +246,7 @@ const CalendarNoteManagement = () => {
               overflow: visible !important;
             }
             .note-tooltip-overlay .ant-tooltip-inner {
-              background-color: #9F8667 !important;
+              background-color: #0f766e !important;
               color: #ffffff !important;
               display: block !important;
               -webkit-line-clamp: unset !important;
@@ -255,7 +255,7 @@ const CalendarNoteManagement = () => {
               max-width: 280px !important;
             }
             .note-tooltip-overlay .ant-tooltip-arrow::before {
-              background-color: #9F8667 !important;
+              background-color: #0f766e !important;
             }
           `}</style>
           <Calendar

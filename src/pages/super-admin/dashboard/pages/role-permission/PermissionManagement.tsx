@@ -214,7 +214,7 @@ const PermissionManagement = () => {
                     <select
                       {...register("roleId")}
                       onChange={(e) => handleRoleChange(e.target.value)}
-                      className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#243451] focus:border-[#243451] shadow-sm"
+                      className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0b3b38] focus:border-[#0b3b38] shadow-sm"
                     >
                       <option value="">Select Role Type</option>
                       {roleListData?.map((role) => (
@@ -234,7 +234,7 @@ const PermissionManagement = () => {
               )}
               {/* Bottom Section: Role Display */}
               <div className="flex justify-center items-center mt-auto">
-                <h2 className="text-center font-bold text-white bg-[#243451] p-2 rounded-lg shadow-md ml-0 md:ml-4">
+                <h2 className="text-center font-bold text-white bg-[#0b3b38] p-2 rounded-lg shadow-md ml-0 md:ml-4">
                   Role:{" "}
                   <span className="font-normal">
                     {selectedRoleData?.data?.role?.name}
@@ -247,14 +247,14 @@ const PermissionManagement = () => {
                 {selectedRoleData?.data?.role?.isDefault == "no" && (
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-[#243451] text-white rounded-md hover:bg-[#9F8667] transition-all duration-300"
+                    className="px-6 py-2 bg-[#0b3b38] text-white rounded-md hover:bg-[#0f766e] transition-all duration-300"
                   >
                     Save Changes
                   </button>
                 )}
                 <NavLink
                   to={`/dashboard/super-admin/role-permission/role-management`}
-                  className="px-6 py-2 bg-[#243451] text-white rounded-md hover:bg-[#9F8667] transition-all duration-300"
+                  className="px-6 py-2 bg-[#0b3b38] text-white rounded-md hover:bg-[#0f766e] transition-all duration-300"
                 >
                   Go Back
                 </NavLink>
@@ -355,7 +355,7 @@ const PermissionManagement = () => {
             {selectedRoleData?.data?.role?.isDefault == "no" && (
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#243451] 0 text-white rounded-md hover:bg-[#9F8667] transition"
+                className="px-6 py-2 bg-[#0b3b38] 0 text-white rounded-md hover:bg-[#0f766e] transition"
               >
                 Save Changes
               </button>

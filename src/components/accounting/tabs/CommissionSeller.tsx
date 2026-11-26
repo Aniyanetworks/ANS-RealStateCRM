@@ -575,7 +575,7 @@ const CommissionSeller = ({ data }) => {
                     </p>
                     <NavLink
                       to={`/dashboard/accounting/account-cheque-posting/${tradesheetData?.tradeTransaction?.[0]?.uuid}`}
-                      className="ml-4 bg-[#243451] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="ml-4 bg-[#0b3b38] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       Cheque Posting
                     </NavLink>
@@ -583,7 +583,7 @@ const CommissionSeller = ({ data }) => {
                 ) : (
                   <button
                     type="submit"
-                    className="bg-[#243451] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="bg-[#0b3b38] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     Finalize
                   </button>
@@ -591,7 +591,7 @@ const CommissionSeller = ({ data }) => {
 
                 <NavLink
                   to="/dashboard/accounting/trade-list"
-                  className="ml-4 bg-[#243451] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="ml-4 bg-[#0b3b38] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   Go Back
                 </NavLink>
@@ -608,7 +608,7 @@ const CommissionSeller = ({ data }) => {
                   <div className="mt-4 flex justify-center space-x-4">
                     <button
                       onClick={handleFirstModalConfirm}
-                      className="bg-[#243451] text-white px-4 py-2 rounded-md hover:bg-[#443451]"
+                      className="bg-[#0b3b38] text-white px-4 py-2 rounded-md hover:bg-[#443451]"
                     >
                       Yes
                     </button>
@@ -667,7 +667,7 @@ const CommissionSeller = ({ data }) => {
                   <div className="mt-4 flex justify-center space-x-4">
                     <button
                       onClick={handleSecondModalConfirm}
-                      className="bg-[#243451] text-white px-4 py-2 rounded-md hover:bg-[#443451]"
+                      className="bg-[#0b3b38] text-white px-4 py-2 rounded-md hover:bg-[#443451]"
                     >
                       Yes
                     </button>
@@ -692,7 +692,7 @@ const CommissionSeller = ({ data }) => {
                   <div className="mt-4 flex justify-center space-x-4">
                     <button
                       onClick={handleThirdModalConfirm}
-                      className="bg-[#243451] text-white px-4 py-2 rounded-md hover:bg-[#443451]"
+                      className="bg-[#0b3b38] text-white px-4 py-2 rounded-md hover:bg-[#443451]"
                     >
                       Yes
                     </button>

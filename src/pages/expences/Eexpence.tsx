@@ -8,8 +8,8 @@ import {
   useState,
 } from 'react';
 
-import logo from '/logo.png';
-import logo1 from '/logo.png';
+import logo from '/logo.svg';
+import logo1 from '/logo.svg';
 import type {
   TableColumnsType,
   TableProps,
@@ -1050,17 +1050,17 @@ const ExpenseManagement = () => {
           <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Expenses</h1>
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
           {/* Inline stat cards */}
-          <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #9F8667", background: "#f9f6f3" }}>
+          <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #0f766e", background: "#f9f6f3" }}>
             <span className="text-xs text-gray-500 whitespace-nowrap">Total Expenses:</span>
-            <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#9F8667" }}>${formatNumberWithCommasAndDecimals(calculateTotalExpenses())}</span>
+            <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#0f766e" }}>${formatNumberWithCommasAndDecimals(calculateTotalExpenses())}</span>
           </div>
-          <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #9F8667", background: "#f9f6f3" }}>
+          <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #0f766e", background: "#f9f6f3" }}>
             <span className="text-xs text-gray-500 whitespace-nowrap">Amount:</span>
-            <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#9F8667" }}>${formatNumberWithCommasAndDecimals(calculateTotalAmount())}</span>
+            <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#0f766e" }}>${formatNumberWithCommasAndDecimals(calculateTotalAmount())}</span>
           </div>
-          <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #9F8667", background: "#f9f6f3" }}>
+          <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #0f766e", background: "#f9f6f3" }}>
             <span className="text-xs text-gray-500 whitespace-nowrap">Tax:</span>
-            <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#9F8667" }}>${formatNumberWithCommasAndDecimals(calculateTotalTax())}</span>
+            <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#0f766e" }}>${formatNumberWithCommasAndDecimals(calculateTotalTax())}</span>
           </div>
           <div className="flex-1" />
           {/* Search + Filter */}
@@ -1080,7 +1080,7 @@ const ExpenseManagement = () => {
                 </button>
               )}
               <button
-                className="bg-[#141D2C] text-white px-2 rounded-r flex items-center gap-1 flex-shrink-0"
+                className="bg-[#0a2a28] text-white px-2 rounded-r flex items-center gap-1 flex-shrink-0"
                 style={{ fontSize: 11 }}
                 onClick={() => setShowDropdown(!showDropdown)}
               >
@@ -1178,7 +1178,7 @@ const ExpenseManagement = () => {
                   />
                 </div>
                 <div className="flex gap-2 mt-4">
-                  <button className="w-1/2 bg-[#141D2C] text-white p-2 rounded" onClick={handleApplyFilters}>Apply</button>
+                  <button className="w-1/2 bg-[#0a2a28] text-white p-2 rounded" onClick={handleApplyFilters}>Apply</button>
                   <button
                     type="button"
                     className="w-1/2 bg-[#FFDFDC] text-[#EF4444] p-2 rounded"
@@ -1627,7 +1627,7 @@ const ExpenseManagement = () => {
               doc.addImage(logo, "PNG", logoX, logoY, logoWidth, logoHeight);
 
               doc.setFontSize(16);
-              doc.text("DREAM VALLEY REALTY", pageWidth / 2, 32, { align: "center" });
+              doc.text("ANS REALSTATECRM", pageWidth / 2, 32, { align: "center" });
 
               doc.setFontSize(12);
               doc.text("Expense Details", pageWidth / 2, 40, { align: "center" });
@@ -1681,9 +1681,9 @@ const ExpenseManagement = () => {
             <div className=" flex flex-col items-center gap-2  ">
               <img src={logo} alt="" className={`w-[50px]`} />
               <h2
-                className={`tracking-widest text-base playfair-display-sc-bold text-[#9F8667]`}
+                className={`tracking-widest text-base playfair-display-sc-bold text-[#0f766e]`}
               >
-                DREAM VALLEY REALTY
+                ANS REALSTATECRM
               </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">

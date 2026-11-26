@@ -804,7 +804,7 @@ const InventoryList = () => {
                   onClick={() => setSelectedBranchTab("all")}
                   className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
                     selectedBranchTab === "all"
-                      ? "bg-[#9F8667] text-white"
+                      ? "bg-[#0f766e] text-white"
                       : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   }`}
                 >
@@ -817,7 +817,7 @@ const InventoryList = () => {
                     onClick={() => setSelectedBranchTab(String(branch.id))}
                     className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
                       selectedBranchTab === String(branch.id)
-                        ? "bg-[#9F8667] text-white"
+                        ? "bg-[#0f766e] text-white"
                         : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                     }`}
                   >
@@ -1283,7 +1283,7 @@ const InventoryList = () => {
                       <span className="text-[13px] font-medium text-gray-700">
                         Quantity:
                       </span>
-                      <span className="font-semibold text-[#0C1A34] text-base">
+                      <span className="font-semibold text-[#082624] text-base">
                         {selectedRecord.quantity}
                       </span>
                     </div>
@@ -1335,7 +1335,7 @@ const InventoryList = () => {
                   {getDescriptionTextLength(selectedRecord.description) > 200 && (
                     <button
                       onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                      className="text-[11px] text-[#0C1A34] hover:text-[#0F2141] flex items-center gap-1 font-medium transition-colors"
+                      className="text-[11px] text-[#082624] hover:text-[#0b3331] flex items-center gap-1 font-medium transition-colors"
                     >
                       {isDescriptionExpanded ? (
                         <>

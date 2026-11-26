@@ -328,7 +328,7 @@ const RealtorPropertyListingManagement = () => {
                 onClick={() => setListingFilter(tab.key as "current" | "previous" | "all")}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
                   listingFilter === tab.key
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
@@ -429,7 +429,7 @@ const RealtorPropertyListingManagement = () => {
       >
         {selectedProperty && (
           <div className="max-w-6xl mx-auto p-4">
-            <h2 className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 uppercase">
+            <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 uppercase">
               {selectedProperty.ListingKey || "N/A"} -{" "}
               {[
                 selectedProperty.StreetNumber,
@@ -441,7 +441,7 @@ const RealtorPropertyListingManagement = () => {
             </h2>
             {/* Property Details Section */}
             <div className="mb-6 mt-3">
-              <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+              <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 PROPERTY DETAILS
               </h3>
               <table className="w-full text-xs border-collapse border border-gray-400">
@@ -546,7 +546,7 @@ const RealtorPropertyListingManagement = () => {
 
             {/* Status Information Section */}
             <div className="mb-6">
-              <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+              <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 STATUS INFORMATION
               </h3>
               <table className="w-full text-xs border-collapse border border-gray-400">
@@ -588,7 +588,7 @@ const RealtorPropertyListingManagement = () => {
 
             {/* Agent & Office Information Section */}
             <div className="mb-6">
-              <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+              <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 AGENT & OFFICE INFORMATION
               </h3>
               <table className="w-full text-xs border-collapse border border-gray-400">
@@ -619,7 +619,7 @@ const RealtorPropertyListingManagement = () => {
 
             {/* Room Information Section */}
             <div className="mb-6">
-              <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+              <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
                 ROOM INFORMATION
               </h3>
               <table className="w-full text-xs border-collapse border border-gray-400">

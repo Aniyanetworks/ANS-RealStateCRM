@@ -809,7 +809,7 @@ const SupportRequestList: React.FC = () => {
                 to={tab.link}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap no-underline ${
                   location.pathname === tab.link
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
@@ -1209,7 +1209,7 @@ const SupportRequestList: React.FC = () => {
                               <a
                                 key={file.id}
                                 href={`${file.filePath}`} // Linking to the file path
-                                className="text-[#9F8667] font-medium bg-[#9F8667]/10 py-1 px-3 rounded-3xl hover:bg-[#9F8667]/20 hover:text-black transition duration-200 text-[12px]"
+                                className="text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-black transition duration-200 text-[12px]"
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
@@ -1254,7 +1254,7 @@ const SupportRequestList: React.FC = () => {
                   Clear
                 </button>
                 <button
-                  className=" text-white px-4 py-2 rounded-md bg-[#141D2C]"
+                  className=" text-white px-4 py-2 rounded-md bg-[#0a2a28]"
                   onClick={handleAddComment}
                 >
                   {editId !== null ? "Update" : "Add"}
@@ -1336,7 +1336,7 @@ const SupportRequestList: React.FC = () => {
                   <a
                     key={file.id}
                     href={`${file.filePath}`} // Linking to the file path
-                    className=" text-[#9F8667] font-medium bg-[#9F8667]/10 py-1 px-3 rounded-3xl hover:bg-[#9F8667]/20 hover:text-black transition duration-200 text-[12px]"
+                    className=" text-[#0f766e] font-medium bg-[#0f766e]/10 py-1 px-3 rounded-3xl hover:bg-[#0f766e]/20 hover:text-black transition duration-200 text-[12px]"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

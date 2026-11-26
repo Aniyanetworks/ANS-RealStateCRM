@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" width="320" height="90">
+  <rect x="4" y="12" width="66" height="66" rx="16" fill="#0f766e"/>
+  <path d="M37 26 14 46h8v22h30V46h8z" fill="#fff"/>
+  <rect x="31" y="50" width="12" height="18" rx="2" fill="#f59e0b"/>
+  <text x="84" y="48" font-family="Poppins, Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#0b3b38">ANS</text>
+  <text x="84" y="74" font-family="Poppins, Segoe UI, Arial, sans-serif" font-size="20" font-weight="600" fill="#f59e0b">RealStateCRM</text>
+</svg>

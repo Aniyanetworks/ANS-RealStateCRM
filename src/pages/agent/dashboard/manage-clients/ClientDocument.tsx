@@ -2,7 +2,7 @@
 // eslint-disable @typescript-eslint/no-explicit-any
 import {  useParams } from "react-router-dom";
 import { useEffect, useState ,useRef} from "react";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 // import type { TableColumnsType, TableProps } from "antd";
 import ModalMain from "../../../../components/ui/Modal";
 import { useForm } from "react-hook-form";
@@ -695,9 +695,9 @@ const ClientDocumentManagement = () => {
                               setCategoryId(file.id),
                               handleViewClick(file),
                             ]}
-                            className={`relative flex px-5 text-[#243451] py-2 hover:bg-[#F6F4F0] ${
+                            className={`relative flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${
                               file.file == pdfToView.file &&
-                              "bg-[#F6F4F0]"
+                              "bg-[#f0f7f6]"
                             } items-center   cursor-pointer gap-3`}
                           >
                             <Tooltip
@@ -716,7 +716,7 @@ const ClientDocumentManagement = () => {
                                   >
                                     <path
                                       d="M0 1H6L9 4H16V14H0V1Z"
-                                      fill="#9F8667"
+                                      fill="#0f766e"
                                     />
                                   </svg>
                                 ) : (
@@ -737,7 +737,7 @@ const ClientDocumentManagement = () => {
                                 <p
                                    style={{
                                     color: file.file == pdfToView.file
-                                        ? "#eb9715"
+                                        ? "#f59e0b"
                                         : "", 
                                   }}
                                 >
@@ -759,7 +759,7 @@ const ClientDocumentManagement = () => {
             )}
 
             <div>              
-                <div  className={`px-5 py-2 hover:bg-[#F6F4F0] text-[#243451]`}>
+                <div  className={`px-5 py-2 hover:bg-[#f0f7f6] text-[#0b3b38]`}>
                 <div>
               {filteredData?.filter((file: any) => file.fileID === null)?.length === 1 ? (
                 filteredData?.filter((file: any) => file.fileID === null)?.map((uploadFile: any, i: number) => (
@@ -771,10 +771,10 @@ const ClientDocumentManagement = () => {
                     ]}
                     style={{
                       color: uploadFile.file == pdfToView.file
-                          ? "#eb9715"
+                          ? "#f59e0b"
                           : "", 
                     }}
-                    className={`flex text-[#243451] py-2 hover:bg-[#F6F4F0]  items-center cursor-pointer gap-3 `}
+                    className={`flex text-[#0b3b38] py-2 hover:bg-[#f0f7f6]  items-center cursor-pointer gap-3 `}
                   >
                     <Tooltip placement="right" color="#fff" title="Others">
                       <div className="flex items-center gap-2">
@@ -793,7 +793,7 @@ const ClientDocumentManagement = () => {
                   </ul>
                 ))
               ) : (
-                <div className={` py-2 hover:bg-[#F6F4F0] text-[#243451]`}>
+                <div className={` py-2 hover:bg-[#f0f7f6] text-[#0b3b38]`}>
                   <div>
                     <div
                       onClick={
@@ -847,7 +847,7 @@ const ClientDocumentManagement = () => {
                             >
                               <p  style={{
                       color: uploadFile.file == pdfToView.file
-                          ? "#eb9715"
+                          ? "#f59e0b"
                           : "", 
                     }}
                               onClick={() => handleViewClick(uploadFile)}>
@@ -875,7 +875,7 @@ const ClientDocumentManagement = () => {
 
           <div className=" w-full   bg-white rounded-r-lg shadow-md p-4">
             <div className="flex justify-between pb-4 items-center border-b mb-2">
-              <h3 className=" font-semibold flex items-center gap-2 text-[#243451]">
+              <h3 className=" font-semibold flex items-center gap-2 text-[#0b3b38]">
                 <div onClick={() => setCollapsed(!collapsed)}>
                   <AlignLeftOutlined></AlignLeftOutlined>
                 </div>
@@ -942,9 +942,9 @@ const ClientDocumentManagement = () => {
               <div className="h-[calc(100vh-14rem)] flex flex-col justify-center items-center gap-2  ">
                 <img src={logo} alt="" className={`w-[70px]`} />
                 <h2
-                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#9F8667]`}
+                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#0f766e]`}
                 >
-                  DREAM VALLEY REALTY
+                  ANS REALSTATECRM
                 </h2>
               </div>
             )}
@@ -978,7 +978,7 @@ const ClientDocumentManagement = () => {
         {/* documents upload and show */}
         {fileDocuments?.map((document: any, index: number) => (
           <div key={index}>
-            <div className="flex px-2 border-b border-[#f4f1ec] hover:bg-[#f8f8f8e3] py-2 items-center justify-between">
+            <div className="flex px-2 border-b border-[#eaf4f2] hover:bg-[#f8f8f8e3] py-2 items-center justify-between">
               <div className="w-[80px] ">
                 <p>{index + 1}</p>
               </div>
@@ -1088,7 +1088,7 @@ const ClientDocumentManagement = () => {
                   {document?.fileData.map((file: any, i: number) => (
                     <div
                       key={i}
-                      className="ml-20 py-2 border-b border-[#f4f1ec] "
+                      className="ml-20 py-2 border-b border-[#eaf4f2] "
                     >
                       <p className="flex items-center">
                         <a
@@ -1152,7 +1152,7 @@ const ClientDocumentManagement = () => {
               return (
                 <div
                   key={index}
-                  className="ml-20 py-2 border-b border-[#f4f1ec]"
+                  className="ml-20 py-2 border-b border-[#eaf4f2]"
                 >
                   <p className="flex items-center">
                     <a

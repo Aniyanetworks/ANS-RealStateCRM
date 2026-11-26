@@ -1,4 +1,4 @@
-// Trade Transactions → transaction editor: bodv's eight-tab transaction screen on AgentHub's trade sheet.
+// Trade Transactions → transaction editor: bodv's eight-tab transaction screen on ANS RealStateCRM's trade sheet.
 // Data comes from the existing trade sheet (get-spacific-trade-sheet), finalize uses the existing
 // trade-accounting endpoint, status changes use the existing admin status endpoint, and trust movements
 // use Brokerage Accounting's trust ledger. Trade details themselves stay owned by the trade sheet form.

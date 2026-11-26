@@ -8,7 +8,7 @@ const TableLoader = () => {
         height="80"
         width="80"
         radius="48"
-        color="#243451"
+        color="#0b3b38"
         ariaLabel="watch-loading"
         wrapperStyle={{}}
         wrapperClass=""

@@ -32,7 +32,7 @@ export function useShiftNotifier() {
   const notifyRows = useCallback(async (rows: { userId: number | null; shiftDate: string; startTime: string; endTime: string }[], prefix: string) => {
     for (const r of rows) {
       if (!r.userId) continue;
-      await notify(r.userId, `${prefix} — ${r.shiftDate || "Shift"}`, `Your shift: ${r.shiftDate}, ${t5(r.startTime)}–${t5(r.endTime)}. Branch details are available in My Schedule. Please review your schedule in DV TimeClock.`);
+      await notify(r.userId, `${prefix} — ${r.shiftDate || "Shift"}`, `Your shift: ${r.shiftDate}, ${t5(r.startTime)}–${t5(r.endTime)}. Branch details are available in My Schedule. Please review your schedule in ANS Time Clock.`);
     }
   }, [notify]);
   return { notify, notifyRows };
@@ -342,7 +342,7 @@ function EmailScheduleForm() {
     if (branchId) shifts = shifts.filter((s) => String(s.branchId) === branchId);
     const lines = shifts.map((sh) => `${fmtDate(sh.shiftDate)} | ${sh.name || "Shift"} | ${t5(sh.startTime)}–${t5(sh.endTime)} | ${branches.find((b) => b.id === sh.branchId)?.name || "Location not specified"}`);
     const subject = `Your Work Schedule: ${from} to ${to}`;
-    const body = `Hello ${emp.fullName},\n\nHere is your scheduled work schedule for ${from} through ${to}.\n\n${lines.length ? lines.join("\n") : "No shifts are currently scheduled for this timeframe."}\n\nDream Valley Realty`;
+    const body = `Hello ${emp.fullName},\n\nHere is your scheduled work schedule for ${from} through ${to}.\n\n${lines.length ? lines.join("\n") : "No shifts are currently scheduled for this timeframe."}\n\nANS RealStateCRM`;
     openModal("Copy Schedule Email", <CopyScheduleEmail email={emp.email} subject={subject} body={body} />);
   };
   return (
@@ -413,7 +413,7 @@ export function SchedulingSection() {
     const ns = notes.filter((n) => n.shiftUuid === s.uuid);
     if (!ns.length) return null;
     return (
-      <div className="shift-note-preview" style={{ marginTop: 5, padding: 5, background: "#f8fafc", borderLeft: "3px solid #9e8556", borderRadius: 3, fontSize: 11 }}>
+      <div className="shift-note-preview" style={{ marginTop: 5, padding: 5, background: "#f8fafc", borderLeft: "3px solid #0d6b64", borderRadius: 3, fontSize: 11 }}>
         <b>Notes ({ns.length})</b>
         {ns.slice(0, 2).map((n) => <div key={n.uuid}>{n.note}</div>)}
         {ns.length > 2 && <div>…</div>}

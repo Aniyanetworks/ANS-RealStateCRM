@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Agent self-service (merged from DV Accounting): my brokerage charges, payments and released tax slips.
+// Agent self-service (merged from ANS Accounting): my brokerage charges, payments and released tax slips.
 import React from "react";
 import { Card, Empty, Table } from "antd";
 import { AcctTable, Stat, StatusTag, dateCol, fmtDate, money, moneyCol, useAcct, useAcctAction } from "./acctShared";

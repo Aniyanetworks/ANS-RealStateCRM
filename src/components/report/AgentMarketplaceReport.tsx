@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import { FaFileExcel, FaFilePdf  } from "react-icons/fa";
 import jsPDF from 'jspdf';
 import { useRef } from "react";
-import logo1 from "/logo.png";
+import logo1 from "/logo.svg";
 import { formatNumberWithCommasAndDecimals } from '../../utils/formatNumberWithCommasAndDecimals';
 
 interface MarketplaceItem {
@@ -266,10 +266,10 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
       {/* Modern Report Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 my-3">
         {/* Total Paid */}
-        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500 hover:shadow-md transition-shadow">
           <div className="flex flex-col">
             <span className="text-sm text-gray-500 mb-1">Total Paid Amount</span>
-            <span className="text-lg font-semibold text-purple-600">
+            <span className="text-lg font-semibold text-teal-600">
               ${formatNumberWithCommasAndDecimals(calculateTotalPaid())}
             </span>
           </div>

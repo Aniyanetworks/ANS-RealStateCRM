@@ -7,7 +7,7 @@ import type { TableColumnsType, TableProps } from "antd";
 import * as XLSX from "xlsx";
 import { FaFileExcel, FaFilePdf } from "react-icons/fa";
 import jsPDF from "jspdf";
-import logo1 from "/logo.png";
+import logo1 from "/logo.svg";
 import { formatNumberWithCommasAndDecimals } from "../../utils/formatNumberWithCommasAndDecimals";
 
 interface TradeItem {

@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Shared helpers & pickers for Brokerage Accounting screens (merged from DV Accounting).
+// Shared helpers & pickers for Brokerage Accounting screens (merged from ANS Accounting).
 import React, { useState } from "react";
 import { Select, Table, Tag, Space, Modal, Input } from "antd";
 import dayjs from "dayjs";
@@ -102,7 +102,7 @@ export function exportPdf(title: string, columns: any[], rows: any[], subtitle?:
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(15, 33, 65);
-  doc.text("DREAM VALLEY REALTY", 12, 14);
+  doc.text("ANS REALSTATECRM", 12, 14);
   doc.setFontSize(11);
   doc.text(title, doc.internal.pageSize.getWidth() - 12, 14, { align: "right" });
   doc.setFont("helvetica", "normal");

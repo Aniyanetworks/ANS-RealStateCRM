@@ -184,7 +184,7 @@ export function AttendanceSection() {
 
   return (
     <div className="panel">
-      <div className="print-brand"><img src={logo} alt="Dream Valley Realty" /><h2>Dream Valley Realty — Attendance Report</h2></div>
+      <div className="print-brand"><img src={logo} alt="ANS RealStateCRM" /><h2>ANS RealStateCRM — Attendance Report</h2></div>
       <div className="actions" style={{ justifyContent: "space-between" }}>
         <h2>Attendance &amp; Reports <small>v1.4.8</small></h2>
         <div className="actions">
@@ -214,8 +214,8 @@ export function AttendanceSection() {
         <div className="report-print-area">
           <header className="attendance-print-header">
             <div className="attendance-print-brand">
-              <img src={logo} alt="Dream Valley Realty logo" />
-              <div><div className="attendance-print-company">DREAM VALLEY REALTY</div><div className="attendance-print-subtitle">Attendance &amp; Time Records</div></div>
+              <img src={logo} alt="ANS RealStateCRM logo" />
+              <div><div className="attendance-print-company">ANS REALSTATECRM</div><div className="attendance-print-subtitle">Attendance &amp; Time Records</div></div>
             </div>
             <div className="attendance-print-title"><h1>Daily Attendance Report</h1><p>Prepared {new Date().toLocaleString()}</p></div>
           </header>

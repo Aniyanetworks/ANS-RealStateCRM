@@ -109,7 +109,7 @@ const Profile = () => {
             <img src={uploadIcon} alt="Upload" className="w-16 h-16 mb-4 animate-bounce" />
             <h2 className="text-xl font-bold mb-2">Update Your Expeired Documents</h2>
             <p className="text-gray-600 mb-4 text-center">Click the <span className="font-semibold text-blue-600">Upload</span> button next to each document to add your files. Accepted formats: PDF, JPG, PNG.</p>
-            <button onClick={() => setShowDocInstruction(false)} className="mt-2 px-4 py-2 bg-[#243451] text-white rounded">Got it!</button>
+            <button onClick={() => setShowDocInstruction(false)} className="mt-2 px-4 py-2 bg-[#0b3b38] text-white rounded">Got it!</button>
           </div>
         </div>
       )}

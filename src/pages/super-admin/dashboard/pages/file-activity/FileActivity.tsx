@@ -291,11 +291,11 @@ const FileActivity: React.FC = () => {
               <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
               <button
                 onClick={() => setSelectedOperation(null)}
-                className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === null ? 'ring-1 ring-[#9F8667]' : ''}`}
-                style={{ borderLeft: "2px solid #9F8667", background: "#f9f6f3" }}
+                className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === null ? 'ring-1 ring-[#0f766e]' : ''}`}
+                style={{ borderLeft: "2px solid #0f766e", background: "#f9f6f3" }}
               >
                 <span className="text-xs text-gray-500 whitespace-nowrap">Total:</span>
-                <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#9F8667" }}>{filteredSummary.totalLogs}</span>
+                <span className="text-xs font-semibold whitespace-nowrap" style={{ color: "#0f766e" }}>{filteredSummary.totalLogs}</span>
               </button>
               <button
                 onClick={() => setSelectedOperation(selectedOperation === 'upload' ? null : 'upload')}

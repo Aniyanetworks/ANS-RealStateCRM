@@ -1,4 +1,4 @@
-// PDF File Splitter — the original DV Accounting screen: page previews, select and reorder pages, then split
+// PDF File Splitter — the original ANS Accounting screen: page previews, select and reorder pages, then split
 // (one per page, custom ranges, groups) or combine selected pages into one PDF. Runs in the browser only.
 // Pages are rendered with pdf.js and rebuilt with jsPDF (image-based output at 2× resolution).
 import { useState } from "react";
@@ -123,7 +123,7 @@ export default function PdfSplitter() {
     <div>
       <PageHead title="PDF File Splitter" desc="Select pages from the preview, arrange their order, then combine them into one PDF or split them into separate files." />
       <section className="panel" style={{ maxWidth: 1150 }}>
-        <div style={{ padding: 18, border: "1px dashed #9e8556", borderRadius: 12 }}>
+        <div style={{ padding: 18, border: "1px dashed #0d6b64", borderRadius: 12 }}>
           <strong>Choose a PDF file</strong>
           <p className="muted" style={{ margin: "6px 0 14px" }}>Your file is processed locally in this browser. It is not uploaded to or saved on the server.</p>
           <input type="file" accept="application/pdf,.pdf" onChange={choose} />
@@ -169,7 +169,7 @@ export default function PdfSplitter() {
                   {thumbs.map((t) => {
                     const pos = selected.indexOf(t.page);
                     return (
-                      <div key={t.page} style={{ padding: 8, borderRadius: 10, border: pos >= 0 ? "2px solid #9e8556" : "1px solid #d0d5dd", background: pos >= 0 ? "#fbf8f2" : "#fff" }}>
+                      <div key={t.page} style={{ padding: 8, borderRadius: 10, border: pos >= 0 ? "2px solid #0d6b64" : "1px solid #d0d5dd", background: pos >= 0 ? "#fbf8f2" : "#fff" }}>
                         <button type="button" onClick={() => toggle(t.page)} style={{ display: "block", width: "100%", padding: 0, border: 0, background: "transparent", textAlign: "left", cursor: "pointer" }}>
                           <img src={t.url} alt={`Preview of page ${t.page}`} style={{ width: "100%", height: 145, objectFit: "contain", background: "#f3f4f6", borderRadius: 4 }} />
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 4, marginTop: 8 }}><strong>Original page {t.page}</strong><span>{pos >= 0 ? "✓" : "○"}</span></div>

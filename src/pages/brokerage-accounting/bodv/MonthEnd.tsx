@@ -1,4 +1,4 @@
-// Compliance & Month End — the original DV Accounting screen: review attestations, bank reconciliation evidence,
+// Compliance & Month End — the original ANS Accounting screen: review attestations, bank reconciliation evidence,
 // close month (blocked until every attestation and every bank reconciliation is complete) and history.
 import { useState } from "react";
 import { useAppSelector } from "../../../redux/hooks";

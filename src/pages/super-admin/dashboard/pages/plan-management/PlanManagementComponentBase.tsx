@@ -159,8 +159,8 @@ const PlanManagement = () => {
         <div className="pb-32">
             <div className="flex items-center justify-between mb-5">
                 <div>
-                    <button onClick={() => switchTab('plan')} className={`px-4 py-2 rounded-md ${activeTab === 'plan' ? 'bg-[#243451] text-white' : 'bg-gray-200'}`}>Regular Plans</button>
-                    <button onClick={() => switchTab('optionalPlan')} className={`px-4 py-2 rounded-md ${activeTab === 'optionalPlan' ? 'bg-[#243451] text-white' : 'bg-gray-200'}`}>Addon Plans</button>
+                    <button onClick={() => switchTab('plan')} className={`px-4 py-2 rounded-md ${activeTab === 'plan' ? 'bg-[#0b3b38] text-white' : 'bg-gray-200'}`}>Regular Plans</button>
+                    <button onClick={() => switchTab('optionalPlan')} className={`px-4 py-2 rounded-md ${activeTab === 'optionalPlan' ? 'bg-[#0b3b38] text-white' : 'bg-gray-200'}`}>Addon Plans</button>
                 </div>
                 <div className="flex justify-between items-center">
                     {activeTab === 'plan' && (

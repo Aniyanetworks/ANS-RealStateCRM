@@ -40,9 +40,9 @@ const STATUS_TAG_COLOR: Record<string, string> = {
 const RANK_STYLES = [
   { border: "#D4A843", bar: "#D4A843", badge: "#FFFBEB", badgeText: "#92400E", label: "🥇" },
   { border: "#9CA3AF", bar: "#9CA3AF", badge: "#F9FAFB", badgeText: "#4B5563", label: "🥈" },
-  { border: "#9F8667", bar: "#9F8667", badge: "#FDF6EE", badgeText: "#7D6247", label: "🥉" },
+  { border: "#0f766e", bar: "#0f766e", badge: "#fffbeb", badgeText: "#7D6247", label: "🥉" },
 ];
-const DEFAULT_RANK = { border: "#CBD5E1", bar: "#0C1A34", badge: "#F8FAFC", badgeText: "#64748B" };
+const DEFAULT_RANK = { border: "#CBD5E1", bar: "#082624", badge: "#F8FAFC", badgeText: "#64748B" };
 
 function getInitials(name: string) {
   return name.split(" ").slice(0, 2).map((w) => w[0]?.toUpperCase() || "").join("");
@@ -138,7 +138,7 @@ const LeadStatistics = () => {
                     >
                       {getInitials(agent.agentName)}
                     </div>
-                    <span className="text-xs font-semibold text-[#0C1A34] truncate">
+                    <span className="text-xs font-semibold text-[#082624] truncate">
                       {agent.agentName}
                     </span>
                   </div>

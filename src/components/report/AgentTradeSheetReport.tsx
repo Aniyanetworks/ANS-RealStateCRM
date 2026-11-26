@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import { FaFileExcel, FaFilePdf  } from "react-icons/fa";
 import jsPDF from 'jspdf';
 import { useRef } from "react";
-import logo1 from "/logo.png";
+import logo1 from "/logo.svg";
 
 
 

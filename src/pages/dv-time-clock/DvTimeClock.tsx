@@ -1,4 +1,4 @@
-// DV Time Clock — React rebuild of the dvclock app inside AgentHub (separate from Clock In/Out).
+// ANS Time Clock — React rebuild of the dvclock app inside ANS RealStateCRM (separate from Clock In/Out).
 // Layout and styling follow the original: hero, section navigation, panels; management and employee consoles.
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTcGetQuery } from "../../redux/api/common/dvTimeClockSlice";
@@ -109,15 +109,15 @@ export default function DvTimeClock() {
     };
   }, [realMe, me, acting, isEmployeeView, section, go, toast, openModal, closeModal, startImpersonation, endImpersonation, membersQ.data, branchesQ.data, settingsQ.data]);
 
-  if (meQ.isLoading) return <div className="dvtc"><main className="wrap"><div className="panel">Loading DV Time Clock…</div></main></div>;
+  if (meQ.isLoading) return <div className="dvtc"><main className="wrap"><div className="panel">Loading ANS Time Clock…</div></main></div>;
   if (meQ.error || !ctx || !me) {
     const err = meQ.error as { data?: { message?: string; setupRequired?: boolean } } | undefined;
     return (
       <div className="dvtc">
         <main className="wrap">
           <div className="panel">
-            <h2>DV Time Clock</h2>
-            <p className="notice">{err?.data?.message || "DV Time Clock is unavailable right now."}</p>
+            <h2>ANS Time Clock</h2>
+            <p className="notice">{err?.data?.message || "ANS Time Clock is unavailable right now."}</p>
           </div>
         </main>
       </div>

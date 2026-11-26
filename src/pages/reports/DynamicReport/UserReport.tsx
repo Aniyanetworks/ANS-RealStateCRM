@@ -10,7 +10,7 @@ import {
   useState,
 } from 'react';
 
-import logo1 from '/logo.png';
+import logo1 from '/logo.svg';
 import type { TableColumnsType } from 'antd';
 import {
   Select,
@@ -415,10 +415,10 @@ export default function UserReport({ branchIds }: UserReportProps) {
                         <span className="text-lg font-semibold text-orange-600">{summary.pendingUser}</span>
                     </div>
                 </div>
-                <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500">
+                <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500">
                     <div className="flex flex-col">
                         <span className="text-sm text-gray-500 mb-1">Draft User</span>
-                        <span className="text-lg font-semibold text-purple-600">{summary.draftUser}</span>
+                        <span className="text-lg font-semibold text-teal-600">{summary.draftUser}</span>
                     </div>
                 </div>
                 <div className="bg-white rounded-lg shadow-sm p-4 border-l-4 border-indigo-500">
@@ -455,11 +455,11 @@ export default function UserReport({ branchIds }: UserReportProps) {
                 {roleCards.map((role: any, index: number) => {
                     const colors = [
                         'border-cyan-500', 'border-amber-500', 'border-lime-500', 'border-emerald-500',
-                        'border-violet-500', 'border-fuchsia-500', 'border-rose-500', 'border-sky-500'
+                        'border-teal-500', 'border-teal-500', 'border-rose-500', 'border-sky-500'
                     ];
                     const textColors = [
                         'text-cyan-600', 'text-amber-600', 'text-lime-600', 'text-emerald-600',
-                        'text-violet-600', 'text-fuchsia-600', 'text-rose-600', 'text-sky-600'
+                        'text-teal-600', 'text-teal-600', 'text-rose-600', 'text-sky-600'
                     ];
                     const colorIndex = index % colors.length;
                     return (
@@ -479,7 +479,7 @@ export default function UserReport({ branchIds }: UserReportProps) {
                     <div className="flex">
                         <input
                             type="text"
-                            className="w-full border p-2 rounded-l focus:ring focus:#141D2C"
+                            className="w-full border p-2 rounded-l focus:ring focus:#0a2a28"
                             placeholder="Search users..."
                             value={searchText}
                             onChange={(e) => {
@@ -501,7 +501,7 @@ export default function UserReport({ branchIds }: UserReportProps) {
                             </button>
                         )}
                         <button
-                            className="bg-[#141D2C] text-white px-4 py-2 rounded-r-md flex items-center gap-2"
+                            className="bg-[#0a2a28] text-white px-4 py-2 rounded-r-md flex items-center gap-2"
                             onClick={() => setShowDropdown(!showDropdown)}
                         >
                             <FaFilter /> Filter
@@ -563,7 +563,7 @@ export default function UserReport({ branchIds }: UserReportProps) {
 
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b bg-[#141D2C] text-white">
+                    <div className="flex items-center justify-between p-4 border-b bg-[#0a2a28] text-white">
                         <h3 className="text-lg font-semibold">Filter Options</h3>
                         <button
                             onClick={() => setShowDropdown(false)}
@@ -729,7 +729,7 @@ export default function UserReport({ branchIds }: UserReportProps) {
                     {/* Fixed Footer with Action Buttons */}
                     <div className="flex gap-2 p-4 border-t bg-white">
                         <button
-                            className="w-1/2 bg-[#141D2C] text-white p-2 rounded hover:bg-[#1a2533] transition-colors"
+                            className="w-1/2 bg-[#0a2a28] text-white p-2 rounded hover:bg-[#1a2533] transition-colors"
                             onClick={() => {
                                 handleCustomDateRange();
                                 setShowDropdown(false);

@@ -149,7 +149,7 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
             <table className="min-w-full border ">
               <thead>
                 <tr>
-                  <th colSpan={2} className="w-full font-semibold p-2 border bg-[#243451] text-white text-center">Brokerage Details</th>
+                  <th colSpan={2} className="w-full font-semibold p-2 border bg-[#0b3b38] text-white text-center">Brokerage Details</th>
                 </tr>
               </thead>
               <tbody className="text-[11px]">
@@ -229,7 +229,7 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
                   <table className="min-w-full border text-[11px]">
                     <thead>
                       <tr>
-                        <th colSpan={2} className="w-full font-semibold p-2 border bg-[#243451] text-white text-center">Agent Details</th>
+                        <th colSpan={2} className="w-full font-semibold p-2 border bg-[#0b3b38] text-white text-center">Agent Details</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -250,11 +250,11 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
                 <table className="min-w-full border text-[11px] text-left">
                   <thead>
                     <tr>
-                      <th className="p-2 border bg-[#243451] text-white">Trade Record</th>
-                      <th className="p-2 border bg-[#243451] text-white">Agent</th>
-                      <th className="p-2 border bg-[#243451] text-white">Admin Status</th>
-                      <th className="p-2 border bg-[#243451] text-white">Trade Status</th>
-                      <th className="p-2 border bg-[#243451] text-white">Representation</th>
+                      <th className="p-2 border bg-[#0b3b38] text-white">Trade Record</th>
+                      <th className="p-2 border bg-[#0b3b38] text-white">Agent</th>
+                      <th className="p-2 border bg-[#0b3b38] text-white">Admin Status</th>
+                      <th className="p-2 border bg-[#0b3b38] text-white">Trade Status</th>
+                      <th className="p-2 border bg-[#0b3b38] text-white">Representation</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -276,7 +276,7 @@ const BrokerageDetailsModal = ({ open, onClose, brokerage, onAddAgent, onRefetch
                                   detail.tradeSheet?.status === "rejected"
                                     ? "red"
                                     : detail.tradeSheet?.status === "underReview"
-                                      ? "#eb9715"
+                                      ? "#f59e0b"
                                       : "",
                               }}
                               className="bg-transparent border-none p-0 text-inherit hover:text-blue-600 hover:underline cursor-pointer"

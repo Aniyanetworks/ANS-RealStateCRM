@@ -1,7 +1,7 @@
-// Brokerage Accounting — laid out like the original DV Accounting back office (bodv): its sidebar,
-// page headings, panels and styling, inside AgentHub. The section is kept in the URL
+// Brokerage Accounting — laid out like the original ANS Accounting back office (bodv): its sidebar,
+// page headings, panels and styling, inside ANS RealStateCRM. The section is kept in the URL
 // (/dashboard/brokerage-accounting/:section). Screens are being rebuilt in the bodv look one at a time;
-// the rest still use the AgentHub components inside a bodv panel until they are rebuilt.
+// the rest still use the ANS RealStateCRM components inside a bodv panel until they are rebuilt.
 import { ComponentType, ReactNode, Suspense, lazy, useState } from "react";
 import {
   LuLayoutDashboard, LuLandmark, LuReceipt, LuTrophy, LuWallet, LuDollarSign, LuIdCard, LuPercent, LuFileText, LuChartBar, LuClipboardCheck, LuSettings, LuScissors,

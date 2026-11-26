@@ -1,7 +1,7 @@
 // @ts-nocheck
 // eslint-disable @typescript-eslint/no-explicit-any
 import { useParams } from "react-router-dom";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import { useGetUploadFileCategoriesQuery } from "../../../../../../redux/api/common/dynamicUploadFileSlice";
 import {
   useChangeTradeSheetAttachmentStatusMutation,
@@ -221,7 +221,7 @@ const [fetchLoading, setFetchLoading] = useState<boolean>(false);
       case "Approved":
         return "green";
       case "Under Review":
-        return "#9F8667";
+        return "#0f766e";
       case "Rejected":
         return "red";
       default:
@@ -584,8 +584,8 @@ const handleEditClick = (file: any) => {
                               setCategoryId(file.id),
                               handleViewClick(uploadFile),
                             ]}
-                            className={`relative flex px-5 text-[#243451] py-2 hover:bg-[#F6F4F0] ${uploadFile.filePath == pdfToView.filePath &&
-                              "bg-[#F6F4F0]"
+                            className={`relative flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${uploadFile.filePath == pdfToView.filePath &&
+                              "bg-[#f0f7f6]"
                               } items-center cursor-pointer gap-3`}
                           >
                             <Tooltip
@@ -604,7 +604,7 @@ const handleEditClick = (file: any) => {
                                   >
                                     <path
                                       d="M0 1H6L9 4H16V14H0V1Z"
-                                      fill="#9F8667"
+                                      fill="#0f766e"
                                     />
                                   </svg>
                                 ) : (
@@ -628,7 +628,7 @@ const handleEditClick = (file: any) => {
                                       uploadFile.status === "rejected"
                                         ? "red"
                                         : uploadFile.status === "underReview"
-                                          ? "#eb9715"
+                                          ? "#f59e0b"
                                           : "green",
                                   }}
                                 >
@@ -663,7 +663,7 @@ const handleEditClick = (file: any) => {
                           </ul>
                         ))
                     ) : (
-                      <div className="px-5 py-2 hover:bg-[#F6F4F0] text-[#243451]">
+                      <div className="px-5 py-2 hover:bg-[#f0f7f6] text-[#0b3b38]">
                         <div>
                           <div
                            onClick={() => toggleCategory(file.id)}
@@ -776,7 +776,7 @@ const handleEditClick = (file: any) => {
                                               ? "red"
                                               : uploadFile.status ===
                                                 "underReview"
-                                                ? "#eb9715"
+                                                ? "#f59e0b"
                                                 : "green", // Apply color based on status
                                         }}
                                         className={
@@ -813,8 +813,8 @@ const handleEditClick = (file: any) => {
                       setCategoryId("someId"), // Use the appropriate category ID if needed
                       handleViewClick(uploadFile),
                     ]}
-                    className={`flex px-5 text-[#243451] py-2 hover:bg-[#F6F4F0] ${uploadFile.filePath === pdfToView.filePath &&
-                      "bg-[#F6F4F0]"
+                    className={`flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${uploadFile.filePath === pdfToView.filePath &&
+                      "bg-[#f0f7f6]"
                       } items-center cursor-pointer gap-3`}
                   >
                     <Tooltip placement="right" color="#fff" title="Others">
@@ -834,7 +834,7 @@ const handleEditClick = (file: any) => {
                   </ul>
                 ))
               ) : (
-                <div className={`px-5 py-2 hover:bg-[#F6F4F0] text-[#243451]`}>
+                <div className={`px-5 py-2 hover:bg-[#f0f7f6] text-[#0b3b38]`}>
                   <div>
                     <div
                      onClick={() => toggleCategory("other")}
@@ -913,7 +913,7 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                                       uploadFile.status === "rejected"
                                         ? "red"
                                         : uploadFile.status === "underReview"
-                                          ? "#eb9715"
+                                          ? "#f59e0b"
                                           : "green", // Apply color based on status
                                   }}
                                 onClick={() => handleViewClick(uploadFile)}
@@ -936,7 +936,7 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
           ></div>
           <div className="w-full bg-white rounded-r-lg shadow-md p-3 md:p-4">
             <div className="flex flex-wrap justify-between pb-3 items-start gap-2 border-b mb-2">
-              <h3 className="font-medium flex items-center gap-2 text-[#243451] min-w-0 flex-1 text-sm md:text-base">
+              <h3 className="font-medium flex items-center gap-2 text-[#0b3b38] min-w-0 flex-1 text-sm md:text-base">
                 <div onClick={() => setCollapsed(!collapsed)} className="flex-shrink-0 cursor-pointer">
                   <AlignLeftOutlined />
                 </div>
@@ -1119,7 +1119,7 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                             <button
                               onClick={() => setPdfCurrentPage((p) => Math.max(p - 1, 1))}
                               disabled={pdfCurrentPage <= 1}
-                              className="px-3 py-1.5 rounded-md bg-[#243451] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
+                              className="px-3 py-1.5 rounded-md bg-[#0b3b38] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
                             >
                               ← Prev
                             </button>
@@ -1129,7 +1129,7 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
                             <button
                               onClick={() => setPdfCurrentPage((p) => Math.min(p + 1, pdfNumPages))}
                               disabled={pdfCurrentPage >= pdfNumPages}
-                              className="px-3 py-1.5 rounded-md bg-[#243451] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
+                              className="px-3 py-1.5 rounded-md bg-[#0b3b38] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
                             >
                               Next →
                             </button>
@@ -1166,9 +1166,9 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
               <div className="h-[calc(100vh-14rem)] flex flex-col justify-center items-center gap-2  ">
                 <img src={logo} alt="" className={`w-[70px]`} />
                 <h2
-                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#9F8667]`}
+                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#0f766e]`}
                 >
-                  DREAM VALLEY REALTY
+                  ANS REALSTATECRM
                 </h2>
               </div>
             )}
@@ -1196,8 +1196,8 @@ className={`space-y-3 ml-10 transition-all duration-500 ease-in-out overflow-hid
             }}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#0B1D3D", // Custom background color
-              borderColor: "#0B1D3D", // Custom border color
+              backgroundColor: "#072f2d", // Custom background color
+              borderColor: "#072f2d", // Custom border color
               color: "#fff", // Text color to ensure contrast
             }}
           >

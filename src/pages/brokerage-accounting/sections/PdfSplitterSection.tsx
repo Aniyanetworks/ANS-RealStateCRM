@@ -1,5 +1,5 @@
 // @ts-nocheck
-// PDF File Splitter (merged from DV Accounting): split a PDF into page ranges or single pages,
+// PDF File Splitter (merged from ANS Accounting): split a PDF into page ranges or single pages,
 // or extract selected pages into one file. Runs entirely in the browser — nothing is uploaded.
 // Pages are re-rendered with pdf.js and rebuilt with jsPDF (image-based output at 2× resolution).
 import React, { useState } from "react";

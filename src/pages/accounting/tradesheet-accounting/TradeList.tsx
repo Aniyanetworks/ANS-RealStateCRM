@@ -288,7 +288,7 @@ const TradeList = () => {
         if (record.status === "rejected") {
           textColor = "red";
         } else if (record.status === "underReview") {
-          textColor = "#eb9715"; // amber/orange color
+          textColor = "#f59e0b"; // amber/orange color
         }
 
         return (
@@ -744,8 +744,8 @@ const TradeList = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#0B1D3D", // Custom background color
-              borderColor: "#0B1D3D", // Custom border color
+              backgroundColor: "#072f2d", // Custom background color
+              borderColor: "#072f2d", // Custom border color
               color: "#fff", // Text color to ensure contrast
             }}
           >

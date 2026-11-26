@@ -207,7 +207,7 @@ const ViewPropertyListing = ({ uuid }) => {
         <>
           {/* Property Details Section (existing content) */}
           <div className="mb-6">
-            <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+            <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               PROPERTY DETAILS
             </h3>
             <table className="w-full text-xs border-collapse border border-gray-400">
@@ -275,7 +275,7 @@ const ViewPropertyListing = ({ uuid }) => {
 
           {/* Seller/Landlord Information Section */}
           <div className="mb-6">
-            <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+            <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               {propertiesData?.propertyListingType === "For rent"
                 ? "LANDLORD INFORMATION"
                 : "SELLER INFORMATION"}
@@ -322,7 +322,7 @@ const ViewPropertyListing = ({ uuid }) => {
 
           {/* Dates Section */}
           <div className="mb-6">
-            <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+            <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               IMPORTANT DATES
             </h3>
             <table className="w-full text-xs border-collapse border border-gray-400">
@@ -365,7 +365,7 @@ const ViewPropertyListing = ({ uuid }) => {
           {/* Attachments Section */}
           {(user?.id == propertiesData?.createdBy || user?.userType == "superAdmin") && (
             <div className="mb-6">
-            <h3 className="border-t border-gray-400 bg-[#9f8667] text-white border-x text-center text-sm font-bold py-1">
+            <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
               ATTACHMENTS
             </h3>
             <table className="w-full text-xs border-collapse border border-gray-400">
@@ -434,7 +434,7 @@ const ViewPropertyListing = ({ uuid }) => {
           {user?.userType == "superAdmin" && (
             <div className="mb-6">
               <h3
-                className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+                className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
                 onClick={toggleExpand}
               >
                 <span>ACTIVITY LOG</span>
@@ -485,7 +485,7 @@ const ViewPropertyListing = ({ uuid }) => {
           {user?.userType === "superAdmin" && (
             <div className="mb-6">
               <h3
-                className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+                className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
                 onClick={toggleInvoiceSendLogExpand}
               >
                 <span>INVOICE SEND LOG</span>
@@ -564,7 +564,7 @@ if (user?.id == propertiesData?.createdBy || user?.userType == "superAdmin") {
 
   return (
     <div className="max-w-8xl mx-auto p-4">
-      <h2 className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 uppercase">
+      <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 uppercase">
         {propertiesData?.propertyListingTypeId} - { propertiesData?.propertyAddress}
       </h2>
       <Tabs defaultActiveKey="preview" items={tabItems} />

@@ -1123,8 +1123,8 @@ const VendorManagement = () => {
             type="primary" 
             onClick={handleSubmit(onSubmit)}
             style={{
-              backgroundColor: "#0B1D3D",
-              borderColor: "#0B1D3D",
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
               color: "#fff",
             }}
           >
@@ -1156,7 +1156,7 @@ const VendorManagement = () => {
                 <button
                   type="button"
                   onClick={() => setIsCategoryModalOpen(true)}
-                  className="text-xs px-2 py-0.5 rounded bg-[#0B1D3D] text-white hover:opacity-80"
+                  className="text-xs px-2 py-0.5 rounded bg-[#072f2d] text-white hover:opacity-80"
                 >
                   Add/Edit Category
                 </button>
@@ -1501,8 +1501,8 @@ const VendorManagement = () => {
             loading={isSharing}
             disabled={isSharing}
             style={{
-              backgroundColor: "#0B1D3D",
-              borderColor: "#0B1D3D",
+              backgroundColor: "#072f2d",
+              borderColor: "#072f2d",
               color: "#fff",
             }}
           >
@@ -1513,7 +1513,7 @@ const VendorManagement = () => {
         <div className="space-y-6">
           {/* Vendor Information Section */}
           <div>
-            <h2 className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1">
+            <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1">
               Vendor Information
             </h2>
             <div className="border border-gray-400">
@@ -1687,8 +1687,8 @@ const VendorManagement = () => {
       <Modal
         title={
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-[#0B1D3D]">Manage Categories</span>
-            <span className="text-xs font-medium bg-[#0B1D3D] text-white rounded-full px-2 py-0.5">
+            <span className="font-semibold text-[#072f2d]">Manage Categories</span>
+            <span className="text-xs font-medium bg-[#072f2d] text-white rounded-full px-2 py-0.5">
               {rawCategories.length}
             </span>
           </div>
@@ -1715,13 +1715,13 @@ const VendorManagement = () => {
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleAddCategory()}
                 placeholder="e.g. Home Inspector"
-                className="flex-1 border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1D3D]"
+                className="flex-1 border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#072f2d]"
               />
               <button
                 type="button"
                 onClick={handleAddCategory}
                 disabled={!newCategoryName.trim()}
-                className="px-4 py-1.5 rounded-md text-sm font-medium text-white bg-[#0B1D3D] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+                className="px-4 py-1.5 rounded-md text-sm font-medium text-white bg-[#072f2d] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
                 + Add
               </button>
@@ -1745,7 +1745,7 @@ const VendorManagement = () => {
                   key={cat.id}
                   className="flex items-center gap-3 px-3 py-2.5 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition-colors"
                 >
-                  <span className="w-5 h-5 flex items-center justify-center text-xs font-bold text-[#0B1D3D] bg-blue-50 rounded-full flex-shrink-0">
+                  <span className="w-5 h-5 flex items-center justify-center text-xs font-bold text-[#072f2d] bg-blue-50 rounded-full flex-shrink-0">
                     {index + 1}
                   </span>
 
@@ -1759,13 +1759,13 @@ const VendorManagement = () => {
                           if (e.key === "Enter") handleUpdateCategory(cat.id);
                           if (e.key === "Escape") { setEditingCategoryId(null); setEditingCategoryName(""); }
                         }}
-                        className="flex-1 border border-[#0B1D3D] rounded px-2 py-1 text-sm focus:outline-none"
+                        className="flex-1 border border-[#072f2d] rounded px-2 py-1 text-sm focus:outline-none"
                         autoFocus
                       />
                       <button
                         type="button"
                         onClick={() => handleUpdateCategory(cat.id)}
-                        className="px-3 py-1 text-xs font-medium rounded bg-[#0B1D3D] text-white hover:opacity-90"
+                        className="px-3 py-1 text-xs font-medium rounded bg-[#072f2d] text-white hover:opacity-90"
                       >
                         Save
                       </button>
@@ -1784,7 +1784,7 @@ const VendorManagement = () => {
                         <button
                           type="button"
                           onClick={() => { setEditingCategoryId(cat.id); setEditingCategoryName(cat.name); }}
-                          className="w-7 h-7 flex items-center justify-center rounded-md text-gray-500 hover:bg-blue-50 hover:text-[#0B1D3D] transition-colors"
+                          className="w-7 h-7 flex items-center justify-center rounded-md text-gray-500 hover:bg-blue-50 hover:text-[#072f2d] transition-colors"
                         >
                           <FaRegEdit size={13} />
                         </button>

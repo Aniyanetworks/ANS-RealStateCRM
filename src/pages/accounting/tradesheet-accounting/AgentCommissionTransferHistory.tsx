@@ -778,8 +778,8 @@ const AgentCommissionTransferHistory = () => {
             onClick={() => changeStatusApi(changeStatus, changeUuid)}
             style={{
               marginLeft: "8px",
-              backgroundColor: "#0B1D3D", // Custom background color
-              borderColor: "#0B1D3D", // Custom border color
+              backgroundColor: "#072f2d", // Custom background color
+              borderColor: "#072f2d", // Custom border color
               color: "#fff", // Text color to ensure contrast
             }}
           >

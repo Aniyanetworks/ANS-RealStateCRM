@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Typography, Tooltip, Button,  Modal, Input } from "antd";
 import { FileTextOutlined,  AlignLeftOutlined, YoutubeOutlined } from "@ant-design/icons";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 
 const { Link } = Typography;
 
@@ -116,7 +116,7 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
       case "approved":
         return "green";
       case "underReview":
-        return "#9F8667";
+        return "#0f766e";
       case "rejected":
         return "red";
       default:
@@ -335,7 +335,7 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
             {knowledgeDocuments?.map((category: any, index: number) => (
               <div key={index} className="">
                 <div>                  
-                    <div className={`px-5 py-2 hover:bg-[#F6F4F0] text-[#243451]`}>
+                    <div className={`px-5 py-2 hover:bg-[#f0f7f6] text-[#0b3b38]`}>
                       <div>
                         <div
                           onClick={() => toggleCategory(category.id)}
@@ -455,7 +455,7 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
           {/* Main Content Area */}
           <div className="w-full bg-white rounded-r-lg shadow-md p-4">
             <div className="flex justify-between pb-4 items-center border-b mb-2">
-              <h3 className="font-medium flex items-center gap-2 text-[#243451]">
+              <h3 className="font-medium flex items-center gap-2 text-[#0b3b38]">
                 <div onClick={() => setCollapsed(!collapsed)}>
                   <AlignLeftOutlined />
                 </div>
@@ -535,7 +535,7 @@ const KnowledgeFileManager: React.FC<KnowledgeFileManagerProps> = ({ data, loadi
             ) : (
               <div className="h-[calc(100vh-14rem)] flex flex-col justify-center items-center gap-2">
                 <img src={logo} alt="" className={`w-[70px]`} />
-                <h2 className="tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#9F8667]">
+                <h2 className="tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#0f766e]">
                   KNOWLEDGE BASE
                 </h2>
               </div>

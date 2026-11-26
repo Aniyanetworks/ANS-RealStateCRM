@@ -510,7 +510,7 @@ const FeeCalculator = () => {
     <div className="grid md:grid-cols-2 gap-6">
       <Form form={form} layout="vertical" initialValues={{ dealType: "BUY_SELL", asOf: dayjs(), isBrokerageLead: false }}>
         <Form.Item name="agentAccountId" label="Agent" rules={[{ required: true }]}><AgentSelect /></Form.Item>
-        <Form.Item name="grossCommission" label="Dream Valley gross commission (GCI) for the agent's side" rules={[{ required: true }]}><InputNumber min={0} step={0.01} prefix="$" className="w-full" /></Form.Item>
+        <Form.Item name="grossCommission" label="ANS gross commission (GCI) for the agent's side" rules={[{ required: true }]}><InputNumber min={0} step={0.01} prefix="$" className="w-full" /></Form.Item>
         <Form.Item name="dealType" label="Deal type"><Select options={[{ value: "BUY_SELL", label: "Residential buy/sell" }, { value: "LEASE", label: "Residential lease" }, { value: "COMMERCIAL_BUY_SELL", label: "Commercial buy/sell" }, { value: "COMMERCIAL_LEASE", label: "Commercial lease" }]} /></Form.Item>
         <Form.Item name="asOf" label="As of (closing / firm date)"><DatePicker className="w-full" /></Form.Item>
         <Form.Item name="isBrokerageLead" valuePropName="checked"><Checkbox>Brokerage lead (lead fee applies)</Checkbox></Form.Item>

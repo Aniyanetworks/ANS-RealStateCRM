@@ -165,7 +165,7 @@ const AgentChequeAcknowledgement = () => {
       <div className="flex justify-end">
         <NavLink
           to="/dashboard/accounting/acknowledgement-list"
-          className="bg-[#243451] text-white px-6 py-2 rounded-md hover:bg-[#1a2639] transition-colors"
+          className="bg-[#0b3b38] text-white px-6 py-2 rounded-md hover:bg-[#1a2639] transition-colors"
         >
           Go Back
         </NavLink>
@@ -462,7 +462,7 @@ const AgentChequeAcknowledgement = () => {
           )}
           <NavLink
             to="/dashboard/accounting/acknowledgement-list"
-            className="bg-[#243451] text-white px-6 py-2 rounded-md hover:bg-[#1a2639] transition-colors"
+            className="bg-[#0b3b38] text-white px-6 py-2 rounded-md hover:bg-[#1a2639] transition-colors"
           >
             Go Back
           </NavLink>

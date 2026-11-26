@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { Table, Modal, Button, Dropdown, Space, Select, Tag } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaEye, FaFile, FaSearch, FaTimes } from "react-icons/fa";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 // import { baseUrl } from "../../../../utils/constant";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
@@ -664,7 +664,7 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
                 to={tab.link}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap no-underline ${
                   location.pathname === tab.link
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
@@ -920,14 +920,14 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
           <div className=" flex flex-col items-center gap-2  ">
             <img src={logo} alt="" className={`w-[50px]`} />
             <h2
-              className={`tracking-widest text-base playfair-display-sc-bold text-[#9F8667]`}
+              className={`tracking-widest text-base playfair-display-sc-bold text-[#0f766e]`}
             >
-              DREAM VALLEY REALTY
+              ANS REALSTATECRM
             </h2>
           </div>
 
           <div className="text-center">
-            <h2 className="font-semibold text-[#243451] text-xl">Invoice</h2>
+            <h2 className="font-semibold text-[#0b3b38] text-xl">Invoice</h2>
           </div>
           <div className=" space-y-5 p-5">
             <div className="px-4 py-2">

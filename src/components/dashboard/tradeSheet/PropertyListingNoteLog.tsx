@@ -27,7 +27,7 @@ const PropertyListingNoteLog: React.FC<PropertyListingNoteLogProps> = ({ propert
   return (
     <div className="mb-6">
       <h3
-        className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+        className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
         onClick={() => setIsExpanded(e => !e)}
       >
         <span>PROPERTY LISTING NOTES LOG</span>

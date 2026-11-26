@@ -11,7 +11,7 @@ import { formatNumberWithCommasAndDecimals } from "../utils/formatNumberWithComm
 import { formatDate, parseISO } from "date-fns";
 import moment from "moment-timezone";
 import html2pdf from 'html2pdf.js';
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import { baseUrl } from '../utils/constant';
 
 interface TermsAndConditionsModalProps {
@@ -251,7 +251,7 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
             .company-name {
               font-size: 20px;
               font-weight: 700;
-              color: #9F8667;
+              color: #0f766e;
               letter-spacing: 1.5px;
             }
             
@@ -326,8 +326,8 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
           <div class="agreement-container">
             <div class="header">
               <div class="logo-section">
-                <img src="${logo}" alt="Dream Valley Realty" />
-                <div class="company-name">DREAM VALLEY REALTY</div>
+                <img src="${logo}" alt="ANS RealStateCRM" />
+                <div class="company-name">ANS REALSTATECRM</div>
               </div>
               <h1 class="agreement-title">BORROW AGREEMENT</h1>
             </div>
@@ -362,7 +362,7 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
             </div>
             
             <div class="footer">
-              <p><strong>This agreement is electronically generated and legally binding. @Dream Valley Realty Inc. - ${new Date().getFullYear()}</p>
+              <p><strong>This agreement is electronically generated and legally binding. @ANS RealStateCRM Inc. - ${new Date().getFullYear()}</p>
             </div>
           </div>
         </body>
@@ -490,8 +490,8 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
         {/* Header */}
         <div className="text-center border-b pb-3">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <img src={logo} alt="Dream Valley Realty" className="h-8 w-auto" />
-            <span className="text-lg font-bold text-[#9F8667] tracking-wider">DREAM VALLEY REALTY</span>
+            <img src={logo} alt="ANS RealStateCRM" className="h-8 w-auto" />
+            <span className="text-lg font-bold text-[#0f766e] tracking-wider">ANS REALSTATECRM</span>
           </div>
           <h2 className="text-lg font-bold text-gray-800">BORROW AGREEMENT</h2>
           <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
@@ -780,7 +780,7 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
         {/* Footer */}
         <div className="text-center border-t pt-2 text-gray-500 text-xs">
           <p>This agreement is electronically generated and legally binding.</p>
-          <p>Dream Valley Realty Inc. - {new Date().getFullYear()}</p>
+          <p>ANS RealStateCRM Inc. - {new Date().getFullYear()}</p>
         </div>
       </div>
 

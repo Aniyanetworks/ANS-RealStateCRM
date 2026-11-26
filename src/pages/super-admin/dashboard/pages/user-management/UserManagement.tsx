@@ -658,7 +658,7 @@ const CreateAndUpdateUser = () => {
       render: (text, record) => (
         <button
           onClick={() => handleImpersonate(record)}
-          className="flex items-center gap-2 bg-[#0B1D3D] text-white px-3 py-1 rounded hover:bg-[#182843]"
+          className="flex items-center gap-2 bg-[#072f2d] text-white px-3 py-1 rounded hover:bg-[#182843]"
         >
           <FaExchangeAlt />
           Impersonate
@@ -941,7 +941,7 @@ const CreateAndUpdateUser = () => {
                 key={tab.id}
                 onClick={() => setUserFilter(tab.id)}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                  userFilter === tab.id ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  userFilter === tab.id ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
                 {tab.label}

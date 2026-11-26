@@ -262,7 +262,7 @@ const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
                 {paperworkDocuments?.map((document: PaperworkDocumentType, index: number) => (
                     <div key={index}>
                         <div
-                            className={`flex px-2 border-b  border-[#f4f1ec] hover:bg-[#f8f8f8e3] py-2 items-center justify-between`}
+                            className={`flex px-2 border-b  border-[#eaf4f2] hover:bg-[#f8f8f8e3] py-2 items-center justify-between`}
                         >
                             <div className="w-[80px] ">
                                 <p>{index + 1}</p>
@@ -302,7 +302,7 @@ const ShareTradeSheetDocument: React.FC = ({uuid, onClose}:any) => {
                         (file: UploadFileType, index: number) => (
                             <div
                                 key={index}
-                                className="ml-20 py-2 border-b border-[#f4f1ec] "
+                                className="ml-20 py-2 border-b border-[#eaf4f2] "
                             >
                                 <p className="flex items-center gap-2">
                                     <input 

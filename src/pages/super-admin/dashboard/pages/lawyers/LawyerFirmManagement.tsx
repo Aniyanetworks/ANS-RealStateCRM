@@ -1144,7 +1144,7 @@ const BrokerageData = () => {
               <table className="min-w-full border ">
                 <thead>
                           <tr>
-                            <th colSpan={2} className="w-full font-semibold p-2 border bg-[#243451] text-white text-center">Lawyer Firm  Details</th>
+                            <th colSpan={2} className="w-full font-semibold p-2 border bg-[#0b3b38] text-white text-center">Lawyer Firm  Details</th>
                           </tr>
                         </thead>
                   <tbody className="text-[11px]">
@@ -1208,7 +1208,7 @@ const BrokerageData = () => {
                       </div>
                       <table className="min-w-full border text-[11px]">
                           <tr>
-                            <th colSpan={2} className="w-full font-semibold p-2 border bg-[#243451] text-white text-center">Lawyer Details</th>
+                            <th colSpan={2} className="w-full font-semibold p-2 border bg-[#0b3b38] text-white text-center">Lawyer Details</th>
                           </tr>
                           <tbody>
                             <tr><td className="p-2 border">Name</td><td className="p-2 border">{selectedLawyer.firstName} {selectedLawyer.lastName}</td></tr>
@@ -1229,11 +1229,11 @@ const BrokerageData = () => {
     <table className="min-w-full border text-[11px] text-left">
       <thead>
         <tr>
-          <th className="p-2 border bg-[#243451] text-white">Trade Record</th>
-          <th className="p-2 border bg-[#243451] text-white">Lawyer</th>
-          <th className="p-2 border bg-[#243451] text-white">Admin Status</th>
-          <th className="p-2 border bg-[#243451] text-white">Trade Status</th>
-          <th className="p-2 border bg-[#243451] text-white">Representation</th>
+          <th className="p-2 border bg-[#0b3b38] text-white">Trade Record</th>
+          <th className="p-2 border bg-[#0b3b38] text-white">Lawyer</th>
+          <th className="p-2 border bg-[#0b3b38] text-white">Admin Status</th>
+          <th className="p-2 border bg-[#0b3b38] text-white">Trade Status</th>
+          <th className="p-2 border bg-[#0b3b38] text-white">Representation</th>
         </tr>
       </thead>
       <tbody>
@@ -1248,7 +1248,7 @@ const BrokerageData = () => {
                             detail.status === "rejected"
                               ? "red"
                               : detail.status === "underReview"
-                                ? "#eb9715"
+                                ? "#f59e0b"
                                 : "", 
                         }}
                         className={`
@@ -1438,7 +1438,7 @@ const BrokerageData = () => {
       >
         <div className="space-y-3">
           <div ref={lawyerShareRef}>
-            <h2 className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1">
+            <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1">
               Lawyer Information
             </h2>
             <table className="w-full text-xs border-collapse border border-gray-400 px-2 py-1">

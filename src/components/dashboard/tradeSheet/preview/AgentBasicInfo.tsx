@@ -15,7 +15,7 @@ type AgentBasicInfoProps = {
 
 const SectionHeader = ({ title }: { title: string }) => (
   <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center gap-2.5">
-    <span className="inline-block w-1 h-4 bg-[#9F8667] rounded-sm flex-shrink-0" />
+    <span className="inline-block w-1 h-4 bg-[#0f766e] rounded-sm flex-shrink-0" />
     <span className="text-[11px] font-semibold text-gray-700 uppercase tracking-wide">{title}</span>
   </div>
 );

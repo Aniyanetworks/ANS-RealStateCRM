@@ -383,7 +383,7 @@ const { RangePicker } = DatePicker;
 
 // Custom loading icon
 const loadingIcon = (
-  <LoadingOutlined style={{ fontSize: 48, color: "#9F8667" }} spin />
+  <LoadingOutlined style={{ fontSize: 48, color: "#0f766e" }} spin />
 );
 
 const Home = () => {
@@ -767,7 +767,7 @@ const Home = () => {
         <div className="space-y-6">
           <div>
             <h1 className="mb-2">
-              Welcome to Dream Valley Realty's Agent's Hub
+              Welcome to ANS RealStateCRM
             </h1>
 
             {/* Filter Tags and Calendar Icon */}
@@ -775,7 +775,7 @@ const Home = () => {
               <Tag
                 onClick={() => handlePresetFilterClick("All Time")}
                 className={`cursor-pointer transition-all ${selectedMonth === "All Time"
-                  ? "bg-[#9F8667] text-white border-[#9F8667]"
+                  ? "bg-[#0f766e] text-white border-[#0f766e]"
                   : "bg-gray-200 text-gray-700 border-gray-200"
                   }`}
               >
@@ -784,7 +784,7 @@ const Home = () => {
               <Tag
                 onClick={() => handlePresetFilterClick("lastYear")}
                 className={`cursor-pointer transition-all ${selectedMonth === "lastYear"
-                  ? "bg-[#9F8667] text-white border-[#9F8667]"
+                  ? "bg-[#0f766e] text-white border-[#0f766e]"
                   : "bg-gray-200 text-gray-700 border-gray-200"
                   }`}
               >
@@ -793,7 +793,7 @@ const Home = () => {
               <Tag
                 onClick={() => handlePresetFilterClick("current")}
                 className={`cursor-pointer transition-all ${selectedMonth === "current"
-                  ? "bg-[#9F8667] text-white border-[#9F8667]"
+                  ? "bg-[#0f766e] text-white border-[#0f766e]"
                   : "bg-gray-200 text-gray-700 border-gray-200"
                   }`}
               >
@@ -802,7 +802,7 @@ const Home = () => {
               <Tag
                 onClick={() => handlePresetFilterClick("previous")}
                 className={`cursor-pointer transition-all ${selectedMonth === "previous"
-                  ? "bg-[#9F8667] text-white border-[#9F8667]"
+                  ? "bg-[#0f766e] text-white border-[#0f766e]"
                   : "bg-gray-200 text-gray-700 border-gray-200"
                   }`}
               >
@@ -813,7 +813,7 @@ const Home = () => {
               <div
                 onClick={handleCalendarIconClick}
                 className={`cursor-pointer px-1 py-0 rounded transition-all ${showDatePicker || selectedMonth === "custom"
-                  ? "bg-[#9F8667] text-white"
+                  ? "bg-[#0f766e] text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
                 title="Custom Date Range"
@@ -829,12 +829,12 @@ const Home = () => {
                   format="YYYY-MM-DD"
                   placeholder={["Start Date", "End Date"]}
                   size="middle"
-                  className={`custom-date-picker ${selectedMonth === "custom" ? "border-[#9F8667]" : ""
+                  className={`custom-date-picker ${selectedMonth === "custom" ? "border-[#0f766e]" : ""
                     }`}
                   popupClassName="custom-date-picker-dropdown"
                   style={{
                     borderColor:
-                      selectedMonth === "custom" ? "#9F8667" : undefined,
+                      selectedMonth === "custom" ? "#0f766e" : undefined,
                   }}
                   open={showDatePicker ? undefined : false}
                 />
@@ -847,7 +847,7 @@ const Home = () => {
                   icon={<PlusOutlined />}
                   onClick={() => setIsManualEntryModalOpen(true)}
                   className="ml-auto"
-                  style={{ borderColor: '#9F8667', color: '#9F8667' }}
+                  style={{ borderColor: '#0f766e', color: '#0f766e' }}
                 >
                   Add Manual Entry
                 </Button>
@@ -889,7 +889,7 @@ const Home = () => {
                 commission: { title: "Top Commission Earner", badgeIcon: <TrophyOutlined />, badgeColor: '#D4AF37' },
                 units: { title: "Top Unit Seller", badgeIcon: <RiseOutlined />, badgeColor: '#8B9DAA' },
                 sales: { title: "Top Seller", badgeIcon: <CrownOutlined />, badgeColor: '#CD7F32' },
-                listings: { title: "Top Listing Agent", badgeIcon: <HomeOutlined />, badgeColor: '#9F8667' },
+                listings: { title: "Top Listing Agent", badgeIcon: <HomeOutlined />, badgeColor: '#0f766e' },
               };
 
               // A bare number typed in a manual entry is shown like the computed cards
@@ -983,7 +983,7 @@ const Home = () => {
                   value: `${a.totalListings} Listings`,
                   breakdownData: { type: "listings" as const, details: a.listingDetails || [], total: a.totalListings },
                   badgeIcon: <HomeOutlined />,
-                  badgeColor: '#9F8667',
+                  badgeColor: '#0f766e',
                 })),
                 ...manualCardFor('listings'),
               ];
@@ -1001,8 +1001,8 @@ const Home = () => {
                         <StatCard
                           key={c.key}
                           title={c.title}
-                          borderColor="border-[#9F8667]"
-                          bgColor="bg-[#9F8667]"
+                          borderColor="border-[#0f766e]"
+                          bgColor="bg-[#0f766e]"
                           profilePicture={c.profilePicture}
                           name={c.name}
                           value={c.value}
@@ -1036,7 +1036,7 @@ const Home = () => {
                   type="primary"
                   loading={isCreatingManualTopAgent || isUpdatingManualTopAgent}
                   onClick={handleCreateManualTopAgent}
-                  style={{ background: '#9F8667', borderColor: '#9F8667' }}
+                  style={{ background: '#0f766e', borderColor: '#0f766e' }}
                 >
                   Save
                 </Button>,
@@ -1147,7 +1147,7 @@ const Home = () => {
                         <p className="font-semibold text-gray-800 text-[13px]">Tradesheet Overview</p>
                         <p className="text-[11px] text-gray-400 mt-0.5">Distribution by status</p>
                       </div>
-                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#FDF6EE', color: '#9F8667' }}>
+                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#fffbeb', color: '#0f766e' }}>
                         {tradeSheetList.length} Total
                       </span>
                     </div>
@@ -1164,7 +1164,7 @@ const Home = () => {
                         <p className="font-semibold text-gray-800 text-[13px]">Property Overview</p>
                         <p className="text-[11px] text-gray-400 mt-0.5">Distribution by status</p>
                       </div>
-                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#FDF6EE', color: '#9F8667' }}>
+                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#fffbeb', color: '#0f766e' }}>
                         {allProperties.length} Total
                       </span>
                     </div>
@@ -1177,8 +1177,8 @@ const Home = () => {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
                   <div className="flex items-center gap-3 px-6 py-4 shrink-0" style={{ borderBottom: '2px solid #F5EFE8' }}>
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#FDF6EE' }}>
-                      <CalendarOutlined style={{ color: '#9F8667', fontSize: 15 }} />
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fffbeb' }}>
+                      <CalendarOutlined style={{ color: '#0f766e', fontSize: 15 }} />
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800 text-[13px]">Announcements</p>
@@ -1191,8 +1191,8 @@ const Home = () => {
                 </div>
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
                   <div className="flex items-center gap-3 px-6 py-4 shrink-0" style={{ borderBottom: '2px solid #F5EFE8' }}>
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#FDF6EE' }}>
-                      <CalendarOutlined style={{ color: '#9F8667', fontSize: 15 }} />
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fffbeb' }}>
+                      <CalendarOutlined style={{ color: '#0f766e', fontSize: 15 }} />
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800 text-[13px]">Upcoming Events</p>
@@ -1206,8 +1206,8 @@ const Home = () => {
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col" style={{ maxHeight: 400 }}>
                   <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-6 py-4 shrink-0" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#FDF6EE' }}>
-                        <GiftOutlined style={{ color: '#9F8667', fontSize: 15 }} />
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: '#fffbeb' }}>
+                        <GiftOutlined style={{ color: '#0f766e', fontSize: 15 }} />
                       </div>
                       <div>
                         <p className="font-semibold text-gray-800 text-[13px]">Agent Birthdays</p>
@@ -1228,7 +1228,7 @@ const Home = () => {
                         key={key}
                         onClick={() => handleBdayPresetClick(key)}
                         className={`cursor-pointer transition-all !m-0 ${bdayFilter === key
-                          ? "bg-[#9F8667] text-white border-[#9F8667]"
+                          ? "bg-[#0f766e] text-white border-[#0f766e]"
                           : "bg-gray-200 text-gray-700 border-gray-200"
                           }`}
                       >
@@ -1238,7 +1238,7 @@ const Home = () => {
                     <div
                       onClick={() => setShowBdayPicker(!showBdayPicker)}
                       className={`cursor-pointer px-1 py-0 rounded transition-all ${showBdayPicker || bdayFilter === "custom"
-                        ? "bg-[#9F8667] text-white"
+                        ? "bg-[#0f766e] text-white"
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                         }`}
                       title="Custom Date Range"
@@ -1254,7 +1254,7 @@ const Home = () => {
                         size="small"
                         className="custom-date-picker"
                         popupClassName="custom-date-picker-dropdown"
-                        style={{ width: 190, fontSize: 12, borderColor: bdayFilter === "custom" ? "#9F8667" : undefined }}
+                        style={{ width: 190, fontSize: 12, borderColor: bdayFilter === "custom" ? "#0f766e" : undefined }}
                       />
                     )}
                     </div>
@@ -1262,7 +1262,7 @@ const Home = () => {
                   <div className="overflow-y-auto flex-1">
                     {agentListLoading ? (
                       <div className="flex items-center justify-center py-10">
-                        <LoadingOutlined style={{ color: '#9F8667', fontSize: 20 }} />
+                        <LoadingOutlined style={{ color: '#0f766e', fontSize: 20 }} />
                       </div>
                     ) : upcomingBirthdays.length > 0 ? (
                       upcomingBirthdays.map((b, i) => (
@@ -1285,7 +1285,7 @@ const Home = () => {
                           {b.daysUntil === 0 ? (
                             <span
                               className="text-[10px] font-semibold px-2.5 py-1 rounded-full shrink-0"
-                              style={{ background: '#FDF6EE', color: '#9F8667' }}
+                              style={{ background: '#fffbeb', color: '#0f766e' }}
                             >
                               🎂 Today
                             </span>
@@ -1316,8 +1316,8 @@ const Home = () => {
                   {/* Header */}
                   <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FDF6EE' }}>
-                        <FileTextOutlined style={{ color: '#9F8667', fontSize: 15 }} />
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#fffbeb' }}>
+                        <FileTextOutlined style={{ color: '#0f766e', fontSize: 15 }} />
                       </div>
                       <div>
                         <p className="font-semibold text-gray-800 text-[13px]">Recent Closed Tradesheets</p>
@@ -1325,7 +1325,7 @@ const Home = () => {
                       </div>
                     </div>
                     {!archiveLoading && (
-                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#FDF6EE', color: '#9F8667' }}>
+                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#fffbeb', color: '#0f766e' }}>
                         {recentClosed.length} Recent
                       </span>
                     )}
@@ -1355,8 +1355,8 @@ const Home = () => {
                       ))
                     ) : recentClosed.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-12 gap-2">
-                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#FDF6EE' }}>
-                          <FileTextOutlined style={{ color: '#CDB499', fontSize: 22 }} />
+                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#fffbeb' }}>
+                          <FileTextOutlined style={{ color: '#99f6e4', fontSize: 22 }} />
                         </div>
                         <p className="text-[12px] text-gray-400 font-medium">No closed tradesheets yet</p>
                       </div>
@@ -1396,7 +1396,7 @@ const Home = () => {
                             <div className="col-span-2 flex justify-center">
                               <span
                                 className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full whitespace-nowrap"
-                                style={{ background: '#F0EBE5', color: '#6B5745' }}
+                                style={{ background: '#F0EBE5', color: '#134e4a' }}
                               >
                                 Closed
                               </span>
@@ -1416,8 +1416,8 @@ const Home = () => {
                 <div className="bg-white rounded-2xl shadow-md overflow-hidden">
                   <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: '2px solid #F5EFE8' }}>
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#FDF6EE' }}>
-                        <HomeOutlined style={{ color: '#9F8667', fontSize: 15 }} />
+                      <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: '#fffbeb' }}>
+                        <HomeOutlined style={{ color: '#0f766e', fontSize: 15 }} />
                       </div>
                       <div>
                         <p className="font-semibold text-gray-800 text-[13px]">Recent Properties</p>
@@ -1425,7 +1425,7 @@ const Home = () => {
                       </div>
                     </div>
                     {!propertyLoading && (
-                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#FDF6EE', color: '#9F8667' }}>
+                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#fffbeb', color: '#0f766e' }}>
                         {propertyData?.data?.propertyListingData?.length ?? 0} Total
                       </span>
                     )}
@@ -1455,8 +1455,8 @@ const Home = () => {
                       ))
                     ) : recentProperties.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-12 gap-2">
-                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#FDF6EE' }}>
-                          <HomeOutlined style={{ color: '#CDB499', fontSize: 22 }} />
+                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: '#fffbeb' }}>
+                          <HomeOutlined style={{ color: '#99f6e4', fontSize: 22 }} />
                         </div>
                         <p className="text-[12px] text-gray-400 font-medium">No properties yet</p>
                       </div>
@@ -1466,7 +1466,7 @@ const Home = () => {
                         const isActive = ['listed', 'New', 'Price Change', 'Extended', 'Exclusive', 'DFT'].includes(statusRaw);
                         const isSold = statusRaw === 'Sold';
                         const statusBg = isSold ? '#F0EBE5' : isActive ? '#EDF7F0' : '#F5F5F5';
-                        const statusColor = isSold ? '#6B5745' : isActive ? '#3A7D55' : '#9CA3AF';
+                        const statusColor = isSold ? '#134e4a' : isActive ? '#3A7D55' : '#9CA3AF';
                         return (
                           <div
                             key={i}
@@ -1557,7 +1557,7 @@ const StatCard: React.FC<StatCardProps> = ({
   value,
   breakdownData,
   badgeIcon,
-  badgeColor = '#9F8667',
+  badgeColor = '#0f766e',
   isManual,
   onDelete,
   onEdit,
@@ -1605,7 +1605,7 @@ const StatCard: React.FC<StatCardProps> = ({
                 {detail.tradeSheetTypeId && (
                   <div className="text-xs text-gray-600 mt-1">
                     <span className="text-gray-500">Reference:</span>{" "}
-                    <span className="font-medium text-[#9F8667]">
+                    <span className="font-medium text-[#0f766e]">
                       {detail.tradeSheetTypeId}
                     </span>
                   </div>
@@ -1643,7 +1643,7 @@ const StatCard: React.FC<StatCardProps> = ({
                 {detail.tradeSheetTypeId && (
                   <div className="text-xs mb-2">
                     <span className="text-gray-500">Reference:</span>{" "}
-                    <span className="font-medium text-[#9F8667]">
+                    <span className="font-medium text-[#0f766e]">
                       {detail.tradeSheetTypeId}
                     </span>
                   </div>
@@ -1738,7 +1738,7 @@ const StatCard: React.FC<StatCardProps> = ({
                 {detail.tradeSheetTypeId && (
                   <div className="text-xs mb-2">
                     <span className="text-gray-500">Reference:</span>{" "}
-                    <span className="font-medium text-[#9F8667]">
+                    <span className="font-medium text-[#0f766e]">
                       {detail.tradeSheetTypeId}
                     </span>
                   </div>
@@ -1780,7 +1780,7 @@ const StatCard: React.FC<StatCardProps> = ({
                             </div>
                           )}
                           {property.soldPrice && (
-                            <div className="font-medium text-[#9F8667]">
+                            <div className="font-medium text-[#0f766e]">
                               <span className="text-gray-500">Sold:</span> $
                               {formatNumberWithCommasAndDecimals(
                                 parseFloat(property.soldPrice || "0")
@@ -1854,7 +1854,7 @@ const StatCard: React.FC<StatCardProps> = ({
                 {(detail.propertyListingTypeId || detail.mlsNumber) && (
                   <div className="text-xs mb-2">
                     <span className="text-gray-500">Reference:</span>{" "}
-                    <span className="font-medium text-[#9F8667]">
+                    <span className="font-medium text-[#0f766e]">
                       {detail.propertyListingTypeId || detail.mlsNumber}
                     </span>
                   </div>
@@ -1912,7 +1912,7 @@ const StatCard: React.FC<StatCardProps> = ({
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onEdit(); }}
-          className={`absolute top-2 ${onDelete ? 'right-8' : 'right-2'} w-5 h-5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#9F8667] transition-colors z-10`}
+          className={`absolute top-2 ${onDelete ? 'right-8' : 'right-2'} w-5 h-5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#0f766e] transition-colors z-10`}
           title="Edit manual entry"
         >
           <EditOutlined style={{ fontSize: 10 }} />
@@ -1994,7 +1994,7 @@ const StatCard: React.FC<StatCardProps> = ({
 
 // ── Agent Category Bar Chart ─────────────────────────────────
 // Warm stepped palette — darkest to lightest
-const BRAND_PALETTE = ['#6B5745', '#9F8667', '#B89B7A', '#CDB499', '#DEC8B0', '#EFE0D0'];
+const BRAND_PALETTE = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#EFE0D0'];
 
 const AGENT_BARS = [
   { key: 'ourAgents', label: 'Our Agents' },
@@ -2016,7 +2016,7 @@ const AgentCategoryChart: React.FC<{ counts: Record<string, number> }> = ({ coun
           <p className="font-semibold text-gray-800 text-[13px]">Agent Overview</p>
           <p className="text-[11px] text-gray-400 mt-0.5">Breakdown by category</p>
         </div>
-        <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#FDF6EE', color: '#9F8667' }}>
+        <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#fffbeb', color: '#0f766e' }}>
           {total} Active
         </span>
       </div>
@@ -2059,7 +2059,7 @@ const TS_STATUS_DEFS = [
   { key: 'draft', label: 'Draft' },
   { key: 'rejected', label: 'Rejected' },
 ];
-const TS_COLORS = ['#6B5745', '#9F8667', '#B89B7A', '#CDB499', '#DEC8B0', '#C17E6E'];
+const TS_COLORS = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#C17E6E'];
 
 const TradeStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: number }> = ({ statusCounts, total }) => {
   const R = 40;
@@ -2147,7 +2147,7 @@ const DonutSkeleton: React.FC = () => (
 );
 
 // ── Property Status Donut Chart ───────────────────────────────
-const PROP_COLORS = ['#6B5745', '#9F8667', '#B89B7A', '#CDB499', '#DEC8B0', '#C17E6E', '#E8C4A0', '#D4956A'];
+const PROP_COLORS = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#C17E6E', '#E8C4A0', '#D4956A'];
 
 const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: number }> = ({ statusCounts, total }) => {
   const R = 40;
@@ -2220,8 +2220,8 @@ const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; tota
 
 // ── KPI Summary Card ─────────────────────────────────────────
 const KPI_ACCENTS = [
-  { accent: '#6B5745', bg: '#F2EAE4', light: '#FAF5F1' },
-  { accent: '#9F8667', bg: '#F5EDE1', light: '#FDF8F3' },
+  { accent: '#134e4a', bg: '#F2EAE4', light: '#FAF5F1' },
+  { accent: '#0f766e', bg: '#F5EDE1', light: '#FDF8F3' },
   { accent: '#7A6655', bg: '#EEE5DC', light: '#F8F3EE' },
   { accent: '#8B7355', bg: '#F0E8DC', light: '#FAF6F1' },
   { accent: '#5C4A3A', bg: '#EBE1D8', light: '#F7F3EF' },

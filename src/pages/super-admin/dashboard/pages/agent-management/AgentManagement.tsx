@@ -9,7 +9,7 @@ import {
   useState,
 } from 'react';
 
-import logo1 from '/logo.png';
+import logo1 from '/logo.svg';
 import type {
   TableColumnsType,
   TableProps,
@@ -308,7 +308,7 @@ const AgentManagement: React.FC = () => {
         ? filteredData
           ?.filter((record) => {
             if (agentStatus === "ourAgent") {
-              // Filter by brokerage ID 24 (Dream Valley Realty Inc.)
+              // Filter by brokerage ID 24 (ANS RealStateCRM Inc.)
               return (record?.brokerageId === 24 || record?.brokerageId === '24') && record?.status !== "closed";
             } else {
               // Filter by status for other tabs
@@ -326,7 +326,7 @@ const AgentManagement: React.FC = () => {
             return (a[orderKey] || 0) - (b[orderKey] || 0);
           })
         : filteredData?.filter((record) => {
-          // Filter for "Other Agent" tab - exclude Dream Valley Realty Inc.
+          // Filter for "Other Agent" tab - exclude ANS RealStateCRM Inc.
           return record?.brokerageId !== 24 && record?.brokerageId !== '24' && record?.status !== "closed";
         });
 
@@ -730,7 +730,7 @@ const AgentManagement: React.FC = () => {
       render: (text, record) => (
         <button
           onClick={() => handleImpersonate(record)}
-          className="flex items-center gap-2 bg-[#0B1D3D] text-white px-3 py-1 rounded hover:bg-[#182843]"
+          className="flex items-center gap-2 bg-[#072f2d] text-white px-3 py-1 rounded hover:bg-[#182843]"
         >
           <FaExchangeAlt />
           Impersonate
@@ -1229,7 +1229,7 @@ const AgentManagement: React.FC = () => {
                 }}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
                   activeTabId === tab.id
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >

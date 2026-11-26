@@ -1,4 +1,4 @@
-// Shared building blocks with the original DV Accounting (bodv) markup, so screens use its exact styling
+// Shared building blocks with the original ANS Accounting (bodv) markup, so screens use its exact styling
 // (classes come from ../bodv.css, scoped to the .dvac page wrapper).
 import { ReactNode } from "react";
 import { LuCircleAlert, LuFile, LuX } from "./icons";

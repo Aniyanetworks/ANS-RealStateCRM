@@ -1,7 +1,7 @@
 // @ts-nocheck
 import moment from "moment-timezone";
 import { formatStringCamelCasecapitalize } from "../../../../../../utils/stringUtils";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import type { DataType } from "./types";
 import { reasonLabel } from "./types";
 
@@ -94,13 +94,13 @@ const ReceiptDisplay = ({ receiptData, isLoading = false }: ReceiptDisplayProps)
       {/* Deposit Receipt Title */}
       <div className="flex flex-col items-center gap-2">
         <img src={logo} alt="" className="w-[50px]" />
-        <h2 className="tracking-widest text-base playfair-display-sc-bold text-[#9F8667]">
-          DREAM VALLEY REALTY
+        <h2 className="tracking-widest text-base playfair-display-sc-bold text-[#0f766e]">
+          ANS REALSTATECRM
         </h2>
       </div>
 
       <div className="text-center">
-        <h2 className="font-semibold text-[#243451] text-xl">
+        <h2 className="font-semibold text-[#0b3b38] text-xl">
           Cheque Pickup Receipt
         </h2>
       </div>

@@ -108,7 +108,7 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                     style={{ width: 28, height: 28, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
                   />
                 ) : (
-                  <Avatar size={28} style={{ backgroundColor: isMine ? '#9F8667' : '#6b7280', fontSize: 10, fontWeight: 700, flexShrink: 0 }}>
+                  <Avatar size={28} style={{ backgroundColor: isMine ? '#0f766e' : '#6b7280', fontSize: 10, fontWeight: 700, flexShrink: 0 }}>
                     {getInitials(note.owner?.name)}
                   </Avatar>
                 )
@@ -126,7 +126,7 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: isMine ? 'flex-end' : 'flex-start', maxWidth: '70%', gap: 1 }}>
                     {/* Sender name — first in group only */}
                     {!isMine && idx > 0 && notes[idx - 1].createdBy === note.createdBy ? null : (
-                      !isMine && <span style={{ fontSize: 10, fontWeight: 600, color: '#9F8667', paddingLeft: 4, marginBottom: 1 }}>{note.owner?.name || 'Unknown'}</span>
+                      !isMine && <span style={{ fontSize: 10, fontWeight: 600, color: '#0f766e', paddingLeft: 4, marginBottom: 1 }}>{note.owner?.name || 'Unknown'}</span>
                     )}
 
                     {/* Bubble */}
@@ -137,7 +137,7 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                       <div
                         className={isMine ? 'chat-bubble-mine' : undefined}
                         style={{
-                          background: isMine ? '#9F8667' : '#f3f4f6',
+                          background: isMine ? '#0f766e' : '#f3f4f6',
                           color: isMine ? '#fff' : '#1f2937',
                           borderRadius: isMine
                             ? (isLastInGroup ? '18px 18px 4px 18px' : '18px 18px 18px 18px')
@@ -171,7 +171,7 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                         }}
                       >
                         <Tooltip title="Edit">
-                          <button onClick={() => handleEdit(note)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9F8667', display: 'flex', padding: 2 }}>
+                          <button onClick={() => handleEdit(note)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0f766e', display: 'flex', padding: 2 }}>
                             <FaRegEdit style={{ fontSize: 10 }} />
                           </button>
                         </Tooltip>

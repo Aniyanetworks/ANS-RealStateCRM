@@ -40,16 +40,16 @@ const PropertyListingSteps: React.FC<PropertyListingStepsProps> = ({ active, uui
                             {step?.label}
                         </span>
                         <div className="flex items-center rounded-2xl  xl:border xl:border-r-0">
-                            <div className="flex size-8 items-center justify-center rounded-full border-2 border-[#9F8667]">
+                            <div className="flex size-8 items-center justify-center rounded-full border-2 border-[#0f766e]">
                                 {active === index + 1 ? (
-                                    <div className="flex size-6 flex-shrink-0 bg-[#9F8667]  items-center justify-center rounded-full font-medium text-white">
+                                    <div className="flex size-6 flex-shrink-0 bg-[#0f766e]  items-center justify-center rounded-full font-medium text-white">
                                         <AiOutlineDoubleRight
                                             name="fe:check"
                                             className="text-lg text-[#fff] "
                                         />
                                     </div>
                                 ) : active > index + 1 ? (
-                                    <div className="flex size-5 flex-shrink-0 items-center justify-center rounded-full bg-[#9F8667] font-medium text-white">
+                                    <div className="flex size-5 flex-shrink-0 items-center justify-center rounded-full bg-[#0f766e] font-medium text-white">
                                         <AiOutlineDoubleRight
                                             name="fe:check"
                                             className="text-lg "
@@ -64,7 +64,7 @@ const PropertyListingSteps: React.FC<PropertyListingStepsProps> = ({ active, uui
 
                     {index < steps.length - 1 && (
                         <hr
-                            className={`${active >= index + 2 ? "border-[#9F8667] " : "border-[#ffffff] "
+                            className={`${active >= index + 2 ? "border-[#0f766e] " : "border-[#ffffff] "
                                 }  border-2 w-full `}
                         />
                     )}

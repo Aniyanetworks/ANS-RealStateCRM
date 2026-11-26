@@ -1,4 +1,4 @@
-// In-app confirm / prompt dialogs for DV Time Clock (replace the browser's window.confirm / window.prompt).
+// In-app confirm / prompt dialogs for ANS Time Clock (replace the browser's window.confirm / window.prompt).
 // Promise-based so callers keep the same flow:  if (!(await tcConfirm("Delete?"))) return;
 // <TcDialogHost /> is mounted once inside the .dvtc page so the dialog uses the console's modal styles.
 import { useEffect, useRef, useState } from "react";
@@ -74,7 +74,7 @@ export function TcDialogHost() {
       <div className="modalbox" role="alertdialog" aria-modal="true" aria-labelledby="tc-dialog-title" style={{ width: "min(460px,100%)" }}>
         <div className="modalhead" style={{ marginBottom: 10 }}>
           <h2 id="tc-dialog-title" style={{ margin: 0, fontSize: 18, display: "flex", alignItems: "center", gap: 10 }}>
-            <span aria-hidden="true" style={{ display: "grid", placeItems: "center", width: 30, height: 30, borderRadius: "50%", fontSize: 15, fontWeight: 800, background: req.danger ? "#fdecea" : "#f1e9db", color: req.danger ? "#b42318" : "#8d7040" }}>
+            <span aria-hidden="true" style={{ display: "grid", placeItems: "center", width: 30, height: 30, borderRadius: "50%", fontSize: 15, fontWeight: 800, background: req.danger ? "#fdecea" : "#f1e9db", color: req.danger ? "#b42318" : "#0f766e" }}>
               {req.danger ? "!" : "?"}
             </span>
             {title}

@@ -653,19 +653,19 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
       </div>
       {activeTab === "sendInvoice" && (
         <div>
-          <div ref={sectionRef} className="bg-[#0F2141] min-h-[1122px] flex flex-col">
-            <div className="ml-5 pl-10 pr-10 py-10 border-[#0F2141] border-y-8 bg-white flex-1 text-[13px] leading-6">
+          <div ref={sectionRef} className="bg-[#0b3331] min-h-[1122px] flex flex-col">
+            <div className="ml-5 pl-10 pr-10 py-10 border-[#0b3331] border-y-8 bg-white flex-1 text-[13px] leading-6">
               {/* Header */}
               <div className="flex gap-10 items-start border-b pb-4">
                 <div className="flex gap-3 w-[50%] items-end">
                   <img
-                    src="/logo.png"
-                    alt="Dream Valley Realty"
+                    src="/logo.svg"
+                    alt="ANS RealStateCRM"
                     className="h-24"
                   />
                   <div>
                     <h6 className="text-2xl leading-6 tracking-wider font-semibold">
-                      DREAM VALLEY REALTY INC.
+                      ANS REALSTATECRM INC.
                     </h6>
                     <h6 className="text-lg leading-6 tracking-wider">
                       BROKERAGE
@@ -820,7 +820,7 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                       <td colSpan={3}><hr className="border-gray-500 my-1" /></td>
                     </tr>
                     <tr className="font-bold text-[14px]">
-                      <td>Balance due to Dream Valley Realty Inc.:</td>
+                      <td>Balance due to ANS RealStateCRM Inc.:</td>
                       <td className="text-right pr-2">$</td>
                       <td className="text-right">{formatNumberWithCommasAndDecimals(totalSellingCommissionCalculation())}</td>
                     </tr>
@@ -832,7 +832,7 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
               <div className="mt-4">
                 <p>
                   Please make cheque payable to{" "}
-                  <strong>Dream Valley Realty Inc.</strong>
+                  <strong>ANS RealStateCRM Inc.</strong>
                 </p>
                 <p>
                   Our trade reference number is{" "}
@@ -906,11 +906,11 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
                   <p className="italic text-sm text-gray-600">[No signature on file]</p>
                 )}
                 <p className="font-bold mt-2">{user.name}</p>
-                <p>Dream Valley Realty Inc.</p>
+                <p>ANS RealStateCRM Inc.</p>
                 <p>Tel: 416-951-9929, Ext. 1002</p>
                 <div className="flex items-center gap-4 mt-1">
                   <p className="whitespace-nowrap">www.dreamvalleyrealty.ca</p>
-                  <div className="bg-[#9F8667] h-[20px] flex-1"></div>
+                  <div className="bg-[#0f766e] h-[20px] flex-1"></div>
                 </div>
               </div>
             </div>
@@ -987,7 +987,7 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
               {/* Submit Button */}
               <div>
                 <button
-                  className="bg-[#0B1D3D] text-white p-2 rounded-md flex gap-2 items-center"
+                  className="bg-[#072f2d] text-white p-2 rounded-md flex gap-2 items-center"
                   onClick={onSubmitEmail} // Hook form submit
                   disabled={isEmailSend}
                 >

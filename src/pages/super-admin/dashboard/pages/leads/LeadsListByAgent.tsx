@@ -1139,7 +1139,7 @@ const LeadsList = () => {
             <button
               onClick={() => setActiveView("list")}
               className={`px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                activeView === "list" ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100"
+                activeView === "list" ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100"
               }`}
             >
               All Leads
@@ -1147,7 +1147,7 @@ const LeadsList = () => {
             <button
               onClick={() => setActiveView("statistics")}
               className={`px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                activeView === "statistics" ? "bg-[#0C1A34] text-white" : "text-gray-500 hover:bg-gray-100"
+                activeView === "statistics" ? "bg-[#082624] text-white" : "text-gray-500 hover:bg-gray-100"
               }`}
             >
               📊 My Statistics
@@ -1342,7 +1342,7 @@ const LeadsList = () => {
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className="bg-[#060E1C] text-white px-6 py-2 rounded hover:bg-[#0a1a33] transition-colors"
+              className="bg-[#051f1e] text-white px-6 py-2 rounded hover:bg-[#0a1a33] transition-colors"
             >
               {selectedUUID ? "Update Lead" : "Create Lead"}
             </button>

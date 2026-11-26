@@ -1364,7 +1364,7 @@ const LeadsList = () => {
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className="bg-[#060E1C] text-white px-6 py-2 rounded hover:bg-[#0a1a33] transition-colors"
+              className="bg-[#051f1e] text-white px-6 py-2 rounded hover:bg-[#0a1a33] transition-colors"
             >
               {selectedUUID ? "Update Lead" : "Create Lead"}
             </button>
@@ -1438,7 +1438,7 @@ const LeadsList = () => {
           </Select>
           {isAssigning && (
             <div className="flex justify-center items-center mt-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#060E1C]"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#051f1e]"></div>
               <span className="ml-2">Assigning leads...</span>
             </div>
           )}
@@ -1476,7 +1476,7 @@ const LeadsList = () => {
           </Select>
           {isAssigning && (
             <div className="flex justify-center items-center mt-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#060E1C]"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#051f1e]"></div>
               <span className="ml-2">Changing Status...</span>
             </div>
           )}

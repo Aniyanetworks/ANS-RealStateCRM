@@ -1,4 +1,4 @@
-// Shared state for the DV Time Clock screens: who is signed in, who we are acting as (impersonation),
+// Shared state for the ANS Time Clock screens: who is signed in, who we are acting as (impersonation),
 // permissions (same rules as the original app), navigation, modal and toast.
 import { createContext, ReactNode, useCallback, useContext } from "react";
 import { useTcMutateMutation } from "../../redux/api/common/dvTimeClockSlice";
@@ -7,7 +7,7 @@ import type { Branch, Member, Settings } from "./tcUtils";
 export type Me = Member & { isManager: boolean; permissionGroups?: [string, string][] };
 
 export type TimeClockCtx = {
-  realMe: Me; // the AgentHub user who is signed in
+  realMe: Me; // the ANS RealStateCRM user who is signed in
   me: Me; // the account being viewed (realMe, or the impersonated employee/manager)
   acting: "employee" | "management" | null;
   isEmployeeView: boolean;
@@ -27,7 +27,7 @@ export const TimeClockContext = createContext<TimeClockCtx | null>(null);
 
 export function useTimeClock() {
   const ctx = useContext(TimeClockContext);
-  if (!ctx) throw new Error("useTimeClock must be used inside the DV Time Clock page");
+  if (!ctx) throw new Error("useTimeClock must be used inside the ANS Time Clock page");
   return ctx;
 }
 

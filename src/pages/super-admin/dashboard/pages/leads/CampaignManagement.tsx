@@ -873,7 +873,7 @@ const CampaignManagement = () => {
             <button
               onClick={() => setActiveTypeFilter("all")}
               className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                activeTypeFilter === "all" ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                activeTypeFilter === "all" ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               }`}
             >
               All Campaigns ({getTypeCount("all")})
@@ -883,7 +883,7 @@ const CampaignManagement = () => {
                 key={type}
                 onClick={() => setActiveTypeFilter(type)}
                 className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                  activeTypeFilter === type ? "bg-[#9F8667] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  activeTypeFilter === type ? "bg-[#0f766e] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
                 {type} ({getTypeCount(type)})
@@ -892,7 +892,7 @@ const CampaignManagement = () => {
             <button
               onClick={() => setActiveTypeFilter("statistics")}
               className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium transition-all duration-150 whitespace-nowrap ${
-                activeTypeFilter === "statistics" ? "bg-[#0C1A34] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                activeTypeFilter === "statistics" ? "bg-[#082624] text-white" : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               }`}
             >
               📊 Lead Statistics
@@ -1105,7 +1105,7 @@ const CampaignManagement = () => {
             <Button
               type="primary"
               htmlType="submit"
-              style={{ backgroundColor: "#060E1C", borderColor: "#060E1C" }}
+              style={{ backgroundColor: "#051f1e", borderColor: "#051f1e" }}
             >
               {isEditMode ? "Update" : "Create"}
             </Button>
@@ -1209,8 +1209,8 @@ const CampaignManagement = () => {
             key="import"
             type="primary"
             style={{
-              backgroundColor: "#060E1C",
-              borderColor: "#060E1C",
+              backgroundColor: "#051f1e",
+              borderColor: "#051f1e",
               color: "#FFFFFF",
             }}
             onClick={handleImportSubmit}
@@ -1285,7 +1285,7 @@ const CampaignManagement = () => {
                             );
                           }
                         }}
-                        className="mr-2 h-4 w-4 flex-shrink-0 bg-purple-950"
+                        className="mr-2 h-4 w-4 flex-shrink-0 bg-teal-950"
                       />
                       <label
                         htmlFor={`field-${header}`}
@@ -1339,7 +1339,7 @@ const CampaignManagement = () => {
           <Button
             key="export"
             type="primary"
-            style={{ backgroundColor: "#060E1C", borderColor: "#060E1C" }}
+            style={{ backgroundColor: "#051f1e", borderColor: "#051f1e" }}
             onClick={handleExportSubmit}
             disabled={!exportData}
           >
@@ -1373,7 +1373,7 @@ const CampaignManagement = () => {
           <Button
             key="merge"
             type="primary"
-            style={{ backgroundColor: "#060E1C", borderColor: "#060E1C" }}
+            style={{ backgroundColor: "#051f1e", borderColor: "#051f1e" }}
             onClick={() => {
               const form = document.getElementById(
                 "merge-form"

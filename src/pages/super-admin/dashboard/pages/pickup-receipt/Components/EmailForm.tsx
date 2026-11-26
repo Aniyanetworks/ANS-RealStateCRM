@@ -86,7 +86,7 @@ const EmailForm = ({
         {/* Submit Button */}
         <div>
           <button
-            className="bg-[#0B1D3D] text-white p-2 rounded-md flex gap-2 items-center"
+            className="bg-[#072f2d] text-white p-2 rounded-md flex gap-2 items-center"
             onClick={onSubmitEmail}
             disabled={isEmailSend}
           >

@@ -166,7 +166,7 @@ const ClockInOut = () => {
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
         {
           headers: {
-            'User-Agent': 'AgentHub-App' // Required by Nominatim
+            'User-Agent': 'ANS RealStateCRM-App' // Required by Nominatim
           }
         }
       );

@@ -1,7 +1,7 @@
 // @ts-nocheck
 // eslint-disable @typescript-eslint/no-explicit-any
 import moment from "moment";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import {
   Document,
   Page,
@@ -54,10 +54,10 @@ const ReciptPDF = ({
               style={{
                 marginTop: 20,
                 fontSize: 20,
-                color: "#9F8667",
+                color: "#0f766e",
               }}
             >
-              DREAM VALLEY REALTY
+              ANS REALSTATECRM
             </Text>{" "}
             {receiptNo}
           </View>

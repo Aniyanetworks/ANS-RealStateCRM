@@ -55,7 +55,7 @@ function StatLink({ label, value, onOpen }: { label: string; value: number | str
       onClick={onOpen}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onOpen())}
       style={{ cursor: "pointer", transition: "border-color .15s, box-shadow .15s, transform .15s" }}
-      onMouseEnter={(e) => Object.assign(e.currentTarget.style, { borderColor: "#cdbb99", boxShadow: "0 6px 16px #111f3714", transform: "translateY(-1px)" })}
+      onMouseEnter={(e) => Object.assign(e.currentTarget.style, { borderColor: "#5eead4", boxShadow: "0 6px 16px #111f3714", transform: "translateY(-1px)" })}
       onMouseLeave={(e) => Object.assign(e.currentTarget.style, { borderColor: "", boxShadow: "", transform: "" })}
     >
       <span>{label}</span><b>{value}</b>

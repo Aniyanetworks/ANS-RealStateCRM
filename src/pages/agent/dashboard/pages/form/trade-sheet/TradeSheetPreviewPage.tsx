@@ -171,7 +171,7 @@ const TradeSheetPreviewPage = () => {
                       {isExpanded ? (
                         <FaMinus className="mr-2 inline text-red-600 text-xl font-semibold" />
                       ) : (
-                        <FaPlus className="mr-2 inline text-[#0C1A34] text-xl font-semibold blinking" />
+                        <FaPlus className="mr-2 inline text-[#082624] text-xl font-semibold blinking" />
                       )}
                     </button>
                   </h5>

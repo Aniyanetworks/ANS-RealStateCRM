@@ -82,7 +82,7 @@ const ActiveAgreementPreviewPopup = ({ agentAccount }) => {
           {selectedDocument && (
             <button
               onClick={() => handleDocumentDownload(selectedDocument.filePath)}
-              className="px-4 py-2 bg-[#141D2C] text-white rounded hover:bg-[#35496c]"
+              className="px-4 py-2 bg-[#0a2a28] text-white rounded hover:bg-[#35496c]"
             >
               Download
             </button>

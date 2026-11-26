@@ -14,7 +14,7 @@ const ACTIONS = {
   transfer: { title: "Commission transfer: Real Estate Trust → Commission Trust", path: "/trust/commission-transfer", help: "Seller/landlord side: release the brokerage commission from the deposit into Commission Trust. Commission income is recognised net of HST." },
   receipt: { title: "Commission receipt (A/R) into Commission Trust", path: "/trust/commission-receipt", help: "Commission cheque/EFT received from the other brokerage or lawyer for this trade." },
   coop: { title: "Pay cooperating brokerage", path: "/trust/coop-payment", help: "Pay the other brokerage its share from Commission Trust." },
-  operating: { title: "Transfer brokerage share to operating", path: "/trust/transfer-to-operating", help: "Move Dream Valley's earned share out of Commission Trust into the operating account." },
+  operating: { title: "Transfer brokerage share to operating", path: "/trust/transfer-to-operating", help: "Move ANS's earned share out of Commission Trust into the operating account." },
 };
 
 const TrustActionModal = ({ action, onClose }) => {

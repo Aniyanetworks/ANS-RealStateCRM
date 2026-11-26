@@ -144,7 +144,7 @@ const PropertyListingNote: React.FC<PropertyListingNoteProps> = ({ propertyListi
                   border: '2px solid #fff',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
                   marginBottom: 10,
-                  background: '#141D2C',
+                  background: '#0a2a28',
                 }}
               />
             ) : (
@@ -152,7 +152,7 @@ const PropertyListingNote: React.FC<PropertyListingNoteProps> = ({ propertyListi
                 size={46}
                 alt="User Avatar"
                 style={{
-                  backgroundColor: '#141D2C',
+                  backgroundColor: '#0a2a28',
                   fontWeight: 700,
                   fontSize: 22,
                   marginBottom: 10,

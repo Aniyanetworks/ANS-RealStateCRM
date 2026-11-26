@@ -170,7 +170,7 @@ const ReceiptViewModal = ({
         <button
           type="button"
           className={`py-2 px-4 ${
-            activeTab === "pickup" ? "bg-[#0B1D3D] text-white" : "bg-gray-200"
+            activeTab === "pickup" ? "bg-[#072f2d] text-white" : "bg-gray-200"
           }`}
           onClick={() => setActiveTab("pickup")}
         >
@@ -179,7 +179,7 @@ const ReceiptViewModal = ({
         <button
           type="button"
           className={`py-2 px-4 ${
-            activeTab === "email" ? "bg-[#0B1D3D] text-white" : "bg-gray-200"
+            activeTab === "email" ? "bg-[#072f2d] text-white" : "bg-gray-200"
           }`}
           onClick={() => {
             setActiveTab("email");

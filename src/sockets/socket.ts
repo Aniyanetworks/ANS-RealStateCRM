@@ -6,6 +6,8 @@ import { baseUrl } from "../utils/constant";
 const SOCKET_URL = baseUrl.replace(/\/$/, ''); // Backend URL
 // const SOCKET_URL = "http://localhost:4000"; 
 
+const DEMO_NO_SOCKET = true as boolean;
+
 interface SocketConfig {
   options?: {
     reconnectionAttempts?: number;
@@ -25,6 +27,8 @@ export const useSocket = (config: SocketConfig = {}) => {
 
   // Initialize and connect the socket
   const connectSocket = useCallback(() => {
+    // Demo build: there is no realtime server, so never open a connection.
+    if (DEMO_NO_SOCKET) return;
     if (!socket) {
       const newSocket = io(SOCKET_URL, {
         reconnectionAttempts: 5,

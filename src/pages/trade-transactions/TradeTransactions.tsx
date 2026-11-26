@@ -1,4 +1,4 @@
-// Trade Transactions — bodv's Transactions screen on AgentHub's existing accounting data:
+// Trade Transactions — bodv's Transactions screen on ANS RealStateCRM's existing accounting data:
 // approved/closed trade sheets with their finalize state (TradeTransaction), cheque posting,
 // commission payroll and trust balances. Accounting → Trade List is unchanged.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -27,7 +27,7 @@ const STAGE_STYLE: Record<string, { background: string; color: string }> = {
   DRAFT: { background: "#f1f3f6", color: "#5c687a" },
   FINALIZED: { background: "#e8f0fb", color: "#2c5aa0" },
   PAID: { background: "#e7f5ec", color: "#2f7a4b" },
-  CLOSED: { background: "#f1eadf", color: "#8d7040" },
+  CLOSED: { background: "#f1eadf", color: "#0f766e" },
 };
 const REP: Record<string, string> = { seller: "Seller", buyer: "Buyer", landlord: "Landlord", tenant: "Tenant" };
 const repText = (r: Row) =>
@@ -52,7 +52,7 @@ function RowActions({ r, onOpen, onRecord }: { r: Row; onOpen: (tab: number) => 
     <div ref={ref} className="transaction-row-actions" style={{ position: "relative", display: "inline-block" }}>
       <button type="button" className="secondary" onClick={() => setOpen(!open)} style={{ padding: "6px 10px", fontSize: 11 }}>Actions <LuChevronDown size={12} /></button>
       {open && (
-        <div style={{ position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 30, background: "#fff", border: "1px solid #e1e6ee", borderRadius: 10, boxShadow: "0 12px 30px #0f21411f", minWidth: 220, padding: "4px 0" }}>
+        <div style={{ position: "absolute", right: 0, top: "calc(100% + 4px)", zIndex: 30, background: "#fff", border: "1px solid #e1e6ee", borderRadius: 10, boxShadow: "0 12px 30px #0b33311f", minWidth: 220, padding: "4px 0" }}>
           {item("Open / Edit", () => onOpen(0))}
           {item("Trade Record: Preview / Print", onRecord)}
           {!r.transaction && item("Finalize", () => onOpen(4))}

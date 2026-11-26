@@ -271,13 +271,13 @@ export default function SummaryReport() {
               <div className="flex">
                 <input
                   type="text"
-                  className="w-full border p-2 rounded-l focus:ring focus:#141D2C"
+                  className="w-full border p-2 rounded-l focus:ring focus:#0a2a28"
                   placeholder="Search in all fields..."
                   value={searchText}
                   onChange={handleSearchInputChange}
                 />
                 <button
-                  className="bg-[#141D2C] text-white px-4 py-2 rounded-r-md flex items-center gap-2 transition duration-200 hover:bg-[#1F2A3D]"
+                  className="bg-[#0a2a28] text-white px-4 py-2 rounded-r-md flex items-center gap-2 transition duration-200 hover:bg-[#1F2A3D]"
                   onClick={() => setShowDropdown(!showDropdown)}
                 >
                   <FaFilter /> Filter
@@ -352,7 +352,7 @@ export default function SummaryReport() {
 
                     <div className="flex gap-2 mt-4">
                       <button
-                        className="w-1/2 bg-[#141D2C] text-white p-2 rounded"
+                        className="w-1/2 bg-[#0a2a28] text-white p-2 rounded"
                         onClick={handleCustomDateRange}
                       >
                         Apply
@@ -378,7 +378,7 @@ export default function SummaryReport() {
             {/* Go Back Button */}
             <NavLink
               to={`/dashboard/reports/agent-report`}
-              className="bg-[#141D2C] text-white py-2 px-4 rounded-md text-center min-w-[100px] transition duration-200 hover:bg-[#1F2A3D]"
+              className="bg-[#0a2a28] text-white py-2 px-4 rounded-md text-center min-w-[100px] transition duration-200 hover:bg-[#1F2A3D]"
             >
               Go Back
             </NavLink>

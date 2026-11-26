@@ -154,7 +154,7 @@ const GlobalSearch = ({
                 <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                   <div style={{ marginRight: 12, fontSize: 20 }}>
                     {node.isFolder ? (
-                      <FolderFilled style={{ color: '#9E8566' }} />
+                      <FolderFilled style={{ color: '#0d9488' }} />
                     ) : (
                       <FileOutlined />
                     )}

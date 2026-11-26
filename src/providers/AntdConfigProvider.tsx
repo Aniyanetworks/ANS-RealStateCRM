@@ -18,11 +18,11 @@ const AntdConfigProvider = ({ children }: { children: ReactNode }) => {
           Menu: {
             itemColor: "#fff",
             itemHoverColor: "#fff",
-            itemHoverBg: "#f59e0b",
+            itemHoverBg: "#115e59",
             itemSelectedColor: "#fff",
-            itemSelectedBg: "#f59e0b",
+            itemSelectedBg: "#14b8a6",
             groupTitleColor: "#fff",
-            itemActiveBg: "#99f6e4",
+            itemActiveBg: "#0d9488",
           },
           Dropdown: {
             paddingBlock: 3,

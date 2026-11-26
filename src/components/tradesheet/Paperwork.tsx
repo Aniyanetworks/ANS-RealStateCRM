@@ -412,7 +412,7 @@ const handleConfirmedOtherRemove = async () => {
           <input type="text" placeholder="Search" />
         </div>
       </div>
-      <div className="flex mt-5 bg-[#f4f1ec] px-2 py-2 items-center justify-between">
+      <div className="flex mt-5 bg-[#eaf4f2] px-2 py-2 items-center justify-between">
         <div className="w-[80px] ">
           <p>SN</p>
         </div>
@@ -428,7 +428,7 @@ const handleConfirmedOtherRemove = async () => {
         {paperworkDocuments?.map((document: any, index: number) => (
           <div key={index}>
             <div
-              className={`flex px-2 border-b  border-[#f4f1ec] hover:bg-[#f8f8f8e3] py-2 items-center justify-between ${
+              className={`flex px-2 border-b  border-[#eaf4f2] hover:bg-[#f8f8f8e3] py-2 items-center justify-between ${
                 isMissing(document) && "border border-red-500"
               }`}
             >
@@ -562,7 +562,7 @@ const handleConfirmedOtherRemove = async () => {
                   {document.fileData.map((file: any, i: number) => (
                     <div
                       key={i}
-                      className="ml-20 py-2 border-b border-[#f4f1ec] "
+                      className="ml-20 py-2 border-b border-[#eaf4f2] "
                     >
                       <p className="flex items-center">
                         <a
@@ -638,7 +638,7 @@ const handleConfirmedOtherRemove = async () => {
             (file: any, index: number) => (
               <div
                 key={index}
-                className="ml-20 py-2 border-b border-[#f4f1ec] "
+                className="ml-20 py-2 border-b border-[#eaf4f2] "
               >
                 <p className="flex items-center">
                   <a

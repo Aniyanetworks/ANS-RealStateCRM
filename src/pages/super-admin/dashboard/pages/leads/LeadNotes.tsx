@@ -65,7 +65,7 @@ const styles = `
   .summary-header {
     font-size: 18px;
     font-weight: 600;
-    color: #243451;
+    color: #0b3b38;
     margin-bottom: 16px;
     padding-bottom: 12px;
     border-bottom: 2px solid #e5e7eb;
@@ -355,7 +355,7 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
       <div className="min-w-6xl mx-auto p-4">
         {/* Basic Information Section */}
         <div className="mb-6">
-          <h3 className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1">
+          <h3 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1">
             BASIC INFORMATION
           </h3>
           <table className="w-full text-xs border-collapse border border-gray-400">
@@ -387,7 +387,7 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
 
         {/* Form Responses Section */}
         <div className="mb-6">
-          <h3 className="border-t border-gray-400 bg-[#9F8667] text-white border-x text-center text-sm font-bold py-1">
+          <h3 className="border-t border-gray-400 bg-[#0f766e] text-white border-x text-center text-sm font-bold py-1">
             FORM RESPONSES
           </h3>
           <table className="w-full text-xs border-collapse border border-gray-400">
@@ -470,7 +470,7 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
                     border: "2px solid #fff",
                     boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                     marginBottom: 10,
-                    background: "#141D2C",
+                    background: "#0a2a28",
                   }}
                 />
               ) : (
@@ -478,7 +478,7 @@ const LeadNotes: React.FC<LeadNotesProps> = ({
                   size={46}
                   alt="User Avatar"
                   style={{
-                    backgroundColor: "#141D2C",
+                    backgroundColor: "#0a2a28",
                     fontWeight: 700,
                     fontSize: 22,
                     marginBottom: 10,

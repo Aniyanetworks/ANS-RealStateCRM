@@ -866,7 +866,7 @@ const LawyersDataManagement = () => {
       >
         <div className="space-y-3">
           <div ref={lawyerRef}>
-            <h2 className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1">
+            <h2 className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1">
               Lawyer Information
             </h2>
             <table className="w-full text-xs border-collapse border border-gray-400 px-2 py-1">

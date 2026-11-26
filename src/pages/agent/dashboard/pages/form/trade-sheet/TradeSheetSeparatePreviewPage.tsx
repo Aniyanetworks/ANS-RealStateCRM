@@ -138,14 +138,14 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
     header.style.marginBottom = '20px';
     
     const logo = document.createElement('img');
-    logo.src = '/logo.png';
+    logo.src = '/logo.svg';
     logo.style.width = '40px';
     logo.style.height = '20px';
     logo.style.margin = '0 auto 10px';
     
     const title = document.createElement('div');
-    title.textContent = 'DREAM VALLEY REALTY';
-    title.style.color = '#9F8667';
+    title.textContent = 'ANS REALSTATECRM';
+    title.style.color = '#0f766e';
     title.style.fontWeight = 'bold';
     title.style.fontSize = '16px';
     title.style.marginBottom = '20px';
@@ -232,7 +232,7 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
             margin: 0 auto 10px;
           }
           .title {
-            color: #9F8667;
+            color: #0f766e;
             font-weight: bold;
             font-size: 16px;
             margin-bottom: 20px;
@@ -332,7 +332,7 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
             {user?.userType === "superAdmin" && otherLogs.length > 0 && (
               <div className="mt-10 mb-6">
                 <h3
-                  className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+                  className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
                   onClick={toggleActivityLogExpand}
                 >
                   <span>ACTIVITY LOG</span>
@@ -406,7 +406,7 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
             {user?.userType === "superAdmin" && lawyerShareLogs.length > 0 && (
               <div className="mb-6">
                 <h3
-                  className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+                  className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
                   onClick={toggleLawyerShareLogExpand}
                 >
                   <span>LAWYER SHARE LOG</span>
@@ -480,7 +480,7 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
             {user?.userType === "superAdmin" && documentShareLogs.length > 0 && (
               <div className="mb-6">
                 <h3
-                  className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+                  className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
                   onClick={toggleDocumentShareLogExpand}
                 >
                   <span>DOCUMENT SHARE LOG</span>
@@ -559,7 +559,7 @@ const TradeSheetSeparatePreviewPage = ({ uuid }: { uuid: string }) => {
             {user?.userType === "superAdmin" && (
               <div className="mb-6">
                 <h3
-                  className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+                  className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
                   onClick={toggleInvoiceSendLogExpand}
                 >
                   <span>INVOICE SEND LOG</span>
@@ -763,7 +763,7 @@ const TradeNotesLogSection = ({ tradeSheetId }: { tradeSheetId: number }) => {
   return (
     <div className="mb-6">
       <h3
-        className="border-t border-gray-400 bg-[#243451] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
+        className="border-t border-gray-400 bg-[#0b3b38] text-white border-x text-center text-sm font-bold py-1 cursor-pointer flex justify-between items-center px-4"
         onClick={() => setIsExpanded(e => !e)}
       >
         <span>TRADE NOTES LOG</span>

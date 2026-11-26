@@ -1,4 +1,4 @@
-// Expenses & A/P — the original DV Accounting screen: vendor invoices with HST split, document upload and
+// Expenses & A/P — the original ANS Accounting screen: vendor invoices with HST split, document upload and
 // PDF invoice scan, approval → posting, payments (company bank or paid personally), cheque printing,
 // voids and recurring invoice schedules. Backed by the CRM's acct_bills / acct_vendors / acct_recurring_bills.
 import { useMemo, useState } from "react";

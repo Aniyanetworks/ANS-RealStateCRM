@@ -29,5 +29,6 @@ export const demoBaseQuery: BaseQueryFn<string | FetchArgs, unknown, { status: n
     }
   }
   console.warn(`[demo-api] unhandled ${method} /${path}`);
+  if (method !== 'GET') return { data: { status: true, message: 'Saved (demo)', data: {} } };
   return { data: { status: true, message: 'demo', data: [] } };
 };

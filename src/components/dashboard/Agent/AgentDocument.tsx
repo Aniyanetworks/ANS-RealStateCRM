@@ -22,7 +22,7 @@ import { getFileUrl } from '../../../utils/constant';
 import ButtonLoader from '../../loader/buttonLoader';
 import moment from 'moment';
 
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import { AlignLeftOutlined } from "@ant-design/icons";
 import { useAppSelector } from '../../../redux/hooks';
 type FileKeys =
@@ -491,7 +491,7 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
           {selectedDocument && (
             <button
               onClick={() => handleDocumentDownload(selectedDocument.filePath)}
-              className="px-4 py-2 bg-[#141D2C] text-white rounded hover:bg-[#35496c]"
+              className="px-4 py-2 bg-[#0a2a28] text-white rounded hover:bg-[#35496c]"
             >
               Download
             </button>
@@ -514,9 +514,9 @@ const AgentDocument: React.FC<AgentDocumentProps> = ({
           <div className="h-[calc(80vh-14rem)] flex flex-col mt-[200px] items-center gap-2  ">
                 <img src={logo} alt="" className={`w-[70px]`} />
                 <h2
-                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#9F8667]`}
+                  className={` tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#0f766e]`}
                 >
-                  DREAM VALLEY REALTY
+                  ANS REALSTATECRM
                 </h2>
               </div>
         )}

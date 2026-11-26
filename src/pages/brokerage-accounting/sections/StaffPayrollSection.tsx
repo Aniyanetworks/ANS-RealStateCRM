@@ -137,8 +137,8 @@ function printPaystub(data) {
   const row = (label, cur, y) => `<tr><td>${label}</td><td style="text-align:right">${money(cur)}</td><td style="text-align:right">${money(y)}</td></tr>`;
   const w = window.open("", "_blank");
   if (!w) return toast.error("Allow pop-ups to print paystubs.");
-  w.document.write(`<!doctype html><html><head><title>Paystub ${line.employee.name}</title><style>body{font-family:Arial;font-size:12px;padding:24px;color:#172238}h2{margin:0;color:#0f2141}table{width:100%;border-collapse:collapse;margin-top:12px}td,th{padding:6px;border-bottom:1px solid #ddd;text-align:left}.muted{color:#68758a}</style></head><body>
-    <h2>DREAM VALLEY REALTY</h2><div class="muted">Statement of earnings and deductions</div>
+  w.document.write(`<!doctype html><html><head><title>Paystub ${line.employee.name}</title><style>body{font-family:Arial;font-size:12px;padding:24px;color:#172238}h2{margin:0;color:#0b3331}table{width:100%;border-collapse:collapse;margin-top:12px}td,th{padding:6px;border-bottom:1px solid #ddd;text-align:left}.muted{color:#68758a}</style></head><body>
+    <h2>ANS REALSTATECRM</h2><div class="muted">Statement of earnings and deductions</div>
     <p><b>${line.employee.name}</b>${line.employee.employeeNumber ? ` · #${line.employee.employeeNumber}` : ""}<br/>Pay period ${fmtDate(run.periodStart)} – ${fmtDate(run.periodEnd)} · Pay date ${fmtDate(run.payDate)} · Run ${run.runNumber}</p>
     <table><thead><tr><th>Earnings</th><th style="text-align:right">Current</th><th style="text-align:right">YTD</th></tr></thead><tbody>
     <tr><td>Regular hours ${Number(line.regularHours).toFixed(2)} · Overtime ${Number(line.overtimeHours).toFixed(2)}</td><td></td><td></td></tr>

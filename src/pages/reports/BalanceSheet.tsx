@@ -6,7 +6,7 @@ import { useGetBalanceSheetDataQuery } from "../../redux/api/superadmin/report/r
 import { jsPDF } from "jspdf";
 import { FaFilter } from "react-icons/fa";
 import "jspdf-autotable";
-import logo1 from "/logo.png";
+import logo1 from "/logo.svg";
 import { FaFilePdf, FaFileExcel } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { formatNumberWithCommasAndDecimals } from "../../utils/formatNumberWithCommasAndDecimals";
@@ -319,13 +319,13 @@ const BalanceSheet = () => {
             <div className="flex">
               <input
                 type="text"
-                className="w-full border p-1.5 text-sm rounded-l focus:ring focus:#141D2C"
+                className="w-full border p-1.5 text-sm rounded-l focus:ring focus:#0a2a28"
                 placeholder="Search by trade ID, name, email, address, date..."
                 value={searchText}
                 onChange={handleSearchInputChange}
               />
               <button
-                className="bg-[#141D2C] text-white px-3 py-1.5 rounded-r-md flex items-center gap-1.5 text-xs transition duration-200 hover:bg-[#1F2A3D]"
+                className="bg-[#0a2a28] text-white px-3 py-1.5 rounded-r-md flex items-center gap-1.5 text-xs transition duration-200 hover:bg-[#1F2A3D]"
                 onClick={() => setShowDropdown(!showDropdown)}
               >
                 <FaFilter /> Filter
@@ -398,7 +398,7 @@ const BalanceSheet = () => {
 
                   <div className="flex gap-2 mt-4">
                     <button
-                      className="w-1/2 bg-[#141D2C] text-white p-2 rounded"
+                      className="w-1/2 bg-[#0a2a28] text-white p-2 rounded"
                       onClick={handleCustomDateRange}
                     >
                       Apply

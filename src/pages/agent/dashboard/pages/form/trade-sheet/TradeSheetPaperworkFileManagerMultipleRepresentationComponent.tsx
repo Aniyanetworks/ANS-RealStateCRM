@@ -26,7 +26,7 @@ import { useAppSelector } from "../../../../../../redux/hooks";
 import { getFileUrl, getPdfProxyUrl } from "../../../../../../utils/constant";
 import { formatStringCamelCasecapitalize } from "../../../../../../utils/stringUtils";
 import rightArrow from "./../../../../../../assets/right-arrow.svg";
-import logo from "/logo.png";
+import logo from "/logo.svg";
 import { usePdfSizeGuard } from "../../../../../../hooks/usePdfSizeGuard";
 
 const TradeSheetPaperworkFileManagerMultipleRepresentationComponent: React.FC =
@@ -195,7 +195,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
         case "Approved":
           return "green";
         case "Under Review":
-          return "#9F8667";
+          return "#0f766e";
         case "Rejected":
           return "red";
         default:
@@ -537,9 +537,9 @@ const [editingFile, setEditingFile] = useState<any>(null);
                             setCategoryId(file.id),
                             handleViewClick(uploadFile),
                           ]}
-                          className={`relative flex px-5 text-[#243451] py-2 hover:bg-[#F6F4F0] ${
+                          className={`relative flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${
                             uploadFile.filePath == pdfToView.filePath &&
-                            "bg-[#F6F4F0]"
+                            "bg-[#f0f7f6]"
                           } items-center cursor-pointer gap-3`}
                         >
                           <Tooltip
@@ -558,7 +558,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                                 >
                                   <path
                                     d="M0 1H6L9 4H16V14H0V1Z"
-                                    fill="#9F8667"
+                                    fill="#0f766e"
                                   />
                                 </svg>
                               ) : (
@@ -582,7 +582,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                                     uploadFile.status === "rejected"
                                       ? "red"
                                       : uploadFile.status === "underReview"
-                                      ? "#eb9715"
+                                      ? "#f59e0b"
                                       : "green",
                                 }}
                               >
@@ -601,7 +601,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                       ))
                     ) : (
                       <div
-                        className={`px-5 py-2 hover:bg-[#F6F4F0] text-[#243451]`}
+                        className={`px-5 py-2 hover:bg-[#f0f7f6] text-[#0b3b38]`}
                       >
                         <div>
                           <div
@@ -684,7 +684,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                                             ? "red"
                                             : uploadFile.status ===
                                               "underReview"
-                                            ? "#eb9715"
+                                            ? "#f59e0b"
                                             : "green",
                                       }}
                                       onClick={() => handleViewClick(uploadFile)}
@@ -715,9 +715,9 @@ const [editingFile, setEditingFile] = useState<any>(null);
                         setCategoryId("other"),
                         handleViewClick(uploadFile),
                       ]}
-                      className={`flex px-5 text-[#243451] py-2 hover:bg-[#F6F4F0] ${
+                      className={`flex px-5 text-[#0b3b38] py-2 hover:bg-[#f0f7f6] ${
                         uploadFile.filePath === pdfToView.filePath &&
-                        "bg-[#F6F4F0]"
+                        "bg-[#f0f7f6]"
                       } items-center cursor-pointer gap-3`}
                     >
                       <Tooltip placement="right" color="#fff" title="Others">
@@ -737,7 +737,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                     </ul>
                   ))
                 ) : (
-                  <div className={`px-5 py-2 hover:bg-[#F6F4F0] text-[#243451]`}>
+                  <div className={`px-5 py-2 hover:bg-[#f0f7f6] text-[#0b3b38]`}>
                     <div>
                       <div
                         onClick={() => toggleCategory("other")}
@@ -810,7 +810,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                                       uploadFile.status === "rejected"
                                         ? "red"
                                         : uploadFile.status === "underReview"
-                                        ? "#eb9715"
+                                        ? "#f59e0b"
                                         : "green",
                                   }}
                                   onClick={() => handleViewClick(uploadFile)}
@@ -837,7 +837,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
             {/* Main Content */}
             <div className="w-full bg-white rounded-r-lg shadow-md p-4">
               <div className="flex justify-between pb-4 items-center border-b mb-2">
-                <h3 className="font-semibold flex items-center gap-2 text-[#243451]">
+                <h3 className="font-semibold flex items-center gap-2 text-[#0b3b38]">
                   <div onClick={() => setCollapsed(!collapsed)}>
                     <AlignLeftOutlined></AlignLeftOutlined>
                   </div>
@@ -991,7 +991,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                               <button
                                 onClick={() => setPdfCurrentPage((p) => Math.max(p - 1, 1))}
                                 disabled={pdfCurrentPage <= 1}
-                                className="px-3 py-1.5 rounded-md bg-[#243451] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
+                                className="px-3 py-1.5 rounded-md bg-[#0b3b38] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
                               >
                                 ← Prev
                               </button>
@@ -1001,7 +1001,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                               <button
                                 onClick={() => setPdfCurrentPage((p) => Math.min(p + 1, pdfNumPages))}
                                 disabled={pdfCurrentPage >= pdfNumPages}
-                                className="px-3 py-1.5 rounded-md bg-[#243451] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
+                                className="px-3 py-1.5 rounded-md bg-[#0b3b38] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
                               >
                                 Next →
                               </button>
@@ -1036,9 +1036,9 @@ const [editingFile, setEditingFile] = useState<any>(null);
                 <div className="h-[calc(100vh-14rem)] flex flex-col justify-center items-center gap-2">
                   <img src={logo} alt="" className={`w-[70px]`} />
                   <h2
-                    className={`tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#9F8667]`}
+                    className={`tracking-widest text-[18px] 2xl:[20px] text-center playfair-display-sc-bold text-[#0f766e]`}
                   >
-                    DREAM VALLEY REALTY
+                    ANS REALSTATECRM
                   </h2>
                 </div>
               )}
@@ -1065,8 +1065,8 @@ const [editingFile, setEditingFile] = useState<any>(null);
               }}
               style={{
                 marginLeft: "8px",
-                backgroundColor: "#0B1D3D",
-                borderColor: "#0B1D3D",
+                backgroundColor: "#072f2d",
+                borderColor: "#072f2d",
                 color: "#fff",
               }}
             >

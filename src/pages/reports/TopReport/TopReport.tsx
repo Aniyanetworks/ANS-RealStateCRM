@@ -32,7 +32,7 @@ const { RangePicker } = DatePicker;
 
 // Custom loading icon
 const loadingIcon = (
-  <LoadingOutlined style={{ fontSize: 48, color: "#9F8667" }} spin />
+  <LoadingOutlined style={{ fontSize: 48, color: "#0f766e" }} spin />
 );
 
 // Define TypeScript interfaces (same as Home.tsx)
@@ -480,7 +480,7 @@ const TopReport = () => {
                             </div>
                           )}
                           {property.soldPrice && (
-                            <div className="font-medium text-[#9F8667]">
+                            <div className="font-medium text-[#0f766e]">
                               <span className="text-gray-500">Sold:</span> $
                               {formatNumberWithCommasAndDecimals(
                                 parseFloat(property.soldPrice || "0")
@@ -876,7 +876,7 @@ const TopReport = () => {
                 onClick={() => handlePresetFilterClick(key)}
                 className={`px-2 py-0.5 rounded text-xs font-medium ${
                   selectedMonth === key
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100"
                 }`}
               >
@@ -887,7 +887,7 @@ const TopReport = () => {
               onClick={handleCalendarIconClick}
               className={`cursor-pointer px-1.5 py-0.5 rounded text-xs transition-all ${
                 showDatePicker || selectedMonth === "custom"
-                  ? "bg-[#9F8667] text-white"
+                  ? "bg-[#0f766e] text-white"
                   : "text-gray-500 hover:bg-gray-100"
               }`}
               title="Custom Date Range"
@@ -901,7 +901,7 @@ const TopReport = () => {
                 format="YYYY-MM-DD"
                 placeholder={["Start Date", "End Date"]}
                 size="small"
-                style={{ borderColor: selectedMonth === "custom" ? "#9F8667" : undefined }}
+                style={{ borderColor: selectedMonth === "custom" ? "#0f766e" : undefined }}
                 open={showDatePicker ? undefined : false}
               />
             )}
@@ -924,7 +924,7 @@ const TopReport = () => {
                 onClick={() => setActiveTab(tab.key)}
                 className={`px-2 py-0.5 rounded text-xs font-medium ${
                   activeTab === tab.key
-                    ? "bg-[#9F8667] text-white"
+                    ? "bg-[#0f766e] text-white"
                     : "text-gray-500 hover:bg-gray-100"
                 }`}
               >

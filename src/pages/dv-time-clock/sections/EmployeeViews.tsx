@@ -51,7 +51,7 @@ export function MySchedule() {
         <b>{monthName(month)}</b>
         <button className="ghost" onClick={() => setMonth(addMonths(month, 1))}>Next ›</button>
       </div>
-      <div className="print-brand"><img src={logo} alt="Dream Valley Realty" /><h2>Dream Valley Realty — My Schedule</h2></div>
+      <div className="print-brand"><img src={logo} alt="ANS RealStateCRM" /><h2>ANS RealStateCRM — My Schedule</h2></div>
       {mode === "list" ? (
         <>
           <div className="tablewrap">
@@ -160,8 +160,8 @@ export function MyAttendanceReport() {
           <div className="report-print-area">
             <header className="attendance-print-header">
               <div className="attendance-print-brand">
-                <img src={logo} alt="Dream Valley Realty logo" />
-                <div><div className="attendance-print-company">DREAM VALLEY REALTY</div><div className="attendance-print-subtitle">Employee Attendance &amp; Time Records</div></div>
+                <img src={logo} alt="ANS RealStateCRM logo" />
+                <div><div className="attendance-print-company">ANS REALSTATECRM</div><div className="attendance-print-subtitle">Employee Attendance &amp; Time Records</div></div>
               </div>
               <div className="attendance-print-title"><h1>My Attendance Report</h1><p>Prepared {new Date().toLocaleString()}</p></div>
             </header>

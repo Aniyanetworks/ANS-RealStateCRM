@@ -1,4 +1,4 @@
-// Brokerage accounting (merged from DV Accounting). Backend: /brokerage-accounting/*
+// Brokerage accounting (merged from ANS Accounting). Backend: /brokerage-accounting/*
 // One generic query + mutation keeps the many accounting screens compact; every mutation
 // refreshes all accounting queries because postings affect balances everywhere.
 import { getEnvUrls } from "../../../utils/constant";

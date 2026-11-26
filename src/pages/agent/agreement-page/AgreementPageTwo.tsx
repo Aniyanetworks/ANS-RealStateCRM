@@ -32,13 +32,13 @@ const AgreementPageTwo = () => {
       <div className="flex items-center gap-4 mb-6">
         <div className="w-16 h-16 border border-gray-300">
           <img
-            src="/logo.png"
-            alt="Dream Valley Realty Inc. Logo"
+            src="/logo.svg"
+            alt="ANS RealStateCRM Inc. Logo"
             className="w-full h-full object-contain"
           />
         </div>
         <div>
-          <h1 className="text-2xl font-bold">DREAM VALLEY REALTY INC.</h1>
+          <h1 className="text-2xl font-bold">ANS REALSTATECRM INC.</h1>
           <h2 className="text-lg">INDEPENDENT CONTRACTOR&apos;S AGREEMENT</h2>
         </div>
       </div>
