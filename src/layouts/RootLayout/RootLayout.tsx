@@ -3,7 +3,7 @@
 // @ts-nocheck
 // eslint-disable @typescript-eslint/no-explicit-any
 import { useEffect, useState, Suspense } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import ClosingDatePopup from "../../components/ClosingDatePopup";
 import {
@@ -52,10 +52,19 @@ const RootLayout = () => {
     connectSocket();
   }, [connectSocket, disconnectSocket]);
 
+  // phones and tablets: close the slide-in sidebar after navigating
+  const location = useLocation();
+  useEffect(() => {
+    if (window.innerWidth < 1024) setSidebarCollapsed(false);
+  }, [location.pathname]);
+
   const toggleCollapsed = () => setCollapsed(!collapsed);
 
   return (
     <div className="flex">
+      {sidebarCollapsed && windowWidth < 1024 ? (
+        <div className="fixed inset-0 z-[998] bg-black/40 lg:hidden" onClick={() => setSidebarCollapsed(false)} />
+      ) : null}
       <ClosingDatePopup
         tradeData={tradeData}
         propertyData={propertyData}
@@ -64,7 +73,7 @@ const RootLayout = () => {
       />
 
       <div
-        className={`absolute lg:relative z-[999] w-[300px] h-[100dvh] overflow-hidden bg-[#0b3b38] ${sidebarCollapsed
+        className={`absolute lg:relative z-[999] w-[300px] max-w-[85vw] h-[100dvh] overflow-hidden bg-[#0b3b38] ${sidebarCollapsed
           ? sidebarCollapsed && windowWidth < 1024
             ? "block"
             : "hidden"
@@ -95,7 +104,7 @@ const RootLayout = () => {
           setSidebarCollapsed={setSidebarCollapsed}
         />
 
-        <div className="p-5 flex-1 min-h-0 overflow-y-auto">
+        <div className="p-3 sm:p-5 flex-1 min-h-0 overflow-y-auto">
           <div className="pb-10">
             <Suspense fallback={<div className="flex h-64 items-center justify-center text-[13px] text-gray-400">Loading...</div>}>
               <Outlet />

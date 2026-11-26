@@ -1,6 +1,6 @@
 // @ts-nocheck
 // eslint-disable @typescript-eslint/no-explicit-any
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AuditOutlined,
   CheckOutlined,
@@ -134,6 +134,11 @@ const TradeSheetSteps: React.FC<TradeSheetStepsProps> = ({ active: activeProp, u
   const title = tradeSheetData?.tradeSheetTypeId ? `${tradeSheetData.tradeSheetTypeId}${headerAddress ? " - " + headerAddress : ""}` : "New trade sheet";
 
   const active = Math.min(Number(activeProp) || 1, steps.length);
+  // keep the current step visible when the tab row scrolls (phones)
+  useEffect(() => {
+    document.querySelector(".wizard-steps .step-current")?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  }, [active]);
+
   const percent = Math.round(((active - 1) / Math.max(steps.length - 1, 1)) * 100);
 
   return (

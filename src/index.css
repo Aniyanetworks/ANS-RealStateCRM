@@ -824,3 +824,116 @@ form div.flex.justify-between.mx-5 > .primary-btn:last-child:not(:first-child):h
     transition: none !important;
   }
 }
+
+/* ===== Responsive: phones and tablets ===== */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, video, canvas, svg { max-width: 100%; }
+
+@media (max-width: 1023px) {
+  /* tables keep their column widths and scroll sideways inside their card */
+  .ant-table-container { overflow-x: auto; }
+  .ant-table-container table { min-width: 720px; }
+  .ant-table-wrapper .ant-table-pagination { flex-wrap: wrap; justify-content: center; }
+  .ant-tabs-nav { margin-bottom: 12px; }
+}
+
+@media (max-width: 767px) {
+  /* dialogs, drawers and dropdown panels never exceed the screen */
+  .ant-modal { max-width: calc(100vw - 16px) !important; margin: 8px auto !important; top: 12px !important; }
+  .ant-modal-body { max-height: calc(100dvh - 160px); overflow-y: auto; }
+  .ant-drawer-content-wrapper { max-width: 100vw; width: min(440px, 100vw) !important; }
+  .ant-dropdown, .ant-select-dropdown, .ant-picker-dropdown { max-width: calc(100vw - 16px); }
+  .notif-dropdown { max-width: calc(100vw - 16px); }
+
+  /* multi-column form and card grids collapse to one column */
+  .grid-cols-3, .grid-cols-4, .grid-cols-5, .grid-cols-6 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+  .col-span-2, .col-span-3, .col-span-4 { grid-column: span 1 / span 1 !important; }
+
+  /* fixed-width helpers become fluid */
+  .w-1\/2, .w-1\/3, .w-2\/3, .w-1\/4, .w-3\/4, .w-2\/5, .w-3\/5 { width: 100% !important; }
+
+  /* button rows wrap instead of overflowing */
+  .wizard-steps ~ div form .flex { flex-wrap: wrap; }
+  .wizard-steps ~ div > .flex { flex-wrap: wrap; gap: 8px; }
+
+  /* stepper header stacks */
+  .wizard-steps .step-tab { min-width: 150px; }
+
+  /* search bars and toolbars use the full width */
+  .ant-input-affix-wrapper, .ant-input-search { max-width: 100%; }
+}
+
+@media (max-width: 420px) {
+  .ant-modal-body { padding: 14px; }
+  .ant-picker-panel-container { max-width: calc(100vw - 16px); overflow-x: auto; }
+}
+
+/* list-page toolbars (search, filters, actions) wrap on narrow screens */
+@media (max-width: 1023px) {
+  .flex.items-center.gap-3.px-4.py-2.border-b.border-gray-100 { flex-wrap: wrap; row-gap: 8px; }
+  .flex.items-center.gap-3.px-4.py-2.border-b.border-gray-100 > * { max-width: 100%; }
+  .flex.items-center.gap-3.px-4.py-2.border-b.border-gray-100 input { min-width: 0; }
+}
+
+/* ===== Compact UI on phones: smaller type, tighter spacing ===== */
+@media (max-width: 767px) {
+  html { font-size: 13.5px; }               /* all rem-based text and spacing scale down together */
+
+  h1 { font-size: 1.35rem !important; }
+  h2 { font-size: 1.15rem !important; }
+  h3 { font-size: 1.05rem !important; }
+  .text-3xl { font-size: 1.4rem !important; line-height: 1.8rem !important; }
+  .text-2xl { font-size: 1.2rem !important; line-height: 1.6rem !important; }
+  .text-xl  { font-size: 1.05rem !important; line-height: 1.5rem !important; }
+
+  /* tables */
+  .ant-table { font-size: 12px; }
+  .ant-table-thead > tr > th, .ant-table-tbody > tr > td { padding: 8px 10px !important; }
+  .ant-table-wrapper .ant-table-pagination.ant-pagination { margin: 10px 0 !important; }
+  .ant-pagination-item, .ant-pagination-prev, .ant-pagination-next { min-width: 28px; height: 28px; line-height: 26px; }
+
+  /* forms and controls */
+  .ant-input, .ant-input-affix-wrapper, .ant-select-selector, .ant-picker { min-height: 34px; font-size: 13px !important; }
+  .ant-btn { height: 32px; padding: 0 12px; font-size: 12.5px; }
+  .primary-btn, .cancel-btn { padding: 6px 12px !important; }
+  input, select, textarea { font-size: 13px; }
+  .select__control, .react-select__control { min-height: 36px !important; height: 36px; }
+  .wizard-steps ~ div form input:not([type="radio"]):not([type="checkbox"]):not([type="file"]):not([id^="react-select"]),
+  .wizard-steps ~ div form select { height: 36px; }
+
+  /* cards, tabs, modals */
+  .ant-tabs-tab { padding: 8px 4px !important; font-size: 12.5px; }
+  .ant-modal-content { padding: 14px !important; border-radius: 14px; }
+  .ant-modal-header { margin-bottom: 8px; }
+  .ant-drawer-body { padding: 14px !important; }
+  .ant-card-body { padding: 12px !important; }
+  .ant-tag { margin-inline-end: 4px; font-size: 11px; line-height: 18px; }
+
+  /* wizard stepper: smaller tabs */
+  .wizard-steps { padding: 12px !important; }
+  .wizard-steps .step-tab { min-width: 128px !important; padding: 8px 10px !important; gap: 8px !important; }
+  .wizard-steps .step-badge { width: 28px !important; height: 28px !important; font-size: 13px !important; }
+}
+
+@media (max-width: 420px) {
+  html { font-size: 13px; }
+  .ant-table-thead > tr > th, .ant-table-tbody > tr > td { padding: 7px 8px !important; }
+}
+
+@media (max-width: 767px) {
+  /* step tabs keep their natural width and scroll sideways instead of being squeezed to icons */
+  .wizard-steps .grid { grid-auto-columns: max-content !important; scroll-snap-type: x proximity; }
+  .wizard-steps .step-tab { scroll-snap-align: center; }
+}
+
+@media (max-width: 767px) {
+  /* reminder pop-up footer buttons wrap instead of running off the screen */
+  .ant-modal-footer .ant-space { flex-wrap: wrap; justify-content: center; row-gap: 8px; }
+  /* header: notification count sits on the bell, not on the avatar */
+  header .ant-badge .ant-badge-count { inset-inline-end: 6px; transform: translate(0, -45%) !important; }
+  header .flex.shrink-0.items-center { gap: 14px; }
+}
+
+@media (max-width: 767px) {
+  header .ant-badge .ant-badge-count { min-width: 15px; height: 15px; line-height: 15px; padding: 0 4px; font-size: 9px; inset-inline-end: 10px; }
+}

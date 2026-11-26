@@ -358,30 +358,31 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
     : [];
 
   return (
-    <header className="py-4 pl-4 pr-4 sticky items-center top-0 border-b border-primaryPurple/10 z-50 flex justify-between bg-white">
-      <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
+    <header className="py-3 sm:py-4 pl-3 pr-3 sm:pl-4 sm:pr-4 gap-2 sm:gap-3 sticky items-center top-0 border-b border-primaryPurple/10 z-50 flex justify-between bg-white">
+      <button className="shrink-0" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
         {sidebarCollapsed ? <AlignLeftOutlined /> : <AlignLeftOutlined />}
       </button>
 
-      <div className="flex flex-col xl:flex-row  gap-4">
+      <div className="flex min-w-0 flex-1 flex-col xl:flex-row gap-4">
         {user && (
-          <h2 className="flex items-center gap-1 !m-0">
-            Welcome,
-            <h2 className="!m-0"> {user.name} </h2> to
-            <h2 className="text-[#0b3b38] font-bold !m-0">
+          <div className="flex min-w-0 items-center gap-x-1 text-[14px] sm:text-[16px] md:text-[17px]">
+            <div className="shrink-0 whitespace-nowrap">Welcome,</div>
+            <div className="min-w-0 truncate font-medium">{user.name}</div>
+            <div className="hidden whitespace-nowrap md:block">to</div>
+            <div className="hidden whitespace-nowrap font-bold text-[#0b3b38] md:block">
               {user.userType === "agent" && " Agent"}
               {user.userType === "client" && " Client"}
               {user.userType === "admin" && " Admin"}
               {user.userType === "superAdmin" && " Super Admin"}
               {user?.userRole?.name === "Support" && "Support"}
-            </h2>{" "}
-            Dashboard
+            </div>
+            <div className="hidden whitespace-nowrap md:block">Dashboard</div>
             {user?.branch?.name && (
-              <span className="inline-flex items-center px-2 py-0.5 ml-2 rounded-full text-sm font-medium bg-[#F4F5F7] text-[#354052] border border-[#C5C9D1] shadow-sm">
+              <div className="ml-2 hidden items-center whitespace-nowrap rounded-full border border-[#C5C9D1] bg-[#F4F5F7] px-2 py-0.5 text-sm font-medium text-[#354052] shadow-sm lg:inline-flex">
                 {user.branch.name}
-              </span>
+              </div>
             )}
-          </h2>
+          </div>
         )}
 
         {window.location.hostname.includes("dev.dvrealty.ca") && (
@@ -401,9 +402,9 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         )}
       </div>
 
-      <div className="flex items-center gap-5">
+      <div className="flex shrink-0 items-center gap-3 sm:gap-5">
         {isClockedIn && (
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-50 border border-green-200">
+          <div className="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-lg bg-green-50 border border-green-200 max-sm:[&>span:nth-child(3)]:hidden">
             <ClockCircleOutlined className="text-green-600 text-sm" />
             <span className="text-sm font-medium text-green-800 whitespace-nowrap">
               Clocked In
@@ -434,7 +435,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
             Switch to Super Admin
           </button>
         )}
-        <button onClick={() => setIsModalOpen(true)} className="ml-3">
+        <button onClick={() => setIsModalOpen(true)} className="sm:ml-3">
           <FiCalendar className="text-xl mb-2" />
         </button>
         <div>
@@ -466,7 +467,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         </div>
         <Dropdown menu={{ items: dropitems }} className="cursor-pointer">
           <Avatar
-            size={40}
+            size={{ xs: 34, sm: 40 }}
             src={user?.profilePicture ? getFileUrl(user.profilePicture) : undefined}
             style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", fontWeight: 600, boxShadow: "0 0 0 2px #99f6e4" }}
           >
