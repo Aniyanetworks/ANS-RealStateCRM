@@ -173,6 +173,7 @@ const supportDefs: [string, string, string, string, string][] = [
   ['Request for training session', 'Other', 'Low', 'open', 'Can we schedule a CRM walkthrough for new agents?'],
   ['Invoice PDF missing HST number', 'Bug Fix', 'High', 'inProgress', 'Generated commission invoice does not include our HST registration.'],
 ];
+const deletedSupport = new Set<string>();
 const supportRequests = (kind: string) => supportDefs.map(([title, type, priority, status, description], i) => {
   const ag = person(i);
   const member = supportTeam[i % 3];
@@ -334,7 +335,7 @@ for (let d = 0; d < 6; d++) {
       id: cid, uuid: uuid('clk', cid++), userId: u.id, branchId: u.branchId, action,
       latitude: String(43.6487 + ui * 0.001), longitude: String(-79.3817 - ui * 0.001),
       address: `${100 + ui * 20} King St W, ${CITIES[ui % CITIES.length]}, ON`,
-      distance: 12 + ui * 9, isWithinRange: true, notes: null, shiftId: null,
+      distance: 12 + ui * 9, isWithinRange: true, notes: ['Property showing', 'Client meeting', 'Open house', 'Office day', null][ui % 5], shiftId: null,
       lateMinutes: null, lateReason: null, payableHours: null, lateExtraMinutes: null, lateExtraApproved: false, offsiteRequestId: null,
       createdAt: ago(d, hour, min), updatedAt: ago(d, hour, min),
       user: { id: u.id, firstName: u.firstName, lastName: u.lastName, name: u.name, email: u.email, branchId: u.branchId, branch: u.branch },
@@ -380,8 +381,12 @@ export const miscRoutes = [
 
   route('GET', 'common/support-requests/list', ({ query }) => ({
     status: true,
-    data: supportRequests(query.type === 'graphic' ? 'graphic' : 'support'),
+    data: supportRequests(query.type === 'graphic' ? 'graphic' : 'support').filter((r: any) => !deletedSupport.has(r.uuid)),
   })),
+  route('DELETE', 'common/support-requests/delete', ({ query }) => {
+    if (query.uuid) deletedSupport.add(query.uuid);
+    return { status: true, message: 'Deleted' };
+  }),
   route('GET', 'superadmin/support-team/list', () => ({ status: true, message: 'Support team list fetched successfully', data: supportTeam })),
 
   route('GET', 'superadmin/vendor-category/list', () => ({ status: true, data: { VendorCategory: vendorCategories } })),

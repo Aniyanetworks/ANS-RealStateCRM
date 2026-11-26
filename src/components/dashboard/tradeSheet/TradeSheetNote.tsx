@@ -171,7 +171,7 @@ const TradeSheetNote: React.FC<TradeSheetNoteProps> = ({ tradeSheetId }) => {
                           </button>
                         </Tooltip>
                         <Tooltip title="Delete">
-                          <button onClick={() => handleDelete(note.uuid)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', display: 'flex', padding: 2 }}>
+                          <button onClick={() => handleDelete(note.uuid)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#d92d20', display: 'flex', padding: 2 }}>
                             <MdDelete style={{ fontSize: 12 }} />
                           </button>
                         </Tooltip>

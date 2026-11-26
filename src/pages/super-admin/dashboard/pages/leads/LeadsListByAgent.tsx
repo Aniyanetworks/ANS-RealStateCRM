@@ -662,7 +662,7 @@ const LeadsList = () => {
         <FaInfoCircle 
           style={{ 
             marginLeft: 8, 
-            color: '#1890ff', 
+            color: '#0f766e', 
             cursor: 'pointer',
             fontSize: '14px'
           }} 

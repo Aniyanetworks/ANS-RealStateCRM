@@ -185,7 +185,7 @@ const AgentManagement: React.FC = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Agent Report</h1>
+          <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Agent Report</h1>
           <div className="flex-1" />
           <div className="relative flex-shrink-0" style={{ width: 280 }}>
             <div className="flex">
@@ -285,7 +285,7 @@ const AgentManagement: React.FC = () => {
                       Apply
                     </button>
                     <button
-                      className="w-1/2 bg-[#FFDFDC] text-[#EF4444] p-2 rounded"
+                      className="w-1/2 bg-[#FFDFDC] text-[#d92d20] p-2 rounded"
                       onClick={() => {
                         setShowDropdown(false);
                         setDateRange(null);

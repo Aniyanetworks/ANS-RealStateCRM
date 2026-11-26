@@ -195,7 +195,7 @@ const PropertyListingNote: React.FC<PropertyListingNoteProps> = ({ propertyListi
                   <Button
                     size="small"
                     type="text"
-                    icon={<FaRegEdit style={{ color: '#1677ff', fontSize: 17 }} />}
+                    icon={<FaRegEdit style={{ color: '#0f766e', fontSize: 17 }} />}
                     onClick={() => handleEdit(note)}
                     style={{ padding: 0 }}
                   />
@@ -205,7 +205,7 @@ const PropertyListingNote: React.FC<PropertyListingNoteProps> = ({ propertyListi
                     size="small"
                     type="text"
                     danger
-                    icon={<MdDelete style={{ color: '#ff4d4f', fontSize: 18 }} />}
+                    icon={<MdDelete style={{ color: '#b42318', fontSize: 18 }} />}
                     onClick={() => handleDelete(note.uuid)}
                     style={{ padding: 0 }}
                   />

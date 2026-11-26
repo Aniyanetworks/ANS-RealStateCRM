@@ -77,6 +77,24 @@ const ArtWorks: React.FC = () => {
     const [createArtWork] = useCreateArtWorkMutation();
     const [updateArtWork] = useUpdateArtWorkMutation();
     const [deleteArtWork] = useDeleteArtWorkMutation();
+    const [selectedRowKeys, setSelectedRowKeys] = useState<(string | number)[]>([]);
+    const [isBulkDeleteVisible, setIsBulkDeleteVisible] = useState(false);
+    const [isBulkDeleting, setIsBulkDeleting] = useState(false);
+
+    const handleBulkDelete = async () => {
+        if (!selectedRowKeys.length) return;
+        setIsBulkDeleting(true);
+        try {
+            await Promise.all(selectedRowKeys.map((id) => deleteArtWork(id).unwrap()));
+            toast.success(`${selectedRowKeys.length} art work item${selectedRowKeys.length > 1 ? 's' : ''} deleted`);
+            setSelectedRowKeys([]);
+            setIsBulkDeleteVisible(false);
+        } catch (error) {
+            toast.error('Failed to delete some art work items');
+        } finally {
+            setIsBulkDeleting(false);
+        }
+    };
 
    
       const filteredData = artWorks?.data?.filter((record:any) => {
@@ -253,6 +271,15 @@ const ArtWorks: React.FC = () => {
                         )}
                     </div>
                     <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
+                    {hasPermissionForSlug("artwork-items-delete") && (
+                        <button
+                            className="cancel-btn flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={!selectedRowKeys.length}
+                            onClick={() => setIsBulkDeleteVisible(true)}
+                        >
+                            Delete Selected ({selectedRowKeys.length})
+                        </button>
+                    )}
                     {hasPermissionForSlug("artwork-items-view") && (
                         <button className="primary-btn flex-shrink-0" onClick={handleCreate}>Add Art Work</button>
                     )}
@@ -263,6 +290,11 @@ const ArtWorks: React.FC = () => {
                     ) : (
                         <Table
                             rowKey="id"
+                            rowSelection={
+                                hasPermissionForSlug("artwork-items-delete")
+                                    ? { selectedRowKeys, onChange: (keys) => setSelectedRowKeys(keys as (string | number)[]) }
+                                    : undefined
+                            }
                             scroll={{ x: "max-content" }}
                             columns={columns}
                             dataSource={tableSourceData}
@@ -295,6 +327,25 @@ const ArtWorks: React.FC = () => {
                                 <button className="primary-btn" type="submit">Submit</button>
                             </div>
                         </form>
+                    </Modal>
+
+                    <Modal
+                        title="Delete selected art work"
+                        open={isBulkDeleteVisible}
+                        onCancel={() => setIsBulkDeleteVisible(false)}
+                        footer={[
+                            <Button key="cancel" onClick={() => setIsBulkDeleteVisible(false)}>
+                                Cancel
+                            </Button>,
+                            <Button key="delete" type="primary" danger loading={isBulkDeleting} onClick={handleBulkDelete}>
+                                Delete
+                            </Button>,
+                        ]}
+                    >
+                        <p>
+                            Are you sure you want to delete {selectedRowKeys.length} selected art work item
+                            {selectedRowKeys.length > 1 ? 's' : ''}? This cannot be undone.
+                        </p>
                     </Modal>
 
                     <Modal

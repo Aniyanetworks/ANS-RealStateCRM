@@ -621,7 +621,7 @@ export default function ExpenseReport({ branchIds }: ExpenseReportProps) {
                                     Apply
                                 </button>
                                 <button
-                                    className="w-1/2 bg-[#FFDFDC] text-[#EF4444] p-2 rounded hover:bg-[#ffd0cd] transition-colors"
+                                    className="w-1/2 bg-[#FFDFDC] text-[#d92d20] p-2 rounded hover:bg-[#ffd0cd] transition-colors"
                                     onClick={() => {
                                         setShowDropdown(false);
                                         setSelectedExpenseStatus([]);

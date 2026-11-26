@@ -423,22 +423,22 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
     return (
         <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100">
-                <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Dynamic Reports</h1>
+                <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Dynamic Reports</h1>
                 <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
                 <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #3b82f6", background: "#eff6ff" }}>
                     <span className="text-xs text-gray-500 whitespace-nowrap">Total:</span>
                     <span className="text-xs font-semibold text-blue-600 whitespace-nowrap">{summary.total}</span>
                 </div>
-                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #22c55e", background: "#f0fdf4" }}>
+                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #039855", background: "#f0fdf4" }}>
                     <span className="text-xs text-gray-500 whitespace-nowrap">Closed:</span>
                     <span className="text-xs font-semibold text-green-600 whitespace-nowrap">{summary.closed}</span>
                 </div>
-                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #eab308", background: "#fefce8" }}>
+                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #f79009", background: "#fefce8" }}>
                     <span className="text-xs text-gray-500 whitespace-nowrap">Draft:</span>
                     <span className="text-xs font-semibold text-yellow-600 whitespace-nowrap">{summary.draft}</span>
                 </div>
-                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #f97316", background: "#fff7ed" }}>
+                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #dc6803", background: "#fff7ed" }}>
                     <span className="text-xs text-gray-500 whitespace-nowrap">Pending:</span>
                     <span className="text-xs font-semibold text-orange-600 whitespace-nowrap">{summary.pending}</span>
                 </div>
@@ -446,7 +446,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                     <span className="text-xs text-gray-500 whitespace-nowrap">Selling:</span>
                     <span className="text-xs font-semibold text-teal-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(summary.totalSelling)}</span>
                 </div>
-                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #6366f1", background: "#eef2ff" }}>
+                <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #0f766e", background: "#eef2ff" }}>
                     <span className="text-xs text-gray-500 whitespace-nowrap">Deposit:</span>
                     <span className="text-xs font-semibold text-indigo-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(summary.totalDepositAmount)}</span>
                 </div>
@@ -741,7 +741,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                             Apply
                         </button>
                         <button
-                            className="w-1/2 bg-[#FFDFDC] text-[#EF4444] p-2 rounded hover:bg-[#ffd0cd] transition-colors"
+                            className="w-1/2 bg-[#FFDFDC] text-[#d92d20] p-2 rounded hover:bg-[#ffd0cd] transition-colors"
                             onClick={() => {
                                 setShowDropdown(false);
                                 setSelectedTradeStatus([]);

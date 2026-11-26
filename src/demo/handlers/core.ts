@@ -125,7 +125,7 @@ const clients = clientNames.map((c, i) => {
     createdAt: ts(20 + i), createdUser: { id: agent.id, firstName: agent.firstName, lastName: agent.lastName, email: agent.email },
     clientAccount: [{
       id: i + 1, clientId: id, agentId: agent.id, status: 'active', clientType: i % 2 ? 'seller' : 'buyer',
-      clientAgent: { id: agent.id, uuid: agent.uuid, firstName: agent.firstName, lastName: agent.lastName, email: agent.email },
+      clientAgent: { id: agent.id, name: `${agent.firstName} ${agent.lastName}`, uuid: agent.uuid, firstName: agent.firstName, lastName: agent.lastName, email: agent.email },
     }],
   };
 });

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import {
   Avatar,
+  Modal,
   Badge,
   Button,
   Dropdown,
@@ -30,6 +31,7 @@ import {
   AlignLeftOutlined,
   ClockCircleOutlined,
   LogoutOutlined,
+  ReloadOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 
@@ -54,6 +56,7 @@ import {
   setUser,
 } from '../../redux/slices/userSlice';
 import { useSocket } from '../../sockets/socket';
+import { resetDemoData } from '../../demo/reset';
 import { baseUrl, getFileUrl } from '../../utils/constant';
 
 const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
@@ -260,6 +263,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
     }
   };
 
+  const [resetOpen, setResetOpen] = useState(false);
   const userDisplayName = user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "My Account";
   const userInitials = userDisplayName.split(" ").map((p: string) => p[0]).slice(0, 2).join("").toUpperCase() || "U";
 
@@ -291,6 +295,17 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         <Link to="/profile" className=" flex items-center gap-2">
           <UserOutlined /> Profile
         </Link>
+      ),
+    },
+    {
+      key: "reset-demo",
+      label: (
+        <button
+          onClick={() => setResetOpen(true)}
+          className=" flex items-center gap-2"
+        >
+          <ReloadOutlined /> Reset demo data
+        </button>
       ),
     },
     {
@@ -459,6 +474,16 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
           </Avatar>
         </Dropdown>
       </div>
+      <Modal
+        title="Reset demo data?"
+        open={resetOpen}
+        okText="Reset"
+        cancelText="Cancel"
+        onOk={resetDemoData}
+        onCancel={() => setResetOpen(false)}
+      >
+        <p>This restores the original sample data and clears saved filters and preferences. You will stay signed in.</p>
+      </Modal>
     </header>
   );
 };

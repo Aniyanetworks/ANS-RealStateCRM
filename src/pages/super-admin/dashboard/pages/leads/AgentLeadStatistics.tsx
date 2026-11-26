@@ -25,7 +25,7 @@ const STATUS_BAR_COLOR: Record<string, string> = {
   New: "#3B82F6",
   "Attempted Contact": "#D97706",
   Connected: "#06B6D4",
-  Qualified: "#16A34A",
+  Qualified: "#027a48",
   "Active Search": "#4F46E5",
   "Offer Submitted": "#7C3AED",
   "Appointment Scheduled": "#65A30D",
@@ -33,7 +33,7 @@ const STATUS_BAR_COLOR: Record<string, string> = {
   "Under Contract / Conditional": "#DB2777",
   Closed: "#059669",
   "Lost / Inactive": "#6B7280",
-  "Not Qualified": "#DC2626",
+  "Not Qualified": "#b42318",
 };
 
 const SUMMARY_STATUSES = ["Qualified", "Active Search", "Closed", "Lost / Inactive"];

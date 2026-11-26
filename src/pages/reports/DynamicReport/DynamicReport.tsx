@@ -51,7 +51,7 @@ export default function DynamicReport() {
             {selectedReportType === "expense" && (
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                     <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-                        <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Expense Report</h1>
+                        <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Expense Report</h1>
                         <div className="flex-1" />
                         <span className="text-xs text-gray-500 whitespace-nowrap">Report:</span>
                         <Select value={selectedReportType} onChange={setSelectedReportType} style={{ width: 180 }} options={reportTypes} size="small" />
@@ -62,7 +62,7 @@ export default function DynamicReport() {
             {selectedReportType === "branch" && (
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                     <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-                        <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Branch Report</h1>
+                        <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Branch Report</h1>
                         <div className="flex-1" />
                         <span className="text-xs text-gray-500 whitespace-nowrap">Report:</span>
                         <Select value={selectedReportType} onChange={setSelectedReportType} style={{ width: 180 }} options={reportTypes} size="small" />
@@ -73,7 +73,7 @@ export default function DynamicReport() {
             {selectedReportType === "agent" && (
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                     <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-                        <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Agent Report</h1>
+                        <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Agent Report</h1>
                         <div className="flex-1" />
                         <span className="text-xs text-gray-500 whitespace-nowrap">Report:</span>
                         <Select value={selectedReportType} onChange={setSelectedReportType} style={{ width: 180 }} options={reportTypes} size="small" />
@@ -84,7 +84,7 @@ export default function DynamicReport() {
             {selectedReportType === "user" && (
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                     <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-                        <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">User Report</h1>
+                        <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">User Report</h1>
                         <div className="flex-1" />
                         <span className="text-xs text-gray-500 whitespace-nowrap">Report:</span>
                         <Select value={selectedReportType} onChange={setSelectedReportType} style={{ width: 180 }} options={reportTypes} size="small" />

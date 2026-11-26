@@ -145,6 +145,28 @@ const SupportRequestList: React.FC = () => {
   const [deleteComment] = useDeleteSupportCommentMutation();
   const [updateRequest] = useUpdateSupportRequestMutation();
   const [deleteRequest] = useDeleteSupportRequestMutation();
+  const [selectedRowKeys, setSelectedRowKeys] = useState<(string | number)[]>([]);
+  const [isBulkDeleteVisible, setIsBulkDeleteVisible] = useState(false);
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
+
+  const handleBulkDelete = async () => {
+    const uuids = ((tableSourceData as any[]) || [])
+      .filter((r: any) => selectedRowKeys.includes(r.id))
+      .map((r: any) => r.uuid)
+      .filter(Boolean);
+    if (!uuids.length) return;
+    setIsBulkDeleting(true);
+    try {
+      await Promise.all(uuids.map((u: string) => deleteRequest(u).unwrap()));
+      message.success(`${uuids.length} request${uuids.length > 1 ? "s" : ""} deleted successfully`);
+      setSelectedRowKeys([]);
+      setIsBulkDeleteVisible(false);
+    } catch (err) {
+      message.error("Failed to delete some requests");
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
   const [assignSupportRequest] = useAssignSupportRequestMutation();
   const [changeSuportStatus] = useChangeSuportStatusMutation();
 
@@ -625,18 +647,11 @@ const SupportRequestList: React.FC = () => {
           completed: "Completed",
           closed: "Closed",
         };
-        const statusColorMap: Record<string, string> = {
-          open: "#FF9500",
-          inProgress: "#1890ff",
-          completed: "#34C759",
-          closed: "#8C8C8C",
-        };
-        const color = statusColorMap[val] ?? "#8C8C8C";
         const label = statusLabelMap[val] ?? val;
         const badgeStyle: React.CSSProperties = {
-          display: "inline-flex", alignItems: "center", gap: 4,
+          display: "inline-flex", alignItems: "center", justifyContent: "space-between", gap: 6, minWidth: 108,
           padding: "2px 8px", borderRadius: 4, cursor: "pointer",
-          backgroundColor: color + "22", color, fontWeight: 600, fontSize: 11,
+          border: "1px solid #e8e8e8", color: "#595959", fontSize: 11, lineHeight: 1.5, whiteSpace: "nowrap",
           userSelect: "none",
         };
         if (!hasPermissionForSlug("support-request-status-change")) {
@@ -649,7 +664,7 @@ const SupportRequestList: React.FC = () => {
               items: statusOptions.map((opt) => ({
                 key: opt.value,
                 label: (
-                  <span style={{ color: statusColorMap[opt.value] ?? "#8C8C8C", fontWeight: 600 }}>
+                  <span style={{ fontSize: 11, color: "#595959" }}>
                     {opt.label}
                   </span>
                 ),
@@ -659,7 +674,7 @@ const SupportRequestList: React.FC = () => {
           >
             <span style={badgeStyle}>
               {label}
-              <FaChevronDown style={{ fontSize: 9 }} />
+              <FaChevronDown style={{ fontSize: 8, opacity: 0.45, flexShrink: 0 }} />
             </span>
           </Dropdown>
         );
@@ -807,6 +822,15 @@ const SupportRequestList: React.FC = () => {
             )}
           </div>
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
+          {hasPermissionForSlug("support-request-delete") && (
+            <button
+              className="cancel-btn flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!selectedRowKeys.length}
+              onClick={() => setIsBulkDeleteVisible(true)}
+            >
+              Delete Selected ({selectedRowKeys.length})
+            </button>
+          )}
           {hasPermissionForSlug("support-request-create") && (
             <button className="primary-btn flex-shrink-0" onClick={handleOpenModal}>Add Request</button>
           )}
@@ -818,6 +842,11 @@ const SupportRequestList: React.FC = () => {
           ) : (
             <Table
               rowKey="id"
+              rowSelection={
+                hasPermissionForSlug("support-request-delete")
+                  ? { selectedRowKeys, onChange: (keys) => setSelectedRowKeys(keys as (string | number)[]) }
+                  : undefined
+              }
               scroll={{ x: "max-content" }}
               columns={columns}
               dataSource={tableSourceData}
@@ -827,6 +856,25 @@ const SupportRequestList: React.FC = () => {
           )}
         </div>
       </div>
+
+      <Modal
+        title="Delete selected requests"
+        open={isBulkDeleteVisible}
+        onCancel={() => setIsBulkDeleteVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsBulkDeleteVisible(false)}>
+            Cancel
+          </Button>,
+          <Button key="delete" type="primary" danger loading={isBulkDeleting} onClick={handleBulkDelete}>
+            Delete
+          </Button>,
+        ]}
+      >
+        <p>
+          Are you sure you want to delete {selectedRowKeys.length} selected request
+          {selectedRowKeys.length > 1 ? "s" : ""}? This cannot be undone.
+        </p>
+      </Modal>
 
       <Modal
         title={editingRequest ? "Edit Support Request" : "Add Support Request"}

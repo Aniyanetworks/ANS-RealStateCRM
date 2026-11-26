@@ -848,8 +848,8 @@ const Home = () => {
                 const num = Number(text.replace(/[$,\s]/g, ''));
                 if (!text || !/^\$?\s*[\d,]+(\.\d+)?$/.test(text) || !Number.isFinite(num)) return text;
                 if (category === 'sales' || category === 'commission') return `$${formatNumberWithCommasAndDecimals(num)}`;
-                if (category === 'units') return `${num} Units`;
-                if (category === 'listings') return `${num} Listings`;
+                if (category === 'units') return `${num} ${num === 1 ? "Unit" : "Units"}`;
+                if (category === 'listings') return `${num} ${num === 1 ? "Listing" : "Listings"}`;
                 return text;
               };
 
@@ -902,7 +902,7 @@ const Home = () => {
                   title: "Top Unit Seller",
                   profilePicture: a.profilePicture,
                   name: a.name,
-                  value: `${a.totalUnits} Units`,
+                  value: `${a.totalUnits} ${a.totalUnits === 1 ? "Unit" : "Units"}`,
                   breakdownData: { type: "units" as const, details: a.tradeSheetDetails || [], total: a.totalUnits },
                   badgeIcon: <RiseOutlined />,
                   badgeColor: '#8B9DAA',
@@ -924,7 +924,7 @@ const Home = () => {
                   title: "Top Listing Agent",
                   profilePicture: a.profilePicture,
                   name: a.name,
-                  value: `${a.totalListings} Listings`,
+                  value: `${a.totalListings} ${a.totalListings === 1 ? "Listing" : "Listings"}`,
                   breakdownData: { type: "listings" as const, details: a.listingDetails || [], total: a.totalListings },
                   badgeIcon: <HomeOutlined />,
                   badgeColor: '#0f766e',
@@ -1886,8 +1886,11 @@ const StatCard: React.FC<StatCardProps> = ({
             className="w-14 h-14 rounded-full object-cover border-2"
           />
         ) : (
-          <div className="w-14 h-14 rounded-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-500 text-sm">N/A</span>
+          <div
+            className="w-14 h-14 rounded-full flex items-center justify-center text-white font-semibold text-lg shrink-0"
+            style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", boxShadow: "0 0 0 2px #99f6e4" }}
+          >
+            {String(name || "?").split(" ").map((w) => w[0]).filter(Boolean).slice(0, 2).join("").toUpperCase()}
           </div>
         )}
         <div>
@@ -1916,7 +1919,7 @@ const StatCard: React.FC<StatCardProps> = ({
   return cardContent;
 };
 
-const BRAND_PALETTE = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#EFE0D0'];
+const BRAND_PALETTE = ['#134e4a', '#0f766e', '#14b8a6', '#64748b', '#f59e0b', '#fb923c', '#a8a29e', '#fbbf24'];
 
 const AGENT_BARS = [
   { key: 'ourAgents', label: 'Our Agents' },
@@ -1978,7 +1981,7 @@ const TS_STATUS_DEFS = [
   { key: 'draft', label: 'Draft' },
   { key: 'rejected', label: 'Rejected' },
 ];
-const TS_COLORS = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#C17E6E'];
+const TS_COLORS = ['#134e4a', '#0f766e', '#14b8a6', '#64748b', '#f59e0b', '#fb923c', '#a8a29e', '#fbbf24'];
 
 const TradeStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: number }> = ({ statusCounts, total }) => {
   const R = 40;
@@ -2062,7 +2065,7 @@ const DonutSkeleton: React.FC = () => (
   </div>
 );
 
-const PROP_COLORS = ['#134e4a', '#0f766e', '#2dd4bf', '#99f6e4', '#ccfbf1', '#C17E6E', '#E8C4A0', '#D4956A'];
+const PROP_COLORS = ['#134e4a', '#0f766e', '#14b8a6', '#64748b', '#f59e0b', '#fb923c', '#a8a29e', '#fbbf24', '#115e59', '#2dd4bf'];
 
 const PropertyStatusDonut: React.FC<{ statusCounts: Record<string, number>; total: number }> = ({ statusCounts, total }) => {
   const R = 40;

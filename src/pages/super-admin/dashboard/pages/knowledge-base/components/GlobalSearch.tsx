@@ -72,21 +72,21 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({
     {
       type: "document",
       label: "Referral Forms",
-      color: "#1890ff",
+      color: "#0f766e",
       icon: <FileTextOutlined />,
       count: items.filter(item => item.type === "document").length
     },
     {
       type: "tutorial",
       label: "Tutorial Videos",
-      color: "#52c41a",
+      color: "#027a48",
       icon: <PlayCircleOutlined />,
       count: items.filter(item => item.type === "tutorial").length
     },
     {
       type: "training",
       label: "Training and Appointments",
-      color: "#faad14",
+      color: "#b54708",
       icon: <LaptopOutlined />,
       count: items.filter(item => item.type === "training").length
     },

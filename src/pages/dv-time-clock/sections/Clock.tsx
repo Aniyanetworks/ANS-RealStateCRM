@@ -63,7 +63,7 @@ export function ClockSection() {
             className={`pill ${active ? "green" : ""}`}
             style={{ fontSize: 12, padding: "6px 14px", display: "inline-flex", alignItems: "center", gap: 7 }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: loading ? "#94a3b8" : active ? "#16a34a" : "#94a3b8" }} />
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: loading ? "#94a3b8" : active ? "#027a48" : "#94a3b8" }} />
             {loading ? "Checking status…" : active ? "Clocked In" : "Clocked Out"}
           </span>
           <div style={{ fontSize: 42, fontWeight: 800, color: "var(--navy)", margin: "16px 0 4px", fontVariantNumeric: "tabular-nums" }}>

@@ -128,10 +128,10 @@ const ScheduleTab: React.FC<ScheduleTabProps> = ({
   const getBranchColor = (branchId: any) => {
     const palette = [
       "#2563eb",
-      "#16a34a",
-      "#f97316",
+      "#027a48",
+      "#dc6803",
       "#a855f7",
-      "#dc2626",
+      "#b42318",
       "#0891b2",
       "#db2777",
       "#65a30d",

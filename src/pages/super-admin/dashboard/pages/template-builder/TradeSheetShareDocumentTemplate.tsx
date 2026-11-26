@@ -340,7 +340,7 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-          <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Share TradeSheet Document Email Template</h1>
+          <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Share TradeSheet Document Email Template</h1>
           <div className="flex-1" />
           <div className="relative flex-shrink-0" style={{ width: 170 }}>
             <FaSearch className="absolute top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" style={{ fontSize: 10, left: 8 }} />

@@ -672,7 +672,7 @@ const LeadsList = () => {
                 }}
                 className="hover:bg-gray-100"
               >
-                <span style={{ color: "#1890ff", fontWeight: 500 }}>
+                <span style={{ color: "#0f766e", fontWeight: 500 }}>
                   {dayjs(lastActivity.createdAt).format("YYYY-MM-DD")}
                 </span>
                 <span style={{ margin: "0 6px", color: "#888" }}>â†’</span>
@@ -965,7 +965,7 @@ const LeadsList = () => {
                 <FaInfoCircle
                   style={{
                     marginLeft: 8,
-                    color: "#1890ff",
+                    color: "#0f766e",
                     cursor: "pointer",
                     fontSize: "14px",
                   }}

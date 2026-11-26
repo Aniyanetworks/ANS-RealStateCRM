@@ -262,7 +262,7 @@ const FileActivity: React.FC = () => {
     <div className="pb-16">
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100">
-          <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">File Manager Syslog</h1>
+          <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">File Manager Syslog</h1>
           {filteredSummary && (
             <>
               <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
@@ -277,7 +277,7 @@ const FileActivity: React.FC = () => {
               <button
                 onClick={() => setSelectedOperation(selectedOperation === 'upload_file' ? null : 'upload_file')}
                 className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === 'upload_file' ? 'ring-1 ring-green-500' : ''}`}
-                style={{ borderLeft: "2px solid #22c55e", background: "#f0fdf4" }}
+                style={{ borderLeft: "2px solid #039855", background: "#f0fdf4" }}
               >
                 <span className="text-xs text-gray-500 whitespace-nowrap">Uploads:</span>
                 <span className="text-xs font-semibold text-green-600 whitespace-nowrap">{filteredSummary.uploads}</span>
@@ -285,7 +285,7 @@ const FileActivity: React.FC = () => {
               <button
                 onClick={() => setSelectedOperation(selectedOperation === 'delete_file' ? null : 'delete_file')}
                 className={`flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 transition-all ${selectedOperation === 'delete_file' ? 'ring-1 ring-red-500' : ''}`}
-                style={{ borderLeft: "2px solid #ef4444", background: "#fef2f2" }}
+                style={{ borderLeft: "2px solid #d92d20", background: "#fef2f2" }}
               >
                 <span className="text-xs text-gray-500 whitespace-nowrap">Deletes:</span>
                 <span className="text-xs font-semibold text-red-600 whitespace-nowrap">{filteredSummary.deletes}</span>

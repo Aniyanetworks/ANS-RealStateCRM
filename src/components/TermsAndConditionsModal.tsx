@@ -337,7 +337,7 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
               </div>
               ${orderData?.signature ? 
                 `<img src="${baseUrl}${orderData.signature}" alt="Signature" class="signature-image" />` : 
-                '<p style="color: #ef4444; font-style: italic;">Signature not provided</p>'
+                '<p style="color: #d92d20; font-style: italic;">Signature not provided</p>'
               }
             </div>
             

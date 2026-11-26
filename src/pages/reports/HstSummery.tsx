@@ -353,7 +353,7 @@ export default function TradeReport() {
                 Apply
               </button>
               <button
-                className="w-1/2 bg-[#FFDFDC] text-[#EF4444] p-2 rounded"
+                className="w-1/2 bg-[#FFDFDC] text-[#d92d20] p-2 rounded"
                 onClick={() => {
                   setShowDropdown(false);
                   setDateRange(null);

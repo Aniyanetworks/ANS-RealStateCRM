@@ -7,7 +7,7 @@ import {
 } from "../tcUtils";
 import { tcConfirm } from "../tcDialog";
 
-const PALETTE = ["#2563eb", "#7c3aed", "#0891b2", "#db2777", "#059669", "#d97706", "#dc2626", "#4f46e5"];
+const PALETTE = ["#2563eb", "#7c3aed", "#0891b2", "#db2777", "#059669", "#d97706", "#b42318", "#4f46e5"];
 const colorFor = (v: unknown) => {
   const s = String(v || "");
   let h = 0;

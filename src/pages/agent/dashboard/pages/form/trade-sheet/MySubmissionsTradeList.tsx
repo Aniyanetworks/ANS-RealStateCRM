@@ -546,10 +546,10 @@ const MySubmissionsTradeList = () => {
 
   const getRepresentTypeColor = (value: string) => {
     if (!value) return "#999";
-    if (/[SB]/.test(value)) return "#34C759";
-    if (/[LT]/.test(value)) return "#FF9500";
-    if (/[RC]/.test(value)) return "#1890ff";
-    return "#34C759";
+    if (/[SB]/.test(value)) return "#027a48";
+    if (/[LT]/.test(value)) return "#b54708";
+    if (/[RC]/.test(value)) return "#0f766e";
+    return "#027a48";
   };
 
   const allColumnDefs = [
@@ -1532,7 +1532,7 @@ const MySubmissionsTradeList = () => {
                     style={{ width: "100%", padding: "4px 8px", border: "1px solid #d9d9d9", borderRadius: 4, fontSize: 12 }}
                   />
                 </div>
-                <div style={{ fontSize: 11, color: "#8c8c8c", fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.4px" }}>
+                <div style={{ fontSize: 11, color: "#667085", fontWeight: 600, marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.4px" }}>
                   Fields in table
                 </div>
                 {allColumnDefs
@@ -1664,8 +1664,8 @@ const MySubmissionsTradeList = () => {
             const uploaded = uploadedInModal.has(f.id);
             const uploading = uploadingInModal === f.id;
             return (
-              <div key={f.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 12px", border: `1px solid ${uploaded ? "#16a34a" : "#e5e7eb"}`, borderRadius: 6, backgroundColor: uploaded ? "#f0fdf4" : "#fafafa" }}>
-                <span style={{ color: uploaded ? "#16a34a" : "#dc2626", fontWeight: 500, flex: 1 }}>
+              <div key={f.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 12px", border: `1px solid ${uploaded ? "#027a48" : "#e5e7eb"}`, borderRadius: 6, backgroundColor: uploaded ? "#f0fdf4" : "#fafafa" }}>
+                <span style={{ color: uploaded ? "#027a48" : "#b42318", fontWeight: 500, flex: 1 }}>
                   {uploaded ? "✓ " : ""}{f.name}
                 </span>
                 {!uploaded && (
@@ -1714,7 +1714,7 @@ const MySubmissionsTradeList = () => {
           })}
         </div>
         {uploadedInModal.size === missingImportantFiles.length && missingImportantFiles.length > 0 && (
-          <p style={{ marginTop: 12, color: "#16a34a", fontWeight: 500 }}>
+          <p style={{ marginTop: 12, color: "#027a48", fontWeight: 500 }}>
             All documents uploaded. Click "Approve Now" to proceed.
           </p>
         )}

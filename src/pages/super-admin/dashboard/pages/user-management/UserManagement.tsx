@@ -1020,12 +1020,12 @@ const CreateAndUpdateUser = () => {
               the user <strong>"{currentToggleUser.name}"</strong>?
             </p>
             {currentToggleUser.currentStatus ? (
-              <p style={{ color: "#ff4d4f", marginTop: "10px" }}>
+              <p style={{ color: "#b42318", marginTop: "10px" }}>
                 {"⚠️"} Warning: Deactivating this user will prevent them from
                 accessing the system.
               </p>
             ) : (
-              <p style={{ color: "#52c41a", marginTop: "10px" }}>
+              <p style={{ color: "#027a48", marginTop: "10px" }}>
                 {"✅"} Note: Activating this user will grant them system access.
               </p>
             )}
@@ -1127,7 +1127,7 @@ const CreateAndUpdateUser = () => {
 
       <style jsx>{`
         .active-switch :global(.ant-switch-checked) {
-          background-color: #52c41a;
+          background-color: #027a48;
         }
 
         .inactive-switch :global(.ant-switch) {

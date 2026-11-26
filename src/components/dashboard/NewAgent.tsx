@@ -17,7 +17,7 @@ const NewAgent = () => {
       {isLoading ? (
         <TableLoader />
       ) : (
-        <div>
+        <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {recentAgents.map((agent: any) => (
             <AgentCard key={agent.id} agentData={agent} />
           ))}

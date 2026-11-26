@@ -983,7 +983,7 @@ const ExpenseManagement = () => {
 
       <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
         <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100">
-          <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Expenses</h1>
+          <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Expenses</h1>
           <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
           <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #0f766e", background: "#f9f6f3" }}>
             <span className="text-xs text-gray-500 whitespace-nowrap">Total Expenses:</span>
@@ -1113,7 +1113,7 @@ const ExpenseManagement = () => {
                   <button className="w-1/2 bg-[#0f766e] text-white p-2 rounded" onClick={handleApplyFilters}>Apply</button>
                   <button
                     type="button"
-                    className="w-1/2 bg-[#FFDFDC] text-[#EF4444] p-2 rounded"
+                    className="w-1/2 bg-[#FFDFDC] text-[#d92d20] p-2 rounded"
                     onClick={() => {
                       setDateRange(null);
                       setPeriodFilter(null);

@@ -273,9 +273,9 @@ export default function Dashboard({ onNavigate }: { onNavigate: (key: string) =>
               const isExpired = a.recoExpiry! < today, isProgress = ["IN_PROGRESS", "ELIGIBLE"].includes(a.renewalStatus), isEligible = a.renewalStatus === "ELIGIBLE";
               const label = isEligible ? "ELIGIBLE TO TRADE" : isProgress ? "RENEWAL IN PROGRESS" : isExpired ? "EXPIRED" : "";
               const color = isEligible ? "#166534" : isProgress ? "#9a3412" : "#b91c1c";
-              const style = isEligible ? { color, background: "#f0fdf4", borderLeft: "4px solid #16a34a", paddingLeft: 10, borderRadius: 6 }
+              const style = isEligible ? { color, background: "#f0fdf4", borderLeft: "4px solid #027a48", paddingLeft: 10, borderRadius: 6 }
                 : isProgress ? { color, background: "#fff7ed", borderLeft: "4px solid #d97706", paddingLeft: 10, borderRadius: 6 }
-                : isExpired ? { color, background: "#fef2f2", borderLeft: "4px solid #dc2626", paddingLeft: 10, borderRadius: 6 } : undefined;
+                : isExpired ? { color, background: "#fef2f2", borderLeft: "4px solid #b42318", paddingLeft: 10, borderRadius: 6 } : undefined;
               return (
                 <div className="settingsline" key={a.id} style={style}>
                   <span>
@@ -361,8 +361,8 @@ export default function Dashboard({ onNavigate }: { onNavigate: (key: string) =>
       <Panel title="RECO Renewal Status" right={<span className="pill">Agent compliance</span>} style={{ marginBottom: 18 }}>
         <div className="grid4">
           {statusCard("Renewal in Progress", inProgress, "RECO renewal application being processed", "#d97706", "#fff7ed", "#9a3412")}
-          {statusCard("Eligible to Trade", eligible, "Eligibility marked as confirmed", "#16a34a", "#f0fdf4", "#166534")}
-          {statusCard("Expired — Not Confirmed Eligible", expired, "Expiry passed without confirmed eligibility", "#dc2626", "#fef2f2", "#991b1b")}
+          {statusCard("Eligible to Trade", eligible, "Eligibility marked as confirmed", "#027a48", "#f0fdf4", "#166534")}
+          {statusCard("Expired — Not Confirmed Eligible", expired, "Expiry passed without confirmed eligibility", "#b42318", "#fef2f2", "#991b1b")}
         </div>
         <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>Green indicates eligible to trade has been manually confirmed. Amber indicates renewal is in progress. Red indicates the licence expiry date has passed and eligibility is not confirmed.</div>
       </Panel>

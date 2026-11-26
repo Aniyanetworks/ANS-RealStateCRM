@@ -252,7 +252,7 @@ const MySubmissionsArchiveTradeList = () => {
         <BorderBadge
           value={representation}
           colorMap={(value: string) => ({
-            borderColor: value === "yes" ? "#34C759" : "#FF0000",
+            borderColor: value === "yes" ? "#027a48" : "#FF0000",
           })}
         />
       ),

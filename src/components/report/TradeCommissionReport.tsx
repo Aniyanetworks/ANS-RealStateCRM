@@ -245,12 +245,12 @@ const TradeCommissionReport: React.FC<TradeCommissionReportProps> = ({ filteredD
   return (
     <div className="bg-white border border-gray-200 rounded-lg">
       <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100 flex-wrap">
-        <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Trade Report</h1>
+        <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">Trade Report</h1>
         <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
 
         <div
           className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1 cursor-pointer"
-          style={{ borderLeft: "2px solid #6366f1", background: "#eef2ff" }}
+          style={{ borderLeft: "2px solid #0f766e", background: "#eef2ff" }}
           onClick={() => toast.success(`Total ${filteredData.length} completed trades. Check the list below.`)}
         >
           <span className="text-xs text-gray-500 whitespace-nowrap">Total Trades:</span>
@@ -260,7 +260,7 @@ const TradeCommissionReport: React.FC<TradeCommissionReportProps> = ({ filteredD
         <Link
           to="/dashboard/accounting/base-commission-cheque"
           className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1"
-          style={{ borderLeft: "2px solid #22c55e", background: "#f0fdf4" }}
+          style={{ borderLeft: "2px solid #039855", background: "#f0fdf4" }}
         >
           <span className="text-xs text-gray-500 whitespace-nowrap">Base Office Commission:</span>
           <span className="text-xs font-semibold text-green-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(baseOfficeCommission())}</span>
@@ -269,7 +269,7 @@ const TradeCommissionReport: React.FC<TradeCommissionReportProps> = ({ filteredD
         <Link
           to="/dashboard/accounting/commission-cheque"
           className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1"
-          style={{ borderLeft: "2px solid #ef4444", background: "#fef2f2" }}
+          style={{ borderLeft: "2px solid #d92d20", background: "#fef2f2" }}
         >
           <span className="text-xs text-gray-500 whitespace-nowrap">Net Commission:</span>
           <span className="text-xs font-semibold text-red-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(netCommission())}</span>
@@ -278,7 +278,7 @@ const TradeCommissionReport: React.FC<TradeCommissionReportProps> = ({ filteredD
         <Link
           to="/dashboard/accounting/agent-commission-cheque"
           className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1"
-          style={{ borderLeft: "2px solid #eab308", background: "#fefce8" }}
+          style={{ borderLeft: "2px solid #f79009", background: "#fefce8" }}
         >
           <span className="text-xs text-gray-500 whitespace-nowrap">Commission to Agent:</span>
           <span className="text-xs font-semibold text-yellow-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(commissionToAgent())}</span>

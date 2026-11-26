@@ -64,6 +64,13 @@ export const agents = mk(NAMES.length, (i) => {
   return {
     id: i + 1,
     name: NAMES[i],
+    firstName: NAMES[i].split(' ')[0],
+    lastName: NAMES[i].split(' ')[1],
+    cellPhone: `416-555-${String(1000 + i)}`,
+    agentAccountId: `AG-${String(i + 1).padStart(4, '0')}`,
+    recoRegNumber: `${5012300 + i * 137}`,
+    designation: ['Broker of Record', 'Sales Representative', 'Sales Representative', 'Broker', 'Sales Representative', 'Sales Representative', 'Sales Representative', 'Broker'][i],
+    brokerageData: { id: i === 7 ? 2 : 1, brokerageName: i === 7 ? 'Lakeview Partners Realty' : 'ANS RealStateCRM Realty' },
     status: i === 5 ? 'closed' : 'approved',
     brokerageId: i === 7 ? 99 : 24,
     dob: `199${i}-${String(((new Date().getMonth() + [0, 0, 1, -1, 0, 2, -2, 0][i] + 12) % 12) + 1).padStart(2, '0')}-${String(4 + i * 3).padStart(2, '0')}`,
@@ -71,7 +78,7 @@ export const agents = mk(NAMES.length, (i) => {
     phoneNumber: `416555${String(1000 + i)}`,
     isActive: 'yes',
     user: {
-      id: i + 10, userTypeUId: `UID${String(i + 1).padStart(5, '0')}`, profilePicture: null,
+      id: i + 10, userTypeUId: `UID${String(i + 1).padStart(5, '0')}`, profilePicture: null, userType: 'agent',
       firstName: NAMES[i].split(' ')[0], lastName: NAMES[i].split(' ')[1],
       unitsSalesTradeSheets: mine,
       tradeSheetsCreated: mine,
@@ -94,5 +101,5 @@ export const announcements = [
 
 export const calendarEvents = mk(10, (i) => {
   const start = new Date(Date.now() + (i - 2) * 86400000 + (9 + i) * 3600000).toISOString();
-  return { id: i + 1, title: ['Showing', 'Open House', 'Client Meeting', 'Inspection', 'Closing'][i % 5] + ' – ' + STREETS[i % 6], start, end: start, allDay: false };
+  return { id: i + 1, title: ['Showing', 'Open House', 'Client Meeting', 'Inspection', 'Closing'][i % 5] + ' – ' + STREETS[i % 6], start, end: start, allDay: false, location: `${STREETS[i % 6]}, ${CITIES[i % 5]}`, attendeeCount: 2 + (i % 6) };
 });

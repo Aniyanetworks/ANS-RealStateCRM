@@ -1,82 +1,106 @@
 import { Modal } from "antd";
 import { useState } from "react";
 import { getFileUrl } from "../../utils/constant";
-import defaultAvatar from "../../assets/agent-2.png";
 
 type AgentData = {
   id: number;
   name: string;
-  recoRegNumber:string;
-  user:{
-    profilePicture:string;
-    userType:string;
-  },
+  recoRegNumber?: string;
+  email?: string;
+  cellPhone?: string;
+  city?: string;
+  user?: {
+    profilePicture?: string | null;
+    userType?: string;
+  };
 };
 
 interface AgentCardProps {
   agentData: AgentData;
 }
 
+const initialsOf = (name: string) =>
+  String(name || "?")
+    .split(" ")
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+const Avatar = ({ agentData, size }: { agentData: AgentData; size: number }) =>
+  agentData?.user?.profilePicture ? (
+    <img
+      className="rounded-full object-cover shrink-0"
+      style={{ width: size, height: size }}
+      src={getFileUrl(agentData.user.profilePicture)}
+      alt={agentData.name}
+    />
+  ) : (
+    <div
+      className="flex shrink-0 items-center justify-center rounded-full font-semibold text-white"
+      style={{
+        width: size,
+        height: size,
+        fontSize: size / 2.6,
+        background: "linear-gradient(135deg,#0f766e,#14b8a6)",
+        boxShadow: "0 0 0 2px #99f6e4",
+      }}
+    >
+      {initialsOf(agentData.name)}
+    </div>
+  );
+
 const AgentCard: React.FC<AgentCardProps> = ({ agentData }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const role = agentData?.user?.userType || "agent";
+  const reco = agentData.recoRegNumber;
 
-  const showLoading = () => {
-    setOpen(true);
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  };
   return (
-    <div className="bg-white rounded-2xl p-3 2xl:p-5 ">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="2xl:w-[80px] w-[60px] h-[60px] 2xl:h-[80px] rounded-full bg-gray-50">
-            <img className="h-full w-full" src={agentData?.user?.profilePicture ? getFileUrl(agentData.user.profilePicture) : defaultAvatar} alt="Agent profile" />
-          </div>
-          <div>
-            <h3 className=" font-medium">{agentData.name}</h3>
-            <p className="text-gray-400 first-letter:uppercase">{agentData.user.userType}</p>
-          </div>
-        </div>
-        <div>
-          <button
-            onClick={showLoading}
-            className="bg-gray-100 px-3 2xl:px-5 py-1 2xl:py-2 rounded-md hover:bg-[#0d9488] hover:text-white duration-300 transition"
-          >
-            Details
-          </button>
-        </div>
+    <div className="flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-4 shadow-sm transition hover:shadow-md">
+      <Avatar agentData={agentData} size={48} />
+      <div className="min-w-0 flex-1">
+        <h3 className="truncate font-semibold text-gray-800">{agentData.name}</h3>
+        <p className="truncate text-xs capitalize text-gray-500">
+          {role}
+          {reco ? ` · RECO #${reco}` : ""}
+        </p>
       </div>
-      <p className="mt-3">
-        I am <span className="bold">{agentData.name}</span>. My RECO reg number is {agentData.recoRegNumber}
-      </p>
-
-      <Modal
-        title={<p>Agent Details</p>}
-        loading={loading}
-        footer={null}
-        open={open}
-        onCancel={() => setOpen(false)}
+      <button
+        onClick={() => setOpen(true)}
+        className="shrink-0 rounded-md border border-teal-200 px-3 py-1.5 text-[#0f766e] transition hover:bg-[#0f766e] hover:text-white"
       >
-        <div>
-          <div className="bg-white rounded-2xl p-3 2xl:p-5 ">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="2xl:w-[80px] w-[60px] h-[60px] 2xl:h-[80px] rounded-full bg-gray-50">
-                  <img className="h-full w-full" src={agentData?.user?.profilePicture ? getFileUrl(agentData.user.profilePicture) : defaultAvatar} alt="Agent profile" />
-                </div>
-                <div>
-                  <h3 className=" font-medium">{agentData.name}</h3>
-                  <p className="text-gray-400 first-letter:uppercase">{agentData.user.userType}</p>
-                </div>
-              </div>
-            </div>
-            <p className="mt-3">I am <span className="bold">{agentData.name}</span>. My RECO reg number is {agentData.recoRegNumber}</p>
+        Details
+      </button>
+
+      <Modal title="Agent Details" footer={null} open={open} onCancel={() => setOpen(false)}>
+        <div className="flex items-center gap-4">
+          <Avatar agentData={agentData} size={72} />
+          <div>
+            <h3 className="text-base font-semibold text-gray-800">{agentData.name}</h3>
+            <p className="text-sm capitalize text-gray-500">{role}</p>
           </div>
         </div>
+        <dl className="mt-4 grid grid-cols-[110px_1fr] gap-y-2 text-sm">
+          {reco && (
+            <>
+              <dt className="text-gray-500">RECO reg. no.</dt>
+              <dd className="text-gray-800">{reco}</dd>
+            </>
+          )}
+          {agentData.email && (
+            <>
+              <dt className="text-gray-500">Email</dt>
+              <dd className="text-gray-800">{agentData.email}</dd>
+            </>
+          )}
+          {agentData.cellPhone && (
+            <>
+              <dt className="text-gray-500">Phone</dt>
+              <dd className="text-gray-800">{agentData.cellPhone}</dd>
+            </>
+          )}
+        </dl>
       </Modal>
     </div>
   );

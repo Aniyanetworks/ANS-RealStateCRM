@@ -493,3 +493,40 @@ tr.ant-table-placeholder {
 }
 .notif-dropdown .ant-dropdown-menu::-webkit-scrollbar { width: 6px; }
 .notif-dropdown .ant-dropdown-menu::-webkit-scrollbar-thumb { background: #99f6e4; border-radius: 6px; }
+
+/* ===== Status badges: one restrained, consistent style for antd Tags =====
+   green = active/success, red = inactive/error, amber = pending/warning,
+   teal = info, gray = neutral. Soft pill, no border, no bright colours.
+   Tags that set their own background (custom classes or inline colour) are left alone. */
+.ant-tag {
+  border-radius: 999px !important;
+  padding: 1px 10px !important;
+  line-height: 20px !important;
+  font-weight: 500 !important;
+  font-size: 11px !important;
+}
+.ant-tag:not([class*="bg-"]):not(.ant-tag-has-color) { border-color: transparent !important; }
+
+.ant-tag-default:not([class*="bg-"]):not(.ant-tag-has-color) { color: #475467 !important; background: #f2f4f7 !important; }
+.ant-tag-purple:not([class*="bg-"]):not(.ant-tag-has-color) { color: #475467 !important; background: #f2f4f7 !important; }
+
+.ant-tag-green:not([class*="bg-"]), .ant-tag-success:not([class*="bg-"]),
+.ant-tag-lime:not([class*="bg-"]), .ant-tag-cyan:not([class*="bg-"]) {
+  color: #027a48 !important; background: #ecfdf3 !important;
+}
+.ant-tag-red:not([class*="bg-"]), .ant-tag-error:not([class*="bg-"]),
+.ant-tag-volcano:not([class*="bg-"]), .ant-tag-magenta:not([class*="bg-"]), .ant-tag-pink:not([class*="bg-"]) {
+  color: #b42318 !important; background: #fef3f2 !important;
+}
+.ant-tag-orange:not([class*="bg-"]), .ant-tag-gold:not([class*="bg-"]),
+.ant-tag-yellow:not([class*="bg-"]), .ant-tag-warning:not([class*="bg-"]) {
+  color: #b54708 !important; background: #fffaeb !important;
+}
+.ant-tag-blue:not([class*="bg-"]), .ant-tag-geekblue:not([class*="bg-"]), .ant-tag-processing:not([class*="bg-"]) {
+  color: #0f766e !important; background: #f0fdfa !important;
+}
+
+.ant-alert.ant-alert-info {
+  background: #f0fdfa !important;
+  border-color: #99f6e4 !important;
+}

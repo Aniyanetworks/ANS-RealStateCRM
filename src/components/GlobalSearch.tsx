@@ -170,11 +170,11 @@ const GlobalSearch = ({
                   </div>
                   
                   {(node.sharedBy || node.ownerId !== currentUser?.id) && (
-                    <UserOutlined style={{ color: '#1890ff', marginLeft: 8 }} />
+                    <UserOutlined style={{ color: '#0f766e', marginLeft: 8 }} />
                   )}
                   
                   {!node.isFolder && (
-                    <span style={{ fontSize: 12, color: '#1890ff', marginLeft: 8 }}>
+                    <span style={{ fontSize: 12, color: '#0f766e', marginLeft: 8 }}>
                       👁️ View
                     </span>
                   )}

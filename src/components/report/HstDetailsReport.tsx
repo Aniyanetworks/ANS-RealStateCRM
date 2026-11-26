@@ -381,9 +381,9 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
   return (
     <div className="bg-white border border-gray-200 rounded-lg">
       <div className="flex items-center gap-2 px-4 py-2 border-b border-gray-100 flex-wrap">
-        <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">HST Details Report</h1>
+        <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">HST Details Report</h1>
         <div className="w-px h-5 bg-gray-200 flex-shrink-0" />
-        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #6366f1", background: "#eef2ff" }}>
+        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #0f766e", background: "#eef2ff" }}>
           <span className="text-xs text-gray-500 whitespace-nowrap">HST Earned:</span>
           <span className="text-xs font-semibold text-indigo-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(totalHst())}</span>
         </div>
@@ -391,15 +391,15 @@ const HstDetailsReport: React.FC<HstDetailsReportProps> = ({
           <span className="text-xs text-gray-500 whitespace-nowrap">From Trade:</span>
           <span className="text-xs font-semibold text-blue-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(totalBySource('trade'))}</span>
         </div>
-        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #22c55e", background: "#f0fdf4" }}>
+        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #039855", background: "#f0fdf4" }}>
           <span className="text-xs text-gray-500 whitespace-nowrap">Marketplace:</span>
           <span className="text-xs font-semibold text-green-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(totalBySource('marketplace'))}</span>
         </div>
-        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #f97316", background: "#fff7ed" }}>
+        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #dc6803", background: "#fff7ed" }}>
           <span className="text-xs text-gray-500 whitespace-nowrap">Expenses:</span>
           <span className="text-xs font-semibold text-orange-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(totalItcBySource('expense'))}</span>
         </div>
-        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #ef4444", background: "#fef2f2" }}>
+        <div className="flex-shrink-0 flex items-center gap-1 rounded px-2 py-1" style={{ borderLeft: "2px solid #d92d20", background: "#fef2f2" }}>
           <span className="text-xs text-gray-500 whitespace-nowrap">Net Remit:</span>
           <span className="text-xs font-semibold text-red-600 whitespace-nowrap">${formatNumberWithCommasAndDecimals(totalNetRemit())}</span>
         </div>

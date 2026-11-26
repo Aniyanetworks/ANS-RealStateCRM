@@ -936,14 +936,14 @@ const handleBulkShareConfirm = async () => {
       {`
         .clickable-breadcrumb {
           cursor: pointer;
-          color: #1890ff;
+          color: #0f766e;
         }
         .clickable-breadcrumb:hover {
           color: #40a9ff;
           text-decoration: underline;
         }
         .drag-over {
-          border: 2px dashed #1890ff !important;
+          border: 2px dashed #0f766e !important;
           background-color: #f0f8ff !important;
         }
       `}
@@ -1108,7 +1108,7 @@ const handleBulkShareConfirm = async () => {
           {showShared ? "Shared files" : "My files"}: {nodes.length} item{nodes.length !== 1 ? 's' : ''}
         </span>
         {showShared && (
-          <span style={{ color: "#1890ff" }}>
+          <span style={{ color: "#0f766e" }}>
             💡 Switch to "My Files" to manage your own files and folders
           </span>
         )}
@@ -1392,8 +1392,8 @@ const handleBulkShareConfirm = async () => {
                         onChange={() => handleBulkPermissionToggle(permission, user.userId)}
                         style={{ margin: 0 }}
                       />
-                      {permission === "view" && <EyeOutlined style={{ fontSize: "18px", color: "#1890ff" }} />}
-                      {permission === "download" && <DownloadOutlined style={{ fontSize: "18px", color: "#52c41a" }} />}
+                      {permission === "view" && <EyeOutlined style={{ fontSize: "18px", color: "#0f766e" }} />}
+                      {permission === "download" && <DownloadOutlined style={{ fontSize: "18px", color: "#027a48" }} />}
                     </label>
                   ))}
                 </div>
@@ -1546,8 +1546,8 @@ const handleBulkShareConfirm = async () => {
                             onChange={() => handlePermissionToggle(permission, user.userId)}
                             style={{ margin: 0 }}
                           />
-                          {permission === "view" && <EyeOutlined style={{ fontSize: "18px", color: "#1890ff" }} />}
-                          {permission === "download" && <DownloadOutlined style={{ fontSize: "18px", color: "#52c41a" }} />}
+                          {permission === "view" && <EyeOutlined style={{ fontSize: "18px", color: "#0f766e" }} />}
+                          {permission === "download" && <DownloadOutlined style={{ fontSize: "18px", color: "#027a48" }} />}
                         </label>
                       ))}
                     </div>

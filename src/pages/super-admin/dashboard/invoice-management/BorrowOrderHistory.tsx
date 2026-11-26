@@ -252,7 +252,7 @@ const getAgreementContent = () => {
             </div>
             ${details_data?.signature ? 
               `<img src="${baseUrl}${details_data.signature}" alt="Signature" class="signature-image" />` : 
-              '<p style="color: #ef4444; font-style: italic;">Signature not provided</p>'
+              '<p style="color: #d92d20; font-style: italic;">Signature not provided</p>'
             }
           </div>
           

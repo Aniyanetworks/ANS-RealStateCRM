@@ -207,7 +207,7 @@ const LeadsManagementPage: React.FC = () => {
         <div className="pb-16">
             <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
-                    <h1 className="!mb-0 text-sm text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
+                    <h1 className="!mb-0 text-gray-800 font-semibold whitespace-nowrap flex-shrink-0">
                         All Leads
                         <span className="ml-1 text-gray-400 font-normal text-[11px]">({filteredLeads.length})</span>
                         {isLoading && <Spin size="small" className="ml-2" />}

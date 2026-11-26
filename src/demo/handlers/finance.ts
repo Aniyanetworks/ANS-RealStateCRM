@@ -128,7 +128,7 @@ const expenses = EXPENSE_ITEMS.map(([name, cat, amount, rec], i) => {
     expenseStatus: i === 6 ? 'pending' : i === 12 ? 'rejected' : 'approved',
     receiptPath: null, isRecurring: Boolean(rec), recurrenceType: rec || null,
     recurrenceInterval: rec ? 1 : null, recurrenceEndDate: null, createdAt: day(8 + i * 19), updatedAt: day(8 + i * 19),
-    expenseCategory: expenseCategories[cat], propertyListing: null, branch: { id: 1, name: 'ANS RealStateCRM - Toronto' },
+    expenseCategory: expenseCategories[cat], propertyListing: i % 2 ? { propertyAddress: seed.properties[i % seed.properties.length].propertyAddress } : null, branch: { id: 1, name: 'ANS RealStateCRM - Toronto' },
   };
 });
 

@@ -630,19 +630,11 @@ const PropertyListingManagement = () => {
               rejected: "Rejected",
               pendingMls: "Pending MLS",
             };
-            const statusColorMap: Record<string, string> = {
-              approved: "#34C759",
-              underReview: "#1890ff",
-              draft: "#8C8C8C",
-              rejected: "#FF3B30",
-              pendingMls: "#FF9500",
-            };
-            const color = statusColorMap[val] ?? "#8C8C8C";
             const label = statusLabelMap[val] ?? val;
             const badgeStyle: React.CSSProperties = {
-              display: "inline-flex", alignItems: "center", gap: 4,
+              display: "inline-flex", alignItems: "center", justifyContent: "space-between", gap: 6, minWidth: 108,
               padding: "2px 8px", borderRadius: 4,
-              backgroundColor: color + "22", color, fontWeight: 600, fontSize: 11,
+              border: "1px solid #e8e8e8", color: "#595959", fontSize: 11, lineHeight: 1.5, whiteSpace: "nowrap",
               userSelect: "none",
               cursor: user.userType === "agent" ? "default" : "pointer",
             };
@@ -656,7 +648,7 @@ const PropertyListingManagement = () => {
                   items: statusOptions.map((opt) => ({
                     key: opt.value,
                     label: (
-                      <span style={{ color: statusColorMap[opt.value] ?? "#8C8C8C", fontWeight: 600 }}>
+                      <span style={{ fontSize: 11, color: "#595959" }}>
                         {opt.label}
                       </span>
                     ),
@@ -666,7 +658,7 @@ const PropertyListingManagement = () => {
               >
                 <span style={badgeStyle}>
                   {label}
-                  <FaChevronDown style={{ fontSize: 9 }} />
+                  <FaChevronDown style={{ fontSize: 8, opacity: 0.45, flexShrink: 0 }} />
                 </span>
               </Dropdown>
             );

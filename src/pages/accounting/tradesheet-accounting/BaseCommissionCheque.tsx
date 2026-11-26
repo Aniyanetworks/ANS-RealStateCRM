@@ -331,12 +331,14 @@ const CommissionCheque = () => {
       dataIndex: "tradeSheetTypeId",
       key: "tradeSheetTypeId", 
       render: (text, record) => {
-        <span
+        return (
+<span
           className="hover:text-blue-600 cursor-pointer hover:underline"
           onClick={() => handleEdit(record)}
         >
           {record?.tradeTransaction?.tradeSheet?.tradeSheetTypeId || "N/A"}
-        </span>;
+        </span>
+);
       },
     },
     {

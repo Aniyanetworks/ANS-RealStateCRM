@@ -121,7 +121,33 @@ const logLines = (type: string) => {
   return lines;
 };
 
+
+// ---- Art work items (superadmin/art-work/*): in-memory so add/edit/delete work in the demo ----
+let artItems: { id: number; title: string; status: string }[] = [
+  "Business Cards", "Postcards", "Open House Flyer", "Just Listed Postcard", "Just Sold Postcard", "Yard Sign", "Feature Sheet",
+  "Social Media Post", "Email Banner", "Brochure", "Rack Card", "Door Hanger", "Pull-up Banner", "Window Decal",
+].map((title, i) => ({ id: i + 1, title, status: i === 6 || i === 12 ? "inactive" : "active" }));
+let artNextId = artItems.length + 1;
+const artRoutes = [
+  route("GET", "superadmin/art-work/list", () => ({ status: true, message: "Art works fetched successfully", data: artItems })),
+  route("GET", "superadmin/art-work/get-single", ({ query }) => ({ status: true, data: artItems.find((a) => String(a.id) === query.id) || null })),
+  route("POST", "superadmin/art-work/create", ({ body }) => {
+    const item = { id: artNextId++, title: String(body?.title || "Untitled"), status: String(body?.status || "active") };
+    artItems = [item, ...artItems];
+    return { status: true, message: "Art work created successfully", data: item };
+  }),
+  route("POST", "superadmin/art-work/update", ({ query, body }) => {
+    artItems = artItems.map((a) => (String(a.id) === query.id ? { ...a, title: String(body?.title ?? a.title), status: String(body?.status ?? a.status) } : a));
+    return { status: true, message: "Art work updated successfully" };
+  }),
+  route("DELETE", "superadmin/art-work/delete", ({ query }) => {
+    artItems = artItems.filter((a) => String(a.id) !== query.id);
+    return { status: true, message: "Art work deleted successfully" };
+  }),
+];
+
 export const extraBRoutes = [
+  ...artRoutes,
   route('GET', 'superadmin/condition-type/list', () => ok('Condition types fetched', { ConditionType: conditions })),
   route('POST', 'superadmin/condition-type/create', ({ body }) => {
     const c = { id: nextCondId++, condition: String(body?.condition ?? ''), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };

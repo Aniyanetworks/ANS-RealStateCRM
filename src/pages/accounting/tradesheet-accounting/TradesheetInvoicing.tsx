@@ -230,10 +230,10 @@ const TradesheetInvoicing = () => {
   const REP_TO_LETTER: Record<string, string> = { seller: "S", buyer: "B", landlord: "L", tenant: "T" };
   const LIST_TO_LETTER: Record<string, string> = { Commercial: "C", Residential: "R" };
   const getRepresentTypeColor = (letter: string) => {
-    if (/[SB]/.test(letter)) return "#34C759";
-    if (/[LT]/.test(letter)) return "#FF9500";
-    if (/[RC]/.test(letter)) return "#1890ff";
-    return "#34C759";
+    if (/[SB]/.test(letter)) return "#027a48";
+    if (/[LT]/.test(letter)) return "#b54708";
+    if (/[RC]/.test(letter)) return "#0f766e";
+    return "#027a48";
   };
   const getRepresentTypeBadges = (record: any): string[] => {
     const badges: string[] = [];
