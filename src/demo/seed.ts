@@ -67,7 +67,7 @@ export const agents = mk(NAMES.length, (i) => {
     name: NAMES[i],
     status: i === 5 ? 'closed' : 'approved',
     brokerageId: i === 7 ? 99 : 24,
-    dob: `199${i}-${String(((i * 3) % 12) + 1).padStart(2, '0')}-${String(((i * 5) % 27) + 1).padStart(2, '0')}`,
+    dob: `199${i}-${String(((new Date().getMonth() + [0, 0, 1, -1, 0, 2, -2, 0][i] + 12) % 12) + 1).padStart(2, '0')}-${String(4 + i * 3).padStart(2, '0')}`,
     email: `${NAMES[i].split(' ')[0].toLowerCase()}@ans.demo`,
     phoneNumber: `416555${String(1000 + i)}`,
     isActive: 'yes',

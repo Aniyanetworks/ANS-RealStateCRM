@@ -991,7 +991,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                               <button
                                 onClick={() => setPdfCurrentPage((p) => Math.max(p - 1, 1))}
                                 disabled={pdfCurrentPage <= 1}
-                                className="px-3 py-1.5 rounded-md bg-[#0b3b38] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
+                                className="px-3 py-1.5 rounded-md bg-[#0f766e] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
                               >
                                 ← Prev
                               </button>
@@ -1001,7 +1001,7 @@ const [editingFile, setEditingFile] = useState<any>(null);
                               <button
                                 onClick={() => setPdfCurrentPage((p) => Math.min(p + 1, pdfNumPages))}
                                 disabled={pdfCurrentPage >= pdfNumPages}
-                                className="px-3 py-1.5 rounded-md bg-[#0b3b38] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
+                                className="px-3 py-1.5 rounded-md bg-[#0f766e] text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2638] transition-colors"
                               >
                                 Next →
                               </button>

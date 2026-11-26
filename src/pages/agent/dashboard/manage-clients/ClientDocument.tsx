@@ -516,13 +516,6 @@ const ClientDocumentManagement = () => {
 
  /*  const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
         title: "Title",
         dataIndex: "title",
         key: "title",

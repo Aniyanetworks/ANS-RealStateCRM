@@ -821,13 +821,6 @@ const handleUpdateOrder = async () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "BA ID",
       dataIndex: "invoice_number",
       key: "invoice_number",

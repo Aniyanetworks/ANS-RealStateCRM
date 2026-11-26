@@ -213,7 +213,7 @@ const AgentManagement: React.FC = () => {
                 onChange={handleSearch}
               />
               <button
-                className="bg-[#0a2a28] text-white px-3 py-1.5 rounded-r-md flex items-center gap-1.5 text-xs transition duration-200 hover:bg-[#1F2A3D]"
+                className="bg-[#0f766e] text-white px-3 py-1.5 rounded-r-md flex items-center gap-1.5 text-xs transition duration-200 hover:bg-[#1F2A3D]"
                 onClick={() => setShowDropdown(!showDropdown)}
               >
                 <FaFilter /> Filter
@@ -292,7 +292,7 @@ const AgentManagement: React.FC = () => {
 
                   <div className="flex gap-2 mt-4">
                     <button
-                      className="w-1/2 bg-[#0a2a28] text-white p-2 rounded"
+                      className="w-1/2 bg-[#0f766e] text-white p-2 rounded"
                       onClick={() => {
                         handleCustomDateRange();
                         setShowDropdown(false);

@@ -769,13 +769,6 @@ function calculateUniqueTradeSheets(record) {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Brokerage Name",
       dataIndex: "brokerageName",
       key: "brokerageName",

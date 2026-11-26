@@ -51,13 +51,6 @@ const MarketplaceReport: React.FC<MarketplaceReportProps> = ({ filteredData }) =
 
   const columns: TableColumnsType<MarketplaceItem> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "Invoice",
       dataIndex: "invoice_number",
       key: "invoice_number",

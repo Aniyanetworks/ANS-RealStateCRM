@@ -183,13 +183,6 @@ const ConditionTypeManagement = () => {
   // Table columns
   const columns: TableColumnsType<ConditionType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
       title: "Condition",
       dataIndex: "condition",
       key: "condition",

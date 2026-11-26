@@ -318,13 +318,6 @@ const CreateAndUpdateUser = () => {
   });
 
   const columns: TableColumnsType<DataType> = [
-    {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
     ...(user.userType === "superAdmin" || user.userType === "admin"
       ? [
         {

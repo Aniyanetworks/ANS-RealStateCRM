@@ -519,13 +519,6 @@ const ClockHistoryTab: React.FC<ClockHistoryTabProps> = ({
   };
 
   const columns: TableColumnsType<ClockSessionRow> = [
-    {
-      title: "#",
-      key: "serial",
-      width: 50,
-      render: (_, __, index) => (currentPage - 1) * 50 + index + 1,
-      fixed: "left",
-    },
     ...(isSuperAdminFromHistory
       ? [
           {

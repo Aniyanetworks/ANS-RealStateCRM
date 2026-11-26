@@ -741,13 +741,6 @@ const VendorManagement = () => {
   // Table columns
   const columns: TableColumnsType<Vendor> = [
     {
-      title: "#",
-      key: "serial",
-      width: 80,
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
       title: "Contact Person",
       dataIndex: "contactPerson",
       key: "contactPerson",
@@ -1156,7 +1149,7 @@ const VendorManagement = () => {
                 <button
                   type="button"
                   onClick={() => setIsCategoryModalOpen(true)}
-                  className="text-xs px-2 py-0.5 rounded bg-[#072f2d] text-white hover:opacity-80"
+                  className="text-xs px-2 py-0.5 rounded bg-[#0f766e] text-white hover:opacity-80"
                 >
                   Add/Edit Category
                 </button>
@@ -1688,7 +1681,7 @@ const VendorManagement = () => {
         title={
           <div className="flex items-center gap-2">
             <span className="font-semibold text-[#072f2d]">Manage Categories</span>
-            <span className="text-xs font-medium bg-[#072f2d] text-white rounded-full px-2 py-0.5">
+            <span className="text-xs font-medium bg-[#0f766e] text-white rounded-full px-2 py-0.5">
               {rawCategories.length}
             </span>
           </div>
@@ -1721,7 +1714,7 @@ const VendorManagement = () => {
                 type="button"
                 onClick={handleAddCategory}
                 disabled={!newCategoryName.trim()}
-                className="px-4 py-1.5 rounded-md text-sm font-medium text-white bg-[#072f2d] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+                className="px-4 py-1.5 rounded-md text-sm font-medium text-white bg-[#0f766e] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
               >
                 + Add
               </button>
@@ -1765,7 +1758,7 @@ const VendorManagement = () => {
                       <button
                         type="button"
                         onClick={() => handleUpdateCategory(cat.id)}
-                        className="px-3 py-1 text-xs font-medium rounded bg-[#072f2d] text-white hover:opacity-90"
+                        className="px-3 py-1 text-xs font-medium rounded bg-[#0f766e] text-white hover:opacity-90"
                       >
                         Save
                       </button>

@@ -187,13 +187,6 @@ const InventoryTransactions = () => {
 
   const columns = React.useMemo<TableColumnsType<TransactionType>>(() => [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
       title: "Product Name",
       key: "productName",
       render: (_, record) => (

@@ -196,12 +196,6 @@ const FileActivity: React.FC = () => {
 
   const columns: TableColumnsType<FileActivityLog> = [
     {
-      title: "#",
-      key: "serial",
-      width: 80,
-      render: (_, __, index) => (currentPage - 1) * 10 + index + 1,
-    },
-    {
       title: "User",
       dataIndex: "user",
       key: "user",

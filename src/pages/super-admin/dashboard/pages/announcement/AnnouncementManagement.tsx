@@ -370,13 +370,6 @@ const logRowSelection: TableRowSelection<any> = {
   );
   const columns: TableColumnsType<Announcement> = [
     {
-      title: "#",
-      key: "serial",
-      width: 80,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Title",
       dataIndex: "title",
       key: "title",

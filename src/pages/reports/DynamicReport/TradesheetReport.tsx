@@ -342,12 +342,6 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
 
     const columns: TableColumnsType<any> = [
         {
-            title: "#",
-            key: "serial",
-            width: 50,
-            render: (_: any, __: any, index: number) => index + 1,
-        },
-        {
             title: "Trade Sheet ID",
             dataIndex: "tradeSheetTypeId",
             key: "tradeSheetTypeId",
@@ -506,7 +500,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                     )}
                 </div>
                 <button
-                    className="flex-shrink-0 bg-[#0a2a28] text-white px-3 py-1.5 rounded flex items-center gap-1.5 text-xs hover:bg-[#1F2A3D]"
+                    className="flex-shrink-0 bg-[#0f766e] text-white px-3 py-1.5 rounded flex items-center gap-1.5 text-xs hover:bg-[#1F2A3D]"
                     onClick={() => setShowDropdown(!showDropdown)}
                 >
                     <FaFilter /> Filter
@@ -568,7 +562,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
 
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b bg-[#0a2a28] text-white">
+                    <div className="flex items-center justify-between p-4 border-b bg-[#0f766e] text-white">
                         <h3 className="text-lg font-semibold">Filter Options</h3>
                         <button
                             onClick={() => setShowDropdown(false)}
@@ -772,7 +766,7 @@ export default function TradesheetReport({ branchIds, reportTypes, selectedRepor
                     {/* Fixed Footer with Action Buttons */}
                     <div className="flex gap-2 p-4 border-t bg-white">
                         <button
-                            className="w-1/2 bg-[#0a2a28] text-white p-2 rounded hover:bg-[#1a2533] transition-colors"
+                            className="w-1/2 bg-[#0f766e] text-white p-2 rounded hover:bg-[#0f766e] transition-colors"
                             onClick={() => {
                                 handleCreatedDateRange();
                                 handleClosingDateRange();

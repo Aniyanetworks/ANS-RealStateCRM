@@ -1095,15 +1095,6 @@ const Sidebar = ({
       ],
     },
 
-    {
-      key: "16",
-      icon: <FaChalkboardTeacher />,
-      label: (
-        <a href="https://dev.dvrealty.ca/" rel="noopener noreferrer">
-          Training Mode
-        </a>
-      ),
-    },
   ];
 
   // Function to check if URL includes the specified substring
@@ -1168,15 +1159,6 @@ const Sidebar = ({
           ),
         },
       ],
-    },
-    {
-      key: "15",
-      icon: <FaChalkboardTeacher />,
-      label: (
-        <a href="https://dev.dvrealty.ca/" rel="noopener noreferrer">
-          Training Mode
-        </a>
-      ),
     },
     {
       key: "support",
@@ -1517,15 +1499,6 @@ const Sidebar = ({
     //     </NavLink>
     //   ),
     // },
-    {
-      key: "15",
-      icon: <FaChalkboardTeacher />,
-      label: (
-        <a href="https://dev.dvrealty.ca/" rel="noopener noreferrer">
-          Training Mode
-        </a>
-      ),
-    },
     {
       key: "support",
       icon: <FaHeadset />,
@@ -2897,16 +2870,6 @@ const Sidebar = ({
       ]
       : []),
 
-    {
-      key: "16",
-      permissionCategorySlug: "dashboard", // matches "dashboard" slug
-      icon: <FaChalkboardTeacher />,
-      label: (
-        <a href="https://dev.dvrealty.ca/" rel="noopener noreferrer">
-          Training Mode
-        </a>
-      ),
-    },
   ];
 
   const SidebarSearch = ({ menuItems, onNavigate }) => {

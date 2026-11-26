@@ -44,13 +44,6 @@ const Supports: React.FC<SupportProps> = ({ filteredData }) => {
 
   const columns: TableColumnsType<SupportItem> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "Title",
       dataIndex: "title",
       key: "title",

@@ -409,13 +409,6 @@ const CreateAndUpdateUser = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "User ID",
       key: "userTypeUId",
       width: 50,
@@ -658,7 +651,7 @@ const CreateAndUpdateUser = () => {
       render: (text, record) => (
         <button
           onClick={() => handleImpersonate(record)}
-          className="flex items-center gap-2 bg-[#072f2d] text-white px-3 py-1 rounded hover:bg-[#182843]"
+          className="flex items-center gap-2 bg-[#0f766e] text-white px-3 py-1 rounded hover:bg-[#0d6b64]"
         >
           <FaExchangeAlt />
           Impersonate

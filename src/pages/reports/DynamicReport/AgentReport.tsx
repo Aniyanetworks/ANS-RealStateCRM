@@ -360,12 +360,6 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
     // Table columns
     const columns: TableColumnsType<any> = [
         {
-            title: '#',
-            key: 'index',
-            width: 60,
-            render: (_: any, __: any, index: number) => (currentPage - 1) * pageSize + index + 1,
-        },
-        {
             title: 'Agent ID',
             dataIndex: 'agentAccountId',
             key: 'agentAccountId',
@@ -562,7 +556,7 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                             </button>
                         )}
                         <button
-                            className="bg-[#0a2a28] text-white px-4 py-2 rounded-r-md flex items-center gap-2"
+                            className="bg-[#0f766e] text-white px-4 py-2 rounded-r-md flex items-center gap-2"
                             onClick={() => setShowDropdown(!showDropdown)}
                         >
                             <FaFilter /> Filter
@@ -624,7 +618,7 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
 
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b bg-[#0a2a28] text-white">
+                    <div className="flex items-center justify-between p-4 border-b bg-[#0f766e] text-white">
                         <h3 className="text-lg font-semibold">Filter Options</h3>
                         <button
                             onClick={() => setShowDropdown(false)}
@@ -835,7 +829,7 @@ export default function AgentReport({ branchIds }: AgentReportProps) {
                     {/* Fixed Footer with Action Buttons */}
                     <div className="flex gap-2 p-4 border-t bg-white">
                         <button
-                            className="w-1/2 bg-[#0a2a28] text-white p-2 rounded hover:bg-[#1a2533] transition-colors"
+                            className="w-1/2 bg-[#0f766e] text-white p-2 rounded hover:bg-[#0f766e] transition-colors"
                             onClick={() => {
                                 handleCustomDateRange();
                                 setShowDropdown(false);

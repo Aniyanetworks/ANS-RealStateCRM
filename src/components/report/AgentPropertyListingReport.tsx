@@ -136,13 +136,6 @@ const PropertyListing: React.FC<PropertyListingProps> = ({ filteredData }) => {
 
   const columns: TableColumnsType<PropertyListing> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "Mls Number",
       dataIndex: "mlsNumber",
       key: "mlsNumber",

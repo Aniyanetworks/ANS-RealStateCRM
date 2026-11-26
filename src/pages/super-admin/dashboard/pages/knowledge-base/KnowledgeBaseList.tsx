@@ -365,13 +365,6 @@ const KnowledgeBaseList: React.FC = () => {
 
   const columns: TableColumnsType<KnowledgeBase> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "Title",
       dataIndex: "title",
       key: "title",

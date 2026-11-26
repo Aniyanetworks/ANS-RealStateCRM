@@ -42,13 +42,6 @@ const Supports: React.FC<TradeProps> = ({ filteredData }) => {
 
   const columns: TableColumnsType<tradeItem> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "Trade Sheet Id",
       dataIndex: "tradeSheetTypeId",
       key: "tradeSheetTypeId",

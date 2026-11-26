@@ -456,7 +456,7 @@ const PdfExtrack = () => {
       {isLoading ? (
         <TableLoader />
       ) : (
-        <div className="bg-white max-w-[900px] mx-auto p-10 my-5 rounded-2xl">
+        <div className="bg-white w-full max-w-[1500px] mx-auto p-10 my-5 rounded-2xl">
           {/* bacic info
            */}
           <div>

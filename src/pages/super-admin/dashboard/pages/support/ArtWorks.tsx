@@ -158,7 +158,6 @@ const ArtWorks: React.FC = () => {
     };
 
     const columns: TableColumnsType<ArtWork> = [
-        { title: '#', dataIndex: 'serial', key: 'serial' },
         { title: 'Title', dataIndex: 'title', key: 'title',
             render: (text, record) => (
                 <span

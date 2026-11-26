@@ -6,7 +6,7 @@ import Page3 from "../../components/dashboard/MLSForm/FreeholdSale/Page3";
 
 const FreeholdSale = () => {
   return (
-    <div className="w-[1200px] flex flex-col gap-10 p-20 mx-auto ">
+    <div className="w-full max-w-[1500px] flex flex-col gap-10 p-20 mx-auto ">
       <Page1 />
       <Page2 />
       <Page3 />

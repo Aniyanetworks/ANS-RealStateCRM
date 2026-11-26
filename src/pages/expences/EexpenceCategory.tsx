@@ -216,13 +216,6 @@ const ExpenseCategoryManagement = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Category Name",
       dataIndex: "name",
       key: "name",

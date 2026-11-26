@@ -372,13 +372,6 @@ const IssueAgentCheque: React.FC = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "First Name",
       dataIndex: "firstName",
       key: "firstName",

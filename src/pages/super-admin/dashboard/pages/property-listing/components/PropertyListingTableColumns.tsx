@@ -32,13 +32,6 @@ export const getPropertyListingColumns = ({
   setIsModalFileManagerVisible,
 }: ColumnProps): TableColumnsType<any> => [
   {
-    title: "#",
-    key: "serial",
-    width: 50,
-    dataIndex: "serial",
-    fixed: "left",
-  },
-  {
     title: "Property Record",
     dataIndex: "propertyListingTypeId",
     key: "propertyListingTypeId",

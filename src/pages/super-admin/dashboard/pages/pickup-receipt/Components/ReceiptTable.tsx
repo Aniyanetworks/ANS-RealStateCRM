@@ -43,12 +43,6 @@ export const createTableColumns = (
 ): TableColumnsType<DataType> => {
   return [
     {
-      title: "#",
-      key: "serial",
-      width: 80,
-      dataIndex: "serial",
-    },
-    {
       title: "Receipt ID",
       dataIndex: "receiptId",
       key: "receiptId",

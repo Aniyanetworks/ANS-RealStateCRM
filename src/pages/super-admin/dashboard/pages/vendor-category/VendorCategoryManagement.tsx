@@ -188,13 +188,6 @@ const VendorCategoryManagement = () => {
   // Table columns
   const columns: TableColumnsType<VendorCategory> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
       title: "Category Name",
       dataIndex: "name",
       key: "name",

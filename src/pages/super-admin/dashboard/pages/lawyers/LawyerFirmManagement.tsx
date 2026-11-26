@@ -378,13 +378,6 @@ const BrokerageData = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Lawyer Firm Name",
       dataIndex: "firmName",
       key: "firmName",

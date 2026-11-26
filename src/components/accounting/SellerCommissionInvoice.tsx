@@ -653,7 +653,7 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
       </div>
       {activeTab === "sendInvoice" && (
         <div>
-          <div ref={sectionRef} className="bg-[#0b3331] min-h-[1122px] flex flex-col">
+          <div ref={sectionRef} className="bg-[#0f766e] min-h-[1122px] flex flex-col">
             <div className="ml-5 pl-10 pr-10 py-10 border-[#0b3331] border-y-8 bg-white flex-1 text-[13px] leading-6">
               {/* Header */}
               <div className="flex gap-10 items-start border-b pb-4">
@@ -987,7 +987,7 @@ const SellerCommissionInvoice = ({ uuid, onInvoiceSent }) => {
               {/* Submit Button */}
               <div>
                 <button
-                  className="bg-[#072f2d] text-white p-2 rounded-md flex gap-2 items-center"
+                  className="bg-[#0f766e] text-white p-2 rounded-md flex gap-2 items-center"
                   onClick={onSubmitEmail} // Hook form submit
                   disabled={isEmailSend}
                 >

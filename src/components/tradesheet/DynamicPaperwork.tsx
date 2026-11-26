@@ -695,7 +695,7 @@ const DynamicPaperwork = ({
               </button>
               <button
                 onClick={handleConfirmedUpload}
-                className="px-4 py-2 bg-black text-white rounded btn-sm"
+                className="px-4 py-2 bg-[#0f766e] text-white rounded btn-sm"
               >
                 Confirm Upload
               </button>
@@ -743,7 +743,7 @@ const DynamicPaperwork = ({
               </button>
               <button
                 onClick={handleConfirmedOtherUpload}
-                className="px-4 py-2 bg-black text-white rounded "
+                className="px-4 py-2 bg-[#0f766e] text-white rounded "
               >
                 Confirm Upload
               </button>

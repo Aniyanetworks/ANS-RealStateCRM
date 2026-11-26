@@ -755,7 +755,7 @@ const handleConfirmedOtherRemove = async () => {
                 </button>
                 <button
                   onClick={handleConfirmedUpload}
-                  className="px-4 py-2 bg-black text-white btn-sm rounded "
+                  className="px-4 py-2 bg-[#0f766e] text-white btn-sm rounded "
                 >
                   Confirm Upload
                 </button>
@@ -827,7 +827,7 @@ const handleConfirmedOtherRemove = async () => {
         </button>
         <button
           onClick={handleConfirmedOtherUpload}
-          className="px-4 py-2 bg-black text-white rounded btn-sm"
+          className="px-4 py-2 bg-[#0f766e] text-white rounded btn-sm"
         >
           Confirm Upload
         </button>

@@ -667,13 +667,6 @@ const SupportRequestList: React.FC = () => {
 
   const columns: TableColumnsType<SupportRequest> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "Suport ID",
       dataIndex: "suportID",
       key: "suportID",

@@ -311,7 +311,7 @@ const CreateAndUpdateUser = () => {
                               />
                             </ReactCrop>
                             <button
-                              className="text-white font-mono text-xs py-2 px-4 rounded-2xl mt-4 cursor-pointer bg-[#0b3b38] w-[200px] text-center hover:bg-[#0b3b38]"
+                              className="text-white font-mono text-xs py-2 px-4 rounded-2xl mt-4 cursor-pointer bg-[#0f766e] w-[200px] text-center hover:bg-[#0b3b38]"
                               onClick={() => {
                                 if (
                                   imgRef.current &&

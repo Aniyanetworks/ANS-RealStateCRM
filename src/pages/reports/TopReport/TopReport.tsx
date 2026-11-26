@@ -596,12 +596,6 @@ const TopReport = () => {
   // Table columns for Top Unit Seller
   const unitSellerColumns = [
     {
-      title: "#",
-      dataIndex: "serial",
-      key: "serial",
-      width: 60,
-    },
-    {
       title: "Agent Name",
       dataIndex: "name",
       key: "name",
@@ -635,12 +629,6 @@ const TopReport = () => {
 
   // Table columns for Top Seller
   const topSellerColumns = [
-    {
-      title: "#",
-      dataIndex: "serial",
-      key: "serial",
-      width: 60,
-    },
     {
       title: "Agent Name",
       dataIndex: "name",
@@ -677,12 +665,6 @@ const TopReport = () => {
 
   // Table columns for Top Listing Agent
   const topListingAgentColumns = [
-    {
-      title: "#",
-      dataIndex: "serial",
-      key: "serial",
-      width: 60,
-    },
     {
       title: "Agent Name",
       dataIndex: "name",

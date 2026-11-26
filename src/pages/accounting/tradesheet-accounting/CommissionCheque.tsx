@@ -334,13 +334,6 @@ const CommissionCheque = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Tradesheet Id",
       dataIndex: "tradeSheetTypeId", // Keep dataIndex as is, unless you want to map it differently
       key: "tradeSheetTypeId", // Keep key as is

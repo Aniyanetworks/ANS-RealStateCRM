@@ -198,7 +198,7 @@ input[type="number"]::-webkit-inner-spin-button {
 /* ================================================== */
 
 .primary-btn {
-  @apply bg-[#082624] py-2 px-4 text-white text-[11px]  duration-200 hover:bg-[#0b3331] rounded-md font-normal;
+  @apply bg-[#0f766e] py-2 px-4 text-white text-[11px]  duration-200 hover:bg-[#0f766e] rounded-md font-normal;
 }
 .primary-btn-ghost {
   @apply border border-primaryPurple py-2 px-4 text-[11px] hover:bg-teal-300/40   bg-teal-300/20  text-primaryPurple duration-200  rounded-md font-normal;
@@ -213,7 +213,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .primary-btn:hover {
   color: white;
-  background-color: #072f2d;
+  background-color: #0d6b64;
   @apply duration-200 transition-all text-[11px] font-normal;
 }
 
@@ -319,7 +319,7 @@ tr.ant-table-placeholder {
 
 /* ======== select antd style */
 .custom-select .ant-select-selector {
-  border: 1px solid #072f2dc4 !important;
+  border: 1px solid #0f766ec4 !important;
   border-radius: 5px !important;
 
   padding: 18px 14px !important;
@@ -485,3 +485,11 @@ tr.ant-table-placeholder {
   padding: 2px 5px !important;
   overflow-wrap: break-word!important;
 }
+/* Notification bell dropdown: scroll vertically when there are many items */
+.notif-dropdown .ant-dropdown-menu {
+  max-height: 420px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.notif-dropdown .ant-dropdown-menu::-webkit-scrollbar { width: 6px; }
+.notif-dropdown .ant-dropdown-menu::-webkit-scrollbar-thumb { background: #99f6e4; border-radius: 6px; }

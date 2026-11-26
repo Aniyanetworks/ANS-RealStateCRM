@@ -266,12 +266,27 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
     }
   };
 
+  const userDisplayName = user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(" ") || "My Account";
+  const userInitials = userDisplayName.split(" ").map((p: string) => p[0]).slice(0, 2).join("").toUpperCase() || "U";
+
   // avatar profile dropdown items
   const dropitems: MenuProps["items"] = [
     {
       key: "1",
-      label: "My Account",
-      disabled: true,
+      label: (
+        <div className="flex items-center gap-3 px-1 py-1 min-w-[220px] cursor-default">
+          <Avatar size={40} style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", fontWeight: 600 }}>
+            {userInitials}
+          </Avatar>
+          <div className="leading-tight">
+            <div className="font-semibold text-[#0b3b38]">{userDisplayName}</div>
+            <div className="text-xs text-gray-500">{user?.email}</div>
+            <span className="inline-block mt-1 text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 font-semibold">
+              {String(user?.userType || "user").replace(/([A-Z])/g, " $1")}
+            </span>
+          </div>
+        </div>
+      ),
     },
     {
       type: "divider",
@@ -408,7 +423,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         {localStorage.getItem("originalUser") && (
           <button
             onClick={handleSwitchPortal}
-            className="flex items-center gap-2 px-4 py-2 bg-[#072f2d] text-white rounded-lg hover:bg-[#182843]"
+            className="flex items-center gap-2 px-4 py-2 bg-[#0f766e] text-white rounded-lg hover:bg-[#0d6b64]"
           >
             <FaExchangeAlt />
             Switch to Super Admin
@@ -420,7 +435,7 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
         <div>
           <Dropdown
             className="cursor-pointer "
-            overlayClassName="h-[400px] overflow-hidden"
+            overlayClassName="notif-dropdown"
             menu={{
               items: [
                 {
@@ -446,21 +461,13 @@ const TopNav = ({ sidebarCollapsed, setSidebarCollapsed, setIsModalOpen }) => {
           </Dropdown>
         </div>
         <Dropdown menu={{ items: dropitems }} className="cursor-pointer">
-          {user?.profilePicture ? (
-            <div className="w-[40px] h-[40px] rounded-full overflow-hidden">
-              <img
-                className="w-full h-full"
-                src={getFileUrl(user?.profilePicture)}
-                alt=""
-              />
-            </div>
-          ) : (
-            <Avatar
-              size="large"
-              icon={<UserOutlined />}
-              className="bg-primaryPurple"
-            />
-          )}
+          <Avatar
+            size={40}
+            src={user?.profilePicture ? getFileUrl(user.profilePicture) : undefined}
+            style={{ background: "linear-gradient(135deg,#0f766e,#14b8a6)", color: "#fff", fontWeight: 600, boxShadow: "0 0 0 2px #99f6e4" }}
+          >
+            {userInitials}
+          </Avatar>
         </Dropdown>
       </div>
     </header>

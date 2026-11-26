@@ -367,7 +367,7 @@ const BuyerCommissionInvoice = ({ uuid }) => {
               {isDownloading && <ButtonLoader />}Download
             </button>
           </div>
-          <div ref={sectionRef} className="bg-[#0b3331] h-[1030px] ">
+          <div ref={sectionRef} className="bg-[#0f766e] h-[1030px] ">
             <div className="ml-16 pl-10 py-10 border-[#0b3331] border-y-8 h-full  bg-white ">
               {/* Header */}
               <div className="flex gap-10 items-start  pb-4">
@@ -648,7 +648,7 @@ const BuyerCommissionInvoice = ({ uuid }) => {
               {/* Submit Button */}
               <div>
                 <button
-                  className="bg-[#072f2d] text-white p-2 rounded-md flex gap-2 items-center"
+                  className="bg-[#0f766e] text-white p-2 rounded-md flex gap-2 items-center"
                   onClick={onSubmitEmail} // Hook form submit
                   disabled={isEmailSend}
                 >

@@ -206,12 +206,6 @@ const MySubmissionsArchiveTradeList = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 80,
-      render: (_, __, index) => index + 1,
-    },
-    {
       title: "Trade Record",
       dataIndex: "tradeSheetTypeId",
       key: "tradeSheetTypeId",

@@ -542,13 +542,6 @@ const SupportRequestList: React.FC = () => {
 
   const columns: TableColumnsType<SupportRequest> = [
     {
-      title: "#",
-      key: "serial",
-      dataIndex: "serial",
-      width: 50,
-      fixed: "left",
-    },
-    {
       title: "Suport ID",
       dataIndex: "suportID",
       key: "suportID",
@@ -1254,7 +1247,7 @@ const SupportRequestList: React.FC = () => {
                   Clear
                 </button>
                 <button
-                  className=" text-white px-4 py-2 rounded-md bg-[#0a2a28]"
+                  className=" text-white px-4 py-2 rounded-md bg-[#0f766e]"
                   onClick={handleAddComment}
                 >
                   {editId !== null ? "Update" : "Add"}

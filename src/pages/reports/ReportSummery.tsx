@@ -22,7 +22,7 @@ export default function SummaryReport() {
               readOnly
               onClick={() => setShowDropdown(!showDropdown)}
             />
-            <button className="bg-[#0a2a28] text-white px-4 rounded-r">Submit</button>
+            <button className="bg-[#0f766e] text-white px-4 rounded-r">Submit</button>
           </div>
 
           {/* Date Picker Dropdown */}
@@ -70,7 +70,7 @@ export default function SummaryReport() {
 
                 <div className="flex gap-2 mt-4">
                   <button
-                    className="w-1/2 bg-[#0a2a28] text-white p-2 rounded"
+                    className="w-1/2 bg-[#0f766e] text-white p-2 rounded"
                     onClick={() => {
                       setDateRange(`${customStart} To ${customEnd}`);
                       setShowDropdown(false);

@@ -40,13 +40,6 @@ const NotificationLogs: React.FC<NotificationLogsProps> = ({
 
   const columns: TableColumnsType<NotificationLog> = [
     {
-      title: "#",
-      key: "serial",
-      width: 60,
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
       title: "Title",
       dataIndex: "title",
       key: "title",

@@ -657,16 +657,6 @@ const ExpenseManagement = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      render: (_, record) => {
-        const idx = filteredData.findIndex((item) => item.uuid === record.uuid);
-        return idx >= 0 ? idx + 1 : "-";
-      },
-      fixed: "left",
-    },
-    {
       title: "Invoice ID",
       dataIndex: "invoice_number",
       key: "invoice_number",
@@ -1080,7 +1070,7 @@ const ExpenseManagement = () => {
                 </button>
               )}
               <button
-                className="bg-[#0a2a28] text-white px-2 rounded-r flex items-center gap-1 flex-shrink-0"
+                className="bg-[#0f766e] text-white px-2 rounded-r flex items-center gap-1 flex-shrink-0"
                 style={{ fontSize: 11 }}
                 onClick={() => setShowDropdown(!showDropdown)}
               >
@@ -1178,7 +1168,7 @@ const ExpenseManagement = () => {
                   />
                 </div>
                 <div className="flex gap-2 mt-4">
-                  <button className="w-1/2 bg-[#0a2a28] text-white p-2 rounded" onClick={handleApplyFilters}>Apply</button>
+                  <button className="w-1/2 bg-[#0f766e] text-white p-2 rounded" onClick={handleApplyFilters}>Apply</button>
                   <button
                     type="button"
                     className="w-1/2 bg-[#FFDFDC] text-[#EF4444] p-2 rounded"

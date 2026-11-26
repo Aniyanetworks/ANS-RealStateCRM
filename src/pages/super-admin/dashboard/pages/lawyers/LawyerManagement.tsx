@@ -453,13 +453,6 @@ const LawyersDataManagement = () => {
   };
 
   const columns: TableColumnsType<Lawyer> = [
-    {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
 
     {
       title: "Lawyer Firm",

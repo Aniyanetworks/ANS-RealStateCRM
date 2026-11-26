@@ -153,13 +153,6 @@ const RealtorPropertyListingManagement = () => {
 
   const columns: TableColumnsType<any> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "MLS Number",
       dataIndex: "mlsNumber",
       key: "mlsNumber",

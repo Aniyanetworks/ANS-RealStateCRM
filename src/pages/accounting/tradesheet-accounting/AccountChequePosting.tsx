@@ -242,14 +242,14 @@ const AccountChequePosting = () => {
         <div className="flex justify-end mt-4">
           <button
             type="submit"
-            className="bg-[#0b3b38] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-[#0f766e] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Submit
           </button>
 
           <NavLink
             to="/dashboard/accounting/trade-list"
-            className="ml-4 bg-[#0b3b38] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="ml-4 bg-[#0f766e] text-white px-6 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Go Back
           </NavLink>

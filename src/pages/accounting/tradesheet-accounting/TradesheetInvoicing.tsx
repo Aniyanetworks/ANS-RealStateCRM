@@ -267,12 +267,6 @@ const TradesheetInvoicing = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 80,
-      dataIndex: "serial",
-    },
-    {
       title: "Trade Record",
       dataIndex: "tradeSheetTypeId",
       key: "tradeSheetTypeId",

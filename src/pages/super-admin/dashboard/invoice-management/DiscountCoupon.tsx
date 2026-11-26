@@ -337,13 +337,6 @@ const couponManagement = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
       title: "Coupon Code",
       dataIndex: "coupon_code",
       key: "coupon_code",

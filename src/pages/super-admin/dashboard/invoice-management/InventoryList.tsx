@@ -1427,13 +1427,6 @@ const InventoryList = () => {
                   scroll={{ x: "max-content" }}
                   columns={[
                       {
-                        title: "#",
-                        key: "serial",
-                        width: 50,
-                        fixed: "left",
-                        render: (_, __, index) => index + 1,
-                      },
-                      {
                         title: "User",
                         key: "user",
                         width: 180,

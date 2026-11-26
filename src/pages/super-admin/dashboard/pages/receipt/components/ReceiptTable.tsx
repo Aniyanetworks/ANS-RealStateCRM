@@ -84,13 +84,6 @@ const ReceiptTable = ({
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Receipt ID",
       dataIndex: "receiptId",
       key: "receiptId",

@@ -289,13 +289,6 @@ const ExternalAgentManagement = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Agent Name",
       dataIndex: "name",
       key: "name",

@@ -231,12 +231,6 @@ const TradeSheetShareDocumentTemplate: React.FC = () => {
   );
   const columns: TableColumnsType<Announcement> = [
     {
-      title: "#",
-      key: "serial",
-      width: 80,
-      dataIndex: "serial",
-    },
-    {
       title: "Name",
       dataIndex: "name",
       key: "name",

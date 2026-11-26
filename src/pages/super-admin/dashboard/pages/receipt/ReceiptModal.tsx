@@ -401,7 +401,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
         </Button>,
         <Button
           key="cancel"
-          className="!bg-[#0a2a28] !text-white"
+          className="!bg-[#0f766e] !text-white"
           onClick={() => printPdf()}
           disabled={bankImagesLoading}
         >
@@ -410,7 +410,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
 
         <Button
           key="cancel"
-          className="!bg-[#0a2a28] !text-white"
+          className="!bg-[#0f766e] !text-white"
           onClick={() => downloadPDF()}
           disabled={bankImagesLoading}
         >
@@ -422,7 +422,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
       <div className="flex justify-around mb-4">
         <button
           className={`py-2 px-4 ${
-            activeTab === "deposit" ? "bg-[#072f2d] text-white" : "bg-gray-200"
+            activeTab === "deposit" ? "bg-[#0f766e] text-white" : "bg-gray-200"
           }`}
           onClick={() => setActiveTab("deposit")}
         >
@@ -430,7 +430,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
         </button>
         <button
           className={`py-2 px-4 ${
-            activeTab === "email" ? "bg-[#072f2d] text-white" : "bg-gray-200"
+            activeTab === "email" ? "bg-[#0f766e] text-white" : "bg-gray-200"
           }`}
           onClick={() => setActiveTab("email")}
         >
@@ -688,7 +688,7 @@ const ReceiptModal: React.FC<ReceiptModalProps> = ({
             {/* Submit Button */}
             <div>
               <button
-                className="bg-[#072f2d] text-white p-2 rounded-md flex gap-2 items-center"
+                className="bg-[#0f766e] text-white p-2 rounded-md flex gap-2 items-center"
                 onClick={onSubmitEmail}
                 disabled={isEmailSend || imagesLoading || bankImagesLoading}
               >

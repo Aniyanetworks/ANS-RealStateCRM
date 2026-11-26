@@ -434,13 +434,6 @@ const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Invoice Number",
       dataIndex: "invoice_number",
       key: "invoice_number",

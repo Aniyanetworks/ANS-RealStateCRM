@@ -7,6 +7,8 @@ const AntdConfigProvider = ({ children }: { children: ReactNode }) => {
       theme={{
         token: {
           fontFamily: "'Poppins', sans-serif",
+          colorPrimary: "#0f766e",
+          colorLink: "#0f766e",
         },
         components: {
           Layout: {

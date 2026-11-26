@@ -2111,7 +2111,7 @@ const LeadsList = () => {
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className="bg-[#051f1e] text-white px-6 py-2 rounded hover:bg-[#0a1a33] transition-colors"
+              className="bg-[#0f766e] text-white px-6 py-2 rounded hover:bg-[#0f766e] transition-colors"
             >
               {selectedUUID ? "Update Lead" : "Create Lead"}
             </button>

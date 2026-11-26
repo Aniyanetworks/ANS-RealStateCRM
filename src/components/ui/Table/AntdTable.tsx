@@ -19,12 +19,6 @@ const AntdTable = () => {
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 120,
-      render: (index) => index + 1, 
-    },
-    {
       title: "Name",
       dataIndex: "name",
       key: "name",

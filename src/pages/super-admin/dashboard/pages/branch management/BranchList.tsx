@@ -443,13 +443,6 @@ const BranchList = () => {
 
   const baseColumns: TableColumnsType<DataType> = [
     {
-      title: "#",
-      key: "serial",
-      width: 50,
-      dataIndex: "serial",
-      fixed: "left",
-    },
-    {
       title: "Branch Name",
       dataIndex: "name",
       key: "name",

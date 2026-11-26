@@ -247,14 +247,14 @@ const PermissionManagement = () => {
                 {selectedRoleData?.data?.role?.isDefault == "no" && (
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-[#0b3b38] text-white rounded-md hover:bg-[#0f766e] transition-all duration-300"
+                    className="px-6 py-2 bg-[#0f766e] text-white rounded-md hover:bg-[#0f766e] transition-all duration-300"
                   >
                     Save Changes
                   </button>
                 )}
                 <NavLink
                   to={`/dashboard/super-admin/role-permission/role-management`}
-                  className="px-6 py-2 bg-[#0b3b38] text-white rounded-md hover:bg-[#0f766e] transition-all duration-300"
+                  className="px-6 py-2 bg-[#0f766e] text-white rounded-md hover:bg-[#0f766e] transition-all duration-300"
                 >
                   Go Back
                 </NavLink>
@@ -355,7 +355,7 @@ const PermissionManagement = () => {
             {selectedRoleData?.data?.role?.isDefault == "no" && (
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#0b3b38] 0 text-white rounded-md hover:bg-[#0f766e] transition"
+                className="px-6 py-2 bg-[#0f766e] 0 text-white rounded-md hover:bg-[#0f766e] transition"
               >
                 Save Changes
               </button>

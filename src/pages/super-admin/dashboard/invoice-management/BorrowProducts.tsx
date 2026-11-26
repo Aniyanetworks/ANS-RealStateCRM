@@ -169,13 +169,6 @@ const onEditSubmit = async (data: any) => {
 
   const columns = [
   {
-    title: "#",
-    key: "serial",
-    dataIndex: "serial",
-    width: 50,
-    fixed: "left",
-  },
-  {
     title: "BA ID",
     dataIndex: "invoice",
     key: "invoice",
