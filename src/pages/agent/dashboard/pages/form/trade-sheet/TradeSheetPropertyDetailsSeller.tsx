@@ -641,7 +641,7 @@ const TradeSheetPropertyDetailsSeller = () => {
               onClick={resetForm}
               className="primary-btn flex-1 mx-2 my-2"
             >
-              Rest Form
+              Reset Form
             </button>
 
             <button

@@ -97,7 +97,7 @@ const AgentSection: React.FC<AgentSectionProps> = ({
               <button
                 type="button"
                 onClick={onBrokerageCreate}
-                className="ml-2 p-2 bg-blue-500 text-white rounded"
+                className="ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0f766e] text-white transition hover:bg-[#0d6b64]"
               >
                 +
               </button>
@@ -127,7 +127,7 @@ const AgentSection: React.FC<AgentSectionProps> = ({
               <button
                 type="button"
                 onClick={onAgentCreate}
-                className="ml-2 p-2 bg-blue-500 text-white rounded"
+                className="ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0f766e] text-white transition hover:bg-[#0d6b64]"
               >
                 +
               </button>

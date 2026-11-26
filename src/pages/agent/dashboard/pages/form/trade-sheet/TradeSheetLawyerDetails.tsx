@@ -591,7 +591,7 @@ const TradeSheetLawyerDetails = () => {
                     <button
                       type="button"
                       onClick={() => handleOpenLawyerModal('seller')}
-                      className="p-2 bg-blue-500 text-white rounded"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0f766e] text-white transition hover:bg-[#0d6b64]"
                       title="Add New Lawyer"
                       disabled={!sellerLawFirmId}
                     >
@@ -816,7 +816,7 @@ const TradeSheetLawyerDetails = () => {
                       <button
                         type="button"
                         onClick={() => handleOpenLawyerModal('buyer')}
-                        className="p-2 bg-blue-500 text-white rounded"
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0f766e] text-white transition hover:bg-[#0d6b64]"
                         title="Add New Lawyer"
                         disabled={!buyerLawFirmId}
                       >
@@ -1041,7 +1041,7 @@ const TradeSheetLawyerDetails = () => {
                 onClick={resetForm}
                 className="primary-btn flex-1 mx-2 my-2"
               >
-                {btnLoading === "reset" ? <ButtonLoader /> : "Rest Form"}
+                {btnLoading === "reset" ? <ButtonLoader /> : "Reset Form"}
               </button>
 
               <button

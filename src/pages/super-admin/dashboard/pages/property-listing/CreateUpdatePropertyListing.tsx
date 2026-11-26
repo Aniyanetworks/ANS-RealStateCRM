@@ -1138,7 +1138,7 @@ const CreateUpdatePropertyListing = () => {
               onClick={resetForm}
               className="primary-btn flex-1 mx-2 my-2"
             >
-              {btnLoading === "reset" ? <ButtonLoader /> : "Rest Form"}
+              {btnLoading === "reset" ? <ButtonLoader /> : "Reset Form"}
             </button>
 
             <button

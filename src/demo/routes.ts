@@ -63,4 +63,9 @@ import { financeRoutes } from './handlers/finance';
 import { timeclockRoutes } from './handlers/timeclock';
 import { extraARoutes } from './handlers/extraA';
 import { extraBRoutes } from './handlers/extraB';
+import { tradesheetRoutes } from './handlers/tradesheet';
+import { listingsRoutes } from './handlers/listings';
+import { crudRoutes } from './handlers/crud';
 demoRoutes.push(...extraARoutes, ...coreRoutes, ...marketRoutes, ...miscRoutes, ...financeRoutes, ...timeclockRoutes, ...extraBRoutes);
+// Stateful create/edit/delete handlers go first so they win over the static list handlers above.
+demoRoutes.unshift(...crudRoutes, ...tradesheetRoutes, ...listingsRoutes);
