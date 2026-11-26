@@ -698,6 +698,12 @@ const Home = () => {
   const _hour = new Date().getHours();
   const dashGreeting = _hour < 12 ? 'Good morning' : _hour < 18 ? 'Good afternoon' : 'Good evening';
   const dashFirstName = user?.firstName || String(user?.name || '').split(' ')[0] || 'there';
+  const eventsThisWeek = (calendarData?.data?.calendarEvents ?? []).filter((e: any) => {
+    const d = dayjs(e.start);
+    return !d.isBefore(dayjs().startOf('day')) && d.isBefore(dayjs().add(7, 'day'));
+  }).length;
+  const awaitingReview = tradeSheetList.filter((t: any) => t.status === 'underReview').length;
+  const newListingsThisMonth = (propertyData?.data?.propertyListingData ?? []).filter((p: any) => p.createdAt && dayjs(p.createdAt).isSame(dayjs(), 'month')).length;
   const monthlySeries = React.useMemo(() => {
     const priceOf = (s: any) => parseFloat(s?.properties?.[0]?.soldPrice ?? '0') || parseFloat(s?.properties?.[0]?.salesPrice ?? '0') || 0;
     return Array.from({ length: 6 }, (_, i) => {
@@ -740,33 +746,41 @@ const Home = () => {
       <div className="w-full">
         <div className="space-y-6">
           <div>
-            <div className="mb-3">
-              <h1 className="text-xl font-bold text-gray-800">{dashGreeting}, {dashFirstName}</h1>
-              <p className="mt-0.5 text-[13px] text-gray-500">Here is how ANS RealStateCRM is performing.</p>
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-gray-100 bg-white px-5 py-4 shadow-sm">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-[#0f766e]">{dayjs().format('dddd, MMMM D')}</div>
+              <h1 className="mt-0.5 text-xl font-bold text-gray-800">{dashGreeting}, {dashFirstName}</h1>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                {[
+                  [eventsThisWeek, 'events this week', 'bg-teal-50 text-[#0f766e]'],
+                  [awaitingReview, 'awaiting review', 'bg-amber-50 text-amber-700'],
+                  [newListingsThisMonth, 'new listings this month', 'bg-gray-100 text-gray-600'],
+                ].map(([n, label, tone]) => (
+                  <div key={label} className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${tone}`}>
+                    <b>{n}</b> {label}
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-2 items-center">
-              <div className="inline-flex rounded-lg border border-gray-200 bg-white p-1">
+              <div className="inline-flex items-center rounded-lg border border-gray-200 bg-gray-50 p-1">
                 {[["All Time", "All time"], ["lastYear", "This year"], ["current", "This month"], ["previous", "Last month"]].map(([k, l]) => (
                   <button
                     key={k}
                     onClick={() => handlePresetFilterClick(k)}
-                    className={`rounded-md px-3 py-1.5 transition ${selectedMonth === k ? "bg-[#0f766e] text-white" : "text-gray-600 hover:bg-gray-50"}`}
+                    className={`rounded-md px-3.5 py-1.5 font-medium transition ${selectedMonth === k ? "bg-[#0f766e] text-white shadow-sm" : "text-gray-600 hover:bg-white"}`}
                   >
                     {l}
                   </button>
                 ))}
-              </div>
-
-              <div
-                onClick={handleCalendarIconClick}
-                className={`cursor-pointer px-1 py-0 rounded transition-all ${showDatePicker || selectedMonth === "custom"
-                  ? "bg-[#0f766e] text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                title="Custom Date Range"
-              >
-                <CalendarOutlined style={{ fontSize: "16px" }} />
+                <button
+                  onClick={handleCalendarIconClick}
+                  title="Custom Date Range"
+                  className={`ml-0.5 inline-flex items-center gap-1.5 rounded-md px-3.5 py-1.5 font-medium transition ${showDatePicker || selectedMonth === "custom" ? "bg-[#0f766e] text-white shadow-sm" : "text-gray-600 hover:bg-white"}`}
+                >
+                  <CalendarOutlined style={{ fontSize: 13 }} /> Custom
+                </button>
               </div>
 
               {showDatePicker && (
@@ -788,16 +802,14 @@ const Home = () => {
               )}
 
               {user?.userType === 'superAdmin' && (
-                <Button
-                  size="small"
-                  icon={<PlusOutlined />}
+                <button
                   onClick={() => setIsManualEntryModalOpen(true)}
-                  className="ml-auto"
-                  style={{ borderColor: '#0f766e', color: '#0f766e' }}
+                  className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-[#0f766e] px-4 font-medium text-white shadow-sm transition hover:bg-[#0d6b64]"
                 >
-                  Add Featured Agent
-                </Button>
+                  <PlusOutlined style={{ fontSize: 12 }} /> Add Featured Agent
+                </button>
               )}
+            </div>
             </div>
 
             {selectedMonth === "custom" &&

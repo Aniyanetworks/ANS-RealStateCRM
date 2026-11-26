@@ -102,6 +102,37 @@ const tradeTransactionsItem = (key: string, extra: Record<string, unknown> = {})
 });
 const isStaffType = (userType?: string) => Boolean(userType) && userType !== "client";
 
+// Small section headings make the long menu easier to scan. They are added only to the rendered
+// menu (the search box still gets the plain list). A heading appears only when its first item exists.
+const SECTION_STARTS: Record<string, string> = {
+  "Dashboard": "Overview",
+  "Branch Management": "Listings & documents",
+  "Brokerages": "Network",
+  "Deposit Receipt": "Finance",
+  "Clients": "People",
+  "File Manager": "Workspace",
+  "Support": "More",
+};
+
+const textOfLabel = (node: any): string => {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) return node.map(textOfLabel).join(" ").trim();
+  return textOfLabel(node?.props?.children);
+};
+
+const withSections = (items: any[]) => {
+  const out: any[] = [];
+  items.forEach((item) => {
+    if (item && item.type !== "group" && item.type !== "divider") {
+      const title = SECTION_STARTS[textOfLabel(item.label).trim()];
+      if (title) out.push({ key: "section-" + title, type: "group", label: title, children: [] });
+    }
+    out.push(item);
+  });
+  return out;
+};
+
 
 type TProps = {
   sidebarCollapsed: boolean;
@@ -2882,13 +2913,13 @@ const Sidebar = ({
           </div>
         )}
 
-        <div className=" flex-1 min-h-0 overflow-auto pb-16">
+        <div className="sidebar-scroll flex-1 min-h-0 overflow-auto pb-16">
           <Menu
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             mode="inline"
             inlineCollapsed={collapsed}
-            items={sidebarItems()}
+            items={collapsed ? sidebarItems() : withSections(sidebarItems())}
             style={{ backgroundColor: "#0b3b38" }}
           />
         </div>

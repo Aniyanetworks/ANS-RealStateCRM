@@ -530,3 +530,31 @@ tr.ant-table-placeholder {
   background: #f0fdfa !important;
   border-color: #99f6e4 !important;
 }
+
+/* ===== Sidebar polish ===== */
+.sidebar-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.18) transparent; }
+.sidebar-scroll::-webkit-scrollbar { width: 6px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 6px; }
+.sidebar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+.sidebar-scroll .ant-menu-item-group-title {
+  font-size: 10px !important;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 16px 20px 6px !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+.sidebar-scroll .ant-menu-item-group-list { margin: 0; padding: 0; }
+.sidebar-scroll .ant-menu-dark .ant-menu-item,
+.sidebar-scroll .ant-menu-dark .ant-menu-submenu-title {
+  transition: background-color 0.15s ease;
+}
+.sidebar-scroll .ant-menu-dark .ant-menu-item-selected {
+  box-shadow: inset 3px 0 0 #f59e0b;
+  font-weight: 600;
+}
+.sidebar-scroll .ant-menu-dark .ant-menu-item:not(.ant-menu-item-selected):hover,
+.sidebar-scroll .ant-menu-dark .ant-menu-submenu-title:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}

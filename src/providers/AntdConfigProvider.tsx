@@ -23,7 +23,9 @@ const AntdConfigProvider = ({ children }: { children: ReactNode }) => {
             itemHoverBg: "#115e59",
             itemSelectedColor: "#fff",
             itemSelectedBg: "#14b8a6",
-            groupTitleColor: "#fff",
+            groupTitleColor: "rgba(255,255,255,0.45)",
+            itemBorderRadius: 8,
+            itemMarginInline: 8,
             itemActiveBg: "#0d9488",
           },
           Dropdown: {
